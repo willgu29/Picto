@@ -10,4 +10,9 @@
 
 @implementation DetectShakeGesture
 
+
+
+
+
+
 @end

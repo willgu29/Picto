@@ -7,6 +7,8 @@
 //
 
 #import "CameraAppViewController.h"
+#import "CMMotionManager.h"
+
 
 @interface CameraAppViewController ()
 
@@ -105,6 +107,16 @@
 
 #pragma mark Detect Shake Gesture (Core Motion...)
 //harder... probably what we are looking for
+
+///not done implementing yet
+/*
+-(void)getData
+{
+    [CMMotionManager startDeviceMotionUpdates];
+    CMDeviceMotion *motion = CMMotionManager.deviceMotion;
+    [CMMotionManager stopDeviceMotionUpdates];
+}
+*/
 
 
 #pragma mark Detect Shake Gesture (Simple Way... )

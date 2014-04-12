@@ -7,7 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreMotion/CoreMotion.h>
+
 
 @interface DetectShakeGesture : NSObject
+
 
 @end
