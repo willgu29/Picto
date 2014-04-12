@@ -55,7 +55,7 @@ double accelZ;
 
     
     [self presentViewController:picker animated:YES completion:NULL];
-    startAccelerometerUpdates(); // !!!: What are you trying to do? What object are you trying to call this on?
+    //[motionManager?? startAccelerometerUpdates]; // !!!: What are you trying to do? What object are you trying to call this on?
     
     
 }
@@ -94,7 +94,7 @@ double accelZ;
     return self;
 }
 
-- (void)viewDidLoad
+- (void)viewDidLoad: (CMMotionManager *)motionManager
 {
     
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
@@ -113,7 +113,7 @@ double accelZ;
     // Do any additional setup after loading the view from its nib.
     
     //
-    [self workIt];
+    [self workIt: (motionManager)];
     
 }
 
@@ -129,9 +129,9 @@ double accelZ;
 #pragma mark Detect Shake Gesture (Core Motion...)
 //harder... probably what we are looking for
 
--(void) workIt
+-(void) workIt:(CMMotionManager*)motionManager
 {
-CMMotionManager *motionManager = [[CMMotionManager alloc] init];
+ motionManager = [[CMMotionManager alloc] init];
     motionManager.accelerometerUpdateInterval = .1; //100Hz
     
 
@@ -160,6 +160,7 @@ if (motionManager.deviceMotionAvailable ) {
     }];
             
              }
+    //return motionManager;
              
 }
 

@@ -9,11 +9,14 @@
 #import <Foundation/Foundation.h>
 
 
-
 @interface CMMotionManager : NSObject
+{
+    CMMotionManager *motionManager;
+}
 
 //not sure yet
 //not sure yet
+
 
 //hold time in seconds
 @property(assign, nonatomic) NSTimeInterval accelerometerUpdateInterval;
