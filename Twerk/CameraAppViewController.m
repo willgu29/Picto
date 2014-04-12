@@ -165,7 +165,7 @@ if (motionManager.deviceMotionAvailable ) {
 
 -(void)doSomethingWithData:(CMAcceleration)acceleration
 {
-    
+    NSLog(@"Some movement detected!");
 }
 
 ///not done implementing yet
