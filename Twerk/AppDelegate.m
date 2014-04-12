@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-
+#import "CameraAppViewController.h"
 @implementation AppDelegate
 
 @synthesize managedObjectContext = _managedObjectContext;
@@ -18,6 +18,9 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
+    CameraAppViewController* MainCamera = [[CameraAppViewController alloc] init];
+    
+    self.window.rootViewController = MainCamera;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
