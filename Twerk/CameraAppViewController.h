@@ -7,8 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CMMotionManager.h"
 
 @interface CameraAppViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+{
+CMMotionManager *motionManager;
+NSOperationQueue *queue;
+}
+
 
 
 @end
