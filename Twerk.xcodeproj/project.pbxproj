@@ -24,6 +24,7 @@
 		84DA0D4718F92C2B00DE364F /* TwerkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DA0D4618F92C2B00DE364F /* TwerkTests.m */; };
 		84DA0D9C18F92EFF00DE364F /* CameraAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DA0D9A18F92EFF00DE364F /* CameraAppViewController.m */; };
 		84DA0D9D18F92EFF00DE364F /* CameraAppViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84DA0D9B18F92EFF00DE364F /* CameraAppViewController.xib */; };
+		C79CDC8918F94BC900576D76 /* butt.png in Resources */ = {isa = PBXBuildFile; fileRef = C79CDC8818F94BC900576D76 /* butt.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		84DA0D9918F92EFF00DE364F /* CameraAppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraAppViewController.h; sourceTree = "<group>"; };
 		84DA0D9A18F92EFF00DE364F /* CameraAppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraAppViewController.m; sourceTree = "<group>"; };
 		84DA0D9B18F92EFF00DE364F /* CameraAppViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraAppViewController.xib; sourceTree = "<group>"; };
+		C79CDC8818F94BC900576D76 /* butt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = butt.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 		84DA0D0F18F92C2B00DE364F = {
 			isa = PBXGroup;
 			children = (
+				C79CDC8818F94BC900576D76 /* butt.png */,
 				84DA0D2318F92C2B00DE364F /* Twerk */,
 				84DA0D4018F92C2B00DE364F /* TwerkTests */,
 				84DA0D1A18F92C2B00DE364F /* Frameworks */,
@@ -238,6 +241,7 @@
 			files = (
 				84DA0D2818F92C2B00DE364F /* InfoPlist.strings in Resources */,
 				84DA0D9D18F92EFF00DE364F /* CameraAppViewController.xib in Resources */,
+				C79CDC8918F94BC900576D76 /* butt.png in Resources */,
 				84DA0D3318F92C2B00DE364F /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
