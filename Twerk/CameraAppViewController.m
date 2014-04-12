@@ -34,6 +34,7 @@ double accelZ;
 
 @implementation CameraAppViewController
 
+CMMotionManager* motionManager;
 
 #pragma mark Main Screen
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
@@ -114,6 +115,8 @@ double accelZ;
     }
     
     [super viewDidLoad];
+    
+
     // Do any additional setup after loading the view from its nib.
     
     
