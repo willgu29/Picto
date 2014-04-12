@@ -55,7 +55,7 @@ double accelZ;
 
     
     [self presentViewController:picker animated:YES completion:NULL];
-    startAccelerometerUpdates();
+    startAccelerometerUpdates(); // !!!: What are you trying to do? What object are you trying to call this on?
     
     
 }
