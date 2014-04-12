@@ -42,14 +42,16 @@ double accelZ;
     
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
-    UIView* overlayView = [[UIView alloc] initWithFrame:picker.view.frame];
-    overlayView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"butt.png"]];
+    UIView* oView = [[UIView alloc] init];
+    UIImageView* overlayView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"butt.png"]];
     [overlayView.layer setOpaque:NO];
     overlayView.opaque = NO;
-
+    [oView addSubview:overlayView];
+    oView.frame = CGRectMake(0, 200, 113, 150);
+    oView.contentMode = UIViewContentModeScaleAspectFit;
     picker.allowsEditing = YES;
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    picker.cameraOverlayView = overlayView;
+    picker.cameraOverlayView = oView;
 
     
     [self presentViewController:picker animated:YES completion:NULL];
@@ -111,7 +113,7 @@ double accelZ;
     // Do any additional setup after loading the view from its nib.
     
     //
-    workIt();
+    [self workIt];
     
 }
 

@@ -16,7 +16,7 @@ xcuserdata
 DerivedData
 *.hmap
 *.ipa
-
+UserInterfaceState.xcuserstate
 # CocoaPods
 #
 # We recommend against adding the Pods directory to your .gitignore. However
