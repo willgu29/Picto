@@ -64,7 +64,7 @@
 		84DA0D9918F92EFF00DE364F /* CameraAppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraAppViewController.h; sourceTree = "<group>"; };
 		84DA0D9A18F92EFF00DE364F /* CameraAppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraAppViewController.m; sourceTree = "<group>"; };
 		84DA0D9B18F92EFF00DE364F /* CameraAppViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraAppViewController.xib; sourceTree = "<group>"; };
-		C79CDC8818F94BC900576D76 /* butt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = butt.png; sourceTree = "<group>"; };
+		C79CDC8818F94BC900576D76 /* butt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = butt.png; path = ../../../../../../../../Documents/Projects/twerkit/butt.png; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +97,6 @@
 		84DA0D0F18F92C2B00DE364F = {
 			isa = PBXGroup;
 			children = (
-				C79CDC8818F94BC900576D76 /* butt.png */,
 				84DA0D2318F92C2B00DE364F /* Twerk */,
 				84DA0D4018F92C2B00DE364F /* TwerkTests */,
 				84DA0D1A18F92C2B00DE364F /* Frameworks */,
@@ -147,6 +146,7 @@
 		84DA0D2418F92C2B00DE364F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C79CDC8818F94BC900576D76 /* butt.png */,
 				84DA0D2518F92C2B00DE364F /* Twerk-Info.plist */,
 				84DA0D2618F92C2B00DE364F /* InfoPlist.strings */,
 				84DA0D2918F92C2B00DE364F /* main.m */,
