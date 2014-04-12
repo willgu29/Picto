@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8402702A18F9C0CB00598EE2 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8402702918F9C0CB00598EE2 /* CoreMotion.framework */; };
+		8402702D18F9C0E800598EE2 /* DetectShakeGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = 8402702C18F9C0E800598EE2 /* DetectShakeGesture.m */; };
 		84DA0D1C18F92C2B00DE364F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DA0D1B18F92C2B00DE364F /* Foundation.framework */; };
 		84DA0D1E18F92C2B00DE364F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DA0D1D18F92C2B00DE364F /* CoreGraphics.framework */; };
 		84DA0D2018F92C2B00DE364F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DA0D1F18F92C2B00DE364F /* UIKit.framework */; };
@@ -38,6 +40,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8402702918F9C0CB00598EE2 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		8402702B18F9C0E800598EE2 /* DetectShakeGesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetectShakeGesture.h; sourceTree = "<group>"; };
+		8402702C18F9C0E800598EE2 /* DetectShakeGesture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetectShakeGesture.m; sourceTree = "<group>"; };
 		84DA0D1818F92C2B00DE364F /* Twerk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Twerk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84DA0D1B18F92C2B00DE364F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		84DA0D1D18F92C2B00DE364F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -67,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8402702A18F9C0CB00598EE2 /* CoreMotion.framework in Frameworks */,
 				84DA0D1E18F92C2B00DE364F /* CoreGraphics.framework in Frameworks */,
 				84DA0D2218F92C2B00DE364F /* CoreData.framework in Frameworks */,
 				84DA0D2018F92C2B00DE364F /* UIKit.framework in Frameworks */,
@@ -111,6 +117,7 @@
 		84DA0D1A18F92C2B00DE364F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8402702918F9C0CB00598EE2 /* CoreMotion.framework */,
 				84DA0D1B18F92C2B00DE364F /* Foundation.framework */,
 				84DA0D1D18F92C2B00DE364F /* CoreGraphics.framework */,
 				84DA0D1F18F92C2B00DE364F /* UIKit.framework */,
@@ -131,6 +138,8 @@
 				84DA0D9A18F92EFF00DE364F /* CameraAppViewController.m */,
 				84DA0D9B18F92EFF00DE364F /* CameraAppViewController.xib */,
 				84DA0D2418F92C2B00DE364F /* Supporting Files */,
+				8402702B18F9C0E800598EE2 /* DetectShakeGesture.h */,
+				8402702C18F9C0E800598EE2 /* DetectShakeGesture.m */,
 			);
 			path = Twerk;
 			sourceTree = "<group>";
@@ -263,6 +272,7 @@
 			files = (
 				84DA0D3118F92C2B00DE364F /* Twerk.xcdatamodeld in Sources */,
 				84DA0D9C18F92EFF00DE364F /* CameraAppViewController.m in Sources */,
+				8402702D18F9C0E800598EE2 /* DetectShakeGesture.m in Sources */,
 				84DA0D2E18F92C2B00DE364F /* AppDelegate.m in Sources */,
 				84DA0D2A18F92C2B00DE364F /* main.m in Sources */,
 			);

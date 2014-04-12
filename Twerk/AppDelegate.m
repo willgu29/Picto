@@ -22,6 +22,10 @@
     
     self.window.rootViewController = MainCamera;
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    //support that booty!
+    application.applicationSupportsShakeToEdit = YES;
+    
     [self.window makeKeyAndVisible];
     return YES;
 }
