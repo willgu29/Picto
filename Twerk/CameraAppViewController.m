@@ -15,6 +15,7 @@ double accelX;
 double accelY;
 double accelZ;
 
+
 @interface CameraAppViewController ()
 
 - (IBAction)takePhoto:(UIButton *)sender;
@@ -30,6 +31,7 @@ double accelZ;
 
 @implementation CameraAppViewController
 
+CMMotionManager* motionManager;
 
 #pragma mark Main Screen
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
@@ -55,7 +57,7 @@ double accelZ;
 
     
     [self presentViewController:picker animated:YES completion:NULL];
-    startAccelerometerUpdates(); // !!!: What are you trying to do? What object are you trying to call this on?
+    [motionManager startAccelerometerUpdates];
     
     
 }
@@ -110,10 +112,13 @@ double accelZ;
     }
     
     [super viewDidLoad];
+    
+
     // Do any additional setup after loading the view from its nib.
     
     //
-    [self workIt];
+    motionManager = [[CMMotionManager alloc] init];
+    [self workIt:motionManager];
     
 }
 
@@ -129,9 +134,8 @@ double accelZ;
 #pragma mark Detect Shake Gesture (Core Motion...)
 //harder... probably what we are looking for
 
--(void) workIt
+-(void) workIt: (CMMotionManager*)motionManager
 {
-CMMotionManager *motionManager = [[CMMotionManager alloc] init];
     motionManager.accelerometerUpdateInterval = .1; //100Hz
     
 
