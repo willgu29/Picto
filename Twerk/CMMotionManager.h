@@ -14,10 +14,12 @@
 
 //not sure yet
 //not sure yet
--(void)startDeviceMotionUpdates;
 
 //hold time in seconds
 @property(assign, nonatomic) NSTimeInterval accelerometerUpdateInterval;
+
+-(void)startDeviceMotionUpdates;
+-(void)startAccelerometerUpdates;
 
 @end
 

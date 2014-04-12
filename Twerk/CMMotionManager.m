@@ -32,7 +32,13 @@
     
 }
 
+-(void)startAccelerometerUpdates
+{
+    //do something now if you want
+}
 
+
+//probably don't need these two.. .but they can add extra functionality
 -(void)startDeviceMotionUpdates
 {
     

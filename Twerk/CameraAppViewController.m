@@ -53,6 +53,8 @@ double accelZ;
 
     
     [self presentViewController:picker animated:YES completion:NULL];
+    startAccelerometerUpdates();
+    
     
 }
 
@@ -128,7 +130,7 @@ double accelZ;
 -(void) workIt
 {
 CMMotionManager *motionManager = [[CMMotionManager alloc] init];
-    motionManager.accelerometerUpdateInterval = .2;
+    motionManager.accelerometerUpdateInterval = .1; //100Hz
     
 
 if (motionManager.deviceMotionAvailable ) {
