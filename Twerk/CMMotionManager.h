@@ -11,7 +11,7 @@
 
 @interface CMMotionManager : NSObject
 {
-    CMMotionManager *motionManager;
+   // CMMotionManager *motionManager;
 }
 
 //not sure yet

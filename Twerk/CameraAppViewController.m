@@ -15,7 +15,12 @@ double accelX;
 double accelY;
 double accelZ;
 
-@interface CameraAppViewController ()
+@interface CameraAppViewController (){
+    
+    CMMotionManager *motionManager;
+   // NSOperationQueue *queue;
+    
+}
 
 - (IBAction)takePhoto:(UIButton *)sender;
 
@@ -23,7 +28,6 @@ double accelZ;
 
 
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
-
 
 
 @end
@@ -94,7 +98,7 @@ double accelZ;
     return self;
 }
 
-- (void)viewDidLoad: (CMMotionManager *)motionManager
+- (void)viewDidLoad
 {
     
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
@@ -112,9 +116,25 @@ double accelZ;
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    //
-    [self workIt: (motionManager)];
     
+    
+    //
+    //[self workIt];
+    motionManager = [[CMMotionManager alloc] init];
+    [motionManager startAccelerometerUpdates];
+    motionManager.accelerometerUpdateInterval = .1; //100Hz
+     if (motionManager.deviceMotionAvailable ) {
+         queue = [NSOperationQueue currentQueue];
+         
+         [motionManager startAccelerometerUpdatesToQueue:queue withHandler:^(CMAccelerometerData *accelerometerData,NSError *error){
+             [self doSomethingWithData:accelerometerData.acceleration ];
+             //handle data..
+             //example
+             //int<-replace type image(someObject)= acceleration.x;
+             
+         }];
+         
+     }
 }
 
 
@@ -129,44 +149,25 @@ double accelZ;
 #pragma mark Detect Shake Gesture (Core Motion...)
 //harder... probably what we are looking for
 
--(void) workIt:(CMMotionManager*)motionManager
-{
- motionManager = [[CMMotionManager alloc] init];
-    motionManager.accelerometerUpdateInterval = .1; //100Hz
-    
 
-if (motionManager.deviceMotionAvailable ) {
-    queue = [NSOperationQueue currentQueue];
-             /*
-    [motionManager startDeviceMotionUpdatesToQueue:queue
-                                       withHandler:^ (CMDeviceMotion *motionData, NSError *error) {
-                                           
-                                           //CMAttitude *attitude = motionData.attitude;
-                                           //CMAcceleration gravity = motionData.gravity;
-                                           //CMAcceleration userAcceleration = motionData.userAcceleration;
-                                           //CMRotationRate rotate = motionData.rotationRate;
-                                           //CMCalibratedMagneticField field = motionData.magneticField;
-                                           
-                                           //...handle data here......
-                                       }];
-              */
-             
-             [motionManager startAccelerometerUpdatesToQueue:queue withHandler:^(CMAccelerometerData *accelerometerData,NSError *error){
-                 [self doSomethingWithData:accelerometerData.acceleration ];
-        //handle data..
-        //example
-        //int<-replace type image(someObject)= acceleration.x;
-        
-    }];
-            
-             }
-    //return motionManager;
+-(void) workIt
+{
+
+   
+    
              
 }
 
 -(void)doSomethingWithData:(CMAcceleration)acceleration
 {
-    
+    if (acceleration.x >0)
+    {
+        NSLog(@"x direction accel!");
+    }
+    if (acceleration.y > 0)
+    {
+        NSLog(@"y direction accel!");
+    }
 }
 
 ///not done implementing yet
