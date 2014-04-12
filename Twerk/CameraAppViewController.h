@@ -11,7 +11,6 @@
 
 @interface CameraAppViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
-CMMotionManager *motionManager;
 NSOperationQueue *queue;
 }
 
