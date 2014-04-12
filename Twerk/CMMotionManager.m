@@ -14,6 +14,7 @@
 @implementation CMMotionManager
 
 
+
 -(void)setAccelerometerUpdateInterval:(NSTimeInterval)accelerometerUpdateInterval
 {
     

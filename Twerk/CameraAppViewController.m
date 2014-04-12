@@ -8,7 +8,12 @@
 
 #import "CameraAppViewController.h"
 #import "CMMotionManager.h"
+#import <CoreMotion/CoreMotion.h>
 
+
+double accelX;
+double accelY;
+double accelZ;
 
 @interface CameraAppViewController ()
 
@@ -18,6 +23,7 @@
 
 
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
+
 
 
 @end
@@ -103,6 +109,10 @@
     
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    //
+    workIt();
+    
 }
 
 
@@ -116,6 +126,45 @@
 
 #pragma mark Detect Shake Gesture (Core Motion...)
 //harder... probably what we are looking for
+
+-(void) workIt
+{
+CMMotionManager *motionManager = [[CMMotionManager alloc] init];
+    motionManager.accelerometerUpdateInterval = .2;
+    
+
+if (motionManager.deviceMotionAvailable ) {
+    queue = [NSOperationQueue currentQueue];
+             /*
+    [motionManager startDeviceMotionUpdatesToQueue:queue
+                                       withHandler:^ (CMDeviceMotion *motionData, NSError *error) {
+                                           
+                                           //CMAttitude *attitude = motionData.attitude;
+                                           //CMAcceleration gravity = motionData.gravity;
+                                           //CMAcceleration userAcceleration = motionData.userAcceleration;
+                                           //CMRotationRate rotate = motionData.rotationRate;
+                                           //CMCalibratedMagneticField field = motionData.magneticField;
+                                           
+                                           //...handle data here......
+                                       }];
+              */
+             
+             [motionManager startAccelerometerUpdatesToQueue:queue withHandler:^(CMAccelerometerData *accelerometerData,NSError *error){
+                 [self doSomethingWithData:accelerometerData.acceleration ];
+        //handle data..
+        //example
+        //int<-replace type image(someObject)= acceleration.x;
+        
+    }];
+            
+             }
+             
+}
+
+-(void)doSomethingWithData:(CMAcceleration)acceleration
+{
+    
+}
 
 ///not done implementing yet
 /*
