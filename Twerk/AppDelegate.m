@@ -8,7 +8,27 @@
 
 #import "AppDelegate.h"
 #import "CameraAppViewController.h"
+#import "CMMotionManager.h"
+
+
+@interface AppDelegate()
+{
+    CMMotionManager *motionmanager;
+}
+
+@end
+
 @implementation AppDelegate
+
+
+- (CMMotionManager *)sharedManager
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        motionmanager = [[CMMotionManager alloc] init];
+    });
+    return motionmanager;
+}
 
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;

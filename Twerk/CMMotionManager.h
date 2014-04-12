@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface CMMotionManager : NSObject
+/*@interface CMMotionManager : NSObject
 {
    // CMMotionManager *motionManager;
 }
@@ -26,3 +26,4 @@
 
 @end
 
+*/

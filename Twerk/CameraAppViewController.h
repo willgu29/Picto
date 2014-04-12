@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CMMotionManager.h"
-
+#import "AppDelegate.h"
 @interface CameraAppViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
 NSOperationQueue *queue;

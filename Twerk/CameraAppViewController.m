@@ -7,7 +7,6 @@
 //
 
 #import "CameraAppViewController.h"
-#import "CMMotionManager.h"
 #import <CoreMotion/CoreMotion.h>
 
 
@@ -17,7 +16,7 @@ double accelZ;
 
 @interface CameraAppViewController (){
     
-    CMMotionManager *motionManager;
+    //CMMotionManager *motionManager;
    // NSOperationQueue *queue;
     
 }
@@ -117,20 +116,30 @@ CMMotionManager* motionManager;
     [super viewDidLoad];
     
 
+
     // Do any additional setup after loading the view from its nib.
     
     
-    
+    CMMotionManager *mManager = [(AppDelegate *)[[UIApplication sharedApplication] delegate] sharedManager];
+    if ([mManager isAccelerometerAvailable] == YES) {
+        mManager.accelerometerUpdateInterval = .1;
+        //[mManager setAccelerometerUpdateInterval:updateInterval];
+        [mManager startAccelerometerUpdatesToQueue:[NSOperationQueue mainQueue] withHandler:^(CMAccelerometerData *accelerometerData, NSError *error) {
+            NSLog(@"PRAY");
+        }];
+    }
     //
     //[self workIt];
+    /*
     motionManager = [[CMMotionManager alloc] init];
     [motionManager startAccelerometerUpdates];
     motionManager.accelerometerUpdateInterval = .1; //100Hz
-     if (motionManager.deviceMotionAvailable ) {
+     if (motionManager.deviceMotionAvailable) {
          queue = [NSOperationQueue currentQueue];
          
          [motionManager startAccelerometerUpdatesToQueue:queue withHandler:^(CMAccelerometerData *accelerometerData,NSError *error){
              [self doSomethingWithData:accelerometerData.acceleration ];
+             
              //handle data..
              //example
              //int<-replace type image(someObject)= acceleration.x;
@@ -138,7 +147,9 @@ CMMotionManager* motionManager;
          }];
          
      }
+     */
 }
+
 
 
 
