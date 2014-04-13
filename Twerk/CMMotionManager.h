@@ -11,6 +11,7 @@
 
 /*@interface CMMotionManager : NSObject
 {
+    ///random blah
    // CMMotionManager *motionManager;
 }
 
