@@ -10,8 +10,13 @@
 #import "AppDelegate.h"
 @interface CameraAppViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
-NSOperationQueue *queue;
+    NSOperationQueue *queue;
 }
+
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 
 @end
+
+//TODO:
+//Add twerking motion!

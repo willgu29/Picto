@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FacebookSDK/FacebookSDK.h>
 #import <CoreMotion/CoreMotion.h>
+
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
@@ -19,6 +22,5 @@
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 
-@property (strong, nonatomic, readonly) CMMotionManager *sharedManager;
 
 @end

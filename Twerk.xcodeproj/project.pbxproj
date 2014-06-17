@@ -8,8 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		8402702A18F9C0CB00598EE2 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8402702918F9C0CB00598EE2 /* CoreMotion.framework */; };
-		8402703018F9C2F600598EE2 /* CMMotionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8402702F18F9C2F600598EE2 /* CMMotionManager.m */; };
 		8402703318F9E71800598EE2 /* butt.png in Resources */ = {isa = PBXBuildFile; fileRef = 8402703218F9E71800598EE2 /* butt.png */; };
+		8461E931194E73B200E2D809 /* Image.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8461E930194E73B200E2D809 /* Image.xcassets */; };
+		8461E934194EAFE200E2D809 /* CameraAppViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8461E933194EAFE200E2D809 /* CameraAppViewController.xib */; };
+		8461E93F194ED24700E2D809 /* READ.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 8461E93E194ED24700E2D809 /* READ.rtf */; };
+		8461E943194ED2C300E2D809 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8461E941194ED2C300E2D809 /* LoginViewController.m */; };
+		8461E944194ED2C300E2D809 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8461E942194ED2C300E2D809 /* LoginViewController.xib */; };
+		8461E9461950106D00E2D809 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8461E9451950106D00E2D809 /* FacebookSDK.framework */; };
+		8461E94A1950187900E2D809 /* MusicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8461E9481950187900E2D809 /* MusicViewController.m */; };
+		8461E94B1950187900E2D809 /* MusicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8461E9491950187900E2D809 /* MusicViewController.xib */; };
+		8461E94F1950188F00E2D809 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8461E94D1950188F00E2D809 /* ShareViewController.m */; };
+		8461E9501950188F00E2D809 /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8461E94E1950188F00E2D809 /* ShareViewController.xib */; };
 		84DA0D1C18F92C2B00DE364F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DA0D1B18F92C2B00DE364F /* Foundation.framework */; };
 		84DA0D1E18F92C2B00DE364F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DA0D1D18F92C2B00DE364F /* CoreGraphics.framework */; };
 		84DA0D2018F92C2B00DE364F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DA0D1F18F92C2B00DE364F /* UIKit.framework */; };
@@ -18,7 +27,6 @@
 		84DA0D2A18F92C2B00DE364F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DA0D2918F92C2B00DE364F /* main.m */; };
 		84DA0D2E18F92C2B00DE364F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DA0D2D18F92C2B00DE364F /* AppDelegate.m */; };
 		84DA0D3118F92C2B00DE364F /* Twerk.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84DA0D2F18F92C2B00DE364F /* Twerk.xcdatamodeld */; };
-		84DA0D3318F92C2B00DE364F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84DA0D3218F92C2B00DE364F /* Images.xcassets */; };
 		84DA0D3A18F92C2B00DE364F /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DA0D3918F92C2B00DE364F /* XCTest.framework */; };
 		84DA0D3B18F92C2B00DE364F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DA0D1B18F92C2B00DE364F /* Foundation.framework */; };
 		84DA0D3C18F92C2B00DE364F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DA0D1F18F92C2B00DE364F /* UIKit.framework */; };
@@ -26,7 +34,6 @@
 		84DA0D4518F92C2B00DE364F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84DA0D4318F92C2B00DE364F /* InfoPlist.strings */; };
 		84DA0D4718F92C2B00DE364F /* TwerkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DA0D4618F92C2B00DE364F /* TwerkTests.m */; };
 		84DA0D9C18F92EFF00DE364F /* CameraAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DA0D9A18F92EFF00DE364F /* CameraAppViewController.m */; };
-		84DA0D9D18F92EFF00DE364F /* CameraAppViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84DA0D9B18F92EFF00DE364F /* CameraAppViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,9 +48,20 @@
 
 /* Begin PBXFileReference section */
 		8402702918F9C0CB00598EE2 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
-		8402702E18F9C2F600598EE2 /* CMMotionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMMotionManager.h; sourceTree = "<group>"; };
-		8402702F18F9C2F600598EE2 /* CMMotionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMMotionManager.m; sourceTree = "<group>"; };
 		8402703218F9E71800598EE2 /* butt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = butt.png; sourceTree = SOURCE_ROOT; };
+		8461E930194E73B200E2D809 /* Image.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Image.xcassets; sourceTree = "<group>"; };
+		8461E933194EAFE200E2D809 /* CameraAppViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraAppViewController.xib; sourceTree = "<group>"; };
+		8461E93E194ED24700E2D809 /* READ.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = READ.rtf; sourceTree = "<group>"; };
+		8461E940194ED2C300E2D809 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		8461E941194ED2C300E2D809 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		8461E942194ED2C300E2D809 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		8461E9451950106D00E2D809 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../../../../FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
+		8461E9471950187900E2D809 /* MusicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicViewController.h; sourceTree = "<group>"; };
+		8461E9481950187900E2D809 /* MusicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicViewController.m; sourceTree = "<group>"; };
+		8461E9491950187900E2D809 /* MusicViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MusicViewController.xib; sourceTree = "<group>"; };
+		8461E94C1950188F00E2D809 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
+		8461E94D1950188F00E2D809 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
+		8461E94E1950188F00E2D809 /* ShareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareViewController.xib; sourceTree = "<group>"; };
 		84DA0D1818F92C2B00DE364F /* Twerk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Twerk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84DA0D1B18F92C2B00DE364F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		84DA0D1D18F92C2B00DE364F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -56,7 +74,6 @@
 		84DA0D2C18F92C2B00DE364F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		84DA0D2D18F92C2B00DE364F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		84DA0D3018F92C2B00DE364F /* Twerk.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Twerk.xcdatamodel; sourceTree = "<group>"; };
-		84DA0D3218F92C2B00DE364F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		84DA0D3818F92C2B00DE364F /* TwerkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TwerkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84DA0D3918F92C2B00DE364F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		84DA0D4218F92C2B00DE364F /* TwerkTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TwerkTests-Info.plist"; sourceTree = "<group>"; };
@@ -64,7 +81,6 @@
 		84DA0D4618F92C2B00DE364F /* TwerkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TwerkTests.m; sourceTree = "<group>"; };
 		84DA0D9918F92EFF00DE364F /* CameraAppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraAppViewController.h; sourceTree = "<group>"; };
 		84DA0D9A18F92EFF00DE364F /* CameraAppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraAppViewController.m; sourceTree = "<group>"; };
-		84DA0D9B18F92EFF00DE364F /* CameraAppViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraAppViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +93,7 @@
 				84DA0D2218F92C2B00DE364F /* CoreData.framework in Frameworks */,
 				84DA0D2018F92C2B00DE364F /* UIKit.framework in Frameworks */,
 				84DA0D1C18F92C2B00DE364F /* Foundation.framework in Frameworks */,
+				8461E9461950106D00E2D809 /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,16 +146,25 @@
 		84DA0D2318F92C2B00DE364F /* Twerk */ = {
 			isa = PBXGroup;
 			children = (
+				8461E9451950106D00E2D809 /* FacebookSDK.framework */,
 				84DA0D2C18F92C2B00DE364F /* AppDelegate.h */,
 				84DA0D2D18F92C2B00DE364F /* AppDelegate.m */,
-				84DA0D3218F92C2B00DE364F /* Images.xcassets */,
+				8461E930194E73B200E2D809 /* Image.xcassets */,
 				84DA0D2F18F92C2B00DE364F /* Twerk.xcdatamodeld */,
+				8461E940194ED2C300E2D809 /* LoginViewController.h */,
+				8461E941194ED2C300E2D809 /* LoginViewController.m */,
+				8461E942194ED2C300E2D809 /* LoginViewController.xib */,
 				84DA0D9918F92EFF00DE364F /* CameraAppViewController.h */,
 				84DA0D9A18F92EFF00DE364F /* CameraAppViewController.m */,
-				84DA0D9B18F92EFF00DE364F /* CameraAppViewController.xib */,
-				8402702E18F9C2F600598EE2 /* CMMotionManager.h */,
-				8402702F18F9C2F600598EE2 /* CMMotionManager.m */,
+				8461E933194EAFE200E2D809 /* CameraAppViewController.xib */,
 				84DA0D2418F92C2B00DE364F /* Supporting Files */,
+				8461E93E194ED24700E2D809 /* READ.rtf */,
+				8461E9471950187900E2D809 /* MusicViewController.h */,
+				8461E9481950187900E2D809 /* MusicViewController.m */,
+				8461E9491950187900E2D809 /* MusicViewController.xib */,
+				8461E94C1950188F00E2D809 /* ShareViewController.h */,
+				8461E94D1950188F00E2D809 /* ShareViewController.m */,
+				8461E94E1950188F00E2D809 /* ShareViewController.xib */,
 			);
 			path = Twerk;
 			sourceTree = "<group>";
@@ -248,10 +274,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8461E93F194ED24700E2D809 /* READ.rtf in Resources */,
 				84DA0D2818F92C2B00DE364F /* InfoPlist.strings in Resources */,
+				8461E9501950188F00E2D809 /* ShareViewController.xib in Resources */,
+				8461E944194ED2C300E2D809 /* LoginViewController.xib in Resources */,
+				8461E934194EAFE200E2D809 /* CameraAppViewController.xib in Resources */,
 				8402703318F9E71800598EE2 /* butt.png in Resources */,
-				84DA0D9D18F92EFF00DE364F /* CameraAppViewController.xib in Resources */,
-				84DA0D3318F92C2B00DE364F /* Images.xcassets in Resources */,
+				8461E94B1950187900E2D809 /* MusicViewController.xib in Resources */,
+				8461E931194E73B200E2D809 /* Image.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,11 +300,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8461E94A1950187900E2D809 /* MusicViewController.m in Sources */,
 				84DA0D3118F92C2B00DE364F /* Twerk.xcdatamodeld in Sources */,
 				84DA0D9C18F92EFF00DE364F /* CameraAppViewController.m in Sources */,
 				84DA0D2E18F92C2B00DE364F /* AppDelegate.m in Sources */,
+				8461E94F1950188F00E2D809 /* ShareViewController.m in Sources */,
 				84DA0D2A18F92C2B00DE364F /* main.m in Sources */,
-				8402703018F9C2F600598EE2 /* CMMotionManager.m in Sources */,
+				8461E943194ED2C300E2D809 /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,6 +423,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/Gu/Documents/FacebookSDK,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Twerk/Twerk-Prefix.pch";
 				INFOPLIST_FILE = "Twerk/Twerk-Info.plist";
@@ -405,6 +441,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/Gu/Documents/FacebookSDK,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Twerk/Twerk-Prefix.pch";
 				INFOPLIST_FILE = "Twerk/Twerk-Info.plist";

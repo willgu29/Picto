@@ -8,6 +8,9 @@
 
 #import "CameraAppViewController.h"
 #import <CoreMotion/CoreMotion.h>
+#import <QuartzCore/QuartzCore.h>
+#import "MusicViewController.h"
+#import "ShareViewController.h"
 
 
 double accelX;
@@ -16,37 +19,69 @@ double accelZ;
 
 @interface CameraAppViewController (){
     
-    //CMMotionManager *motionManager;
-   // NSOperationQueue *queue;
-    
 }
 
 - (IBAction)takePhoto:(UIButton *)sender;
 
-- (IBAction)selectPhoto:(UIButton *)sender;
+- (IBAction)shareApp: (UIButton *)sender;
+
+- (IBAction)chooseMusic: (UIButton *) sender;
 
 
-@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+//- (IBAction)selectPhoto:(UIButton *)sender;
 
+
+
+
+@property (strong, nonatomic) IBOutlet UIView *mainView;
+
+@property (strong, nonatomic) IBOutlet UIView *musicView;
 
 @end
 
-@implementation CameraAppViewController
-
-CMMotionManager* motionManager;
-
-#pragma mark Main Screen
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+@implementation CameraAppViewController{
     
-    [picker dismissViewControllerAnimated:YES completion:NULL];
+    CMMotionManager* motionManager;
+    UIView *oView;
+    UIImage *chosenImage;
     
+    
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+
+
+#pragma mark Buttons
+
+- (IBAction)chooseMusic:(UIButton *)sender
+{
+    
+    //TODO:
+    //how to present as a subview instead?
+    MusicViewController *musicController = [[MusicViewController alloc] init];
+    [self presentViewController:musicController animated:YES completion:nil];
+    
+    
+}
+
+- (IBAction)shareApp:(UIButton *)sender
+{
+    //TODO:
 }
 
 - (IBAction)takePhoto:(UIButton *)sender {
     
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
-    UIView* oView = [[UIView alloc] init];
+    oView = [[UIView alloc] init];
     UIImageView* overlayView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"butt.png"]];
     [overlayView.layer setOpaque:NO];
     overlayView.opaque = NO;
@@ -56,13 +91,21 @@ CMMotionManager* motionManager;
     picker.allowsEditing = YES;
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     picker.cameraOverlayView = oView;
-
+    
     
     [self presentViewController:picker animated:YES completion:NULL];
-    //[motionManager?? startAccelerometerUpdates]; // !!!: What are you trying to do? What object are you trying to call this on?
     
     
 }
+
+#pragma mark Main Screen
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+    
+}
+
+
 
 - (IBAction)selectPhoto:(UIButton *)sender {
     
@@ -78,25 +121,31 @@ CMMotionManager* motionManager;
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
-    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+    
+    chosenImage = info[UIImagePickerControllerEditedImage];
     self.imageView.image = chosenImage;
     
     //place distortion for image here!  (manipulate *chosenImage)
-    
+    //TODO:  (Need to add twerking effect to picture)
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
     
 }
 
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+-(void)doSomethingWithData:(CMAcceleration)acceleration
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+    if (acceleration.x > .5)
+    {
+        NSLog(@"x direction accel!");
     }
-    return self;
+    if (acceleration.y > .5)
+    {
+        NSLog(@"y direction accel!");
+    }
 }
+
+
+
 
 - (void)viewDidLoad
 {
@@ -118,36 +167,29 @@ CMMotionManager* motionManager;
 
 
     // Do any additional setup after loading the view from its nib.
-    
-    
-    CMMotionManager *mManager = [(AppDelegate *)[[UIApplication sharedApplication] delegate] sharedManager];
-    if ([mManager isAccelerometerAvailable] == YES) {
-        mManager.accelerometerUpdateInterval = .1;
+    motionManager = [[CMMotionManager alloc] init];
+    if ([motionManager isAccelerometerAvailable] == YES) {
+        motionManager.accelerometerUpdateInterval = .1;
         //[mManager setAccelerometerUpdateInterval:updateInterval];
-        [mManager startAccelerometerUpdatesToQueue:[NSOperationQueue mainQueue] withHandler:^(CMAccelerometerData *accelerometerData, NSError *error) {
-            NSLog(@"PRAY");
+        [motionManager startAccelerometerUpdatesToQueue:[NSOperationQueue mainQueue] withHandler:^(CMAccelerometerData *accelerometerData, NSError *error) {
+            if (accelerometerData.acceleration.y > .5)
+            {
+                NSLog(@"Shake detected (UP DOWN)");
+                //TODO: (do something with data!)
+                
+                
+            }
+            if (accelerometerData.acceleration.x > .5)
+            {
+                NSLog(@"Shake detected (LEFT RIGHT)");
+                //TODO: (do something with data!)
+            }
+            
         }];
     }
-    //
-    //[self workIt];
-    /*
-    motionManager = [[CMMotionManager alloc] init];
-    [motionManager startAccelerometerUpdates];
-    motionManager.accelerometerUpdateInterval = .1; //100Hz
-     if (motionManager.deviceMotionAvailable) {
-         queue = [NSOperationQueue currentQueue];
-         
-         [motionManager startAccelerometerUpdatesToQueue:queue withHandler:^(CMAccelerometerData *accelerometerData,NSError *error){
-             [self doSomethingWithData:accelerometerData.acceleration ];
-             
-             //handle data..
-             //example
-             //int<-replace type image(someObject)= acceleration.x;
-             
-         }];
-         
-     }
-     */
+    
+    
+    
 }
 
 
@@ -160,82 +202,9 @@ CMMotionManager* motionManager;
 }
 
 
-#pragma mark Detect Shake Gesture (Core Motion...)
-//harder... probably what we are looking for
 
 
--(void) workIt
-{
 
-   
-    
-             
-}
-
--(void)doSomethingWithData:(CMAcceleration)acceleration
-{
-    if (acceleration.x >0)
-    {
-        NSLog(@"x direction accel!");
-    }
-    if (acceleration.y > 0)
-    {
-        NSLog(@"y direction accel!");
-    }
-}
-
-///not done implementing yet
-/*
--(void)getData
-{
-    [CMMotionManager startDeviceMotionUpdates];
-    CMDeviceMotion *motion = CMMotionManager.deviceMotion;
-    [CMMotionManager stopDeviceMotionUpdates];
-}
-*/
-
-
-#pragma mark Detect Shake Gesture (Simple Way... )
-//not sure what it even allows us to do
-
-/*
--(void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
-{
-    
-}
-
-- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
-{
-    if ( event.subtype == UIEventSubtypeMotionShake )
-    {
-        //your code
-    }
-    
-    if ( [super respondsToSelector:@selector(motionEnded:withEvent:)] )
-        [super motionEnded:motion withEvent:event];
-}
-
-
-//not sure if two below needed  (supposed to assign this viewcontroller as first responder)
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self becomeFirstResponder];
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [self resignFirstResponder];
-    [super viewWillDisappear:animated];
-}
-///
-
-
--(BOOL)canBecomeFirstResponder
-{
-    return YES;
-}
-*/
 
 
 @end

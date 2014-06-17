@@ -8,27 +8,13 @@
 
 #import "AppDelegate.h"
 #import "CameraAppViewController.h"
-#import "CMMotionManager.h"
+#import "LoginViewController.h"
 
 
-@interface AppDelegate()
-{
-    CMMotionManager *motionmanager;
-}
 
-@end
 
 @implementation AppDelegate
 
-
-- (CMMotionManager *)sharedManager
-{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        motionmanager = [[CMMotionManager alloc] init];
-    });
-    return motionmanager;
-}
 
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
@@ -38,16 +24,26 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    CameraAppViewController* MainCamera = [[CameraAppViewController alloc] init];
+    LoginViewController* loginRoot = [[LoginViewController alloc] init];
     
-    self.window.rootViewController = MainCamera;
+    self.window.rootViewController = loginRoot;
     self.window.backgroundColor = [UIColor whiteColor];
     
     //support that booty!
     application.applicationSupportsShakeToEdit = YES;
     
     [self.window makeKeyAndVisible];
+    
+    //support facebook!
+    [FBLoginView class];
+    [FBProfilePictureView class];
+    
     return YES;
+}
+
+-(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
