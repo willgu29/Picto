@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "84DA0D1718F92C2B00DE364F"
-               BuildableName = "Twerk.app"
-               BlueprintName = "Twerk"
-               ReferencedContainer = "container:Twerk.xcodeproj">
+               BuildableName = "Picto.app"
+               BlueprintName = "Picto"
+               ReferencedContainer = "container:Picto.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "84DA0D3718F92C2B00DE364F"
-               BuildableName = "TwerkTests.xctest"
-               BlueprintName = "TwerkTests"
-               ReferencedContainer = "container:Twerk.xcodeproj">
+               BuildableName = "PictoTests.xctest"
+               BlueprintName = "PictoTests"
+               ReferencedContainer = "container:Picto.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,9 +43,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "84DA0D1718F92C2B00DE364F"
-            BuildableName = "Twerk.app"
-            BlueprintName = "Twerk"
-            ReferencedContainer = "container:Twerk.xcodeproj">
+            BuildableName = "Picto.app"
+            BlueprintName = "Picto"
+            ReferencedContainer = "container:Picto.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "84DA0D1718F92C2B00DE364F"
-            BuildableName = "Twerk.app"
-            BlueprintName = "Twerk"
-            ReferencedContainer = "container:Twerk.xcodeproj">
+            BuildableName = "Picto.app"
+            BlueprintName = "Picto"
+            ReferencedContainer = "container:Picto.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -80,9 +80,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "84DA0D1718F92C2B00DE364F"
-            BuildableName = "Twerk.app"
-            BlueprintName = "Twerk"
-            ReferencedContainer = "container:Twerk.xcodeproj">
+            BuildableName = "Picto.app"
+            BlueprintName = "Picto"
+            ReferencedContainer = "container:Picto.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
