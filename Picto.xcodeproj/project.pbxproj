@@ -9,16 +9,22 @@
 /* Begin PBXBuildFile section */
 		8402702A18F9C0CB00598EE2 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8402702918F9C0CB00598EE2 /* CoreMotion.framework */; };
 		8402703318F9E71800598EE2 /* butt.png in Resources */ = {isa = PBXBuildFile; fileRef = 8402703218F9E71800598EE2 /* butt.png */; };
+		84068D9D196B250F0053355C /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84068D9B196B250F0053355C /* SideMenuViewController.m */; };
+		84068D9E196B250F0053355C /* SideMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84068D9C196B250F0053355C /* SideMenuViewController.xib */; };
+		84068DA2196B4EFA0053355C /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 84068DA1196B4EFA0053355C /* Friend.m */; };
+		84068DA4196B8F750053355C /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84068DA3196B8F750053355C /* MobileCoreServices.framework */; };
 		8461E931194E73B200E2D809 /* Image.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8461E930194E73B200E2D809 /* Image.xcassets */; };
 		8461E934194EAFE200E2D809 /* CameraAppViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8461E933194EAFE200E2D809 /* CameraAppViewController.xib */; };
 		8461E93F194ED24700E2D809 /* READ.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 8461E93E194ED24700E2D809 /* READ.rtf */; };
 		8461E943194ED2C300E2D809 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8461E941194ED2C300E2D809 /* LoginViewController.m */; };
 		8461E944194ED2C300E2D809 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8461E942194ED2C300E2D809 /* LoginViewController.xib */; };
 		8461E9461950106D00E2D809 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8461E9451950106D00E2D809 /* FacebookSDK.framework */; };
-		8461E94A1950187900E2D809 /* MusicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8461E9481950187900E2D809 /* MusicViewController.m */; };
-		8461E94B1950187900E2D809 /* MusicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8461E9491950187900E2D809 /* MusicViewController.xib */; };
 		8461E94F1950188F00E2D809 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8461E94D1950188F00E2D809 /* ShareViewController.m */; };
 		8461E9501950188F00E2D809 /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8461E94E1950188F00E2D809 /* ShareViewController.xib */; };
+		846F8A47196498AE000401E8 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846F8A45196498AE000401E8 /* MapViewController.m */; };
+		846F8A48196498AE000401E8 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 846F8A46196498AE000401E8 /* MapViewController.xib */; };
+		846F8A4C1965C184000401E8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 846F8A4B1965C184000401E8 /* CoreLocation.framework */; };
+		846F8A4E1965D450000401E8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 846F8A4D1965D450000401E8 /* MapKit.framework */; };
 		84DA0D1C18F92C2B00DE364F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DA0D1B18F92C2B00DE364F /* Foundation.framework */; };
 		84DA0D1E18F92C2B00DE364F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DA0D1D18F92C2B00DE364F /* CoreGraphics.framework */; };
 		84DA0D2018F92C2B00DE364F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DA0D1F18F92C2B00DE364F /* UIKit.framework */; };
@@ -49,6 +55,12 @@
 /* Begin PBXFileReference section */
 		8402702918F9C0CB00598EE2 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		8402703218F9E71800598EE2 /* butt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = butt.png; sourceTree = SOURCE_ROOT; };
+		84068D9A196B250F0053355C /* SideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideMenuViewController.h; sourceTree = "<group>"; };
+		84068D9B196B250F0053355C /* SideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenuViewController.m; sourceTree = "<group>"; };
+		84068D9C196B250F0053355C /* SideMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideMenuViewController.xib; sourceTree = "<group>"; };
+		84068DA0196B4EFA0053355C /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Friend.h; sourceTree = "<group>"; };
+		84068DA1196B4EFA0053355C /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Friend.m; sourceTree = "<group>"; };
+		84068DA3196B8F750053355C /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8461E930194E73B200E2D809 /* Image.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Image.xcassets; sourceTree = "<group>"; };
 		8461E933194EAFE200E2D809 /* CameraAppViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraAppViewController.xib; sourceTree = "<group>"; };
 		8461E93E194ED24700E2D809 /* READ.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = READ.rtf; sourceTree = "<group>"; };
@@ -56,12 +68,14 @@
 		8461E941194ED2C300E2D809 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		8461E942194ED2C300E2D809 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		8461E9451950106D00E2D809 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../../../../FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
-		8461E9471950187900E2D809 /* MusicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicViewController.h; sourceTree = "<group>"; };
-		8461E9481950187900E2D809 /* MusicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicViewController.m; sourceTree = "<group>"; };
-		8461E9491950187900E2D809 /* MusicViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MusicViewController.xib; sourceTree = "<group>"; };
 		8461E94C1950188F00E2D809 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
 		8461E94D1950188F00E2D809 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
 		8461E94E1950188F00E2D809 /* ShareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareViewController.xib; sourceTree = "<group>"; };
+		846F8A44196498AE000401E8 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		846F8A45196498AE000401E8 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		846F8A46196498AE000401E8 /* MapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
+		846F8A4B1965C184000401E8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		846F8A4D1965D450000401E8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		84DA0D1818F92C2B00DE364F /* Picto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Picto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84DA0D1B18F92C2B00DE364F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		84DA0D1D18F92C2B00DE364F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -88,6 +102,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84068DA4196B8F750053355C /* MobileCoreServices.framework in Frameworks */,
+				846F8A4E1965D450000401E8 /* MapKit.framework in Frameworks */,
+				846F8A4C1965C184000401E8 /* CoreLocation.framework in Frameworks */,
 				8402702A18F9C0CB00598EE2 /* CoreMotion.framework in Frameworks */,
 				84DA0D1E18F92C2B00DE364F /* CoreGraphics.framework in Frameworks */,
 				84DA0D2218F92C2B00DE364F /* CoreData.framework in Frameworks */,
@@ -111,6 +128,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		84068D9F196B4ED80053355C /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				84068DA0196B4EFA0053355C /* Friend.h */,
+				84068DA1196B4EFA0053355C /* Friend.m */,
+			);
+			name = Data;
+			sourceTree = "<group>";
+		};
 		84DA0D0F18F92C2B00DE364F = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +159,9 @@
 		84DA0D1A18F92C2B00DE364F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84068DA3196B8F750053355C /* MobileCoreServices.framework */,
+				846F8A4D1965D450000401E8 /* MapKit.framework */,
+				846F8A4B1965C184000401E8 /* CoreLocation.framework */,
 				8402702918F9C0CB00598EE2 /* CoreMotion.framework */,
 				84DA0D1B18F92C2B00DE364F /* Foundation.framework */,
 				84DA0D1D18F92C2B00DE364F /* CoreGraphics.framework */,
@@ -146,6 +175,7 @@
 		84DA0D2318F92C2B00DE364F /* Twerk */ = {
 			isa = PBXGroup;
 			children = (
+				84068D9F196B4ED80053355C /* Data */,
 				8461E9451950106D00E2D809 /* FacebookSDK.framework */,
 				84DA0D2C18F92C2B00DE364F /* AppDelegate.h */,
 				84DA0D2D18F92C2B00DE364F /* AppDelegate.m */,
@@ -159,12 +189,15 @@
 				8461E933194EAFE200E2D809 /* CameraAppViewController.xib */,
 				84DA0D2418F92C2B00DE364F /* Supporting Files */,
 				8461E93E194ED24700E2D809 /* READ.rtf */,
-				8461E9471950187900E2D809 /* MusicViewController.h */,
-				8461E9481950187900E2D809 /* MusicViewController.m */,
-				8461E9491950187900E2D809 /* MusicViewController.xib */,
 				8461E94C1950188F00E2D809 /* ShareViewController.h */,
 				8461E94D1950188F00E2D809 /* ShareViewController.m */,
 				8461E94E1950188F00E2D809 /* ShareViewController.xib */,
+				846F8A44196498AE000401E8 /* MapViewController.h */,
+				846F8A45196498AE000401E8 /* MapViewController.m */,
+				846F8A46196498AE000401E8 /* MapViewController.xib */,
+				84068D9A196B250F0053355C /* SideMenuViewController.h */,
+				84068D9B196B250F0053355C /* SideMenuViewController.m */,
+				84068D9C196B250F0053355C /* SideMenuViewController.xib */,
 			);
 			path = Twerk;
 			sourceTree = "<group>";
@@ -274,13 +307,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84068D9E196B250F0053355C /* SideMenuViewController.xib in Resources */,
 				8461E93F194ED24700E2D809 /* READ.rtf in Resources */,
 				84DA0D2818F92C2B00DE364F /* InfoPlist.strings in Resources */,
 				8461E9501950188F00E2D809 /* ShareViewController.xib in Resources */,
 				8461E944194ED2C300E2D809 /* LoginViewController.xib in Resources */,
+				846F8A48196498AE000401E8 /* MapViewController.xib in Resources */,
 				8461E934194EAFE200E2D809 /* CameraAppViewController.xib in Resources */,
 				8402703318F9E71800598EE2 /* butt.png in Resources */,
-				8461E94B1950187900E2D809 /* MusicViewController.xib in Resources */,
 				8461E931194E73B200E2D809 /* Image.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -300,9 +334,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8461E94A1950187900E2D809 /* MusicViewController.m in Sources */,
+				84068D9D196B250F0053355C /* SideMenuViewController.m in Sources */,
 				84DA0D3118F92C2B00DE364F /* Twerk.xcdatamodeld in Sources */,
 				84DA0D9C18F92EFF00DE364F /* CameraAppViewController.m in Sources */,
+				84068DA2196B4EFA0053355C /* Friend.m in Sources */,
+				846F8A47196498AE000401E8 /* MapViewController.m in Sources */,
 				84DA0D2E18F92C2B00DE364F /* AppDelegate.m in Sources */,
 				8461E94F1950188F00E2D809 /* ShareViewController.m in Sources */,
 				84DA0D2A18F92C2B00DE364F /* main.m in Sources */,

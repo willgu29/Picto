@@ -9,7 +9,6 @@
 #import "CameraAppViewController.h"
 #import <CoreMotion/CoreMotion.h>
 #import <QuartzCore/QuartzCore.h>
-#import "MusicViewController.h"
 #import "ShareViewController.h"
 
 
@@ -25,7 +24,6 @@ double accelZ;
 
 - (IBAction)shareApp: (UIButton *)sender;
 
-- (IBAction)chooseMusic: (UIButton *) sender;
 
 
 //- (IBAction)selectPhoto:(UIButton *)sender;
@@ -60,17 +58,6 @@ double accelZ;
 
 
 #pragma mark Buttons
-
-- (IBAction)chooseMusic:(UIButton *)sender
-{
-    
-    //TODO:
-    //how to present as a subview instead?
-    MusicViewController *musicController = [[MusicViewController alloc] init];
-    [self presentViewController:musicController animated:YES completion:nil];
-    
-    
-}
 
 - (IBAction)shareApp:(UIButton *)sender
 {

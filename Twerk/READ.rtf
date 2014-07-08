@@ -6,18 +6,7 @@
 
 \f0\fs24 \cf0 EDIT:\
 \
-Picto will be the google prototype/demo version\
-\
-Phome = photo memories\
-Phomo = Photo moments\
-\
-\
-//Other suggested names:\
-1. \
-2.\
-3. Add some here\
-\
-\
+Vision: Was thinking of linking this to facebook and allowing a person to use the app, make a video and quickly be able to send it to their friends on facebook. This data can then be seen in a map overview.\
 \
 TODO:\
 \
@@ -28,40 +17,49 @@ TODO:\
 5. I'll add TODO's in order to make it clearer as to what can be done.\
 6. I'll try to break these TODO's into smaller tasks, be sure to initial your name after a TODO you're working on.\
 \
-Let's go team!\
-VC here we come.\
+\
+///READ BETWEEN HERE DOWN **************\
+\
+\
+We'll be using facebook as a backend! So think about pushing/pulling data from facebook.  Picto should create its own separate album with photos taken within Picto and we'll set the privacy of this album to people who also use picto (this can be done through creating a Picto list of friends and setting the album privacy to that list)\
+\
+REQUIRED READING:\
+https://developer.apple.com/library/ios/documentation/iphone/conceptual/iphoneosprogrammingguide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40007072-CH1-SW1 ///Basic Design/App states\
+\
+https://developer.apple.com/library/ios/documentation/userexperience/conceptual/LocationAwarenessPG/Introduction/Introduction.html#//apple_ref/doc/uid/TP40009497-CH1-SW1 //Location services/map kit\
+\
+https://developer.apple.com/library/ios/documentation/MapKit/Reference/MKMapViewDelegate_Protocol/MKMapViewDelegate/MKMapViewDelegate.html //The map delegate (refer to this for delegate methods)\
 \
 \
 \
-Please list TODO, initial what part of you are currently working on:  (I've placed a few to dos)\
 \
-Vision: Was thinking of linking this to facebook and allowing a person to use the app, make a video and quickly be able to send it to their friends on facebook. \
+//READ BETWEEN HERE UP *******************\
 \
-(Added a few assets, I can look into making an app icon later)\
+Down the road features to think of:\
+1. Detect and play a sound when a user walks to unique landmark and should take a photo\
+2. Option to follow friends of friends/celebrities/"a random person"\
+3. Give directions/navigation?\
+4. Option to favorite/save specific key moments/pictures/videos (archive? how to display this data?)\
 \
-(Refer to Overlay, rectangle 79, and rectangle 80 in assets for design of each xib)\
 \
-1. Implement twerking\
-	a. Look into CAnimations, Core Motion, and other possibilities of image manipulation\
-	b. Code it\
-	c. ????\
-	d. Twerk.\
-	e.\
+Considerations/Design:\
+1. Include time of when video/photo taken?\
+2. Include a bio?\
+3. \
 \
-2. Implement app sharing\
-	a. Add view controller and corresponding xib file\
-	b. link view controller CameraAppView (add transition)\
-	c. Add button functionality (so the buttons actually shares..)\
-	d. Figure out linking to facebook\
-	e.\
+Please list TODO, initial what part you are currently working on:  (I've placed a few to dos)\
 \
-3. Implement music selection\
-	a. Add view controller and corresponding xib file\
-	b. link view controller CameraAppView (add transition)\
-	c. Add button functionality \
-	d. Find and add songs\
-	e.\
-	f.\
 \
 Check out the facebook framework / classes. Find more info at facebook developers.\
-}
+MKLocalSearch,  MKLocalSearchRequest, MKLocalSearchResponse classes\
+\
+Picto will be the google prototype/demo version\
+\
+Phome = photo memories\
+Phomo = Photo moments\
+\
+\
+//Other suggested names:\
+1. \
+2.\
+3. Add some here}

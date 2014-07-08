@@ -7,8 +7,8 @@
 //
 
 #import "LoginViewController.h"
-#import "CameraAppViewController.h"
 
+#import "MapViewController.h"
 
 @interface LoginViewController ()
 
@@ -21,7 +21,7 @@
 -(IBAction)goMainVC:(id)sender
 {
     //create controller CameraController
-    CameraAppViewController *mainController = [[CameraAppViewController alloc] init];
+    MapViewController *mainController = [[MapViewController alloc] init];
     //modal onto stack
     [self presentViewController:mainController animated:YES completion:nil];
     
