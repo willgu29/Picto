@@ -17,10 +17,16 @@
 {
     CLLocationManager *locationManager;
     CLLocation *currentLocation;
+    NSMutableArray *matchingItems;
 }
 
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) IBOutlet UITextField *searchField;
-@property (strong, nonatomic) NSMutableArray *matchingItems;
 
 @end
+
+
+//TODO: Implement auto-complete on search
+//TODO: Add a button to transition to taking picture
+//TODO: After taking picture, push picture to facebook
+//TODO: 

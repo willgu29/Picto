@@ -28,6 +28,7 @@
     
 }
 
+
 - (void)toggleHiddenState:(BOOL)shouldHide
 {
     self.lblUsername.hidden = shouldHide;

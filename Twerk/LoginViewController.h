@@ -23,6 +23,6 @@
 @end
 
 
-//TODO:
-//Make this page look better!
+//TODO: Make this page look better!
 //
+//And that's probably it!

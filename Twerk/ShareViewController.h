@@ -13,5 +13,5 @@
 @interface ShareViewController : UIViewController
 
 @end
-//TODO:
-//Fix xib, implement sharing feature  <-- I will do this (WG)
+//TODO: Don't worry about this yet!
+//We'll need to implement a way to share this app to people later on

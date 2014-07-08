@@ -10,4 +10,5 @@
 
 @implementation Friend
 
+
 @end

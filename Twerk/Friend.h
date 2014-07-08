@@ -11,3 +11,6 @@
 @interface Friend : NSObject
 
 @end
+
+//TODO: Pull data from facebook
+//Methods we'll need include things like... find a specific friend, get specific pictures from a friend, etc.

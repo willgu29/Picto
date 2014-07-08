@@ -52,12 +52,15 @@ const NSInteger METERS_PER_MILE = 1609.344;
 
 -(void) performSearch:(UITextField *)textField
 {
+    //request a search with words from textField
     MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
     request.naturalLanguageQuery = textField.text;
     //request.region = _mapView.region; //search results only in currently shown area of map
     
-    _matchingItems = [[NSMutableArray alloc]init];
+    //make an array to store items of request
+    matchingItems = [[NSMutableArray alloc]init];
     
+    //do the search
     MKLocalSearch *search = [[MKLocalSearch alloc] initWithRequest:request];
     [search startWithCompletionHandler:^(MKLocalSearchResponse *response, NSError *error)
      {
@@ -67,9 +70,12 @@ const NSInteger METERS_PER_MILE = 1609.344;
          }
          else
          {
+             //loop through all results (note: will only go through roughly 10 (restriction based on apple documentation))
              for (MKMapItem *item in response.mapItems)
              {
-                 [_matchingItems addObject:item];
+                 //add to array
+                 [matchingItems addObject:item];
+                 //place a marker on mapView of location
                  MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
                  annotation.coordinate = item.placemark.coordinate;
                  annotation.title = item.name;
@@ -80,7 +86,8 @@ const NSInteger METERS_PER_MILE = 1609.344;
                 // NSLog(@"Coordinate = %@", item.placemark.coordinate);
                  
              }
-             MKMapItem *item1 = _matchingItems[0];
+             //Zoom into the 1st result provided by search
+             MKMapItem *item1 = matchingItems[0];
              MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(item1.placemark.coordinate, [(CLCircularRegion *)item1.placemark.region radius], [(CLCircularRegion *)item1.placemark.region radius]);
              [_mapView setRegion:viewRegion animated:YES];
          }
@@ -126,6 +133,7 @@ const NSInteger METERS_PER_MILE = 1609.344;
 
 -(void) getCurrentLocation
 {
+    //create a CLLocationManager
     locationManager = [CLLocationManager new];
     locationManager.delegate = self;
     locationManager.distanceFilter = kCLDistanceFilterNone; //can change filter distance later
@@ -134,7 +142,7 @@ const NSInteger METERS_PER_MILE = 1609.344;
 }
 
 
-
+//This is mostly code for later on if we want to track the users movements, but it also suffices to get starting location and zoom in on that
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     currentLocation = [locations objectAtIndex:0];
