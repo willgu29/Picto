@@ -39,7 +39,8 @@
 		84DA0D4518F92C2B00DE364F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84DA0D4318F92C2B00DE364F /* InfoPlist.strings */; };
 		84DA0D4718F92C2B00DE364F /* TwerkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DA0D4618F92C2B00DE364F /* TwerkTests.m */; };
 		84DA0D9C18F92EFF00DE364F /* CameraAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DA0D9A18F92EFF00DE364F /* CameraAppViewController.m */; };
-		C7241691197352A700700638 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7241690197352A700700638 /* FacebookSDK.framework */; };
+		C7241693197353C300700638 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7241692197353C300700638 /* FacebookSDK.framework */; };
+		C7241694197353C300700638 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7241692197353C300700638 /* FacebookSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,7 +95,7 @@
 		84DA0D4618F92C2B00DE364F /* TwerkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TwerkTests.m; sourceTree = "<group>"; };
 		84DA0D9918F92EFF00DE364F /* CameraAppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraAppViewController.h; sourceTree = "<group>"; };
 		84DA0D9A18F92EFF00DE364F /* CameraAppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraAppViewController.m; sourceTree = "<group>"; };
-		C7241690197352A700700638 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../../FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
+		C7241692197353C300700638 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,10 +105,10 @@
 			files = (
 				84068DA4196B8F750053355C /* MobileCoreServices.framework in Frameworks */,
 				846F8A4E1965D450000401E8 /* MapKit.framework in Frameworks */,
-				C7241691197352A700700638 /* FacebookSDK.framework in Frameworks */,
 				846F8A4C1965C184000401E8 /* CoreLocation.framework in Frameworks */,
 				8402702A18F9C0CB00598EE2 /* CoreMotion.framework in Frameworks */,
 				84DA0D1E18F92C2B00DE364F /* CoreGraphics.framework in Frameworks */,
+				C7241693197353C300700638 /* FacebookSDK.framework in Frameworks */,
 				84DA0D2218F92C2B00DE364F /* CoreData.framework in Frameworks */,
 				84DA0D2018F92C2B00DE364F /* UIKit.framework in Frameworks */,
 				84DA0D1C18F92C2B00DE364F /* Foundation.framework in Frameworks */,
@@ -119,6 +120,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84DA0D3A18F92C2B00DE364F /* XCTest.framework in Frameworks */,
+				C7241694197353C300700638 /* FacebookSDK.framework in Frameworks */,
 				84DA0D3D18F92C2B00DE364F /* CoreData.framework in Frameworks */,
 				84DA0D3C18F92C2B00DE364F /* UIKit.framework in Frameworks */,
 				84DA0D3B18F92C2B00DE364F /* Foundation.framework in Frameworks */,
@@ -177,12 +179,12 @@
 			children = (
 				84068D9F196B4ED80053355C /* Data */,
 				84DA0D2C18F92C2B00DE364F /* AppDelegate.h */,
-				C7241690197352A700700638 /* FacebookSDK.framework */,
 				84DA0D2D18F92C2B00DE364F /* AppDelegate.m */,
 				8461E930194E73B200E2D809 /* Image.xcassets */,
 				84DA0D2F18F92C2B00DE364F /* Twerk.xcdatamodeld */,
 				8461E940194ED2C300E2D809 /* LoginViewController.h */,
 				8461E941194ED2C300E2D809 /* LoginViewController.m */,
+				C7241692197353C300700638 /* FacebookSDK.framework */,
 				8461E942194ED2C300E2D809 /* LoginViewController.xib */,
 				84DA0D9918F92EFF00DE364F /* CameraAppViewController.h */,
 				84DA0D9A18F92EFF00DE364F /* CameraAppViewController.m */,
@@ -463,6 +465,7 @@
 					"$(inherited)",
 					/Users/Gu/Documents/FacebookSDK,
 					/Volumes/Data/Users/gautam/Documents/FacebookSDK,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Twerk/Picto-Prefix.pch";
@@ -482,6 +485,7 @@
 					"$(inherited)",
 					/Users/Gu/Documents/FacebookSDK,
 					/Volumes/Data/Users/gautam/Documents/FacebookSDK,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Twerk/Picto-Prefix.pch";
@@ -500,6 +504,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Twerk/Twerk-Prefix.pch";
@@ -522,6 +527,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Twerk/Twerk-Prefix.pch";
