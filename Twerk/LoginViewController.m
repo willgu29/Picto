@@ -78,7 +78,7 @@
     self.loginButton.delegate = self;
     [self toggleHiddenState:YES];
     self.lblLoginStatus.text = @"";
-    self.loginButton.readPermissions = @[@"public_profile", @"email"];
+    self.loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends", @"user_hometown", @"user_tagged_places", @"user_work_history", @"user_interests", @"user_videos", @"user_photos", @"user_groups", @"user_likes", @"publish_actions"];
 }
 
 - (void)didReceiveMemoryWarning

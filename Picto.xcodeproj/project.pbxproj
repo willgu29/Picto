@@ -470,7 +470,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Twerk/Picto-Prefix.pch";
 				INFOPLIST_FILE = "Twerk/Picto-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = Picto;
 				WRAPPER_EXTENSION = app;
 			};
@@ -490,7 +490,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Twerk/Picto-Prefix.pch";
 				INFOPLIST_FILE = "Twerk/Picto-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = Picto;
 				WRAPPER_EXTENSION = app;
 			};

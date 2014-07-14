@@ -111,6 +111,11 @@ const NSInteger METERS_PER_MILE = 1609.344;
     [self presentViewController:sideMenu animated:YES completion:nil];
 }
 
+-(IBAction)cameraButton:(UIButton *)button
+{
+    
+}
+
 -(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
     [self zoomMapToCurrentRegion];

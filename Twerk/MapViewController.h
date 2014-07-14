@@ -27,6 +27,6 @@
 
 
 //TODO: Implement auto-complete on search
-//TODO: Add a button to transition to taking picture
+//TODO: Add a button to transition to taking picture and the code for taking a picture
 //TODO: After taking picture, push picture to facebook
 //TODO: 
