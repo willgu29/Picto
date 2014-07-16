@@ -166,6 +166,7 @@ const NSInteger METERS_PER_MILE = 1609.344;
          if (response.mapItems.count == 0)
          {
              NSLog(@"No matches");
+             //TODO: Give error for no matches
          }
          else
          {
@@ -252,7 +253,7 @@ const NSInteger METERS_PER_MILE = 1609.344;
             //Save video somewhere in album?
         }
         //save video somewhere...
-        
+        //TODO: Save video
         
         //remove video from tempory directory
         [[NSFileManager defaultManager] removeItemAtPath:[mediaURL path] error:nil];
@@ -265,9 +266,10 @@ const NSInteger METERS_PER_MILE = 1609.344;
     if (_chosenImage)
     {
         //store image or something
+        //TODO: Save photo
     }
     
-    
+    //TODO: Display the just taken photo/video on map
     [picker dismissViewControllerAnimated:YES completion:NULL];
     
 }

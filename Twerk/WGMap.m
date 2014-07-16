@@ -11,10 +11,5 @@
 @implementation WGMap
 
 
--(void)displayAllIcons:(NSMutableArray *)arrayOfPhotos onMap:(MKMapView *)map
-{
-    
-}
-
 
 @end

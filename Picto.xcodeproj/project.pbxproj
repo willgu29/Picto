@@ -41,6 +41,7 @@
 		84F24FEC1974EBB500013F47 /* SearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FEB1974EBB500013F47 /* SearchData.m */; };
 		84F24FEF1975F17300013F47 /* WGMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FEE1975F17300013F47 /* WGMap.m */; };
 		84F24FF21976045200013F47 /* WGPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FF11976045200013F47 /* WGPhoto.m */; };
+		84F24FF919764A5A00013F47 /* TODO.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 84F24FF819764A5A00013F47 /* TODO.rtf */; };
 		C7241693197353C300700638 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7241692197353C300700638 /* FacebookSDK.framework */; };
 		C7241694197353C300700638 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7241692197353C300700638 /* FacebookSDK.framework */; };
 /* End PBXBuildFile section */
@@ -102,6 +103,7 @@
 		84F24FEE1975F17300013F47 /* WGMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WGMap.m; sourceTree = "<group>"; };
 		84F24FF01976045200013F47 /* WGPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WGPhoto.h; sourceTree = "<group>"; };
 		84F24FF11976045200013F47 /* WGPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WGPhoto.m; sourceTree = "<group>"; };
+		84F24FF819764A5A00013F47 /* TODO.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = TODO.rtf; sourceTree = "<group>"; };
 		C7241692197353C300700638 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -203,6 +205,7 @@
 				8461E942194ED2C300E2D809 /* LoginViewController.xib */,
 				84DA0D2418F92C2B00DE364F /* Supporting Files */,
 				8461E93E194ED24700E2D809 /* READ.rtf */,
+				84F24FF819764A5A00013F47 /* TODO.rtf */,
 				8461E94C1950188F00E2D809 /* ShareViewController.h */,
 				8461E94D1950188F00E2D809 /* ShareViewController.m */,
 				8461E94E1950188F00E2D809 /* ShareViewController.xib */,
@@ -329,6 +332,7 @@
 				846F8A48196498AE000401E8 /* MapViewController.xib in Resources */,
 				8402703318F9E71800598EE2 /* butt.png in Resources */,
 				8461E931194E73B200E2D809 /* Image.xcassets in Resources */,
+				84F24FF919764A5A00013F47 /* TODO.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
