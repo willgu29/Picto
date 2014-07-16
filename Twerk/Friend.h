@@ -13,7 +13,8 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "User.h"
 
-@interface Friend : User
+
+@interface Friend : NSObject
 
 
 @property (strong, nonatomic) NSMutableArray *topPictures;
