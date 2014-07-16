@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "User.h"
 #import "Friend.h"
 
 @interface SearchData : NSObject 
@@ -14,6 +15,7 @@
 @property (strong, nonatomic) NSMutableArray *autoCompleteSearch;
 @property (strong, nonatomic) NSMutableArray *bestFriends;
 @property (strong, nonatomic) NSMutableArray *bestPictures;
+@property (strong, nonatomic) Friend *someFriend;
 
 @property (nonatomic) BOOL shouldDisplayBestOfFriend; //if true, display single best, otherwise display a region of photos of that friend
 
