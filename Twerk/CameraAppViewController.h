@@ -14,9 +14,9 @@
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
-
+@property (strong, nonatomic) UIImage *chosenImage;
 
 @end
 
-//TODO: Don't worry about this yet
+//TODO: Implement a snapchat like camera
 //I kept this here since we'll still need to take pictures/videos inside the app, this code will be helpful!

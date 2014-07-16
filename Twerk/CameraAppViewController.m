@@ -7,81 +7,39 @@
 //
 
 #import "CameraAppViewController.h"
-#import <CoreMotion/CoreMotion.h>
-#import <QuartzCore/QuartzCore.h>
 #import "ShareViewController.h"
 
-
-double accelX;
-double accelY;
-double accelZ;
 
 @interface CameraAppViewController (){
     
 }
 
-- (IBAction)takePhoto:(UIButton *)sender;
-
-- (IBAction)shareApp: (UIButton *)sender;
-
-
-
-//- (IBAction)selectPhoto:(UIButton *)sender;
-
-
-
-
-@property (strong, nonatomic) IBOutlet UIView *mainView;
-
-@property (strong, nonatomic) IBOutlet UIView *musicView;
 
 @end
 
-@implementation CameraAppViewController{
-    
-    CMMotionManager* motionManager;
-    UIView *oView;
-    UIImage *chosenImage;
-    
-    
-}
+@implementation CameraAppViewController
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
+        [self takePhoto];
     }
     return self;
 }
 
-
-
-#pragma mark Buttons
-
-- (IBAction)shareApp:(UIButton *)sender
-{
-    //TODO:
-}
-
-- (IBAction)takePhoto:(UIButton *)sender {
+- (void)takePhoto{
     
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    NSArray *availableTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
+    picker.mediaTypes = availableTypes;
     picker.delegate = self;
-    oView = [[UIView alloc] init];
-    UIImageView* overlayView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"butt.png"]];
-    [overlayView.layer setOpaque:NO];
-    overlayView.opaque = NO;
-    [oView addSubview:overlayView];
-    oView.frame = CGRectMake(0, 200, 113, 150);
-    oView.contentMode = UIViewContentModeScaleAspectFit;
     picker.allowsEditing = YES;
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    picker.cameraOverlayView = oView;
-    
-    
     [self presentViewController:picker animated:YES completion:NULL];
-    
     
 }
 
@@ -89,7 +47,8 @@ double accelZ;
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
-    
+    [self dismissViewControllerAnimated:NO completion:nil];
+
 }
 
 
@@ -107,30 +66,41 @@ double accelZ;
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    //handle video and pictures here
+    
+    NSURL *mediaURL  = info[UIImagePickerControllerMediaURL]; //video
+    if (mediaURL)
+    {
+        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum([mediaURL path]))
+        {
+            //Save video somewhere in album?
+        }
+        //save video somewhere...
+        
+        
+        //remove video from tempory directory
+        [[NSFileManager defaultManager] removeItemAtPath:[mediaURL path] error:nil];
+        
+    }
     
     
-    chosenImage = info[UIImagePickerControllerEditedImage];
-    self.imageView.image = chosenImage;
     
-    //place distortion for image here!  (manipulate *chosenImage)
-    //TODO:  (Need to add twerking effect to picture)
+    _chosenImage = info[UIImagePickerControllerEditedImage];
+    if (_chosenImage)
+    {
+        self.imageView.image = _chosenImage; //can delete this line later
+        
+        //store image or something
+        
+       
+    }
+    
+    
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
+    [self dismissViewControllerAnimated:YES completion:nil];
     
 }
-
--(void)doSomethingWithData:(CMAcceleration)acceleration
-{
-    if (acceleration.x > .5)
-    {
-        NSLog(@"x direction accel!");
-    }
-    if (acceleration.y > .5)
-    {
-        NSLog(@"y direction accel!");
-    }
-}
-
 
 
 
@@ -144,41 +114,23 @@ double accelZ;
                                                              delegate:nil
                                                     cancelButtonTitle:@"OK"
                                                     otherButtonTitles: nil];
-        
         [myAlertView show];
         
     }
     
     [super viewDidLoad];
     
-
+    
 
     // Do any additional setup after loading the view from its nib.
-    motionManager = [[CMMotionManager alloc] init];
-    if ([motionManager isAccelerometerAvailable] == YES) {
-        motionManager.accelerometerUpdateInterval = .1;
-        //[mManager setAccelerometerUpdateInterval:updateInterval];
-        [motionManager startAccelerometerUpdatesToQueue:[NSOperationQueue mainQueue] withHandler:^(CMAccelerometerData *accelerometerData, NSError *error) {
-            if (accelerometerData.acceleration.y > .5)
-            {
-                NSLog(@"Shake detected (UP DOWN)");
-                //TODO: (do something with data!)
-                
-                
-            }
-            if (accelerometerData.acceleration.x > .5)
-            {
-                NSLog(@"Shake detected (LEFT RIGHT)");
-                //TODO: (do something with data!)
-            }
-            
-        }];
-    }
-    
     
     
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    
+}
 
 
 

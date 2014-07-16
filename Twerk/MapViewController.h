@@ -13,7 +13,7 @@
 #import "SideMenuViewController.h"
 
 
-@interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate>
+@interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 {
     CLLocationManager *locationManager;
     CLLocation *currentLocation;
@@ -22,6 +22,7 @@
 
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) IBOutlet UITextField *searchField;
+
 
 @end
 

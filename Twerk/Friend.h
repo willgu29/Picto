@@ -7,8 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
+#import <CoreLocation/CoreLocation.h>
+#import <MobileCoreServices/MobileCoreServices.h>
+#import "User.h"
 
-@interface Friend : NSObject
+@interface Friend : User
+
+
+@property (strong, nonatomic) NSMutableArray *topPictures;
+
+
+-(void)loadTopPicturesToArray:(NSMutableArray *)topPictures; //get data from facebook
+
 
 @end
 
