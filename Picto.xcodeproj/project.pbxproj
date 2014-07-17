@@ -42,8 +42,8 @@
 		84F24FEF1975F17300013F47 /* WGMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FEE1975F17300013F47 /* WGMap.m */; };
 		84F24FF21976045200013F47 /* WGPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FF11976045200013F47 /* WGPhoto.m */; };
 		84F24FF919764A5A00013F47 /* TODO.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 84F24FF819764A5A00013F47 /* TODO.rtf */; };
-		C7241693197353C300700638 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7241692197353C300700638 /* FacebookSDK.framework */; };
-		C7241694197353C300700638 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7241692197353C300700638 /* FacebookSDK.framework */; };
+		84F250001977630200013F47 /* IGRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FFD1977630200013F47 /* IGRequest.m */; };
+		84F250011977630200013F47 /* Instagram.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FFF1977630200013F47 /* Instagram.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,7 +104,11 @@
 		84F24FF01976045200013F47 /* WGPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WGPhoto.h; sourceTree = "<group>"; };
 		84F24FF11976045200013F47 /* WGPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WGPhoto.m; sourceTree = "<group>"; };
 		84F24FF819764A5A00013F47 /* TODO.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = TODO.rtf; sourceTree = "<group>"; };
-		C7241692197353C300700638 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = SOURCE_ROOT; };
+		84F24FFB1977630200013F47 /* IGConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGConnect.h; sourceTree = "<group>"; };
+		84F24FFC1977630200013F47 /* IGRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGRequest.h; sourceTree = "<group>"; };
+		84F24FFD1977630200013F47 /* IGRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGRequest.m; sourceTree = "<group>"; };
+		84F24FFE1977630200013F47 /* Instagram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Instagram.h; sourceTree = "<group>"; };
+		84F24FFF1977630200013F47 /* Instagram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Instagram.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,7 +121,6 @@
 				846F8A4C1965C184000401E8 /* CoreLocation.framework in Frameworks */,
 				8402702A18F9C0CB00598EE2 /* CoreMotion.framework in Frameworks */,
 				84DA0D1E18F92C2B00DE364F /* CoreGraphics.framework in Frameworks */,
-				C7241693197353C300700638 /* FacebookSDK.framework in Frameworks */,
 				84DA0D2218F92C2B00DE364F /* CoreData.framework in Frameworks */,
 				84DA0D2018F92C2B00DE364F /* UIKit.framework in Frameworks */,
 				84DA0D1C18F92C2B00DE364F /* Foundation.framework in Frameworks */,
@@ -129,7 +132,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				84DA0D3A18F92C2B00DE364F /* XCTest.framework in Frameworks */,
-				C7241694197353C300700638 /* FacebookSDK.framework in Frameworks */,
 				84DA0D3D18F92C2B00DE364F /* CoreData.framework in Frameworks */,
 				84DA0D3C18F92C2B00DE364F /* UIKit.framework in Frameworks */,
 				84DA0D3B18F92C2B00DE364F /* Foundation.framework in Frameworks */,
@@ -194,6 +196,7 @@
 		84DA0D2318F92C2B00DE364F /* Twerk */ = {
 			isa = PBXGroup;
 			children = (
+				84F24FFA1977630200013F47 /* instagram-ios-sdk */,
 				84068D9F196B4ED80053355C /* Data */,
 				84DA0D2C18F92C2B00DE364F /* AppDelegate.h */,
 				84DA0D2D18F92C2B00DE364F /* AppDelegate.m */,
@@ -201,7 +204,6 @@
 				84DA0D2F18F92C2B00DE364F /* Twerk.xcdatamodeld */,
 				8461E940194ED2C300E2D809 /* LoginViewController.h */,
 				8461E941194ED2C300E2D809 /* LoginViewController.m */,
-				C7241692197353C300700638 /* FacebookSDK.framework */,
 				8461E942194ED2C300E2D809 /* LoginViewController.xib */,
 				84DA0D2418F92C2B00DE364F /* Supporting Files */,
 				8461E93E194ED24700E2D809 /* READ.rtf */,
@@ -247,6 +249,18 @@
 				84DA0D4318F92C2B00DE364F /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		84F24FFA1977630200013F47 /* instagram-ios-sdk */ = {
+			isa = PBXGroup;
+			children = (
+				84F24FFB1977630200013F47 /* IGConnect.h */,
+				84F24FFC1977630200013F47 /* IGRequest.h */,
+				84F24FFD1977630200013F47 /* IGRequest.m */,
+				84F24FFE1977630200013F47 /* Instagram.h */,
+				84F24FFF1977630200013F47 /* Instagram.m */,
+			);
+			path = "instagram-ios-sdk";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -355,7 +369,9 @@
 				84068D9D196B250F0053355C /* SideMenuViewController.m in Sources */,
 				84DA0D3118F92C2B00DE364F /* Twerk.xcdatamodeld in Sources */,
 				84068DA2196B4EFA0053355C /* Friend.m in Sources */,
+				84F250011977630200013F47 /* Instagram.m in Sources */,
 				846F8A47196498AE000401E8 /* MapViewController.m in Sources */,
+				84F250001977630200013F47 /* IGRequest.m in Sources */,
 				84F24FEF1975F17300013F47 /* WGMap.m in Sources */,
 				84DA0D2E18F92C2B00DE364F /* AppDelegate.m in Sources */,
 				8461E94F1950188F00E2D809 /* ShareViewController.m in Sources */,

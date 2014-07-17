@@ -9,9 +9,9 @@
 #import "AppDelegate.h"
 #import "CameraAppViewController.h"
 #import "LoginViewController.h"
+#import "MapViewController.h"
 
-
-
+#define APP_ID @"3a32660f59734e20ac6c590aecaa1e99"
 
 @implementation AppDelegate
 
@@ -24,26 +24,44 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    LoginViewController* loginRoot = [[LoginViewController alloc] init];
+    self.instagram = [[Instagram alloc] initWithClientId:APP_ID
+                                                delegate:nil];
     
-    self.window.rootViewController = loginRoot;
+    
+    //if logged in go straight to map, otherwise go to login.
+    self.instagram.accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"accessToken"];
+    if ([self.instagram isSessionValid])
+    {
+        MapViewController* mapVC = [[MapViewController alloc] init];
+        self.window.rootViewController = mapVC;
+    }
+    else
+    {
+        LoginViewController* loginRoot = [[LoginViewController alloc] init];
+        self.window.rootViewController = loginRoot;
+    }
+    
+    
     self.window.backgroundColor = [UIColor whiteColor];
     
    
-    application.applicationSupportsShakeToEdit = YES;
+    application.applicationSupportsShakeToEdit = YES; //shake to refresh map?
     
     [self.window makeKeyAndVisible];
     
-    //support facebook!
-    [FBLoginView class];
-    [FBProfilePictureView class];
     
     return YES;
 }
 
 -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+    return [self.instagram handleOpenURL:url];
+   // return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+}
+
+-(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return [self.instagram handleOpenURL:url];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

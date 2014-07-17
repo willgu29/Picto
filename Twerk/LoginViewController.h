@@ -7,18 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <FacebookSDK/FacebookSDK.h>
+#import "IGRequest.h"
+#import "IGConnect.h"
 
-@interface LoginViewController : UIViewController <FBLoginViewDelegate>
+@interface LoginViewController : UIViewController <IGSessionDelegate>
 
 
-@property (weak, nonatomic) IBOutlet FBLoginView *loginButton;
-@property (weak, nonatomic) IBOutlet UILabel *lblLoginStatus;
-@property (weak, nonatomic) IBOutlet UILabel *lblUsername;
-@property (weak, nonatomic) IBOutlet UILabel *lblEmail;
-@property (weak, nonatomic) IBOutlet FBProfilePictureView *profilePicture;
 
-//@property (weak, nonatomic) IBOutlet UIButton *skipAhead;
 
 @end
 

@@ -8,6 +8,8 @@
 
 #import "SideMenuViewController.h"
 #import "MapViewController.h"
+#import "AppDelegate.h"
+#import "LoginViewController.h"
 
 @interface SideMenuViewController ()
 
@@ -41,6 +43,14 @@
 -(IBAction)backButton:(UIButton *) button
 {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(IBAction)logoutButton:(UIButton *)sender
+{
+    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    [appDelegate.instagram logout];
+    LoginViewController *loginVC = [[LoginViewController alloc]init];
+    [self presentViewController:loginVC animated:YES completion:nil]; //THIS IS INCORRECT, MAKE AN NAVIGATION CONTROLLER AND REVAMP THE WHOLE APP NAVIGATION.
 }
 
 @end

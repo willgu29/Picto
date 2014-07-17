@@ -7,12 +7,12 @@
 //
 
 #import "LoginViewController.h"
-
 #import "MapViewController.h"
+#import "AppDelegate.h"
+
 
 @interface LoginViewController ()
 
--(void)toggleHiddenState:(BOOL)shouldHide;
 
 @end
 
@@ -27,43 +27,23 @@
     [self presentViewController:mainController animated:YES completion:nil];
 }
 
-//hides or shows username, email, and profilePicture
-- (void)toggleHiddenState:(BOOL)shouldHide
+-(IBAction)loginToInsta:(UIButton *)sender
 {
-    self.lblUsername.hidden = shouldHide;
-    self.lblEmail.hidden = shouldHide;
-    self.profilePicture.hidden = shouldHide;
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    [appDelegate.instagram authorize:[NSArray arrayWithObjects:@"comments", @"likes", nil]];
+}
+
+-(IBAction)logOutInsta:(UIButton *)sender
+{
+    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    [appDelegate.instagram logout];
+    
 }
 
 
-//set profile pic, username, and email from FBGraphUser data
--(void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user
-{
-    NSLog(@"%@", user);
-    self.profilePicture.profileID = user.objectID;
-    self.lblUsername.text = user.name;
-    self.lblEmail.text = [user objectForKey:@"email"];
-}
 
-//Hide profile pic, email, and username if logged out, show logged out message
--(void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView
-{
-    self.lblLoginStatus.text = @"You are logged out.";
-    [self toggleHiddenState:YES];
-}
 
-//
--(void)loginView:(FBLoginView *)loginView handleError:(NSError *)error
-{
-    NSLog(@"%@", [error localizedDescription]);
-}
 
-//Show profile pic, email, and username if logged in, show logged in message
--(void)loginViewShowingLoggedInUser:(FBLoginView *)loginView
-{
-    self.lblLoginStatus.text = @"You are logged in.";
-    [self toggleHiddenState:NO];
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -78,12 +58,30 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.loginButton.delegate = self;
-    [self toggleHiddenState:YES];
-    self.lblLoginStatus.text = @"";
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    appDelegate.instagram.accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"accessToken"];
+    appDelegate.instagram.sessionDelegate = self;
+    /*
+    if ([appDelegate.instagram isSessionValid])
+    {
+        MapViewController* mapVC = [[MapViewController alloc] init];
+        [self presentViewController:mapVC animated:YES completion:nil];
+    }
+    */
+    /*
+    else {
+        //[appDelegate.instagram authorize:[NSArray arrayWithObjects:@"comments", @"likes", nil]];
+          Authorization
+         basic - to read any and all data related to a user (e.g. following/followed-by lists, photos, etc.) (granted by default)
+         comments - to create or delete comments on a user’s behalf
+         relationships - to follow and unfollow users on a user’s behalf
+         likes - to like and unlike items on a user’s behalf
+     
+    }
+    */
+
     
-    //These are the permissions we request from a user using our app (these obviously will and can be changed) (there's many more -> google FB permissions) first link
-    self.loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends", @"user_hometown", @"user_tagged_places", @"user_work_history", @"user_interests", @"user_videos", @"user_photos", @"user_groups", @"user_likes", @"publish_actions"];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -91,5 +89,46 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - IGSessionDelegate
+
+-(void)igDidLogin {
+    NSLog(@"Instagram did login");
+    // here i can store accessToken
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    [[NSUserDefaults standardUserDefaults] setObject:appDelegate.instagram.accessToken forKey:@"accessToken"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+    
+    MapViewController *mapVC = [[MapViewController alloc] init];
+    [self presentViewController:mapVC animated:YES completion:nil];
+}
+
+-(void)igDidNotLogin:(BOOL)cancelled {
+    NSLog(@"Instagram did not login");
+    NSString* message = nil;
+    if (cancelled) {
+        message = @"Access cancelled!";
+    } else {
+        message = @"Access denied!";
+    }
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil];
+    [alertView show];
+}
+
+-(void)igDidLogout {
+    NSLog(@"Instagram did logout");
+    // remove the accessToken
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"accessToken"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+-(void)igSessionInvalidated {
+    NSLog(@"Instagram session was invalidated");
+}
+
 
 @end

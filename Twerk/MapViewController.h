@@ -11,9 +11,10 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "SideMenuViewController.h"
+#import "IGRequest.h"
+#import "IGConnect.h"
 
-
-@interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IGRequestDelegate>
 {
     CLLocationManager *locationManager;
     CLLocation *currentLocation;

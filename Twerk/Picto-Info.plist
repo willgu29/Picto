@@ -23,18 +23,16 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>559788407472275</string>
+				<string>ig3a32660f59734e20ac6c590aecaa1e99</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
-	<key>FacebookAppID</key>
-	<string>559788407472275</string>
-	<key>FacebookDisplayName</key>
-	<string>Twerk It</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>

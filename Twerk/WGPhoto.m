@@ -7,7 +7,22 @@
 //
 
 #import "WGPhoto.h"
+#import "AppDelegate.h"
 
 @implementation WGPhoto
+
+
+-(WGPhoto*)init
+{
+    self = [super init];
+    
+    if (self)
+    {
+        
+    }
+    
+    return self;
+}
+
 
 @end

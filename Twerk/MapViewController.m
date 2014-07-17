@@ -10,6 +10,7 @@
 #import "CameraAppViewController.h"
 #import "User.h"
 #import "WGMap.h"
+#import "WGPhoto.h"
 const NSInteger METERS_PER_MILE = 1609.344;
 
 
@@ -18,6 +19,7 @@ const NSInteger METERS_PER_MILE = 1609.344;
 @property (strong, nonatomic) IBOutlet UITableView *autoCompleteTableView;
 @property (strong, nonatomic) User *someUser;
 @property (strong, nonatomic) WGMap *someMapChanger;
+@property (strong, nonatomic) WGPhoto *someData;
 @property (strong, nonatomic) UIImagePickerController *mediaPicker;
 @property (strong, nonatomic) UIImage *chosenImage;
 
@@ -86,8 +88,28 @@ const NSInteger METERS_PER_MILE = 1609.344;
     _someUser = [[User alloc] init];
     _someMapChanger = [[WGMap alloc]init];
     
+    //TESTING
+    _someUser = [[User alloc] init];
+    [_someUser retrieveFollowersFromIG];
     
     
+    
+}
+
+-(IBAction)testStuff:(UIButton *)sender
+{
+    //TEST STUFF
+    int i = 0;
+    
+    //the objects in this array is of an unknown type BUT we know it subclasses from NSMutableDictionary so feel free to use those methods (Documentation says data is in form of Dictionary or List.
+    for (id obj in _someUser.followers)
+    {
+        BOOL isClass = [obj isKindOfClass:[NSMutableDictionary class]];
+        NSLog(@"%hhd Username: %@",isClass,[obj objectForKey:@"username"]);
+        NSLog(@"Full-Name: %@",[obj objectForKey:@"full_name"]);
+        NSLog(@"Data: %@ ",obj);
+        i++;
+    }
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -384,8 +406,6 @@ const NSInteger METERS_PER_MILE = 1609.344;
     cell.textLabel.text = @"Hello";//[_autoCompleteData objectAtIndex:indexPath.row];
     return cell;
 }
-
-
 
 
 
