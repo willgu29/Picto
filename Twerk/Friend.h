@@ -11,7 +11,7 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "User.h"
+
 
 
 @interface Friend : NSObject

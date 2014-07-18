@@ -10,19 +10,24 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "Friend.h"
+#import "IGRequest.h"
+@class Friend;
 
-@interface WGMap : NSObject
+@interface WGMap : MKMapView <IGRequestDelegate>
 
 
 @property (strong, nonatomic) NSMutableArray *possiblePics;
 
 
--(NSMutableArray *) getAllImagesOnMap:(MKMapView *)map inRegion:(CLLocationCoordinate2D) region inLatitude:(CLLocationDistance)latitude andLongitude:(CLLocationDistance)longitude; //determine possible pictures in a region and put in an array
--(CLLocationCoordinate2D)getCurrentLocationOfMap:(MKMapView *)map;
--(CLLocationCoordinate2D)determineBestPhotoLocationOfFriend:(Friend *)someFriend;
--(MKCoordinateRegion)getBestRegionForFriend:(Friend *)someFriend;
+-(void)findAllImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance)latitude andLongitude:(CLLocationDistance)longitude; //determine possible pictures in a region and put in an array
 
+
+
+-(CLLocationCoordinate2D)getCurrentLocationOfMap;
+
+-(CLLocationCoordinate2D)determineBestPhotoLocationOfFriend:(Friend *)someFriend;
+
+-(MKCoordinateRegion)getBestRegionForFriend:(Friend *)someFriend;
 -(MKCoordinateRegion)findNextInterestingLocation;
 
 

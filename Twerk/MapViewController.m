@@ -18,7 +18,7 @@ const NSInteger METERS_PER_MILE = 1609.344;
 
 @property (strong, nonatomic) IBOutlet UITableView *autoCompleteTableView;
 @property (strong, nonatomic) User *someUser;
-@property (strong, nonatomic) WGMap *someMapChanger;
+
 @property (strong, nonatomic) WGPhoto *someData;
 @property (strong, nonatomic) UIImagePickerController *mediaPicker;
 @property (strong, nonatomic) UIImage *chosenImage;
@@ -55,6 +55,23 @@ const NSInteger METERS_PER_MILE = 1609.344;
     
 }
 
+-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
+}
+
+-(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
+}
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
+}
+
+
+
 -(void)viewWillAppear:(BOOL)animated
 {
     
@@ -86,7 +103,7 @@ const NSInteger METERS_PER_MILE = 1609.344;
     _autoCompleteTableView.scrollEnabled = YES;
 
     _someUser = [[User alloc] init];
-    _someMapChanger = [[WGMap alloc]init];
+    
     
     //TESTING
     _someUser = [[User alloc] init];
@@ -110,6 +127,14 @@ const NSInteger METERS_PER_MILE = 1609.344;
         NSLog(@"Data: %@ ",obj);
         i++;
     }
+    
+    CLLocationCoordinate2D location = [_mapView getCurrentLocationOfMap];
+    [_mapView findAllImagesOnMapInRange:1000 inLatitude:location.latitude andLongitude:location.latitude];
+    for (id obj in _mapView.possiblePics)
+    {
+        NSLog(@"%@", obj);
+    }
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated

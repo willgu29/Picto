@@ -13,6 +13,7 @@
 #import "SideMenuViewController.h"
 #import "IGRequest.h"
 #import "IGConnect.h"
+#import "WGMap.h"
 
 @interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IGRequestDelegate>
 {
@@ -21,7 +22,8 @@
     NSMutableArray *matchingItems;
 }
 
-@property (strong, nonatomic) IBOutlet MKMapView *mapView;
+@property (strong, nonatomic) IBOutlet WGMap *mapView; //custom map view with new methods to use!
+//@property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) IBOutlet UITextField *searchField;
 
 
