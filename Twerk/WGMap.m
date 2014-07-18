@@ -23,13 +23,17 @@ static const int ONE_DAY_IN_SECONDS = 86400;
 
 -(void)findAllImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance)latitude andLongitude:(CLLocationDistance)longitude
 {
-    //DO SOMETHING
-    //TODO: NOT WORKING  (params format is not corect..)
     
     CFTimeInterval now = CACurrentMediaTime();
     CFTimeInterval yesterday = now - 86400;
+    
+    //just creates a pointer to our app delegate. Nothing else to understand in this code
     AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
-    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"media/search", @"method", [NSString stringWithFormat:@"%f",latitude],[NSString stringWithFormat:@"%f",longitude] ,nil,nil, nil];
+    
+    //This is how the SDK wants it, so give it this way. Creating an NSMutableDictionary, simply change the 1st @"..." to the method you want to call (Go to instagram API console for how to format)
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"media/search?lat=33.0734296&lng=-117.0934542&distance=10", @"method", nil];
+    
+    //send the instagram property in our appdelehate.h this message "reqeustWithParams: delegate" (based on the instagram iOS SDK
     [appDelegate.instagram requestWithParams:params
                                     delegate:self];
     
@@ -49,6 +53,7 @@ static const int ONE_DAY_IN_SECONDS = 86400;
                                               otherButtonTitles:nil];
     [alertView show];
 }
+
 
 
 @end

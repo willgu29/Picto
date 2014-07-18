@@ -107,8 +107,10 @@ const NSInteger METERS_PER_MILE = 1609.344;
     
     //TESTING
     _someUser = [[User alloc] init];
-    [_someUser retrieveFollowersFromIG];
     
+    //After sending these messages there is a slight delay to when the delegate actually places the data in the array... will need a way to fix this (let user know they can't do anything yet/ tell controller to wait till data has loaded.
+    [_someUser retrieveFollowersFromIG];
+    [_mapView findAllImagesOnMapInRange:1000 inLatitude:1000 andLongitude:1000];
     
     
 }
@@ -119,6 +121,7 @@ const NSInteger METERS_PER_MILE = 1609.344;
     int i = 0;
     
     //the objects in this array is of an unknown type BUT we know it subclasses from NSMutableDictionary so feel free to use those methods (Documentation says data is in form of Dictionary or List.
+    /*
     for (id obj in _someUser.followers)
     {
         BOOL isClass = [obj isKindOfClass:[NSMutableDictionary class]];
@@ -127,12 +130,14 @@ const NSInteger METERS_PER_MILE = 1609.344;
         NSLog(@"Data: %@ ",obj);
         i++;
     }
-    
+    */
     CLLocationCoordinate2D location = [_mapView getCurrentLocationOfMap];
-    [_mapView findAllImagesOnMapInRange:1000 inLatitude:location.latitude andLongitude:location.latitude];
+    
     for (id obj in _mapView.possiblePics)
     {
-        NSLog(@"%@", obj);
+        NSLog(@"Something happened");
+        NSLog(@"PICTURE URL??:: %@", [obj objectForKey:@"images"]); //Not sure how to go more layers down
+        //NSLog(@"%@", obj);
     }
     
 }
