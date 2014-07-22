@@ -31,4 +31,6 @@
 -(MKCoordinateRegion)findNextInterestingLocation;
 
 
+
 @end
+//TODO: WGMap is a subclass of MKMapView so it can do everything a MKMapView can. Make sure not to repeat functions. Check the apple documentation of MKMapView.  WGMap will need custom methods that allow navigating of the map and locations/coordinates.

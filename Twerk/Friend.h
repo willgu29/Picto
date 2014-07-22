@@ -24,6 +24,6 @@
 
 
 @end
+//NOTE: friend is now referencing a person YOU are following
+//TODO: If a person SEARCHES a specific friend, this class should be able to get an array of 50-100 pictureURLs from that friend (or as many pictures as they have) and sort the array in descending order of "show ratibg" (Thus the worst pictures of a person will be last in the array)
 
-//TODO: Pull data from facebook
-//Methods we'll need include things like... find a specific friend, get specific pictures from a friend, etc.

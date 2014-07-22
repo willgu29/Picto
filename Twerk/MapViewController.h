@@ -15,16 +15,19 @@
 #import "IGConnect.h"
 #import "WGMap.h"
 
+//That's a lot of delegates!  Check out the protocols in apple documentation! Weee
 @interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IGRequestDelegate>
 {
+    //Ignore these for now
     CLLocationManager *locationManager;
     CLLocation *currentLocation;
     NSMutableArray *matchingItems;
 }
 
+//Our map view will have the actual map and a search bar.
 @property (strong, nonatomic) IBOutlet WGMap *mapView; //custom map view with new methods to use!
-//@property (strong, nonatomic) IBOutlet MKMapView *mapView;
-@property (strong, nonatomic) IBOutlet UITextField *searchField;
+
+@property (strong, nonatomic) IBOutlet UITextField *searchField; //There's actually a UISearchBar class (oops)... we can switch this out later. Should be simple since UISearchBar is a subclass of UITextField...
 
 
 @end

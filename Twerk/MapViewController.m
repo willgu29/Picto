@@ -31,12 +31,76 @@ const NSInteger METERS_PER_MILE = 1609.344;
 #pragma mark -Helper functions
 -(void)zoomToRegion:(CLLocationCoordinate2D)coordinate withLatitude:(CLLocationDistance)latitude withLongitude:(CLLocationDistance)longitude withMap:(MKMapView *)map
 {
+    //Makes a region to zoom into with format of the location with a distance of latitude and longitude... sorry that's a little confusing... Better parameter names would be... (centerLocation, span in lat direction, span in longitude direction)  Make sense now?
     MKCoordinateRegion zoomLocation = MKCoordinateRegionMakeWithDistance(coordinate, latitude, longitude);
+    //tell the map to zoom to that location animate duh
     [map setRegion:zoomLocation animated:YES];
+}
+
+-(void)loadPicturePinWithURL:(NSString *)stringURL onMap:(MKMapView *)mapView withLocation:(CLLocationCoordinate2D)location
+{
+    //This is making it asynchronous I believe.  Don't quote me on that. Still need to test.
+    dispatch_async(dispatch_get_global_queue(0,0), ^{
+        
+        //Make a type of NSData from the contents of a URL... this URL is the stringURL.
+        NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:stringURL]];
+        //if this data didn't work then it has to be nil so just return
+        if ( data == nil )
+            return;
+        
+        //otherwise do stuff
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // WARNING: is the cell still using the same data by this point?? //I can't explain this comment... it was placed here from stackoverflow
+            //LOAD IMAGE INTO PIN HERE
+            
+            //Make a new WGPhoto with the data we have... init with the location and the image
+            WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImage:[UIImage imageWithData:data]];
+            //a custom method for placing the new WGPhoto
+            [self placePicturePin:photo];
+            
+        
+        });
+        
+    });
+    //animations blah
+    
+}
+
+//Load all the pictures in a specific map region. _mapView.possiblePics should always have the possible pictures in a region as the method to get all the possiblePictures is called everytime the map finishes rendering (i.e. everytime the user moves the map.)
+-(void)loadAllPictures
+{
+    for (id pictureURL in _mapView.possiblePics)
+    {
+        //path find to thumbnail image... might want to do this in the modal.. NOT SURE. Will get back to you guys.
+        NSString *stringURL = [pictureURL valueForKeyPath:@"images.thumbnail.url"];
+        
+        //Apparently instagram API returns strings or some other id to lat and long.  We'll need CLLocationDegrees however...
+        NSString *lat1 = [pictureURL valueForKeyPath:@"location.latitude"];
+        NSString *lng1 = [pictureURL valueForKeyPath:@"location.longitude"];
+    
+        
+        //Not sure how to conver to CLLocationDegrees
+        CLLocationDegrees lat = 100;
+        CLLocationDegrees lng = 100;
+        
+        //CONVERT from CLLocationDegrees TO CLLocationCoordinate2D
+        CLLocationCoordinate2D location = CLLocationCoordinate2DMake(lat, lng);
+        
+        //load the picture onto map
+        [self loadPicturePinWithURL:stringURL onMap:_mapView withLocation:location];
+        
+    }
+    
+}
+
+-(void)placePicturePin:(WGPhoto *)image
+{
+    //cool animations anytime bro
 }
 
 
 
+;
 #pragma mark - Main Lifecycle
 
 
@@ -94,27 +158,30 @@ const NSInteger METERS_PER_MILE = 1609.344;
         
     }
     
+    //assigning delegates and stuff.
     _searchField.delegate = self;
     _mapView.delegate = self;
     
+    //there is a hidden TableView in our window for the search later
     _autoCompleteTableView.hidden = YES;
     _autoCompleteTableView.delegate = self;
     _autoCompleteTableView.dataSource = self;
     _autoCompleteTableView.scrollEnabled = YES;
 
-    _someUser = [[User alloc] init];
     
     
     //TESTING
     _someUser = [[User alloc] init];
     
     //After sending these messages there is a slight delay to when the delegate actually places the data in the array... will need a way to fix this (let user know they can't do anything yet/ tell controller to wait till data has loaded.
-    [_someUser retrieveFollowersFromIG];
-    [_mapView findAllImagesOnMapInRange:1000 inLatitude:1000 andLongitude:1000];
+  //  [_someUser retrieveFollowersFromIG];
+    
+    
     
     
 }
 
+//don't worry about this, this is for me.
 -(IBAction)testStuff:(UIButton *)sender
 {
     //TEST STUFF
@@ -131,12 +198,13 @@ const NSInteger METERS_PER_MILE = 1609.344;
         i++;
     }
     */
-    CLLocationCoordinate2D location = [_mapView getCurrentLocationOfMap];
+   // CLLocationCoordinate2D location = [_mapView getCurrentLocationOfMap];
     
+    NSLog(@"%lu", (unsigned long)[_mapView.possiblePics count]);
     for (id obj in _mapView.possiblePics)
     {
         NSLog(@"Something happened");
-        NSLog(@"PICTURE URL??:: %@", [obj objectForKey:@"images"]); //Not sure how to go more layers down
+        NSLog(@"PICTURE URL??:: %@", [obj valueForKeyPath:@"images.thumbnail.url"]); //WzOOOTT
         //NSLog(@"%@", obj);
     }
     
@@ -200,7 +268,7 @@ const NSInteger METERS_PER_MILE = 1609.344;
 }
 
 
-
+//Will get an array of locations based on the search prameters.
 -(void) performSearch:(UITextField *)textField
 {
     //request a search with words from textField
@@ -337,9 +405,14 @@ const NSInteger METERS_PER_MILE = 1609.344;
 
 -(void)mapViewDidFinishLoadingMap:(MKMapView *)mapView
 {
-   
+    
 }
 
+-(void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered
+{
+    CLLocationCoordinate2D locationOf = [_mapView getCurrentLocationOfMap];
+    [_mapView findAllImagesOnMapInRange:20 inLatitude:locationOf.latitude andLongitude:locationOf.longitude];
+}
 
 -(void)mapViewWillStartLoadingMap:(MKMapView *)mapView
 {

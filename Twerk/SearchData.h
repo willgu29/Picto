@@ -29,3 +29,4 @@
 
 
 @end
+//TODO: SearchData is all about algorithms.  This doesn't necessarily need to be in a separate class but for clarity and neatness, it should work fine this way.  SearchData will be the main object to determine autocomplete in the search bar, autocomplete for locations, and also the logic for what pictures to display in a specific region or perhaps what region to go to next if the user is asking for a new region to explore/ what picture to show next of a friend etc..  It could also potentially determine important/landmark/unimportant.
