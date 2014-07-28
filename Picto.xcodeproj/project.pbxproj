@@ -23,6 +23,8 @@
 		846F8A48196498AE000401E8 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 846F8A46196498AE000401E8 /* MapViewController.xib */; };
 		846F8A4C1965C184000401E8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 846F8A4B1965C184000401E8 /* CoreLocation.framework */; };
 		846F8A4E1965D450000401E8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 846F8A4D1965D450000401E8 /* MapKit.framework */; };
+		84CC1D0E1985967B00AFECC4 /* CustomCallout.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CC1D0D1985967B00AFECC4 /* CustomCallout.m */; };
+		84CC1D10198599DF00AFECC4 /* calloutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84CC1D0F198599DF00AFECC4 /* calloutView.xib */; };
 		84DA0D1C18F92C2B00DE364F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DA0D1B18F92C2B00DE364F /* Foundation.framework */; };
 		84DA0D1E18F92C2B00DE364F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DA0D1D18F92C2B00DE364F /* CoreGraphics.framework */; };
 		84DA0D2018F92C2B00DE364F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DA0D1F18F92C2B00DE364F /* UIKit.framework */; };
@@ -44,6 +46,7 @@
 		84F24FF919764A5A00013F47 /* TODO.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 84F24FF819764A5A00013F47 /* TODO.rtf */; };
 		84F250001977630200013F47 /* IGRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FFD1977630200013F47 /* IGRequest.m */; };
 		84F250011977630200013F47 /* Instagram.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FFF1977630200013F47 /* Instagram.m */; };
+		84F250071981BD9600013F47 /* CustomAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F250061981BD9600013F47 /* CustomAnnotation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +81,9 @@
 		846F8A46196498AE000401E8 /* MapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
 		846F8A4B1965C184000401E8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		846F8A4D1965D450000401E8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		84CC1D0C1985967B00AFECC4 /* CustomCallout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCallout.h; sourceTree = "<group>"; };
+		84CC1D0D1985967B00AFECC4 /* CustomCallout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCallout.m; sourceTree = "<group>"; };
+		84CC1D0F198599DF00AFECC4 /* calloutView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = calloutView.xib; sourceTree = "<group>"; };
 		84DA0D1818F92C2B00DE364F /* Picto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Picto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84DA0D1B18F92C2B00DE364F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		84DA0D1D18F92C2B00DE364F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -109,6 +115,8 @@
 		84F24FFD1977630200013F47 /* IGRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGRequest.m; sourceTree = "<group>"; };
 		84F24FFE1977630200013F47 /* Instagram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Instagram.h; sourceTree = "<group>"; };
 		84F24FFF1977630200013F47 /* Instagram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Instagram.m; sourceTree = "<group>"; };
+		84F250051981BD9600013F47 /* CustomAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomAnnotation.h; path = ../CustomAnnotation.h; sourceTree = "<group>"; };
+		84F250061981BD9600013F47 /* CustomAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomAnnotation.m; path = ../CustomAnnotation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +152,8 @@
 		84068D9F196B4ED80053355C /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				84F250051981BD9600013F47 /* CustomAnnotation.h */,
+				84F250061981BD9600013F47 /* CustomAnnotation.m */,
 				84068DA0196B4EFA0053355C /* Friend.h */,
 				84068DA1196B4EFA0053355C /* Friend.m */,
 				84F24FE21973970000013F47 /* User.h */,
@@ -217,6 +227,9 @@
 				84068D9A196B250F0053355C /* SideMenuViewController.h */,
 				84068D9B196B250F0053355C /* SideMenuViewController.m */,
 				84068D9C196B250F0053355C /* SideMenuViewController.xib */,
+				84CC1D0C1985967B00AFECC4 /* CustomCallout.h */,
+				84CC1D0D1985967B00AFECC4 /* CustomCallout.m */,
+				84CC1D0F198599DF00AFECC4 /* calloutView.xib */,
 			);
 			path = Twerk;
 			sourceTree = "<group>";
@@ -345,6 +358,7 @@
 				8461E944194ED2C300E2D809 /* LoginViewController.xib in Resources */,
 				846F8A48196498AE000401E8 /* MapViewController.xib in Resources */,
 				8402703318F9E71800598EE2 /* butt.png in Resources */,
+				84CC1D10198599DF00AFECC4 /* calloutView.xib in Resources */,
 				8461E931194E73B200E2D809 /* Image.xcassets in Resources */,
 				84F24FF919764A5A00013F47 /* TODO.rtf in Resources */,
 			);
@@ -365,6 +379,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84F250071981BD9600013F47 /* CustomAnnotation.m in Sources */,
 				84F24FE41973970000013F47 /* User.m in Sources */,
 				84068D9D196B250F0053355C /* SideMenuViewController.m in Sources */,
 				84DA0D3118F92C2B00DE364F /* Twerk.xcdatamodeld in Sources */,
@@ -373,6 +388,7 @@
 				846F8A47196498AE000401E8 /* MapViewController.m in Sources */,
 				84F250001977630200013F47 /* IGRequest.m in Sources */,
 				84F24FEF1975F17300013F47 /* WGMap.m in Sources */,
+				84CC1D0E1985967B00AFECC4 /* CustomCallout.m in Sources */,
 				84DA0D2E18F92C2B00DE364F /* AppDelegate.m in Sources */,
 				8461E94F1950188F00E2D809 /* ShareViewController.m in Sources */,
 				84F24FEC1974EBB500013F47 /* SearchData.m in Sources */,

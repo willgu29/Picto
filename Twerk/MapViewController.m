@@ -11,6 +11,9 @@
 #import "User.h"
 #import "WGMap.h"
 #import "WGPhoto.h"
+#import "CustomAnnotation.h"
+#import "CustomCallout.h"
+
 const NSInteger METERS_PER_MILE = 1609.344;
 
 
@@ -29,6 +32,16 @@ const NSInteger METERS_PER_MILE = 1609.344;
 @implementation MapViewController
 
 #pragma mark -Helper functions
+
+-(UIImage *)makeImagePretty:(UIImage *)image
+{
+    //do some cool shit
+    //https://developer.apple.com/library/ios/documentation/uikit/reference/UIImage_Class/Reference/Reference.html
+    
+    
+    return image;
+}
+
 -(void)zoomToRegion:(CLLocationCoordinate2D)coordinate withLatitude:(CLLocationDistance)latitude withLongitude:(CLLocationDistance)longitude withMap:(MKMapView *)map
 {
     //Makes a region to zoom into with format of the location with a distance of latitude and longitude... sorry that's a little confusing... Better parameter names would be... (centerLocation, span in lat direction, span in longitude direction)  Make sense now?
@@ -37,6 +50,7 @@ const NSInteger METERS_PER_MILE = 1609.344;
     [map setRegion:zoomLocation animated:YES];
 }
 
+/*
 -(void)loadPicturePinWithURL:(NSString *)stringURL onMap:(MKMapView *)mapView withLocation:(CLLocationCoordinate2D)location
 {
     //This is making it asynchronous I believe.  Don't quote me on that. Still need to test.
@@ -54,9 +68,13 @@ const NSInteger METERS_PER_MILE = 1609.344;
             //LOAD IMAGE INTO PIN HERE
             
             //Make a new WGPhoto with the data we have... init with the location and the image
-            WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImage:[UIImage imageWithData:data]];
+            
+            //CustomAnnotation *new2 = [[CustomAnnotation alloc] initWithPhoto:photo];
+            //MKAnnotationView *new = [[MKAnnotationView alloc] init];
+            //new.image = [UIImage imageNamed:@"butt.png"];
+            //[_mapView addAnnotation:new2];
             //a custom method for placing the new WGPhoto
-            [self placePicturePin:photo];
+            //[self placePicturePin:photo];
             
         
         });
@@ -65,6 +83,7 @@ const NSInteger METERS_PER_MILE = 1609.344;
     //animations blah
     
 }
+*/
 
 //Load all the pictures in a specific map region. _mapView.possiblePics should always have the possible pictures in a region as the method to get all the possiblePictures is called everytime the map finishes rendering (i.e. everytime the user moves the map.)
 -(void)loadAllPictures
@@ -73,21 +92,28 @@ const NSInteger METERS_PER_MILE = 1609.344;
     {
         //path find to thumbnail image... might want to do this in the modal.. NOT SURE. Will get back to you guys.
         NSString *stringURL = [pictureURL valueForKeyPath:@"images.thumbnail.url"];
-        
+        NSString *stringURLEnlarged = [pictureURL valueForKeyPath:@"images.standard_resolution.url"];
+        NSLog(@"url: %@,", stringURLEnlarged);;
         //Apparently instagram API returns strings or some other id to lat and long.  We'll need CLLocationDegrees however...
         NSString *lat1 = [pictureURL valueForKeyPath:@"location.latitude"];
         NSString *lng1 = [pictureURL valueForKeyPath:@"location.longitude"];
-    
         
-        //Not sure how to conver to CLLocationDegrees
-        CLLocationDegrees lat = 100;
-        CLLocationDegrees lng = 100;
-        
+        //Convert to CLLocationDegrees (which is a double)
+        CLLocationDegrees lat = [lat1 doubleValue];
+        CLLocationDegrees lng = [lng1 doubleValue];
+       
         //CONVERT from CLLocationDegrees TO CLLocationCoordinate2D
         CLLocationCoordinate2D location = CLLocationCoordinate2DMake(lat, lng);
         
+        //Save this object in an array of currently displayed photos
+        WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged];
+        [_mapView.actualPics addObject:photo];
+        [self addAnnotationWithWGPhoto:photo];
+        
+        //mapView viewForAnnotation should be automatically called now.. ->
+        
         //load the picture onto map
-        [self loadPicturePinWithURL:stringURL onMap:_mapView withLocation:location];
+        //[self loadPicturePinWithURL:stringURL onMap:_mapView withLocation:location];
         
     }
     
@@ -96,6 +122,10 @@ const NSInteger METERS_PER_MILE = 1609.344;
 -(void)placePicturePin:(WGPhoto *)image
 {
     //cool animations anytime bro
+    
+    //place annotation
+    
+    
 }
 
 
@@ -207,6 +237,7 @@ const NSInteger METERS_PER_MILE = 1609.344;
         NSLog(@"PICTURE URL??:: %@", [obj valueForKeyPath:@"images.thumbnail.url"]); //WzOOOTT
         //NSLog(@"%@", obj);
     }
+    [self loadAllPictures];
     
 }
 
@@ -397,6 +428,98 @@ const NSInteger METERS_PER_MILE = 1609.344;
 
 #pragma mark - Map view delegates/methods
 
+-(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+{
+    NSLog(@"Tapped it!");
+    if (![view.annotation isKindOfClass:[MKUserLocation class]])
+    {
+        CustomCallout *calloutView = (CustomCallout *)[[[NSBundle mainBundle] loadNibNamed:@"calloutView" owner:self options:nil] objectAtIndex:0];
+        CGRect calloutViewFrame  = calloutView.frame;
+        calloutViewFrame.origin = CGPointMake(0,self.view.frame.size.height/6);//CGPointMake(-calloutViewFrame.size.width/2 + 15, -calloutViewFrame.size.height);
+        calloutView.frame = calloutViewFrame;
+        [calloutView.infoText setText:@"BLAHBLAHBLAHFRIENDLOC"]; //TODO: Grab user name and location
+        
+        CustomAnnotation *someAnnotation = view.annotation;
+        
+        NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[someAnnotation imageURLEnlarged]]];
+        UIImage *image1 = [[UIImage alloc] initWithData:data];
+        [calloutView.image setImage:image1];
+        [self.view addSubview:calloutView]; //added it to the main view so it will always display picture at center of screen... can change this (replace self.view with view (the MKAnnotationView)
+    }
+}
+
+-(void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    //loops through the MKAnnotationView views..
+    /*
+    for (UIView *subview in view.subviews )
+    {
+        [subview removeFromSuperview];
+    }
+     */
+    //looping through main view views... only remove of class CustomCallout.
+    for (UIView *subView in self.view.subviews)
+    {
+        if ([subView isKindOfClass:[CustomCallout class]])
+            [subView removeFromSuperview];
+    }
+}
+
+-(id<MKAnnotation>)addAnnotationWithWGPhoto:(WGPhoto *)photo
+{
+    CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithPhoto:photo];
+    [_mapView addAnnotation:annotation];
+    return annotation;
+}
+
+//This delegate method is called EVERYTIME WE call [_mapView addAnnotation].. so think data flow... we'll only addAnnotation to pictures we want to display. BINGO.
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+    
+    //Include logic here to choose correct view of appropriate type of annotation object (Later on we'll highlight specific icons (red for liked, yellow for popular, blue for etc.)
+    
+    //Based on apple documentation... an annotation view is either an annotation (a pin/custom) or an overlay (think traffic lines/w/e) I have no idea what this means to us.
+    
+    static NSString *identifier = @"CustomViewAnnotation";
+
+    //MKUserLocation is considered an annotation and we don't want to change that so just return no view
+    if ([annotation isKindOfClass:[MKUserLocation class]])
+        return nil;
+    
+    
+    dispatch_queue_t queue;
+    queue = dispatch_queue_create("com.example.MyQueue", NULL);
+    
+    //if possible, reuse annotation views from before (with the same identifier) (I think for most of our cases.. we'll have to recreate a new annotationView (if I'm interpreting how its being used correctly..)
+    MKAnnotationView *annotationView = (MKAnnotationView *)[_mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
+    
+    //We create some data object from the stringURL of the picture. (we cast to type customaAnnotation because we KNOW FOR CERTAIN that the only object we'll have is of CustomAnnotion so cast is ok)
+    NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:[(CustomAnnotation *)annotation imageURL]]];
+    
+    
+    //If we don't have any annotationView... create one.
+    if (!annotationView)
+    {
+        NSLog(@"making new MKAnnotationView");
+        annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
+        
+        //create the image and assign it to the annotationView
+        UIImage *theImage = [[UIImage alloc] initWithData:data scale:2.0];
+        //make image annotation look pretty
+        theImage = [self makeImagePretty:theImage];
+        annotationView.image = theImage;
+        
+    }
+    else
+    {
+        //else reuse it
+        annotationView.annotation  = annotation;
+    }
+    annotationView.enabled = YES;
+    annotationView.canShowCallout = NO; //Revert to yes later?
+    
+    
+    return annotationView;
+}
+
 -(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
     
@@ -410,8 +533,27 @@ const NSInteger METERS_PER_MILE = 1609.344;
 
 -(void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered
 {
+    //god damn: https://developer.apple.com/library/ios/documentation/General/Conceptual/ConcurrencyProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40008091-CH1-SW1
+    dispatch_queue_t queue;
+    queue = dispatch_queue_create("com.example.MyQueue", NULL);
+    dispatch_async(queue, ^{
+        //Asynchronous work
+        
+    });
+    
     CLLocationCoordinate2D locationOf = [_mapView getCurrentLocationOfMap];
-    [_mapView findAllImagesOnMapInRange:20 inLatitude:locationOf.latitude andLongitude:locationOf.longitude];
+    [_mapView findAllImagesOnMapInRange:100 inLatitude:locationOf.latitude andLongitude:locationOf.longitude];
+    [self loadAllPictures];
+    
+    //How to concur/
+   // dispatch_async(dispatch_get_main_queue(), ^{
+    //Need to say... after data loaded then loadAllPictures. and do that concurrently
+       
+    
+       
+   // });
+    
+    
 }
 
 -(void)mapViewWillStartLoadingMap:(MKMapView *)mapView
@@ -510,6 +652,15 @@ const NSInteger METERS_PER_MILE = 1609.344;
     return cell;
 }
 
-
-
+/* NOT SURE ABOUT THIS YET
+#pragma mark -IGRequest Delegate
+-(void)request:(IGRequest *)request didLoad:(id)result
+{
+    NSLog(@"MapView got some result!");
+    if ([result isKindOfClass:[WGMap class]])
+    {
+        [self performSelector:@selector(loadAllPictures)];
+    }
+}
+*/
 @end

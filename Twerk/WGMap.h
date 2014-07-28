@@ -16,7 +16,8 @@
 @interface WGMap : MKMapView <IGRequestDelegate>
 
 
-@property (strong, nonatomic) NSMutableArray *possiblePics;
+@property (strong, nonatomic) NSMutableArray *possiblePics; //in data form
+@property (strong, nonatomic) NSMutableArray *actualPics; //of WGPHOTO type
 
 
 -(void)findAllImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance)latitude andLongitude:(CLLocationDistance)longitude; //determine possible pictures in a region and put in an array
