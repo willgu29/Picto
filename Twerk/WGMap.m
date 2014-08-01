@@ -15,13 +15,31 @@ static const int ONE_DAY_IN_SECONDS = 86400;
 
 
 
--(CLLocationCoordinate2D) getCurrentLocationOfMap
+-(void) getCurrentLocationOfMap
 {
     //A CLLocationCoordinate2D is made of a latitude and longitude. Every map knows where its centerCoordinate is (where it's currently viewing)
-    CLLocationCoordinate2D location = self.centerCoordinate;
-    return location;
+    _currentLocation = self.centerCoordinate;
 }
 
+-(CLLocationCoordinate2D) getTopCenterCoordinate
+{
+    CLLocationCoordinate2D topCenter = [self convertPoint:CGPointMake(self.frame.size.width/2.0f, 0) toCoordinateFromView:self];
+    return topCenter;
+}
+
+- (CLLocationDistance)getRadius
+{
+    [self getCurrentLocationOfMap];
+    // init center location from center coordinate
+    CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:_currentLocation.latitude longitude:_currentLocation.longitude];
+    
+    CLLocationCoordinate2D topCenterCoor = [self getTopCenterCoordinate];
+    CLLocation *topCenterLocation = [[CLLocation alloc] initWithLatitude:topCenterCoor.latitude longitude:topCenterCoor.longitude];
+    
+    CLLocationDistance radius = [centerLocation distanceFromLocation:topCenterLocation];
+    
+    return radius;
+}
 
 //For finding pictures in the currently show region. We'll have to determine the latitude and longitude (easy since of previous method) but also how many meters the view is currently representing.  (There is probably a method for this too) (Actually there is... but I'm on a plane so I can't search for it.)
 //This method only finds pictures posted within 24 hours, searching friends/locations should display pictures regardless of time.
@@ -55,6 +73,8 @@ static const int ONE_DAY_IN_SECONDS = 86400;
 - (void)request:(IGRequest *)request didLoad:(id)result {
     NSLog(@"Instagram did load: %@", result);
     self.possiblePics = (NSMutableArray*)[result objectForKey:@"data"];
+    //Let everyone know that you've gotten the images loaded
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Images Loaded" object:self];
 }
 
 - (void)request:(IGRequest *)request didFailWithError:(NSError *)error {

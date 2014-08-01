@@ -18,13 +18,16 @@
 
 @property (strong, nonatomic) NSMutableArray *possiblePics; //in data form
 @property (strong, nonatomic) NSMutableArray *actualPics; //of WGPHOTO type
-
+@property (nonatomic) CLLocationCoordinate2D currentLocation; //where we are centered at
 
 -(void)findAllImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance)latitude andLongitude:(CLLocationDistance)longitude; //determine possible pictures in a region and put in an array
 
 
+-(void)getCurrentLocationOfMap;
 
--(CLLocationCoordinate2D)getCurrentLocationOfMap;
+-(CLLocationCoordinate2D)getTopCenterCoordinate;
+
+-(CLLocationDistance)getRadius;
 
 -(CLLocationCoordinate2D)determineBestPhotoLocationOfFriend:(Friend *)someFriend;
 

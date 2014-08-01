@@ -20,7 +20,12 @@
 @property (nonatomic, readonly, copy) NSString *subtitle;
 @property (nonatomic, readonly, copy) NSString *title;
 @property (nonatomic, readonly) UIColor* color;
+@property (nonatomic, readonly) UIImage *image;
+@property (nonatomic, readonly) UIImage *imageEnlarged;
+//@property (nonatomic, readonly) type video??
 
 -(instancetype)initWithPhoto:(WGPhoto *)photo;
+-(void)createNewImage;
+-(UIImage *)makeImagePretty:(UIImage *)image;
 
 @end
