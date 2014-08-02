@@ -27,7 +27,7 @@ static const int ONE_DAY_IN_SECONDS = 86400;
     return topCenter;
 }
 
-- (CLLocationDistance)getRadius
+- (void)getRadius
 {
     [self getCurrentLocationOfMap];
     // init center location from center coordinate
@@ -38,7 +38,7 @@ static const int ONE_DAY_IN_SECONDS = 86400;
     
     CLLocationDistance radius = [centerLocation distanceFromLocation:topCenterLocation];
     
-    return radius;
+    _radius = radius;
 }
 
 //For finding pictures in the currently show region. We'll have to determine the latitude and longitude (easy since of previous method) but also how many meters the view is currently representing.  (There is probably a method for this too) (Actually there is... but I'm on a plane so I can't search for it.)
@@ -51,8 +51,7 @@ static const int ONE_DAY_IN_SECONDS = 86400;
     CFTimeInterval yesterday = now - 86400; //Should be yesterday... check this
     
     
-    //just creates a pointer to our app delegate. Nothing else to understand in this code
-    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    
     
    
     NSLog(@"%f %f",latitude, longitude);
@@ -63,16 +62,24 @@ static const int ONE_DAY_IN_SECONDS = 86400;
     //Creating a NSMutableDictionary, change the 1st @".." to the method you want to call from the instagram API. (Check instagram API console for more formatting)
     NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"media/search?lat=%f&lng=%f&distance=%ld",latitude, longitude,(long)rangeInMeters], @"method", nil];
     
+    //just creates a pointer to our app delegate. Nothing else to understand in this code
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
     //send the instagram property in our appdelehate.h this message "reqeustWithParams: delegate" (based on the instagram iOS SDK
     [appDelegate.instagram requestWithParams:params
                                     delegate:self];
     
 }
 
+-(void)findPopularImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance)latitude andLongitude:(CLLocationDistance)longitude; //determine possible pictures in a region and put in an array
+{
+    
+}
+
 //Same as User.m IGRequestDelegate
 - (void)request:(IGRequest *)request didLoad:(id)result {
     NSLog(@"Instagram did load: %@", result);
-    self.possiblePics = (NSMutableArray*)[result objectForKey:@"data"];
+    self.possiblePics = (NSMutableArray*)[result objectForKey:@"data"]; //Notice this is an NSMutableArray
+    NSLog(@"%lu",(unsigned long)[self.possiblePics count]);
     //Let everyone know that you've gotten the images loaded
     [[NSNotificationCenter defaultCenter] postNotificationName:@"Images Loaded" object:self];
 }

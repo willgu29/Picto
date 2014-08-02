@@ -16,6 +16,12 @@
 
 const NSInteger METERS_PER_MILE = 1609.344;
 
+enum {
+    ALL = 1,
+    POPULAR = 2,
+    
+};
+typedef NSInteger Type;
 
 @interface MapViewController ()
 
@@ -47,6 +53,18 @@ const NSInteger METERS_PER_MILE = 1609.344;
 -(void)mapLocationSettled
 {
     [_mapView getCurrentLocationOfMap];
+}
+
+-(void)selectMethodForType:(NSInteger)type
+{
+    if (type == ALL)
+    {
+        [_mapView findAllImagesOnMapInRange:(_mapView.radius/2) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
+    }
+    else if (type == POPULAR)
+    {
+        
+    }
 }
 
 /*
@@ -129,8 +147,14 @@ const NSInteger METERS_PER_MILE = 1609.344;
 }
 */
 
--(void)loadAllPictures
+-(void)loadPictures
 {
+    [self loadAll];
+}
+
+-(void)loadAll
+{
+    //do all this stuff in a different thread
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         for (id pictureURL in _mapView.possiblePics)
         {
@@ -154,7 +178,7 @@ const NSInteger METERS_PER_MILE = 1609.344;
             
             //OR save object as video WGVideo subclass.. (not made yet)
             
-            [_mapView.actualPics addObject:photo];
+            [_mapView.actualPics addObject:photo]; //THIS IS NOT BEING USED RIGHT NOW.
             
             //do this when done loading.. on main thread
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -167,7 +191,12 @@ const NSInteger METERS_PER_MILE = 1609.344;
         }
     });
 }
- 
+
+-(void)loadPopular
+{
+    
+}
+
 -(void)placePicturePin:(WGPhoto *)image
 {
     //cool animations anytime bro
@@ -195,7 +224,9 @@ const NSInteger METERS_PER_MILE = 1609.344;
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    
+    //if holding and on an annotation, call the mapView, didSelectAnnotation method
+    //if holding and off annotation, call the mapView, didUnselectAnnotation method
+    //... if user taps an annotation it should zoom in. so in didSelectAnnotation (detect if touch is tap to just return)... we'll define our own custom behavior in another method.
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -265,7 +296,7 @@ const NSInteger METERS_PER_MILE = 1609.344;
     /*[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(findAllImagesOnMapInRange:inLatitude:andLongitude:) name:@"Location Found" object:nil];*/ //this operation is assumed to be fast so we probably don't need this
     
     //Tell our VC to watch for a notification called "Images Loaded" and call loadAllPictures when heard.
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadAllPictures) name:@"Images Loaded" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPictures) name:@"Images Loaded" object:nil];
     
     
 }
@@ -304,7 +335,7 @@ const NSInteger METERS_PER_MILE = 1609.344;
         NSLog(@"PICTURE URL??:: %@", [obj valueForKeyPath:@"images.thumbnail.url"]); //WzOOOTT
         //NSLog(@"%@", obj);
     }
-    [self loadAllPictures];
+    [self loadPictures];
     
 }
 
@@ -638,15 +669,7 @@ const NSInteger METERS_PER_MILE = 1609.344;
 -(void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered
 {
     //god damn: https://developer.apple.com/library/ios/documentation/General/Conceptual/ConcurrencyProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40008091-CH1-SW1
-    dispatch_queue_t queue;
-    queue = dispatch_queue_create("com.example.MyQueue", NULL);
-    dispatch_async(queue, ^{
-        //Asynchronous work
-        
-    });
-   // NSOperationQueue *qtf = [[NSOperationQueue alloc] init];
-   // NSOperationQueue *holu =  [[NSOperationQueue alloc] init];
-  //  [qtf addOperations:<#(NSArray *)#> waitUntilFinished:<#(BOOL)#>
+    
     
     [_mapView getCurrentLocationOfMap];
     
@@ -658,9 +681,17 @@ const NSInteger METERS_PER_MILE = 1609.344;
         [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:50 withLongitude:50 withMap:_mapView];
     }
     
-    CLLocationDistance radius = [_mapView getRadius];
-    NSLog(@"RADIUS: %f", radius);
-    [_mapView findAllImagesOnMapInRange:(radius/2) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
+    [_mapView getRadius];
+    NSLog(@"RADIUS: %f", _mapView.radius);
+    
+    //if we want all pictures set to all etc etc.
+    NSInteger type = ALL;
+    
+    
+    [self selectMethodForType:type];
+    
+    //[_mapView findAllImagesOnMapInRange:(_mapView.radius/2) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
+    
     //[self loadAllPictures];
     
     //How to concur/
