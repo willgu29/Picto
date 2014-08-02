@@ -72,7 +72,7 @@ static const int ONE_DAY_IN_SECONDS = 86400;
 
 -(void)findPopularImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance)latitude andLongitude:(CLLocationDistance)longitude; //determine possible pictures in a region and put in an array
 {
-    
+    //TODO: Figure how to implement this
 }
 
 //Same as User.m IGRequestDelegate
