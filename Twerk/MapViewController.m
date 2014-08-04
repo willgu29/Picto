@@ -596,7 +596,8 @@ typedef NSInteger Type;
     if ([annotation isKindOfClass:[MKUserLocation class]])
         return nil;
     
-    
+    if ([annotation isKindOfClass:[MKPointAnnotation class]])
+         return nil;
    // dispatch_queue_t queue;
     //queue = dispatch_queue_create("com.example.MyQueue", NULL);
     
@@ -674,12 +675,7 @@ typedef NSInteger Type;
     [_mapView getCurrentLocationOfMap];
     
     //This happens if we couldn't load the map properly (user didn't allow location), so rezoom to user location.
-    if (_mapView.currentLocation.longitude == 0 && _mapView.currentLocation.latitude == 0) //Get new location
-    {
-        [_someUser getCurrentLocationOnMap:_mapView]; //get location of user
-        //zoom to user location on map
-        [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:50 withLongitude:50 withMap:_mapView];
-    }
+    
     
     [_mapView getRadius];
     NSLog(@"RADIUS: %f", _mapView.radius);
