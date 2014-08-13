@@ -14,9 +14,98 @@
 @interface LoginViewController ()
 
 
+@property (nonatomic, strong) IBOutlet UIPageControl *pageControl;
+@property (nonatomic, strong) IBOutlet UIView *currentPage;
+@property (nonatomic, strong) IBOutlet UILabel *text;
+
 @end
 
 @implementation LoginViewController
+
+
+
+-(IBAction)tap:(id)sender
+{
+    if (_pageControl.currentPage == 2)
+    {
+        //do nothing... no pages left
+    }
+    else
+    {
+        [self animateToPage:(_pageControl.currentPage + 1)];
+        _pageControl.currentPage++;
+    }
+}
+
+-(IBAction)swipeRight:(id)sender
+{
+    if (_pageControl.currentPage == 0)
+    {
+        //do nothing... no pages left
+    }
+    else
+    {
+        [self animateToPage:(_pageControl.currentPage - 1)];
+        _pageControl.currentPage--;
+    }
+    
+}
+
+-(IBAction)swipeLeft:(id)sender
+{
+    NSLog(@"Left?");
+    if (_pageControl.currentPage == 2)
+    {
+        //do nothing... no pages left
+    }
+    else
+    {
+        [self animateToPage:(_pageControl.currentPage + 1)];
+        _pageControl.currentPage++;
+    }
+}
+
+-(void)animateToPage:(NSUInteger)pageNumber
+{
+    NSLog(@"ANIMATE YO");
+    //animate and display page
+    //TODO:
+    
+    //animate text
+    self.text.alpha = 0;
+    [UIView animateWithDuration:1.0 delay:0 options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{ self.text.alpha = 1;}
+                     completion:nil];
+    
+    UIImageView *view = [[UIImageView alloc] initWithFrame:_currentPage.bounds];
+    UIImage *image = [[UIImage alloc] init];
+    if (pageNumber == 0)
+    {
+        image = [UIImage imageNamed:@"lulsides.png"];
+        self.text.text = @"LOL SIDES";
+    }
+    else if (pageNumber == 1)
+    {
+        image = [UIImage imageNamed:@"getfucked.png"];
+        self.text.text = @"GET FUCKED";
+    }
+    else if (pageNumber == 2)
+    {
+        image = [UIImage imageNamed:@"wouldbang.png"];
+        self.text.text = @"WOULD BANG";
+    }
+    else
+    {
+        //well shit
+    }
+    
+    
+    
+    [view setImage:image];
+    [_currentPage addSubview:view];
+    
+    
+}
 
 //Will go to map view
 -(IBAction)goMainVC:(UIButton *)sender
@@ -69,6 +158,16 @@
     
     //assign delegate to self (IGSessionDelegate)
     appDelegate.instagram.sessionDelegate = self;
+    
+    
+    //Our page controller
+    _pageControl.currentPage = 0;
+    [self animateToPage:0];
+    _pageControl.numberOfPages = 3;
+   // UIImage *image = [[UIImage alloc] init];
+    
+
+    
     
     //Later on we'll need to let users sign out of the app... the only problem is we're presenting the view controller modally right now and that only allows you to go "1 layer deep" or so I think... i.e. The presenting vc has to dismiss the presented vc.  If we have a logout in the settings page or something we'll have to somehow dismiss the presented vc controllers twice (one for the settings page and one for the map view main)...
         //TLDR:  We need to switch over to a navigation view controller container. (I think) We'll do this later.

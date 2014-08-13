@@ -6,6 +6,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController">
             <connections>
+                <outlet property="currentPage" destination="UUb-DQ-bOu" id="QXH-N5-rGd"/>
+                <outlet property="pageControl" destination="RAE-Fb-cWP" id="wQQ-8o-yK5"/>
+                <outlet property="text" destination="Jml-eq-jaA" id="qGj-fV-i1r"/>
                 <outlet property="view" destination="f79-2S-4Hd" id="oXq-ws-7uZ"/>
             </connections>
         </placeholder>
@@ -25,7 +28,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Se2-YZ-ipg">
-                    <rect key="frame" x="96" y="218" width="129" height="30"/>
+                    <rect key="frame" x="96" y="496" width="129" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Login to Instagram">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -35,7 +38,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b8X-xr-mKo">
-                    <rect key="frame" x="98" y="308" width="124" height="30"/>
+                    <rect key="frame" x="20" y="518" width="124" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Logout for Testing">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -44,10 +47,49 @@
                         <action selector="logOutInsta:" destination="-1" eventType="touchUpInside" id="SJh-ss-Erh"/>
                     </connections>
                 </button>
+                <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="RAE-Fb-cWP">
+                    <rect key="frame" x="131" y="467" width="59" height="37"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="pageIndicatorTintColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="currentPageIndicatorTintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                </pageControl>
+                <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UUb-DQ-bOu">
+                    <rect key="frame" x="0.0" y="28" width="320" height="408"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="CtV-mW-x4d" appends="YES" id="W2w-Oz-Kbk"/>
+                        <outletCollection property="gestureRecognizers" destination="pqd-D5-MGB" appends="YES" id="nlQ-dm-bDL"/>
+                        <outletCollection property="gestureRecognizers" destination="Miw-DT-Ika" appends="YES" id="yCx-f7-htR"/>
+                    </connections>
+                </view>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Holder" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jml-eq-jaA">
+                    <rect key="frame" x="20" y="450" width="280" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
+        <tapGestureRecognizer id="CtV-mW-x4d">
+            <connections>
+                <action selector="tap:" destination="-1" id="9JO-MY-hCF"/>
+            </connections>
+        </tapGestureRecognizer>
+        <swipeGestureRecognizer direction="right" id="pqd-D5-MGB">
+            <connections>
+                <action selector="swipeRight:" destination="-1" id="PcO-Sp-nTn"/>
+            </connections>
+        </swipeGestureRecognizer>
+        <swipeGestureRecognizer direction="left" id="Miw-DT-Ika">
+            <connections>
+                <action selector="swipeLeft:" destination="-1" id="Ols-1F-Rs6"/>
+            </connections>
+        </swipeGestureRecognizer>
     </objects>
 </document>

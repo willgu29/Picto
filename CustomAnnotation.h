@@ -25,6 +25,7 @@
 //@property (nonatomic, readonly) type video??
 
 -(instancetype)initWithPhoto:(WGPhoto *)photo;
+//-(instancetype)initWithVideo:(WGVideo *)video;
 -(void)createNewImage;
 -(UIImage *)makeImagePretty:(UIImage *)image;
 

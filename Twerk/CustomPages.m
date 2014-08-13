@@ -1,15 +1,14 @@
 //
-//  CustomCallout.m
+//  CustomPages.m
 //  Picto
 //
-//  Created by William Gu on 7/27/14.
+//  Created by William Gu on 8/12/14.
 //  Copyright (c) 2014 William Gu. All rights reserved.
 //
 
-#import "CustomCallout.h"
+#import "CustomPages.h"
 
-
-@implementation CustomCallout
+@implementation CustomPages
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -19,7 +18,6 @@
     }
     return self;
 }
-
 
 /*
 // Only override drawRect: if you perform custom drawing.

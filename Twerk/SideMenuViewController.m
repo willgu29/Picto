@@ -50,7 +50,7 @@
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     [appDelegate.instagram logout];
     LoginViewController *loginVC = [[LoginViewController alloc]init];
-    [self presentViewController:loginVC animated:YES completion:nil]; //THIS IS INCORRECT, MAKE AN NAVIGATION CONTROLLER AND REVAMP THE WHOLE APP NAVIGATION.
+    [self presentViewController:loginVC animated:YES completion:nil]; //THIS IS INCORRECT, MAKE AN NAVIGATION CONTROLLER AND REVAMP THE WHOLE APP NAVIGATION.(OR  as long as we let go of views that we no longer use this is ok, but we don't currently...)
 }
 
 @end

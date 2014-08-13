@@ -341,9 +341,21 @@ typedef NSInteger Type;
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    
     [_someUser getCurrentLocationOnMap:_mapView]; //get location of user
     //zoom to user location on map
-    [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:50 withLongitude:50 withMap:_mapView];
+    CLLocationDistance lat = 50;
+    CLLocationDistance lng = 50;
+    
+    //IF LOCATION = 0.00, 0.00 (Lat/lng) WAIT.
+    if (_someUser.currentLocation.coordinate.latitude == 0 && _someUser.currentLocation.coordinate.longitude)
+    {
+        NSLog(@"Tell me something happened");
+        _someUser.currentLocation.coordinate = CLLocationCoordinate2DMake(40, 98);
+                                                
+    }
+    
+    [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:lat withLongitude:lng withMap:_mapView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -530,7 +542,7 @@ typedef NSInteger Type;
 -(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
     NSLog(@"Tapped it!");
-    if (![view.annotation isKindOfClass:[MKUserLocation class]])
+    if (![view.annotation isKindOfClass:[MKUserLocation class]] && ![view.annotation isKindOfClass:[MKPointAnnotation class]])
     {
         CustomCallout *calloutView = (CustomCallout *)[[[NSBundle mainBundle] loadNibNamed:@"calloutView" owner:self options:nil] objectAtIndex:0];
         CGRect calloutViewFrame  = calloutView.frame;
@@ -652,6 +664,18 @@ typedef NSInteger Type;
     annotationView.enabled = YES;
     annotationView.canShowCallout = NO; //Revert to yes later?
     
+    
+    
+    //Makes pictures circular
+    annotationView.layer.cornerRadius = annotationView.frame.size.height/2;
+    annotationView.layer.masksToBounds = YES;
+ 
+    //Makes border
+    annotationView.layer.borderWidth = 3.0f;
+    annotationView.layer.borderColor = [UIColor whiteColor].CGColor;
+
+    
+   // annotationView.backgroundColor = [UIColor clearColor];
     
     return annotationView;
 }
