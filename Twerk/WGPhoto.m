@@ -28,5 +28,22 @@
     return self;
 }
 
+-(instancetype)initWithLocation:(CLLocationCoordinate2D)location andImageURL:(NSString *)imageURL andEnlarged:(NSString *)imageURLEnlarged andOwner:(NSString *)owner andLikes:(NSString *)likes
+{
+    self = [super init];
+    
+    if (self)
+    {
+        _photoURL = imageURL;
+        _photoURLEnlarged = imageURLEnlarged;
+        _locationOfPicture = location;
+        _userDidView = NO;
+        _likes = likes;
+        _ownerOfPhoto = owner;
+    }
+    
+    return self;
+}
+
 
 @end

@@ -22,7 +22,8 @@
     _imageEnlarged = nil;
     _coordinate = photo.locationOfPicture;
     _title = @"Whatever the dick photo says"; //change this to whatever the picture should say
-    
+    _ownerOfPhoto = photo.ownerOfPhoto;
+    _numberOfLikes = photo.likes;
     return self;
 }
 

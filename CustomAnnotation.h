@@ -22,6 +22,9 @@
 @property (nonatomic, readonly) UIColor* color;
 @property (nonatomic, readonly) UIImage *image;
 @property (nonatomic, readonly) UIImage *imageEnlarged;
+@property (nonatomic, readonly) NSString *ownerOfPhoto;
+@property (nonatomic, readonly) NSString *locationOfPhoto;
+@property (nonatomic, readonly) NSString *numberOfLikes;
 //@property (nonatomic, readonly) type video??
 
 -(instancetype)initWithPhoto:(WGPhoto *)photo;

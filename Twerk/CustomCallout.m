@@ -20,6 +20,20 @@
     return self;
 }
 
+-(IBAction)like:(id)sender
+{
+    //TODO: Like this picture!
+}
+
+
+-(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image;
+{
+    _infoText.text = [NSString stringWithFormat:@"%@'s Photo",owner];
+    _likes.text = [NSString stringWithFormat:@"%@ likes",likes];
+    [_image setImage:image];
+}
+
+
 
 /*
 // Only override drawRect: if you perform custom drawing.

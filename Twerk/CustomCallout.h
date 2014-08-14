@@ -13,8 +13,13 @@
 @interface CustomCallout : UIView
 
 @property (weak, nonatomic) IBOutlet UILabel *infoText;
-@property (weak, nonatomic) NSString *friendName;
-@property (weak, nonatomic) NSString *locationName;
 @property (weak, nonatomic) IBOutlet UIImageView *image;
+@property (weak, nonatomic) IBOutlet UILabel *likes;
+@property (weak, nonatomic) IBOutlet UIButton *likeButton;
+@property (weak, nonatomic) IBOutlet UIButton *nextPicture;
+@property (weak, nonatomic) IBOutlet UIButton *prevPicture;
+@property (nonatomic) BOOL userLiked; //TODO: fetch if userLiked picture from WGPhoto to annotation
+
+-(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image;
 
 @end

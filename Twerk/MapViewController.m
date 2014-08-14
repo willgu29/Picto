@@ -173,8 +173,11 @@ typedef NSInteger Type;
             //CONVERT from CLLocationDegrees TO CLLocationCoordinate2D
             CLLocationCoordinate2D location = CLLocationCoordinate2DMake(lat, lng);
             
+            NSString *owner = [pictureURL valueForKeyPath:@"user.full_name"];
+            NSString *likes = [pictureURL valueForKeyPath:@"likes.count"];
+            
             //Save this object in an array of currently displayed photos
-            WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged];
+            WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged andOwner:owner andLikes:likes];
             
             //OR save object as video WGVideo subclass.. (not made yet)
             
@@ -548,13 +551,23 @@ typedef NSInteger Type;
         CGRect calloutViewFrame  = calloutView.frame;
         calloutViewFrame.origin = CGPointMake(0,self.view.frame.size.height/6);//CGPointMake(-calloutViewFrame.size.width/2 + 15, -calloutViewFrame.size.height);
         calloutView.frame = calloutViewFrame;
-        [calloutView.infoText setText:@"BLAHBLAHBLAHFRIENDLOC"]; //TODO: Grab user name and location
+        
         
         CustomAnnotation *someAnnotation = view.annotation;
-        
         NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[someAnnotation imageURLEnlarged]]];
         UIImage *image1 = [[UIImage alloc] initWithData:data];
-        [calloutView.image setImage:image1];
+        
+        
+        //Setup the annotation info here
+        //[calloutView.infoText setText:[NSString stringWithFormat:@"%@'s Photo",someAnnotation.ownerOfPhoto]];
+        //[calloutView.infoText setText:[NSString stringWithFormat:@"%@ likes",someAnnotation.numberOfLikes]];
+       // [calloutView.image setImage:image1];
+        
+        
+        [calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1];
+        
+        //[calloutView.infoText setText:@"BLAHBLAHBLAHFRIENDLOC"]; //TODO: Grab user name and location
+        //[calloutView.image setImage:image1];
         [self.view addSubview:calloutView]; //added it to the main view so it will always display picture at center of screen... can change this (replace self.view with view (the MKAnnotationView)
     }
 }
