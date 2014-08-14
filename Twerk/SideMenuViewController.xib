@@ -40,13 +40,19 @@
                     <state key="normal" title="Switch to Recent Pictures Only">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="presentRecent:" destination="-1" eventType="touchUpInside" id="ceJ-JN-bgh"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vdb-Xe-7bu">
-                    <rect key="frame" x="87" y="186" width="146" height="30"/>
+                    <rect key="frame" x="87" y="110" width="146" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Switch to All Pictures">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="presentAll:" destination="-1" eventType="touchUpInside" id="Lzp-P6-LEG"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>

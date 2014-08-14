@@ -20,7 +20,7 @@
     return self;
 }
 
--(IBAction)like:(id)sender
+-(IBAction)like:(id)sender //Action read is Touch Drag Inside
 {
     //TODO: Like this picture!
 }

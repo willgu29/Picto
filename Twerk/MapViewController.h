@@ -28,7 +28,7 @@
 @property (strong, nonatomic) IBOutlet WGMap *mapView; //custom map view with new methods to use!
 
 @property (strong, nonatomic) IBOutlet UITextField *searchField; //There's actually a UISearchBar class (oops)... we can switch this out later. Should be simple since UISearchBar is a subclass of UITextField...
-
+@property (nonatomic) NSInteger globalType;
 
 @end
 

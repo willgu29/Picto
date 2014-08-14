@@ -18,12 +18,14 @@ const NSInteger METERS_PER_MILE = 1609.344;
 
 enum {
     ALL = 1,
-    POPULAR = 2,
+    RECENT = 2,
+    POPULAR = 3,
     
 };
 typedef NSInteger Type;
 
 @interface MapViewController ()
+
 
 @property (strong, nonatomic) IBOutlet UITableView *autoCompleteTableView;
 @property (strong, nonatomic) User *someUser;
@@ -59,11 +61,16 @@ typedef NSInteger Type;
 {
     if (type == ALL)
     {
+        NSLog(@"ALL");
         [_mapView findAllImagesOnMapInRange:(_mapView.radius/2) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
+    }
+    else if (type == RECENT)
+    {
+        NSLog(@"RECENT");
     }
     else if (type == POPULAR)
     {
-        
+        NSLog(@"POPULAR");
     }
 }
 
@@ -300,6 +307,10 @@ typedef NSInteger Type;
     
     //Tell our VC to watch for a notification called "Images Loaded" and call loadAllPictures when heard.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPictures) name:@"Images Loaded" object:nil];
+    
+    //By default set the type of pictures to display as all
+    _globalType = ALL;
+    //TODO: Load the user's last saved state
     
     
 }
@@ -718,10 +729,10 @@ typedef NSInteger Type;
     NSLog(@"RADIUS: %f", _mapView.radius);
     
     //if we want all pictures set to all etc etc.
-    NSInteger type = ALL;
     
     
-    [self selectMethodForType:type];
+    
+    [self selectMethodForType:_globalType];
     
     //[_mapView findAllImagesOnMapInRange:(_mapView.radius/2) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
     

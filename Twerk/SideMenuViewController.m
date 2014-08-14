@@ -40,6 +40,17 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(IBAction)presentAll:(id)sender
+{
+    [(MapViewController *)self.presentingViewController setGlobalType:1];
+}
+
+-(IBAction)presentRecent:(id)sender
+{
+    [(MapViewController *)self.presentingViewController setGlobalType:2];
+}
+
+
 -(IBAction)backButton:(UIButton *) button
 {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];

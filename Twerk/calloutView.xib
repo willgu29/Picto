@@ -43,6 +43,9 @@
                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="like:" destination="iN0-l3-epB" eventType="touchDragInside" id="H4H-09-tC7"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jp3-OR-TEn">
                     <rect key="frame" x="227" y="301" width="47" height="30"/>
@@ -58,8 +61,10 @@
             <connections>
                 <outlet property="image" destination="cHd-kl-yuX" id="irY-LM-zhE"/>
                 <outlet property="infoText" destination="5Bf-Q8-wob" id="kOq-m5-tjU"/>
-                <outlet property="likeButton" destination="gkP-EK-bhi" id="3pP-eo-8E7"/>
-                <outlet property="likes" destination="W1N-Sk-Gl3" id="Gnl-N2-UOz"/>
+                <outlet property="likeButton" destination="gkP-EK-bhi" id="Hsb-rI-Cgh"/>
+                <outlet property="likes" destination="W1N-Sk-Gl3" id="4fv-SC-P6U"/>
+                <outlet property="nextPicture" destination="ROc-tw-T2x" id="2gx-3T-JST"/>
+                <outlet property="prevPicture" destination="jp3-OR-TEn" id="XKF-28-qYz"/>
             </connections>
         </view>
     </objects>
