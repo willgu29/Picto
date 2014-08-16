@@ -9,10 +9,11 @@
 #import "WGMap.h"
 #import "AppDelegate.h"
 
-static const int ONE_DAY_IN_SECONDS = 86400;
+
 
 @implementation WGMap
 
+static const int SECONDS_IN_A_DAY = 86400;
 
 
 -(void) getCurrentLocationOfMap
@@ -46,14 +47,6 @@ static const int ONE_DAY_IN_SECONDS = 86400;
 -(void)findAllImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance)latitude andLongitude:(CLLocationDistance)longitude
 {
     
-    //Since we'll need to limit our search to only 24 hours, we'll need CFTimeIntervals... these return the times in seconds.  You'll have to format this over to UNIX.
-    CFTimeInterval now = CACurrentMediaTime();
-    CFTimeInterval yesterday = now - 86400; //Should be yesterday... check this
-    
-    
-    
-    
-   
     NSLog(@"%f %f",latitude, longitude);
     
     //Ignore this exampleish code
@@ -61,6 +54,24 @@ static const int ONE_DAY_IN_SECONDS = 86400;
     
     //Creating a NSMutableDictionary, change the 1st @".." to the method you want to call from the instagram API. (Check instagram API console for more formatting)
     NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"media/search?lat=%f&lng=%f&distance=%ld",latitude, longitude,(long)rangeInMeters], @"method", nil];
+    
+    //just creates a pointer to our app delegate. Nothing else to understand in this code
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    //send the instagram property in our appdelehate.h this message "reqeustWithParams: delegate" (based on the instagram iOS SDK
+    [appDelegate.instagram requestWithParams:params
+                                    delegate:self];
+    
+}
+
+//Recent is defined as within a day
+-(void)findRecentImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance) latitude andLongitude:(CLLocationDistance) longitude
+{
+    
+    time_t todayInUnix = (time_t) [[NSDate date] timeIntervalSince1970];
+    time_t yesterdayInUnix = todayInUnix - SECONDS_IN_A_DAY;
+    
+    
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"media/search?lat=%f&lng=%f&max_timestamp=%ld&min_timestamp=%ld&distance=%ld",latitude, longitude,todayInUnix, yesterdayInUnix, (long)rangeInMeters], @"method", nil];
     
     //just creates a pointer to our app delegate. Nothing else to understand in this code
     AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;

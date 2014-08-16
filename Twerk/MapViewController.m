@@ -39,8 +39,56 @@ typedef NSInteger Type;
 
 @implementation MapViewController
 
+
+
+//our own custom setter
+-(void)setGlobalType:(NSInteger)globalType
+{
+    _globalType = globalType;
+    [self configureInfoText:_globalType];
+    
+}
+
+-(void)setOnlyFriends:(BOOL)onlyFriends
+{
+    _onlyFriends = onlyFriends;
+    [self configureInfoText:_globalType];
+}
+
+-(void)configureInfoText:(NSInteger)type
+{
+    NSString *textType = [self formatTypeToString:type];
+    if (_onlyFriends == YES)
+    {
+        _type.text = [NSString stringWithFormat:@"• %@   • FRIENDS",textType];
+    }
+    else
+    {
+        _type.text = [NSString stringWithFormat:@"• %@",textType];
+    }
+}
+
 #pragma mark -Helper functions
 
+- (NSString*)formatTypeToString:(NSInteger)typeInt {
+    NSString *result = nil;
+    
+    switch(typeInt) {
+        case ALL:
+            result = @"ALL";
+            break;
+        case RECENT:
+            result = @"RECENT";
+            break;
+        case POPULAR:
+            result = @"POPULAR";
+            break;
+        default:
+            [NSException raise:NSGenericException format:@"Unexpected FormatType."];
+    }
+    
+    return result;
+}
 
 -(void)zoomToRegion:(CLLocationCoordinate2D)coordinate withLatitude:(CLLocationDistance)latitude withLongitude:(CLLocationDistance)longitude withMap:(MKMapView *)map
 {
@@ -62,11 +110,12 @@ typedef NSInteger Type;
     if (type == ALL)
     {
         NSLog(@"ALL");
-        [_mapView findAllImagesOnMapInRange:(_mapView.radius/2) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
+        [_mapView findAllImagesOnMapInRange:(_mapView.radius/1.5) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
     }
     else if (type == RECENT)
     {
         NSLog(@"RECENT");
+         [_mapView findRecentImagesOnMapInRange:(_mapView.radius/1.5) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
     }
     else if (type == POPULAR)
     {
@@ -311,7 +360,7 @@ typedef NSInteger Type;
     //By default set the type of pictures to display as all
     _globalType = ALL;
     //TODO: Load the user's last saved state
-    
+    _onlyFriends = NO;
     
 }
 
@@ -365,10 +414,11 @@ typedef NSInteger Type;
     if (_someUser.currentLocation.coordinate.latitude == 0 && _someUser.currentLocation.coordinate.longitude)
     {
         NSLog(@"Tell me something happened");
-        _someUser.currentLocation.coordinate = CLLocationCoordinate2DMake(40, 98);
+        _someUser.currentLocation.coordinate = CLLocationCoordinate2DMake(40, 98); //Approx location center USA
                                                 
     }
     
+    //TODO: make so that it only zooms at start of session.
     [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:lat withLongitude:lng withMap:_mapView];
 }
 

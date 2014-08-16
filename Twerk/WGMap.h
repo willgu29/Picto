@@ -23,6 +23,8 @@
 
 -(void)findAllImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance)latitude andLongitude:(CLLocationDistance)longitude; //determine possible pictures in a region and put in an array
 
+-(void)findRecentImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance) latitude andLongitude:(CLLocationDistance) longitude;
+
 -(void)findPopularImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance)latitude andLongitude:(CLLocationDistance)longitude; //determine possible pictures in a region and put in an array
 
 

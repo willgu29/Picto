@@ -29,6 +29,8 @@
 
 @property (strong, nonatomic) IBOutlet UITextField *searchField; //There's actually a UISearchBar class (oops)... we can switch this out later. Should be simple since UISearchBar is a subclass of UITextField...
 @property (nonatomic) NSInteger globalType;
+@property (nonatomic) BOOL onlyFriends; //TODO: remember state (default no)
+@property (strong, nonatomic) IBOutlet UILabel *type; //TODO: set default to current type (at launch)
 
 @end
 

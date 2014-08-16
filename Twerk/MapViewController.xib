@@ -9,6 +9,7 @@
                 <outlet property="autoCompleteTableView" destination="nMw-Xq-3Dn" id="w5p-79-BaO"/>
                 <outlet property="mapView" destination="Pth-zs-LoA" id="pk8-ei-rzT"/>
                 <outlet property="searchField" destination="RAq-AA-wPQ" id="ml3-8W-dzS"/>
+                <outlet property="type" destination="9Ax-co-X8e" id="TH6-5T-biu"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -28,7 +29,7 @@
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="nMw-Xq-3Dn">
-                    <rect key="frame" x="35" y="67" width="274" height="265"/>
+                    <rect key="frame" x="17" y="88" width="274" height="265"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
@@ -43,6 +44,13 @@
                         <action selector="friendsButton:" destination="-1" eventType="touchUpInside" id="zMd-aK-ffc"/>
                     </connections>
                 </button>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="•ALL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Ax-co-X8e">
+                    <rect key="frame" x="25" y="62" width="144" height="10"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
