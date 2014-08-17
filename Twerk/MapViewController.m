@@ -203,6 +203,11 @@ typedef NSInteger Type;
 }
 */
 
+-(void)loadFollowing
+{
+    [_someUser retrieveWhoUserIsFollowingFromIG];
+}
+
 -(void)loadPictures
 {
     [self loadAll];
@@ -214,6 +219,14 @@ typedef NSInteger Type;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         for (id pictureURL in _mapView.possiblePics)
         {
+            //TODO: filtering here
+            if (_onlyFriends == YES)
+            {
+                //Get friends only, if not friends continue and get next picture.
+            }
+            
+            
+            
             //path find to thumbnail image... might want to do this in the modal.. NOT SURE. Will get back to you guys.
             NSString *stringURL = [pictureURL valueForKeyPath:@"images.thumbnail.url"];
             NSString *stringURLEnlarged = [pictureURL valueForKeyPath:@"images.standard_resolution.url"];
@@ -410,8 +423,9 @@ typedef NSInteger Type;
     CLLocationDistance lat = 50;
     CLLocationDistance lng = 50;
     
+    //TODO: FIX THIS
     //IF LOCATION = 0.00, 0.00 (Lat/lng) WAIT.
-    if (_someUser.currentLocation.coordinate.latitude == 0 && _someUser.currentLocation.coordinate.longitude)
+    if (_someUser.currentLocation == nil)
     {
         NSLog(@"Tell me something happened");
         _someUser.currentLocation.coordinate = CLLocationCoordinate2DMake(40, 98); //Approx location center USA

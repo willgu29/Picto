@@ -38,13 +38,24 @@
     
 }
 
+-(void)retrieveWhoUserIsFollowingFromIG
+{
+    //This line of code simply gets a pointer to our appDelegate
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    //Based on the instagram iOS SDK, check the Instagram API console for how to format requests
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"users/self/follows", @"method", nil];
+    //tell the property "Instagram" (also part of instagram iOS SDK) the message.. requestWithParams
+    [appDelegate.instagram requestWithParams:params
+                                    delegate:self];
+}
+
 //Based on the IGRequestDelegate (also from iOS SDK)
 
 //If the request loads, set the result to a cast of NSMutableArray* and set it to the proper array.
 //You guys will have to change the code to determine which array to place the data in.
 - (void)request:(IGRequest *)request didLoad:(id)result {
     NSLog(@"Instagram did load: %@", result);
-    self.followers = (NSMutableArray*)[result objectForKey:@"data"];
+    self.following = (NSMutableArray*)[result objectForKey:@"data"];
 }
 
 //If the request failed, we should tell the user.
