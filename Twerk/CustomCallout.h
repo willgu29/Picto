@@ -23,5 +23,6 @@
 @property (nonatomic) BOOL userLiked; //TODO: fetch if userLiked picture from WGPhoto to annotation
 
 -(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image;
+-(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime;
 
 @end

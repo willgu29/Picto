@@ -20,6 +20,8 @@
 //MONEY
 @property (strong, nonatomic) NSMutableArray *following; //of who following
 
+@property (strong, nonatomic) NSMutableArray *parsedFollowing; //array of USERNAMES of who user is following
+
 
 @property (strong, nonatomic) Friend *specificFriend;
 @property (strong, nonatomic) MKUserLocation *currentLocation;

@@ -14,6 +14,7 @@
 
 @interface CustomAnnotation : NSObject <MKAnnotation>
 
+@property (nonatomic, readonly) NSString *mediaID;
 @property (nonatomic, readonly) NSString *imageURL;
 @property (nonatomic, readonly) NSString *imageURLEnlarged;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
@@ -25,6 +26,7 @@
 @property (nonatomic, readonly) NSString *ownerOfPhoto;
 @property (nonatomic, readonly) NSString *locationOfPhoto;
 @property (nonatomic, readonly) NSString *numberOfLikes;
+@property (nonatomic, readonly) NSString *timeCreated;
 //@property (nonatomic, readonly) type video??
 
 -(instancetype)initWithPhoto:(WGPhoto *)photo;

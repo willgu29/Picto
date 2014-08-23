@@ -24,6 +24,8 @@
     _title = @"Whatever the dick photo says"; //change this to whatever the picture should say
     _ownerOfPhoto = photo.ownerOfPhoto;
     _numberOfLikes = photo.likes;
+    _timeCreated = photo.timeCreated;
+    _mediaID = photo.mediaID;
     return self;
 }
 

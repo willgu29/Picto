@@ -31,6 +31,38 @@
     _infoText.text = [NSString stringWithFormat:@"%@'s Photo",owner];
     _likes.text = [NSString stringWithFormat:@"%@ likes",likes];
     [_image setImage:image];
+    
+}
+
+
+-(NSString *)formattedTimeSincePost:(NSString *)timeSincePost;
+{
+    NSString *format = [[NSString alloc] init];
+    
+    NSInteger seconds = timeSincePost.intValue;
+    NSInteger minutes = seconds/60;
+    NSInteger hours = minutes/60;
+    NSInteger days = hours/24;
+    NSInteger weeks = days/7;
+    
+    //TODO: blah
+    
+    
+    return format;
+    
+}
+
+-(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime
+{
+    _infoText.text = [NSString stringWithFormat:@"%@'s Photo",owner];
+    _likes.text = [NSString stringWithFormat:@"%@ likes",likes];
+    [_image setImage:image];
+    
+    time_t todayInUnix = (time_t) [[NSDate date] timeIntervalSince1970];
+    time_t timePassedInSeconds = todayInUnix - createTime.intValue;
+    //TODO: Convert seconds to min, hours, weeks and display proper letter after the rounded time.
+    
+    _timeSincePost.text = [NSString stringWithFormat:@"ToDO: %ld",timePassedInSeconds];
 }
 
 

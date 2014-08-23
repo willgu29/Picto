@@ -56,6 +56,7 @@
 - (void)request:(IGRequest *)request didLoad:(id)result {
     NSLog(@"Instagram did load: %@", result);
     self.following = (NSMutableArray*)[result objectForKey:@"data"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CanParseFollowing" object:self];
 }
 
 //If the request failed, we should tell the user.

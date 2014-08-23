@@ -45,5 +45,23 @@
     return self;
 }
 
+-(instancetype)initWithLocation:(CLLocationCoordinate2D)location andImageURL:(NSString *)imageURL andEnlarged:(NSString *)imageURLEnlarged andOwner:(NSString *)owner andLikes:(NSString *)likes andTime:(NSString *)createdTime andMediaID:(NSString *)mediaID
+{
+    self = [super init];
+    
+    if (self)
+    {
+        _photoURL = imageURL;
+        _photoURLEnlarged = imageURLEnlarged;
+        _locationOfPicture = location;
+        _userDidView = NO;
+        _likes = likes;
+        _ownerOfPhoto = owner;
+        _timeCreated = createdTime;
+        _mediaID = mediaID;
+    }
+    
+    return self;
+}
 
 @end

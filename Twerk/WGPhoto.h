@@ -15,6 +15,8 @@
 //We will expect all photos to have the actual UIImage and location at a minimum. Later on we can add other features to a photo like "type" (friend, location, popular, likes) etc. Feel free to work on this as you want.  A photo should probably have a "show rating" -> the higher the show rating the more "cool" a photo is and the more likely we'll want to show it to the user. (Keep in mind we can store some small specific data about how the user uses the app so we can customize our algorithm for determining "show rating" a little better.) (Things like... how often they use the app perhaps, avg stay, w/e, just ask me with any ideas and i'll tell you if we could store it on the iOS device itself or maybe store it in a server)
 @interface WGPhoto : NSObject <MKAnnotation>
 
+@property (nonatomic, strong) NSString *mediaID;
+@property (nonatomic, strong) NSString *timeCreated;
 @property (weak, nonatomic) NSString *photoURL;
 @property (weak, nonatomic) NSString *photoURLEnlarged;
 @property (nonatomic) CLLocationCoordinate2D locationOfPicture;//MKCoordinateRegion locationOfPicture;
@@ -29,6 +31,8 @@
 
 
 -(instancetype)initWithLocation:(CLLocationCoordinate2D)location andImageURL:(NSString *)image andEnlarged:(NSString *)imageURLEnlarged andOwner:(NSString *)owner andLikes:(NSString *)likes;
+
+-(instancetype)initWithLocation:(CLLocationCoordinate2D)location andImageURL:(NSString *)image andEnlarged:(NSString *)imageURLEnlarged andOwner:(NSString *)owner andLikes:(NSString *)likes andTime:(NSString *)createdTime andMediaID:(NSString *)mediaID;;
 
 -(void)retrievePhotoFromIG;
 -(void)retrievePhotoFromDatabase;

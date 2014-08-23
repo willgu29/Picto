@@ -89,6 +89,7 @@
 
 -(IBAction)onlyFriends:(id)sender
 {
+    [self removeAllPinsButUserLocation];
     //Display only friends
     if ([(MapViewController *)self.presentingViewController onlyFriends] == YES)
     {

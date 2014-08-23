@@ -13,6 +13,7 @@
 #import "WGPhoto.h"
 #import "CustomAnnotation.h"
 #import "CustomCallout.h"
+#import <QuartzCore/QuartzCore.h>
 
 const NSInteger METERS_PER_MILE = 1609.344;
 
@@ -35,11 +36,21 @@ typedef NSInteger Type;
 @property (strong, nonatomic) UIImage *chosenImage;
 
 
+@property (nonatomic) BOOL isMatch;
+
 @end
 
 @implementation MapViewController
 
 
+-(void)setPicturesUserHasSelectedWithDragTouch:(NSMutableArray *)picturesUserHasSelectedWithDragTouch
+{
+    if (_picturesUserHasSelectedWithDragTouch == nil)
+    {
+        _picturesUserHasSelectedWithDragTouch = [[NSMutableArray alloc] init];
+    }
+    _picturesUserHasSelectedWithDragTouch = picturesUserHasSelectedWithDragTouch;
+}
 
 //our own custom setter
 -(void)setGlobalType:(NSInteger)globalType
@@ -123,89 +134,20 @@ typedef NSInteger Type;
     }
 }
 
-/*
--(void)loadPicturePinWithURL:(NSString *)stringURL onMap:(MKMapView *)mapView withLocation:(CLLocationCoordinate2D)location
-{
-    //This is making it asynchronous I believe.  Don't quote me on that. Still need to test.
-    dispatch_async(dispatch_get_global_queue(0,0), ^{
-        
-        //Make a type of NSData from the contents of a URL... this URL is the stringURL.
-        NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:stringURL]];
-        //if this data didn't work then it has to be nil so just return
-        if ( data == nil )
-            return;
-        
-        //otherwise do stuff
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // WARNING: is the cell still using the same data by this point?? //I can't explain this comment... it was placed here from stackoverflow
-            //LOAD IMAGE INTO PIN HERE
-            
-            //Make a new WGPhoto with the data we have... init with the location and the image
-            
-            //CustomAnnotation *new2 = [[CustomAnnotation alloc] initWithPhoto:photo];
-            //MKAnnotationView *new = [[MKAnnotationView alloc] init];
-            //new.image = [UIImage imageNamed:@"butt.png"];
-            //[_mapView addAnnotation:new2];
-            //a custom method for placing the new WGPhoto
-            //[self placePicturePin:photo];
-            
-        
-        });
-        
-    });
-    //animations blah
-    
-}
-*/
-
-//Load all the pictures in a specific map region. _mapView.possiblePics should always have the possible pictures in a region as the method to get all the possiblePictures is called everytime the map finishes rendering (i.e. everytime the user moves the map.)
-
-/*  PRE ASYNC.  REVERT HERE FOR WORKING VERSION.
--(void)loadAllPictures
-{
-    
-    
-    
-    for (id pictureURL in _mapView.possiblePics)
-    {
-        //path find to thumbnail image... might want to do this in the modal.. NOT SURE. Will get back to you guys.
-        NSString *stringURL = [pictureURL valueForKeyPath:@"images.thumbnail.url"];
-        NSString *stringURLEnlarged = [pictureURL valueForKeyPath:@"images.standard_resolution.url"];
-        NSLog(@"url: %@,", stringURLEnlarged);;
-        //Apparently instagram API returns strings or some other id to lat and long.  We'll need CLLocationDegrees however...
-        NSString *lat1 = [pictureURL valueForKeyPath:@"location.latitude"];
-        NSString *lng1 = [pictureURL valueForKeyPath:@"location.longitude"];
-        
-        //Convert to CLLocationDegrees (which is a double)
-        CLLocationDegrees lat = [lat1 doubleValue];
-        CLLocationDegrees lng = [lng1 doubleValue];
-       
-        //CONVERT from CLLocationDegrees TO CLLocationCoordinate2D
-        CLLocationCoordinate2D location = CLLocationCoordinate2DMake(lat, lng);
-        
-        //Save this object in an array of currently displayed photos
-        WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged];
-        
-        //OR save object as video WGVideo subclass.. (not made yet)
-        
-        [_mapView.actualPics addObject:photo];
-        
-        
-        [self addAnnotationWithWGPhoto:photo];
-        
-        //mapView viewForAnnotation should be automatically called now.. ->
-        
-        //load the picture onto map
-        //[self loadPicturePinWithURL:stringURL onMap:_mapView withLocation:location];
-        
-    }
-    
-}
-*/
-
 -(void)loadFollowing
 {
     [_someUser retrieveWhoUserIsFollowingFromIG];
+}
+
+-(void)parseFollowing
+{
+    _someUser.parsedFollowing = [[NSMutableArray alloc] init];
+    for (id userData in _someUser.following)
+    {
+        NSString *userID = [userData valueForKeyPath:@"username"];
+        [_someUser.parsedFollowing addObject:userID];
+    }
+    
 }
 
 -(void)loadPictures
@@ -222,7 +164,19 @@ typedef NSInteger Type;
             //TODO: filtering here
             if (_onlyFriends == YES)
             {
-                //Get friends only, if not friends continue and get next picture.
+                NSString *pictureIDUser = [pictureURL valueForKeyPath:@"user.username"];
+                NSLog(@"PICTURE FRIEND: %@",pictureIDUser);
+                    
+                if ([_someUser.parsedFollowing containsObject:pictureIDUser] == YES)
+                {
+                    NSLog(@"MATCHED!");
+                    
+                }
+                else
+                {
+                    continue;
+                }
+            
             }
             
             
@@ -245,8 +199,11 @@ typedef NSInteger Type;
             NSString *owner = [pictureURL valueForKeyPath:@"user.full_name"];
             NSString *likes = [pictureURL valueForKeyPath:@"likes.count"];
             
+            NSString *createdTime = [pictureURL valueForKeyPath:@"created_time"];
+            NSString *mediaID = [pictureURL valueForKeyPath:@"id"];
+            
             //Save this object in an array of currently displayed photos
-            WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged andOwner:owner andLikes:likes];
+            WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged andOwner:owner andLikes:likes andTime:createdTime andMediaID:mediaID];
             
             //OR save object as video WGVideo subclass.. (not made yet)
             
@@ -299,10 +256,42 @@ typedef NSInteger Type;
     //if holding and on an annotation, call the mapView, didSelectAnnotation method
     //if holding and off annotation, call the mapView, didUnselectAnnotation method
     //... if user taps an annotation it should zoom in. so in didSelectAnnotation (detect if touch is tap to just return)... we'll define our own custom behavior in another method.
+    UITouch *touch = [[event allTouches] anyObject];
+    if([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[MKAnnotationView class]])
+    {
+        //This is MKAnnotation! COOL
+        NSLog(@"Began at annotation!");
+    }
+    
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    
+    UITouch *touch = [[event allTouches] anyObject];
+    if([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[MKAnnotationView class]])
+    {
+        //This is MKAnnotation! COOL
+        NSLog(@"Moved to annotation");
+    }
+    //if([[self hitTest:[touch locationInView:self] withEvent:event] isKindOfClass:[MyView class]])
+    //{
+        //hurrraaay! :)
+   // }
+    
+    /*
+    UITouch *touch = [[event allTouches] anyObject];
+    CGPoint touchLocation = [touch locationInView:_mapView.annotations];
+        
+    for (UIView *view in self.contentView.subviews)
+    {
+        if ([view isKindOfClass:[MyCustomView class]] &&
+            CGRectContainsPoint(view.frame, touchLocation))
+        {
+                
+        }
+    }
+     */
     
 }
 
@@ -354,6 +343,7 @@ typedef NSInteger Type;
     
     //TESTING
     _someUser = [[User alloc] init];
+    [self loadFollowing];
     
     //After sending these messages there is a slight delay to when the delegate actually places the data in the array... will need a way to fix this (let user know they can't do anything yet/ tell controller to wait till data has loaded.
   //  [_someUser retrieveFollowersFromIG];
@@ -363,6 +353,7 @@ typedef NSInteger Type;
     
     //Tell our VC to watch for a notification called "Can Find Location" and call mapLocationFound when done
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mapLocationSettled) name:@"Can Find Location" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseFollowing) name:@"CanParseFollowing" object:nil];
     
     //Tell our VC to watch for a notification called "Location Found" and call findAll... when done
     /*[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(findAllImagesOnMapInRange:inLatitude:andLongitude:) name:@"Location Found" object:nil];*/ //this operation is assumed to be fast so we probably don't need this
@@ -375,6 +366,9 @@ typedef NSInteger Type;
     //TODO: Load the user's last saved state
     _onlyFriends = NO;
     
+    
+    
+    
 }
 
 -(void)viewDidUnload
@@ -382,7 +376,7 @@ typedef NSInteger Type;
     //remove the observers if we leave this view
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"Can Find Location" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"Images Loaded" object:nil];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"CanParseFollowing" object:nil];
 }
 
 //don't worry about this, this is for me.
@@ -415,9 +409,9 @@ typedef NSInteger Type;
     
 }
 
+
 -(void)viewDidAppear:(BOOL)animated
 {
-    
     [_someUser getCurrentLocationOnMap:_mapView]; //get location of user
     //zoom to user location on map
     CLLocationDistance lat = 50;
@@ -429,11 +423,12 @@ typedef NSInteger Type;
     {
         NSLog(@"Tell me something happened");
         _someUser.currentLocation.coordinate = CLLocationCoordinate2DMake(40, 98); //Approx location center USA
-                                                
+        
     }
     
     //TODO: make so that it only zooms at start of session.
     [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:lat withLongitude:lng withMap:_mapView];
+   
 }
 
 - (void)didReceiveMemoryWarning
@@ -619,6 +614,13 @@ typedef NSInteger Type;
 
 -(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
+    
+    
+    
+    NSLog(@"Added to array!");
+    
+    return;
+    
     NSLog(@"Tapped it!");
     if (![view.annotation isKindOfClass:[MKUserLocation class]] && ![view.annotation isKindOfClass:[MKPointAnnotation class]])
     {
@@ -639,10 +641,17 @@ typedef NSInteger Type;
        // [calloutView.image setImage:image1];
         
         
-        [calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1];
+        [calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated];
         
-        //[calloutView.infoText setText:@"BLAHBLAHBLAHFRIENDLOC"]; //TODO: Grab user name and location
-        //[calloutView.image setImage:image1];
+        //Makes pictures circular
+        calloutView.layer.cornerRadius = calloutView.frame.size.height/30;
+        calloutView.layer.masksToBounds = YES;
+        
+        //Makes border
+        calloutView.layer.borderWidth = 3.0f;
+        calloutView.layer.borderColor = [UIColor purpleColor].CGColor;
+        
+        
         [self.view addSubview:calloutView]; //added it to the main view so it will always display picture at center of screen... can change this (replace self.view with view (the MKAnnotationView)
     }
 }
