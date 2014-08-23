@@ -43,7 +43,7 @@
     //This line of code simply gets a pointer to our appDelegate
     AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
     //Based on the instagram iOS SDK, check the Instagram API console for how to format requests
-    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"users/self/follows", @"method", nil];
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"users/self/follows?count=100", @"method", nil];
     //tell the property "Instagram" (also part of instagram iOS SDK) the message.. requestWithParams
     [appDelegate.instagram requestWithParams:params
                                     delegate:self];
@@ -55,8 +55,21 @@
 //You guys will have to change the code to determine which array to place the data in.
 - (void)request:(IGRequest *)request didLoad:(id)result {
     NSLog(@"Instagram did load: %@", result);
-    self.following = (NSMutableArray*)[result objectForKey:@"data"];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CanParseFollowing" object:self];
+    if (self.following == nil)
+        self.following = [[NSMutableArray alloc] init];
+    [self.following addObjectsFromArray:(NSMutableArray*)[result objectForKey:@"data"]];
+    if ([(NSMutableArray*)[result objectForKey:@"pagination"] count] > 1)
+    {
+        NSString* cursor = [result valueForKeyPath:@"pagination.next_cursor"];
+        AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+        NSString* requestString = [NSString stringWithFormat:@"users/self/follows?count=100&cursor=%@", cursor];
+        NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:requestString, @"method", nil];
+        [appDelegate.instagram requestWithParams:params delegate:self];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"CanParseFollowing" object:self];
+    }
 }
 
 //If the request failed, we should tell the user.
