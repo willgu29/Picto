@@ -419,12 +419,15 @@ typedef NSInteger Type;
     
     //TODO: FIX THIS
     //IF LOCATION = 0.00, 0.00 (Lat/lng) WAIT.
-    if (_someUser.currentLocation == nil)
+    if (_someUser.currentLocation.coordinate.latitude == 0 && _someUser.currentLocation.coordinate.longitude == 0)
     {
         NSLog(@"Tell me something happened");
-        _someUser.currentLocation.coordinate = CLLocationCoordinate2DMake(40, 98); //Approx location center USA
+        _someUser.currentLocation.coordinate = CLLocationCoordinate2DMake(40, -98); //Approx location center USA
+        lat = 5000;
+        lng = 5000;
         
     }
+    
     
     //TODO: make so that it only zooms at start of session.
     [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:lat withLongitude:lng withMap:_mapView];
