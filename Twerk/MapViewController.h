@@ -33,8 +33,8 @@
 @property (nonatomic) BOOL onlyFriends; //TODO: remember state (default no)
 @property (strong, nonatomic) IBOutlet UILabel *type; //TODO: set default to current type (at launch)
 
+@property (nonatomic, strong) NSMutableOrderedSet *picturesChosenByDrag; //of annotation views
 
-@property (nonatomic, strong) NSMutableArray *picturesUserHasSelectedWithDragTouch; //of annotation views
 
 @end
 

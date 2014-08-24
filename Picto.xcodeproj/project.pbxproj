@@ -13,6 +13,7 @@
 		84068D9E196B250F0053355C /* SideMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84068D9C196B250F0053355C /* SideMenuViewController.xib */; };
 		84068DA2196B4EFA0053355C /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 84068DA1196B4EFA0053355C /* Friend.m */; };
 		84068DA4196B8F750053355C /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84068DA3196B8F750053355C /* MobileCoreServices.framework */; };
+		8439845219AA6BFB002E3047 /* WGTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8439845119AA6BFB002E3047 /* WGTimer.m */; };
 		8461E931194E73B200E2D809 /* Image.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8461E930194E73B200E2D809 /* Image.xcassets */; };
 		8461E93F194ED24700E2D809 /* READ.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 8461E93E194ED24700E2D809 /* READ.rtf */; };
 		8461E943194ED2C300E2D809 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8461E941194ED2C300E2D809 /* LoginViewController.m */; };
@@ -73,6 +74,8 @@
 		84068DA0196B4EFA0053355C /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Friend.h; sourceTree = "<group>"; };
 		84068DA1196B4EFA0053355C /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Friend.m; sourceTree = "<group>"; };
 		84068DA3196B8F750053355C /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		8439845019AA6BFB002E3047 /* WGTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WGTimer.h; sourceTree = "<group>"; };
+		8439845119AA6BFB002E3047 /* WGTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WGTimer.m; sourceTree = "<group>"; };
 		8461E930194E73B200E2D809 /* Image.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Image.xcassets; sourceTree = "<group>"; };
 		8461E93E194ED24700E2D809 /* READ.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = READ.rtf; sourceTree = "<group>"; };
 		8461E940194ED2C300E2D809 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -244,6 +247,8 @@
 				84CC1D0C1985967B00AFECC4 /* CustomCallout.h */,
 				84CC1D0D1985967B00AFECC4 /* CustomCallout.m */,
 				84CC1D0F198599DF00AFECC4 /* calloutView.xib */,
+				8439845019AA6BFB002E3047 /* WGTimer.h */,
+				8439845119AA6BFB002E3047 /* WGTimer.m */,
 			);
 			path = Twerk;
 			sourceTree = "<group>";
@@ -404,6 +409,7 @@
 				84068D9D196B250F0053355C /* SideMenuViewController.m in Sources */,
 				84DA0D3118F92C2B00DE364F /* Twerk.xcdatamodeld in Sources */,
 				84068DA2196B4EFA0053355C /* Friend.m in Sources */,
+				8439845219AA6BFB002E3047 /* WGTimer.m in Sources */,
 				84F250011977630200013F47 /* Instagram.m in Sources */,
 				846F8A47196498AE000401E8 /* MapViewController.m in Sources */,
 				84F250001977630200013F47 /* IGRequest.m in Sources */,

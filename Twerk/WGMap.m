@@ -61,6 +61,7 @@ static const int SECONDS_IN_A_DAY = 86400;
     [appDelegate.instagram requestWithParams:params
                                     delegate:self];
     
+    
 }
 
 //Recent is defined as within a day
