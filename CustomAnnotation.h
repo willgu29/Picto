@@ -14,6 +14,7 @@
 
 @interface CustomAnnotation : NSObject <MKAnnotation>
 
+@property (nonatomic, readwrite) BOOL userHasLiked;
 @property (nonatomic, readonly) NSString *mediaID;
 @property (nonatomic, readonly) NSString *imageURL;
 @property (nonatomic, readonly) NSString *imageURLEnlarged;

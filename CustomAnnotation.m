@@ -27,6 +27,7 @@
     _timeCreated = photo.timeCreated;
     _mediaID = photo.mediaID;
     _colorType = nil;
+    _userHasLiked = photo.userHasLiked.boolValue;
     return self;
 }
 

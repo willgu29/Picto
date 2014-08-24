@@ -26,16 +26,6 @@
 }
 
 
-
--(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image;
-{
-    _infoText.text = [NSString stringWithFormat:@"%@'s Photo",owner];
-    _likes.text = [NSString stringWithFormat:@"%@ likes",likes];
-    [_image setImage:image];
-    
-}
-
-
 -(NSString*)numberToString:(NSInteger)number
 {
 	NSString *s = [NSString stringWithFormat:@"%d", number];
@@ -82,8 +72,9 @@
     //_timeSincePost.text = [NSString stringWithFormat:@"ToDO: %ld",timePassedInSeconds];
 }
 
--(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime andMediaID:(NSString *)mediaID
+-(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime andMediaID:(NSString *)mediaID andUserLiked:(BOOL)hasUserLiked
 {
+    _userLiked = hasUserLiked;
     _mediaID = mediaID;
     _infoText.text = [NSString stringWithFormat:@"%@'s Photo",owner];
     _likes.text = [NSString stringWithFormat:@"%@ likes",likes];

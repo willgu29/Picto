@@ -241,9 +241,10 @@ typedef NSInteger Type;
             
             NSString *createdTime = [pictureURL valueForKeyPath:@"created_time"];
             NSString *mediaID = [pictureURL valueForKeyPath:@"id"];
-            
+            NSString *userHasLiked = [pictureURL valueForKey:@"user_has_liked"];
+            NSLog(@"USER LIKED?: %@", userHasLiked);
             //Save this object in an array of currently displayed photos
-            WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged andOwner:owner andLikes:likes andTime:createdTime andMediaID:mediaID];
+            WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged andOwner:owner andLikes:likes andTime:createdTime andMediaID:mediaID andUserLiked:userHasLiked];
             CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithPhoto:photo];
             //OR save object as video WGVideo subclass.. (not made yet)
             [annotation createNewImage];

@@ -13,7 +13,7 @@
 
 
 //Initialize a photo with UIImage, location, and initial setting of the userDid NOT view the photo yet. (we need to find a way to determine whether a user has viewed a photo yet and discard these photo so they don't see it again) (it'll still be in instagram)
--(WGPhoto*)initWithLocation:(CLLocationCoordinate2D)location andImageURL:(NSString *)imageURL andEnlarged:(NSString *)imageURLEnlarged
+-(instancetype)initWithLocation:(CLLocationCoordinate2D)location andImageURL:(NSString *)imageURL andEnlarged:(NSString *)imageURLEnlarged andOwner:(NSString *)owner andLikes:(NSString *)likes andTime:(NSString *)createdTime andMediaID:(NSString *)mediaID andUserLiked:(NSString *)userHasLiked
 {
     self = [super init];
     
@@ -23,6 +23,11 @@
         _photoURLEnlarged = imageURLEnlarged;
         _locationOfPicture = location;
         _userDidView = NO;
+        _likes = likes;
+        _ownerOfPhoto = owner;
+        _timeCreated = createdTime;
+        _mediaID = mediaID;
+        _userHasLiked = userHasLiked;
     }
     
     return self;
