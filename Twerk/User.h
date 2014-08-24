@@ -30,8 +30,10 @@
 
 -(void)getCurrentLocationOnMap:(MKMapView *)map; //Get location of user
 -(Friend*) getFriendInfo; //get friend info like top pics, profile pic, etc
--(void) retrieveFollowersFromIG;
+-(void) retrieveFollowersFromIG  __deprecated_msg("Will not work; delegate is currently paginating on retrieveWhoUserIsFollowingFromIG");
 -(void)retrieveWhoUserIsFollowingFromIG;
+
+
 
 @end
 //TODO: A user should have a list of people they are FOLLOWING (not sure if we need their followers..) and we will use this data to help do the autocomplete search (autofill a friend etc)  We should also know the user's current location when it is relevant (they are walking by a landmark, an area their friends had a "moment" etc.) We'll also need their array of SAVED IMPORTANT photos. Important/Unimportant/landmark may be the three ways we can mark a specific picture relative to the user. Important pictures will be stored in a SERVER for that user and we'll pull the data if their FOLLOWERS or THEMSELVES want to view their "top" moments.

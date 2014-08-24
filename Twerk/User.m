@@ -43,10 +43,10 @@
     //This line of code simply gets a pointer to our appDelegate
     AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
     //Based on the instagram iOS SDK, check the Instagram API console for how to format requests
-    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"users/self/follows?count=100", @"method", nil];
-    //tell the property "Instagram" (also part of instagram iOS SDK) the message.. requestWithParams
-    [appDelegate.instagram requestWithParams:params
-                                    delegate:self];
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"100", @"count", nil];
+
+    
+    [appDelegate.instagram requestWithMethodName:@"users/self/follows" params:params httpMethod:@"GET" delegate:self];
 }
 
 //Based on the IGRequestDelegate (also from iOS SDK)
@@ -63,9 +63,8 @@
     {
         NSString* cursor = [result valueForKeyPath:@"pagination.next_cursor"];
         AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
-        NSString* requestString = [NSString stringWithFormat:@"users/self/follows?count=100&cursor=%@", cursor];
-        NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:requestString, @"method", nil];
-        [appDelegate.instagram requestWithParams:params delegate:self];
+        NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"100", @"count", cursor, @"cursor", nil];
+        [appDelegate.instagram requestWithMethodName:@"users/self/follows" params:params httpMethod:@"GET" delegate:self];
     }
     else
     {
