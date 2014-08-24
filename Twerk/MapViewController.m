@@ -641,7 +641,7 @@ typedef NSInteger Type;
     UIImage *image1 = [[UIImage alloc] initWithData:data];
     
     
-    [calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID];
+    [calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID andUserLiked:someAnnotation.userHasLiked];
     
     //Makes pictures circular
     calloutView.layer.cornerRadius = calloutView.frame.size.height/30;
