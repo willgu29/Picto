@@ -20,7 +20,7 @@
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 @property (nonatomic, readonly, copy) NSString *subtitle;
 @property (nonatomic, readonly, copy) NSString *title;
-@property (nonatomic, readonly) UIColor* color;
+@property (nonatomic, readwrite) UIColor* colorType;
 @property (nonatomic, readonly) UIImage *image;
 @property (nonatomic, readonly) UIImage *imageEnlarged;
 @property (nonatomic, readonly) NSString *ownerOfPhoto;

@@ -26,6 +26,7 @@
     _numberOfLikes = photo.likes;
     _timeCreated = photo.timeCreated;
     _mediaID = photo.mediaID;
+    _colorType = nil;
     return self;
 }
 

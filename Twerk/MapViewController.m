@@ -25,13 +25,27 @@ enum {
 };
 typedef NSInteger Type;
 
+//Picture Border Types: (APPLY TO annotationView.layer.borderColor) (Or rather just change colorType and call updateTheBorderColor....)
+//******************************
+/*
+ WHITE BORDER = Unknown/All picture
+ YELLOW BORDER = VIEWED/ABOUT TO VIEW
+ RED BORDER = LIKED
+ BLUE BORDER = POPULAR
+ GREEN BORDER = FRIEND
+ PURPLE BORDER = SUGGESTED FOR YOU
+
+*/
+//******************************
+
+
 @interface MapViewController ()
 
 
-@property (strong, nonatomic) IBOutlet UITableView *autoCompleteTableView;
+@property (weak, nonatomic) IBOutlet UITableView *autoCompleteTableView;
 @property (strong, nonatomic) User *someUser;
 
-@property (strong, nonatomic) WGPhoto *someData;
+@property (strong, nonatomic) WGPhoto *someData; //???
 @property (strong, nonatomic) UIImagePickerController *mediaPicker;
 @property (strong, nonatomic) UIImage *chosenImage;
 
@@ -42,6 +56,31 @@ typedef NSInteger Type;
 
 @implementation MapViewController
 
+
+//Need to change this method to support when pictures go off map and to make it non immediate
+//Add method to mapFullyRendered when ready probably
+-(void)updatePicturesBeingDisplayedBasedOnColorOfBorder
+{
+    //Loop through all our annotation views
+    for (MKAnnotationView* annotationView in _mapView.annotations)
+    {
+        //if our view has a yellow border
+        if (annotationView.layer.borderColor == [UIColor yellowColor].CGColor)
+        {
+            //remove that annotation FOREVER HAHA
+            [_mapView removeAnnotation:annotationView.annotation];
+        }
+    }
+}
+
+-(void)updateTheBorderColorOnViewToMatchTheAnnotationType:(MKAnnotationView *)annotationView
+{
+    NSLog(@"Update color");
+    annotationView.layer.borderWidth = 3.0f;
+    annotationView.layer.borderColor = [(CustomAnnotation *)annotationView.annotation colorType].CGColor;
+    
+    
+}
 
 -(void)setPicturesUserHasSelectedWithDragTouch:(NSMutableArray *)picturesUserHasSelectedWithDragTouch
 {
@@ -118,6 +157,7 @@ typedef NSInteger Type;
 
 -(void)selectMethodForType:(NSInteger)type
 {
+   // NSLog(@"Radius: %f", _mapView.radius);
     if (type == ALL)
     {
         NSLog(@"ALL");
@@ -204,15 +244,25 @@ typedef NSInteger Type;
             
             //Save this object in an array of currently displayed photos
             WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged andOwner:owner andLikes:likes andTime:createdTime andMediaID:mediaID];
-            
+            CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithPhoto:photo];
             //OR save object as video WGVideo subclass.. (not made yet)
+            [annotation createNewImage];
             
-            [_mapView.actualPics addObject:photo]; //THIS IS NOT BEING USED RIGHT NOW.
+            //[_mapView.actualPics addObject:photo]; //THIS IS NOT BEING USED RIGHT NOW. WE Probably won't need this as all annotations are placed in _mapView.annotations (an NSArray) anyways..
+            //Although we may want to create an array of annotations then add the array of annotations all at once instead of one by one.  addAnnotations:(NSArray *)array
+            //annotationsInMapRect:
+          /*
+           showAnnotations:animated:
+            Sets the visible region so that the map displays the specified annotations.
+            
+            - (void)showAnnotations:(NSArray *)annotations animated:(BOOL)animated
+            */
             
             //do this when done loading.. on main thread
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self addAnnotationWithWGPhoto:photo];
-                //mapView viewForAnnotation should be automatically called now.. ->
+                [_mapView addAnnotation:annotation]; //THIS adds an annotation to _mapView.annotations
+                //[self addAnnotationWithWGPhoto:photo]; REVERT HERE 1.0
+                //mapView viewForAnnotation should be automatically called now.. -> (JK. )
             });
             
             
@@ -257,11 +307,23 @@ typedef NSInteger Type;
     //if holding and off annotation, call the mapView, didUnselectAnnotation method
     //... if user taps an annotation it should zoom in. so in didSelectAnnotation (detect if touch is tap to just return)... we'll define our own custom behavior in another method.
     UITouch *touch = [[event allTouches] anyObject];
+    
+    if (_displayingPictures == YES)
+    {
+        return;
+    }
+    [_picturesUserHasSelectedWithDragTouch removeAllObjects]; //CHECK THIS LOGIC
+    
+    
     if([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[MKAnnotationView class]])
     {
         //This is MKAnnotation! COOL
         NSLog(@"Began at annotation!");
+        //Makes border
+        //View Did select annotation view... (so go to that delegate)
+        
     }
+    //if view is of CustomCallout... skip to next pic?
     
 }
 
@@ -273,6 +335,7 @@ typedef NSInteger Type;
     {
         //This is MKAnnotation! COOL
         NSLog(@"Moved to annotation");
+        //View did select annotation view... (so go to that delegate)
     }
     //if([[self hitTest:[touch locationInView:self] withEvent:event] isKindOfClass:[MyView class]])
     //{
@@ -295,16 +358,32 @@ typedef NSInteger Type;
     
 }
 
--(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    
-}
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if (_displayingPictures == YES)
+    {
+        return;
+    }
+    NSLog(@"Touches ended!");
+    //put NSMUtableArray into NSMutableOrderedSet and display that set of pictures
+    NSLog(@"MY ARRAY: %@",_picturesUserHasSelectedWithDragTouch);
+    NSMutableOrderedSet *mySet = [[NSMutableOrderedSet alloc] initWithArray:_picturesUserHasSelectedWithDragTouch];
+    NSLog(@"MY SET: %@",mySet);
+    [self displayAnnotationCalloutWithSetOfAnnotationViews:mySet];
     
 }
 
+/*
+-(void)displayOrderedSetOfAnnotationViews:(NSMutableOrderedSet *)orderedSet
+{
+
+}
+*/
+-(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@"Touch cancelled!");
+}
 
 
 -(void)viewWillAppear:(BOOL)animated
@@ -379,35 +458,6 @@ typedef NSInteger Type;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"CanParseFollowing" object:nil];
 }
 
-//don't worry about this, this is for me.
--(IBAction)testStuff:(UIButton *)sender
-{
-    //TEST STUFF
-    int i = 0;
-    
-    //the objects in this array is of an unknown type BUT we know it subclasses from NSMutableDictionary so feel free to use those methods (Documentation says data is in form of Dictionary or List.
-    /*
-    for (id obj in _someUser.followers)
-    {
-        BOOL isClass = [obj isKindOfClass:[NSMutableDictionary class]];
-        NSLog(@"%hhd Username: %@",isClass,[obj objectForKey:@"username"]);
-        NSLog(@"Full-Name: %@",[obj objectForKey:@"full_name"]);
-        NSLog(@"Data: %@ ",obj);
-        i++;
-    }
-    */
-   // CLLocationCoordinate2D location = [_mapView getCurrentLocationOfMap];
-    
-    NSLog(@"%lu", (unsigned long)[_mapView.possiblePics count]);
-    for (id obj in _mapView.possiblePics)
-    {
-        NSLog(@"Something happened");
-        NSLog(@"PICTURE URL??:: %@", [obj valueForKeyPath:@"images.thumbnail.url"]); //WzOOOTT
-        //NSLog(@"%@", obj);
-    }
-    [self loadPictures];
-    
-}
 
 
 -(void)viewDidAppear:(BOOL)animated
@@ -423,8 +473,8 @@ typedef NSInteger Type;
     {
         NSLog(@"Tell me something happened");
         _someUser.currentLocation.coordinate = CLLocationCoordinate2DMake(40, -98); //Approx location center USA
-        lat = 5000;
-        lng = 5000;
+        lat = 1000000;
+        lng = 1000000;
         
     }
     
@@ -545,6 +595,12 @@ typedef NSInteger Type;
 
 #pragma mark - Buttons
 
+-(IBAction)nextButton:(UIButton *)button
+{
+    //TODO: Implement next button!
+    //Bring user to next relevant location to explore more pictures;
+}
+
 -(IBAction)friendsButton:(UIButton *)button
 {
     SideMenuViewController *sideMenu = [[SideMenuViewController alloc] init];
@@ -552,110 +608,92 @@ typedef NSInteger Type;
 }
 
 
--(IBAction)cameraButtonPress:(UIButton *)sender
+#pragma mark - Display Annotation View/Callout
+
+-(void)displayAnnotationCalloutWithSetOfAnnotationViews:(NSMutableOrderedSet *)myOrderedSet
 {
-    //TODO: Implement taking a picture/video
-    //After taking a picture/video this will be uploaded to the cloud/facebook automatically
-    [self takePhoto];
+    NSLog(@"DISPLAYING");
+    NSLog(@"SET: %@",myOrderedSet);
     
-}
-
-#pragma mark - UIImagePickerController delegate/methods
-
-- (void)takePhoto
-{
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    NSArray *availableTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
-    picker.mediaTypes = availableTypes;
-    picker.delegate = self;
-    picker.allowsEditing = YES;
-    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    picker.videoMaximumDuration = 10; //10 seconds... only stops SHARING however.. not actual video length
-    [self presentViewController:picker animated:YES completion:NULL];
-    
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-}
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    //handle video and pictures here
-    
-    NSURL *mediaURL  = info[UIImagePickerControllerMediaURL]; //video
-    if (mediaURL)
+    for (int i = 0; i< [myOrderedSet count]; i++)
     {
-        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum([mediaURL path]))
-        {
-            //Save video somewhere in album?
-        }
-        //save video somewhere...
-        //TODO: Save video
-        
-        //remove video from tempory directory
-        [[NSFileManager defaultManager] removeItemAtPath:[mediaURL path] error:nil];
-        
+        _displayingPictures = YES;
+        MKAnnotationView* annotationView = [myOrderedSet objectAtIndex:i];
+        [self performSelector:@selector(displayAnnotationCalloutWithAnnotationView:) withObject:annotationView afterDelay:(1*i)];
+        //TODO: Change this to a NSTimer implementation?
+        //Currently there is no way for us to skip pictures by tapping since once this is set... it can't be changed. NSTimer should allow us to fire whenever we need to.
     }
     
     
-    
-    _chosenImage = info[UIImagePickerControllerEditedImage];
-    if (_chosenImage)
-    {
-        //store image or something
-        //TODO: Save photo
-    }
-    
-    //TODO: Display the just taken photo/video on map
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-    
 }
 
+-(void)displayAnnotationCalloutWithAnnotationView:(MKAnnotationView *)view
+{
+    CustomCallout *calloutView = (CustomCallout *)[[[NSBundle mainBundle] loadNibNamed:@"calloutView" owner:self options:nil] objectAtIndex:0];
+    CGRect calloutViewFrame  = calloutView.frame;
+    calloutViewFrame.origin = CGPointMake(0,self.view.frame.size.height/6);//CGPointMake(-calloutViewFrame.size.width/2 + 15, -calloutViewFrame.size.height);
+    calloutView.frame = calloutViewFrame;
+    
+    
+    CustomAnnotation *someAnnotation = view.annotation;
+    NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[someAnnotation imageURLEnlarged]]];
+    UIImage *image1 = [[UIImage alloc] initWithData:data];
+    
+    
+    [calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated];
+    
+    //Makes pictures circular
+    calloutView.layer.cornerRadius = calloutView.frame.size.height/30;
+    calloutView.layer.masksToBounds = YES;
+    
+    //Makes border
+    calloutView.layer.borderWidth = 3.0f;
+    calloutView.layer.borderColor = [UIColor purpleColor].CGColor;
+    
+    [self animateFadeInAndAddCallOutView:calloutView];
+    //[self.view addSubview:calloutView]; //added it to the main view so it will always display picture at center of screen... can change this (replace self.view with view (the MKAnnotationView)
+    //NEED A PLACE FOR NOT DISPLAYING
+    NSLog(@"gAME OVER");
+    _displayingPictures = NO; //THIS IS INCORRECT
+}
+
+-(void)animateFadeInAndAddCallOutView:(CustomCallout *)calloutView
+{
+    [calloutView setAlpha:0];
+    [self.view addSubview:calloutView];
+    [UIView beginAnimations:nil context:nil];
+    [calloutView setAlpha:1.0];
+    [UIView commitAnimations];
+}
 
 #pragma mark - Map view delegates/methods
 
 -(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
     
+    if ([view.annotation isKindOfClass:[MKUserLocation class]] || [view.annotation isKindOfClass:[MKPointAnnotation class]])
+    {
+        //Don't add these types to our array;
+        return;
+    }
     
+    if (_picturesUserHasSelectedWithDragTouch == nil)
+        _picturesUserHasSelectedWithDragTouch = [[NSMutableArray alloc] init];
     
     NSLog(@"Added to array!");
+    [_picturesUserHasSelectedWithDragTouch addObject:view];
+    
+    //DO ANIMATION HERE
+    //Makes border
+    [(CustomAnnotation *)view.annotation setColorType:[UIColor yellowColor]];
+    [self updateTheBorderColorOnViewToMatchTheAnnotationType:view];
     
     return;
-    
+    //REVERT TO HERE
     NSLog(@"Tapped it!");
     if (![view.annotation isKindOfClass:[MKUserLocation class]] && ![view.annotation isKindOfClass:[MKPointAnnotation class]])
     {
-        CustomCallout *calloutView = (CustomCallout *)[[[NSBundle mainBundle] loadNibNamed:@"calloutView" owner:self options:nil] objectAtIndex:0];
-        CGRect calloutViewFrame  = calloutView.frame;
-        calloutViewFrame.origin = CGPointMake(0,self.view.frame.size.height/6);//CGPointMake(-calloutViewFrame.size.width/2 + 15, -calloutViewFrame.size.height);
-        calloutView.frame = calloutViewFrame;
-        
-        
-        CustomAnnotation *someAnnotation = view.annotation;
-        NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[someAnnotation imageURLEnlarged]]];
-        UIImage *image1 = [[UIImage alloc] initWithData:data];
-        
-        
-        //Setup the annotation info here
-        //[calloutView.infoText setText:[NSString stringWithFormat:@"%@'s Photo",someAnnotation.ownerOfPhoto]];
-        //[calloutView.infoText setText:[NSString stringWithFormat:@"%@ likes",someAnnotation.numberOfLikes]];
-       // [calloutView.image setImage:image1];
-        
-        
-        [calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated];
-        
-        //Makes pictures circular
-        calloutView.layer.cornerRadius = calloutView.frame.size.height/30;
-        calloutView.layer.masksToBounds = YES;
-        
-        //Makes border
-        calloutView.layer.borderWidth = 3.0f;
-        calloutView.layer.borderColor = [UIColor purpleColor].CGColor;
-        
-        
-        [self.view addSubview:calloutView]; //added it to the main view so it will always display picture at center of screen... can change this (replace self.view with view (the MKAnnotationView)
+        [self displayAnnotationCalloutWithAnnotationView:view];
     }
 }
 
@@ -667,7 +705,14 @@ typedef NSInteger Type;
         [subview removeFromSuperview];
     }
      */
+    if (_displayingPictures == YES)
+    {
+        return;
+    }
+    
     //looping through main view views... only remove of class CustomCallout.
+    NSLog(@"DESELECTING ANNOTATION");
+    //return;
     for (UIView *subView in self.view.subviews)
     {
         if ([subView isKindOfClass:[CustomCallout class]])
@@ -693,6 +738,7 @@ typedef NSInteger Type;
   //  [_mapView addAnnotation:annotation];
     
     return annotation;
+    //^^^ This is not being used currently...
 }
 
 //This delegate method is called EVERYTIME WE call [_mapView addAnnotation].. so think data flow... we'll only addAnnotation to pictures we want to display. BINGO.
@@ -738,6 +784,7 @@ typedef NSInteger Type;
     else
     {
         //else reuse it
+        NSLog(@"I must have reused it!");
         annotationView.annotation  = annotation;
     }
     
@@ -758,8 +805,7 @@ typedef NSInteger Type;
      });
      
      */
-    
-    
+   
     annotationView.image = [(CustomAnnotation *)annotation image];
     annotationView.enabled = YES;
     annotationView.canShowCallout = NO; //Revert to yes later?
@@ -770,10 +816,13 @@ typedef NSInteger Type;
     annotationView.layer.cornerRadius = annotationView.frame.size.height/2;
     annotationView.layer.masksToBounds = YES;
  
-    //Makes border
+    
+    //TODO: FIX BUG
+    //This will turn yellow border back to white should we happen to zoom out too far or scroll the annotation out of view
     annotationView.layer.borderWidth = 3.0f;
     annotationView.layer.borderColor = [UIColor whiteColor].CGColor;
-
+    
+    
     
    // annotationView.backgroundColor = [UIColor clearColor];
     

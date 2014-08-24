@@ -71,6 +71,7 @@
                 <outlet property="likes" destination="W1N-Sk-Gl3" id="4fv-SC-P6U"/>
                 <outlet property="nextPicture" destination="ROc-tw-T2x" id="2gx-3T-JST"/>
                 <outlet property="prevPicture" destination="jp3-OR-TEn" id="XKF-28-qYz"/>
+                <outlet property="timeSincePost" destination="xog-fv-Uea" id="Ufp-j3-sTE"/>
             </connections>
         </view>
     </objects>

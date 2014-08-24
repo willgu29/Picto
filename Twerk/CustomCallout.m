@@ -26,6 +26,7 @@
 }
 
 
+
 -(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image;
 {
     _infoText.text = [NSString stringWithFormat:@"%@'s Photo",owner];
@@ -35,22 +36,37 @@
 }
 
 
--(NSString *)formattedTimeSincePost:(NSString *)timeSincePost;
+-(NSString*)numberToString:(NSInteger)number
 {
-    NSString *format = [[NSString alloc] init];
-    
-    NSInteger seconds = timeSincePost.intValue;
-    NSInteger minutes = seconds/60;
-    NSInteger hours = minutes/60;
-    NSInteger days = hours/24;
-    NSInteger weeks = days/7;
-    
-    //TODO: blah
-    
-    
-    return format;
+	NSString *s = [NSString stringWithFormat:@"%d", number];
+	return s;
+}
+
+//TODO: TEST Function
+-(NSString*)getTimeString:(float)postedTime
+{
+
+    if( postedTime < 20 ) //just now
+        return @"now";
+    else if( postedTime < 60 ) //seconds
+        return [NSString stringWithFormat:@"%@s",[self numberToString:postedTime]];
+    else if( postedTime < 3600 ) //minutes
+        return [NSString stringWithFormat:@"%@m",[self numberToString:ceil(postedTime / 60)]];
+    else if( postedTime < 86400 ) //hours
+        return [NSString stringWithFormat:@"%@h",[self numberToString:ceil(postedTime / 3600)]];
+    else if (postedTime < 604800 )  //days
+        return [NSString stringWithFormat:@"%@d",[self numberToString:ceil(postedTime / 86400)]];
+    else if( postedTime >= 604800 ) //weeks
+        return [NSString stringWithFormat:@"%@w",[self numberToString:ceil(postedTime / 604800)]];
+    else
+    {
+        NSLog(@"SECONDS COULDNT BE COMPARED TO INT: %ld",(long)postedTime);
+        return nil;
+    }
+  
     
 }
+
 
 -(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime
 {
@@ -62,7 +78,8 @@
     time_t timePassedInSeconds = todayInUnix - createTime.intValue;
     //TODO: Convert seconds to min, hours, weeks and display proper letter after the rounded time.
     
-    _timeSincePost.text = [NSString stringWithFormat:@"ToDO: %ld",timePassedInSeconds];
+    _timeSincePost.text = [self getTimeString:timePassedInSeconds];
+    //_timeSincePost.text = [NSString stringWithFormat:@"ToDO: %ld",timePassedInSeconds];
 }
 
 

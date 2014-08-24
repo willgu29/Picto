@@ -53,6 +53,7 @@
 
 //If the request loads, set the result to a cast of NSMutableArray* and set it to the proper array.
 //You guys will have to change the code to determine which array to place the data in.
+//Be careful as to WHAT method is calling the request delegate (parsing info from any of these methods will call request)
 - (void)request:(IGRequest *)request didLoad:(id)result {
     NSLog(@"Instagram did load: %@", result);
     if (self.following == nil)
