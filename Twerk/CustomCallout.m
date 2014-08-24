@@ -82,6 +82,21 @@
     //_timeSincePost.text = [NSString stringWithFormat:@"ToDO: %ld",timePassedInSeconds];
 }
 
+-(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime andMediaID:(NSString *)mediaID
+{
+    _mediaID = mediaID;
+    _infoText.text = [NSString stringWithFormat:@"%@'s Photo",owner];
+    _likes.text = [NSString stringWithFormat:@"%@ likes",likes];
+    [_image setImage:image];
+    
+    time_t todayInUnix = (time_t) [[NSDate date] timeIntervalSince1970];
+    time_t timePassedInSeconds = todayInUnix - createTime.intValue;
+    //TODO: Convert seconds to min, hours, weeks and display proper letter after the rounded time.
+    
+    _timeSincePost.text = [self getTimeString:timePassedInSeconds];
+    //_timeSincePost.text = [NSString stringWithFormat:@"ToDO: %ld",timePassedInSeconds];
+}
+
 
 
 /*

@@ -12,7 +12,7 @@
 //A custom view on how to present our callout picture
 @interface CustomCallout : UIView
 
-
+@property (strong, nonatomic) NSString *mediaID;
 @property (weak, nonatomic) IBOutlet UILabel *timeSincePost;
 @property (weak, nonatomic) IBOutlet UILabel *infoText;
 @property (weak, nonatomic) IBOutlet UIImageView *image;
@@ -24,5 +24,6 @@
 
 -(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image;
 -(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime;
+-(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime andMediaID:(NSString *)mediaID;
 
 @end
