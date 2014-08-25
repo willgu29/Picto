@@ -27,34 +27,20 @@
                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ROc-tw-T2x">
-                    <rect key="frame" x="250" y="301" width="46" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <state key="normal" image="Fill 127">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gkP-EK-bhi">
                     <rect key="frame" x="136" y="301" width="46" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <state key="normal" image="Fill 11">
-                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" red="0.81630660076530615" green="0.77893899740633366" blue="0.78879587384490646" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" image="Fill 12">
+                        <color key="titleColor" red="0.96076766300000005" green="0.96076766300000005" blue="0.96076766300000005" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
-                    <state key="selected" image="Fill 12"/>
+                    <state key="selected" image="Fill 12">
+                        <color key="titleShadowColor" red="0.9951923077" green="0.9903846154" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
                     <connections>
                         <action selector="like:" destination="iN0-l3-epB" eventType="touchDown" id="R6k-VZ-dq0"/>
                     </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jp3-OR-TEn">
-                    <rect key="frame" x="216" y="301" width="47" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <state key="normal" image="Fill 128">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xog-fv-Uea">
                     <rect key="frame" x="280" y="9" width="32" height="21"/>
@@ -70,16 +56,11 @@
                 <outlet property="infoText" destination="5Bf-Q8-wob" id="kOq-m5-tjU"/>
                 <outlet property="likeButton" destination="gkP-EK-bhi" id="Hsb-rI-Cgh"/>
                 <outlet property="likes" destination="W1N-Sk-Gl3" id="4fv-SC-P6U"/>
-                <outlet property="nextPicture" destination="ROc-tw-T2x" id="2gx-3T-JST"/>
-                <outlet property="prevPicture" destination="jp3-OR-TEn" id="XKF-28-qYz"/>
                 <outlet property="timeSincePost" destination="xog-fv-Uea" id="Ufp-j3-sTE"/>
             </connections>
         </view>
     </objects>
     <resources>
-        <image name="Fill 11" width="18" height="16"/>
         <image name="Fill 12" width="17" height="16"/>
-        <image name="Fill 127" width="18" height="19"/>
-        <image name="Fill 128" width="19" height="19"/>
     </resources>
 </document>

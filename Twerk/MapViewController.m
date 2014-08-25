@@ -348,6 +348,7 @@ typedef NSInteger Type;
     
     
     
+    
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -426,6 +427,8 @@ typedef NSInteger Type;
     _myTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
     [_myTimer fire]; //Fire the first one immediately
     [_myTimer setTolerance:0];
+    
+    
 }
 
 - (void)timerFireMethod:(NSTimer *)timer
@@ -494,8 +497,11 @@ typedef NSInteger Type;
 
 -(void)resumeTimer
 {
+
     _myTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
-    [_myTimer fire]; //Fire the first one immediately
+    [_myTimer fire];
+    
+     //Fire the first one immediately
 }
 
 -(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
