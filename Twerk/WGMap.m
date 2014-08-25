@@ -54,6 +54,8 @@ static const int SECONDS_IN_A_DAY = 86400;
     
     //Creating a NSMutableDictionary, change the 1st @".." to the method you want to call from the instagram API. (Check instagram API console for more formatting)
     NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"media/search?lat=%f&lng=%f&distance=%ld",latitude, longitude,(long)rangeInMeters], @"method", nil];
+    if (rangeInMeters > 5000)
+        NSLog(@"Radius %ld is greater than 5000!", (long)rangeInMeters);
     
     //just creates a pointer to our app delegate. Nothing else to understand in this code
     AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
