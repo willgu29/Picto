@@ -335,6 +335,7 @@ typedef NSInteger Type;
     
     
     [_picturesChosenByDrag removeAllObjects];
+    arrayCounter = 0;
     
     if([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[MKAnnotationView class]])
     {
@@ -960,10 +961,6 @@ typedef NSInteger Type;
         [subview removeFromSuperview];
     }
      */
-    if (_displayingPictures == YES)
-    {
-        return;
-    }
     
     //looping through main view views... only remove of class CustomCallout.
     NSLog(@"DESELECTING ANNOTATION");
