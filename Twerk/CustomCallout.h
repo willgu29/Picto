@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "CustomAnnotation.h"
 
 //A custom view on how to present our callout picture
 @interface CustomCallout : UIView
 
+@property (strong, nonatomic) CustomAnnotation *referencedAnnotation;
 @property (nonatomic) BOOL userHasLiked;
 @property (strong, nonatomic) NSString *mediaID;
 @property (weak, nonatomic) IBOutlet UILabel *timeSincePost;
@@ -26,5 +27,7 @@
 -(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime;
 -(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime andMediaID:(NSString *)mediaID;
 -(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime andMediaID:(NSString *)mediaID andUserLiked:(BOOL)userHasLiked;
+-(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime andMediaID:(NSString *)mediaID andUserLiked:(BOOL)userHasLiked andAnnotation:(CustomAnnotation *)annotation;
+
 
 @end
