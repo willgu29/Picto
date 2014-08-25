@@ -34,6 +34,8 @@
 
 -(void)getRadius;
 
+-(void)cleanupMap;
+
 //-(CLLocationCoordinate2D)determineBestPhotoLocationOfFriend:(Friend *)someFriend;
 
 //-(MKCoordinateRegion)getBestRegionForFriend:(Friend *)someFriend;

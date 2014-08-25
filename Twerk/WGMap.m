@@ -110,6 +110,18 @@ static const int SECONDS_IN_A_DAY = 86400;
     [alertView show];
 }
 
+- (void)cleanupMap {
+    NSSet* visible = [self annotationsInMapRect:[self visibleMapRect]];
+    NSArray* all = [self annotations];
+    NSMutableArray* discard = [NSMutableArray array];
+    for (id<MKAnnotation> cur in all)
+    {
+        if (![visible containsObject:cur])
+            [discard addObject:cur];
+    }
+    [self removeAnnotations:discard];
+}
+
 
 
 @end
