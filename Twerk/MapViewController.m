@@ -5,7 +5,8 @@
 //  Created by William Gu on 7/2/14.
 //  Copyright (c) 2014 William Gu. All rights reserved.
 //
-
+#include <mach/mach.h>
+#include <mach/mach_time.h>
 #import "MapViewController.h"
 #import "CameraAppViewController.h"
 #import "User.h"
@@ -40,6 +41,9 @@ typedef NSInteger Type;
 
 
 @interface MapViewController ()
+{
+    int arrayCounter;
+}
 
 
 @property (weak, nonatomic) IBOutlet UITableView *autoCompleteTableView;
@@ -323,7 +327,8 @@ typedef NSInteger Type;
     {
         NSLog(@"Began at Callout!");
         //
-        [self pausePhotoShowing];
+        // [self pausePhotoShowing];
+        [self pauseTimer];
         return;
         
     }
@@ -384,12 +389,16 @@ typedef NSInteger Type;
      UITouch *touch = [[event allTouches] anyObject];
     if ([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[CustomCallout class]])
     {
+        [self resumeTimer];
+        return;
+        /*
         NSLog(@"Touch ended at CustomCallout");
-        if ([_picturesChosenByDrag count] > 1) //protection is good
+        if ([_picturesChosenByDrag count] >= 1) //protection is good
         {
             [self performSelector:@selector(testVersion:) withObject:[_picturesChosenByDrag objectAtIndex:0]];
         }
         return;
+        */
     }
     
     //put NSMUtableArray into NSMutableOrderedSet and display that set of pictures
@@ -400,15 +409,88 @@ typedef NSInteger Type;
     //[self displayAnnotationCalloutWithSetOfAnnotationViews:_picturesChosenByDrag];
     
     
-    [self determineWhetherToDisplayAnotherAnnotationOrDeselect];
+    //[self determineWhetherToDisplayAnotherAnnotationOrDeselect];
+    
+    arrayCounter = 0;
+    [self timerBasedAnnotationDisplay];
 }
 
-/*
--(void)displayOrderedSetOfAnnotationViews:(NSMutableOrderedSet *)orderedSet
+-(void)timerBasedAnnotationDisplay
 {
-
+    
+    //NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                              _picturesChosenByDrag, @"WGannotationViewArray",
+                              /* ... */
+                              //nil];
+    _myTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
+    [_myTimer fire]; //Fire the first one immediately
+    [_myTimer setTolerance:0];
 }
-*/
+
+- (void)timerFireMethod:(NSTimer *)timer
+{
+   // NSDictionary *data = [_myTimer userInfo];
+    //NSMutableOrderedSet *myOrderedSet = [data objectForKey:@"WGannotationViewArray"];
+    
+    
+    
+    if (arrayCounter == [_picturesChosenByDrag count])
+    {
+        [_myTimer invalidate];
+        _myTimer = nil;
+        double delayInSeconds = .25;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+           [self mapView:_mapView didDeselectAnnotationView:[_picturesChosenByDrag lastObject]];
+        });
+        //[self mapView:_mapView didDeselectAnnotationView:[_picturesChosenByDrag lastObject]];
+        return;
+    }
+    
+    [self displayCallout:[_picturesChosenByDrag objectAtIndex:arrayCounter]];
+    
+}
+
+-(void)displayCallout:(MKAnnotationView *)view
+{
+    CustomCallout *calloutView = (CustomCallout *)[[[NSBundle mainBundle] loadNibNamed:@"calloutView" owner:self options:nil] objectAtIndex:0];
+    CGRect calloutViewFrame  = calloutView.frame;
+    calloutViewFrame.origin = CGPointMake(0,self.view.frame.size.height/6);//CGPointMake(-calloutViewFrame.size.width/2 + 15, -calloutViewFrame.size.height);
+    calloutView.frame = calloutViewFrame;
+    
+    
+    CustomAnnotation *someAnnotation = view.annotation;
+    NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[someAnnotation imageURLEnlarged]]];
+    UIImage *image1 = [[UIImage alloc] initWithData:data];
+    
+    
+    [calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID andUserLiked:someAnnotation.userHasLiked andAnnotation:someAnnotation];
+    
+    //Makes pictures circular
+    calloutView.layer.cornerRadius = calloutView.frame.size.height/30;
+    calloutView.layer.masksToBounds = YES;
+    
+    //Makes border
+    calloutView.layer.borderWidth = 3.0f;
+    calloutView.layer.borderColor = [UIColor purpleColor].CGColor;
+    
+    [self animateFadeInAndAddCallOutView:calloutView];
+    
+    arrayCounter++;
+}
+
+-(void)pauseTimer
+{
+    [_myTimer invalidate];
+    _myTimer = nil;
+}
+
+-(void)resumeTimer
+{
+    _myTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
+    [_myTimer fire]; //Fire the first one immediately
+}
+
 -(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     NSLog(@"Touch cancelled!");

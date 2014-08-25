@@ -14,6 +14,7 @@
 #import "IGRequest.h"
 #import "IGConnect.h"
 #import "WGMap.h"
+#import "WGTimer.h"
 
 //That's a lot of delegates!  Check out the protocols in apple documentation! Weee
 @interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IGRequestDelegate>
@@ -34,7 +35,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *type; //TODO: set default to current type (at launch)
 
 @property (nonatomic, strong) NSMutableOrderedSet *picturesChosenByDrag; //of annotation views
-
+@property (nonatomic, strong) NSTimer *myTimer;
+@property (nonatomic) int arrayPosition;
 
 @end
 

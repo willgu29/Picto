@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "CustomAnnotation.h"
+#import "IGRequest.h"
 
 //A custom view on how to present our callout picture
-@interface CustomCallout : UIView
+@interface CustomCallout : UIView <IGRequestDelegate>
 
 @property (strong, nonatomic) CustomAnnotation *referencedAnnotation;
 @property (nonatomic) BOOL userHasLiked;
@@ -23,6 +24,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *nextPicture;
 @property (weak, nonatomic) IBOutlet UIButton *prevPicture;
 @property (nonatomic) BOOL userLiked; //TODO: fetch if userLiked picture from WGPhoto to annotation
+
+
 
 -(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime;
 -(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime andMediaID:(NSString *)mediaID;
