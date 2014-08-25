@@ -316,11 +316,6 @@ typedef NSInteger Type;
     //... if user taps an annotation it should zoom in. so in didSelectAnnotation (detect if touch is tap to just return)... we'll define our own custom behavior in another method.
     UITouch *touch = [[event allTouches] anyObject];
     
-    //if (_displayingPictures == YES)
-    //{
-     //   return;
-    //}
-    //[_picturesUserHasSelectedWithDragTouch removeAllObjects]; //CHECK THIS LOGIC
     
     if ([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[CustomCallout class]])
     {
@@ -346,8 +341,6 @@ typedef NSInteger Type;
     }
     
     
-    
-    
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -360,11 +353,6 @@ typedef NSInteger Type;
         NSLog(@"Moved to annotation");
         //View did select annotation view... (so go to that delegate)
     }
-    //if([[self hitTest:[touch locationInView:self] withEvent:event] isKindOfClass:[MyView class]])
-    //{
-        //hurrraaay! :)
-   // }
-    
     /*
     UITouch *touch = [[event allTouches] anyObject];
     CGPoint touchLocation = [touch locationInView:_mapView.annotations];
@@ -392,42 +380,33 @@ typedef NSInteger Type;
     {
         [self resumeTimer];
         return;
-        /*
-        NSLog(@"Touch ended at CustomCallout");
-        if ([_picturesChosenByDrag count] >= 1) //protection is good
-        {
-            [self performSelector:@selector(testVersion:) withObject:[_picturesChosenByDrag objectAtIndex:0]];
-        }
-        return;
-        */
+      
+    }
+   
+    arrayCounter = 0;
+    if ([_picturesChosenByDrag count] == 1)
+    {
+        //TODO: Just display
+        [self displayCallout:[_picturesChosenByDrag objectAtIndex:0]];
+    }
+    else
+    {
+        [self timerBasedAnnotationDisplay];
     }
     
-    //put NSMUtableArray into NSMutableOrderedSet and display that set of pictures
-   // NSLog(@"MY ARRAY: %@",_picturesUserHasSelectedWithDragTouch);
-   // NSMutableOrderedSet *mySet = [[NSMutableOrderedSet alloc] initWithArray:_picturesUserHasSelectedWithDragTouch];
-   // NSLog(@"MY SET: %@",mySet);
-    //[self displayAnnotationCalloutWithSetOfAnnotationViews:mySet];
-    //[self displayAnnotationCalloutWithSetOfAnnotationViews:_picturesChosenByDrag];
-    
-    
-    //[self determineWhetherToDisplayAnotherAnnotationOrDeselect];
-    
-    arrayCounter = 0;
-    [self timerBasedAnnotationDisplay];
-    
 }
+
 
 -(void)timerBasedAnnotationDisplay
 {
     
-    //NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                              _picturesChosenByDrag, @"WGannotationViewArray",
-                              /* ... */
-                              //nil];
-    _myTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
-    [_myTimer fire]; //Fire the first one immediately
-    [_myTimer setTolerance:0];
-    
+    if (_myTimer == nil)
+    {
+        _myTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
+        [[NSRunLoop mainRunLoop] addTimer:_myTimer forMode:NSRunLoopCommonModes];
+        [_myTimer fire]; //Fire the first one immediately
+        [_myTimer setTolerance:0];
+    }
     
 }
 
@@ -483,10 +462,6 @@ typedef NSInteger Type;
     [self animateFadeInAndAddCallOutView:calloutView];
     
     arrayCounter++;
-    //if (arrayCounter == [_picturesChosenByDrag count])
-    //{
-    //    [_myTimer fire];
-    //}
 }
 
 -(void)pauseTimer
@@ -497,16 +472,18 @@ typedef NSInteger Type;
 
 -(void)resumeTimer
 {
-
-    _myTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
-    [_myTimer fire];
-    
-     //Fire the first one immediately
+    if (_myTimer == nil)
+    {
+        _myTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
+        [[NSRunLoop mainRunLoop] addTimer:_myTimer forMode:NSRunLoopCommonModes];
+        [_myTimer fire];
+    }
 }
 
 -(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     NSLog(@"Touch cancelled!");
+    //
 }
 
 
@@ -531,6 +508,8 @@ typedef NSInteger Type;
         [myAlertView show];
         
     }
+    
+    //(canCancelTouches ?
     
     //assigning delegates and stuff.
     _searchField.delegate = self;
@@ -591,8 +570,6 @@ typedef NSInteger Type;
     CLLocationDistance lat = 50;
     CLLocationDistance lng = 50;
     
-    //TODO: FIX THIS
-    //IF LOCATION = 0.00, 0.00 (Lat/lng) WAIT.
     if (_someUser.currentLocation.coordinate.latitude == 0 && _someUser.currentLocation.coordinate.longitude == 0)
     {
         NSLog(@"Tell me something happened");
@@ -600,9 +577,9 @@ typedef NSInteger Type;
         lat = 3000;
         lng = 3000;
         
+        //TODO: Should zoom to user location upon finding it if not already available
+        
     }
-    
-    
     //TODO: make so that it only zooms at start of session.
     [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:lat withLongitude:lng withMap:_mapView];
    
@@ -622,7 +599,9 @@ typedef NSInteger Type;
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    _autoCompleteTableView.hidden = NO;
+    _autoCompleteTableView.hidden = YES;
+    //TODO: Implement autoCompleteTable (Switch to NO when ready)
+    //_autoCompleteTableView.hidden = NO;
     /*
     NSString *substring = [NSString stringWithFormat:_searchField.text];
     substring = [substring stringByReplacingCharactersInRange:range withString:string];
@@ -735,161 +714,7 @@ typedef NSInteger Type;
 #pragma mark - Display Annotation View/Callout
 
 
--(void)determineWhetherToDisplayAnotherAnnotationOrDeselect
-{
-    if ([_picturesChosenByDrag count] >= 1)
-    {
-        [self performSelector:@selector(testVersion:) withObject:[_picturesChosenByDrag objectAtIndex:0] afterDelay:1];
-    }
-}
-
--(void)fireOffTimer
-{
-   
-}
-
--(void)pausePhotoShowing
-{
-    NSLog(@"TRYING TO PAUSE: ");
-    
-    //Targets all NSObject so be careful with using selectors now.
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    
-    //Give user some UI feedback as to paused
-    
-    
-    
-    /*
-     
-    //touches will NSNotify to here
-    if ([_picturesChosenByDrag count] == 1)
-    {
-        [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    }
-    else
-    {
-        //[NSObject cancelPreviousPerformRequestsWithTarget:[_picturesChosenByDrag objectAtIndex:0]];
-        [NSObject cancelPreviousPerformRequestsWithTarget:self];
-        //[NSObject cancelPreviousPerformRequestsWithTarget:[_picturesChosenByDrag objectAtIndex:0] selector:@selector(testVersion:) object:[_picturesChosenByDrag objectAtIndex:0]];
-    }
-    */
-    //touches ended will handle pushing to next picture
-}
-
--(void)testVersion:(MKAnnotationView *)view
-{
-    CustomCallout *calloutView = (CustomCallout *)[[[NSBundle mainBundle] loadNibNamed:@"calloutView" owner:self options:nil] objectAtIndex:0];
-    CGRect calloutViewFrame  = calloutView.frame;
-    calloutViewFrame.origin = CGPointMake(0,self.view.frame.size.height/6);//CGPointMake(-calloutViewFrame.size.width/2 + 15, -calloutViewFrame.size.height);
-    calloutView.frame = calloutViewFrame;
-    
-    
-    CustomAnnotation *someAnnotation = view.annotation;
-    NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[someAnnotation imageURLEnlarged]]];
-    UIImage *image1 = [[UIImage alloc] initWithData:data];
-    
-    
-    [calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID andUserLiked:someAnnotation.userHasLiked andAnnotation:someAnnotation];
-    
-    //Makes pictures circular
-    calloutView.layer.cornerRadius = calloutView.frame.size.height/30;
-    calloutView.layer.masksToBounds = YES;
-    
-    //Makes border
-    calloutView.layer.borderWidth = 3.0f;
-    calloutView.layer.borderColor = [UIColor purpleColor].CGColor;
-    
-    [self animateFadeInAndAddCallOutView:calloutView];
-    
-    
-    if ([_picturesChosenByDrag count] >= 2)
-    {
-        [_picturesChosenByDrag removeObjectAtIndex:0];
-        [self performSelectorOnMainThread:@selector(determineWhetherToDisplayAnotherAnnotationOrDeselect) withObject:nil waitUntilDone:NO];
-    }
-    else if ([_picturesChosenByDrag count] == 1)
-    {
-        [self performSelectorOnMainThread:@selector(workaroundDeselect) withObject:nil waitUntilDone:NO];
-        //Put NSNotificationHere to desel;ect
-        /*
-        double delayInSeconds = 1.5;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            //code to be executed on the main queue after delay
-            [self mapView:_mapView didDeselectAnnotationView:[_picturesChosenByDrag objectAtIndex:0]];
-        });
-         */
-    }
-    else
-    {
-        
-    }
-    
-}
-
--(void)selectDeselectNoDelay
-{
-    [self mapView:_mapView didDeselectAnnotationView:[_picturesChosenByDrag objectAtIndex:0]];
-}
-
--(void)workaroundDeselect
-{
-    [self performSelector:@selector(selectDeselectNoDelay) withObject:nil afterDelay:1
-     ];
-}
-
-
-//TODO: can I make this recursive? Or... is there a way for me to determine what the next annotationView I should display is without a for loop?
--(void)displayAnnotationCalloutWithSetOfAnnotationViews:(NSMutableOrderedSet *)myOrderedSet
-{
-    NSLog(@"DISPLAYING");
-    NSLog(@"SET: %@",myOrderedSet);
-    
-    for (int i = 0; i< [myOrderedSet count]; i++)
-    {
-       // _displayingPictures = YES;
-        MKAnnotationView* annotationView = [myOrderedSet objectAtIndex:i];
-        //[self performSelector:@selector(displayAnnotationCalloutWithAnnotationView:) withObject:annotationView afterDelay:(1*i)];
-        [self shouldWeDisplayAnnotation:annotationView afterDelayOf:(1*i)];
-        //SET vvv variable, if false break;
-        //[self displayAnnotationCalloutWithAnnotationView:annotationView withDelay:1]; //time in seconds
-        //TODO: Change this to a NSTimer implementation?
-        //Currently there is no way for us to skip pictures by tapping since once this is set... it can't be changed. NSTimer should allow us to fire whenever we need to.
-        //maybe put a dispatch_after here?
-        
-        //*********
-        //dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(<#delayInSeconds#> * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            //<#code to be executed after a specified delay#>
-        //});
-        
-      
-        
-    }
-    
-    
-}
-
--(BOOL)shouldWeDisplayAnnotation:(MKAnnotationView *)annotationView afterDelayOf:(NSInteger)timeToDelay
-{
-    
-    //NSTimer *myTimer = [NSTimer scheduledTimerWithTimeInterval:timeToDelay target:self selector:@selector(something) userInfo:nil repeats:NO];
-    [self performSelector:@selector(displayAnnotationCalloutWithAnnotationView:) withObject:annotationView afterDelay:timeToDelay];
-    
-    
-    //PUT ANOTHER SELECOR HERE... goToNextPicture afterDelay:xxx
-    //If user taps, we'll call this method and invalidate the timer (if user doesn't tap, method is called anyways)
-    //In which case this method should display the next Picture.
-    
-    return YES;
-}
-
--(BOOL)cancelDisplayOfQueuedAnnotation:(MKAnnotationView *)annotationView
-{
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(displayAnnotationCalloutWithAnnotationView:) object:annotationView];
-    
-    return YES;
-}
-
+//CURRENTLY NOT BEING USED ***********
 -(void)displayAnnotationCalloutWithAnnotationView:(MKAnnotationView *)view
 {
     
@@ -917,11 +742,10 @@ typedef NSInteger Type;
     calloutView.layer.borderColor = [UIColor purpleColor].CGColor;
     
     [self animateFadeInAndAddCallOutView:calloutView];
-    //[self.view addSubview:calloutView]; //added it to the main view so it will always display picture at center of screen... can change this (replace self.view with view (the MKAnnotationView)
-    //NEED A PLACE FOR NOT DISPLAYING
-    NSLog(@"displaying");
-    //_displayingPictures = NO; //THIS IS INCORRECT
+    NSLog(@"Displaying Callout View");
 }
+//CURRENTLY NOT BEING USED **************
+
 
 -(void)animateFadeInAndAddCallOutView:(CustomCallout *)calloutView
 {
@@ -974,6 +798,8 @@ typedef NSInteger Type;
     }
      */
     
+    //TODO: Not sure if we should use this class... could result in buggy performance
+    //How to safe guard it?
     //looping through main view views... only remove of class CustomCallout.
     NSLog(@"DESELECTING ANNOTATION");
     //return;
@@ -1020,12 +846,9 @@ typedef NSInteger Type;
     
     if ([annotation isKindOfClass:[MKPointAnnotation class]])
          return nil;
-   // dispatch_queue_t queue;
-    //queue = dispatch_queue_create("com.example.MyQueue", NULL);
     
     //if possible, reuse annotation views from before (with the same identifier) (I think for most of our cases.. we'll have to recreate a new annotationView (if I'm interpreting how its being used correctly..)
     MKAnnotationView *annotationView = (MKAnnotationView *)[_mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
-    //MKAnnotationView *annotationView = nil;
     
     
     //If we don't have any annotationView... create one.
@@ -1034,47 +857,19 @@ typedef NSInteger Type;
             
         NSLog(@"making new MKAnnotationView");
         annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
-        
-        //if (![(CustomAnnotation *)annotation imageURLEnlarged]) //means this annotation is a picture.
-        //{
-        
-       // }
-       // else //video
-       // {
-       
-       // }
+        //TODO: Add support for video
         
     }
     else
     {
-        //else reuse it
         NSLog(@"I must have reused it!");
         annotationView.annotation  = annotation;
     }
-    
-    /*
-    //We create some data object from the stringURL of the picture. (we cast to type customaAnnotation because we KNOW FOR CERTAIN that the only object we'll have is of CustomAnnotion so cast is ok)
-    NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:[(CustomAnnotation *)annotation imageURL]]];
-    //create the image and assign it to the annotationView
-    UIImage *theImage = [[UIImage alloc] initWithData:data scale:2.0];
-    //make image annotation look pretty
-    theImage = [self makeImagePretty:theImage];
-     //My attempt at asychronous work
-     dispatch_queue_t backgroundQueue;
-     backgroundQueue = dispatch_queue_create("anythingbro.hope.it.works", NULL);
-     
-     dispatch_async(backgroundQueue, ^(void){
-     [annotation createNewImage];
-     
-     });
-     
-     */
+  
    
     annotationView.image = [(CustomAnnotation *)annotation image];
     annotationView.enabled = YES;
     annotationView.canShowCallout = NO; //Revert to yes later?
-    
-    
     
     //Makes pictures circular
     annotationView.layer.cornerRadius = annotationView.frame.size.height/2;
@@ -1085,10 +880,6 @@ typedef NSInteger Type;
     //This will turn yellow border back to white should we happen to zoom out too far or scroll the annotation out of view
     annotationView.layer.borderWidth = 3.0f;
     annotationView.layer.borderColor = [UIColor whiteColor].CGColor;
-    
-    
-    
-   // annotationView.backgroundColor = [UIColor clearColor];
     
     return annotationView;
 }
@@ -1106,36 +897,12 @@ typedef NSInteger Type;
 
 -(void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered
 {
-    //god damn: https://developer.apple.com/library/ios/documentation/General/Conceptual/ConcurrencyProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40008091-CH1-SW1
-    
-    
+
     [_mapView getCurrentLocationOfMap];
-    
-    //This happens if we couldn't load the map properly (user didn't allow location), so rezoom to user location.
-    
-    
     [_mapView getRadius];
     NSLog(@"RADIUS: %f", _mapView.radius);
-    
     //if we want all pictures set to all etc etc.
-    
-    
-    
     [self selectMethodForType:_globalType];
-    
-    //[_mapView findAllImagesOnMapInRange:(_mapView.radius/2) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
-    
-    //[self loadAllPictures];
-    
-    //How to concur/
-   // dispatch_async(dispatch_get_main_queue(), ^{
-    //Need to say... after data loaded then loadAllPictures. and do that concurrently
-       
-    
-       
-   // });
-    
-    
 }
 
 -(void)mapViewWillStartLoadingMap:(MKMapView *)mapView

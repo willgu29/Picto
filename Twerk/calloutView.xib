@@ -27,13 +27,12 @@
                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gkP-EK-bhi">
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gkP-EK-bhi">
                     <rect key="frame" x="136" y="301" width="46" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="tintColor" red="0.81630660076530615" green="0.77893899740633366" blue="0.78879587384490646" alpha="1" colorSpace="calibratedRGB"/>
-                    <state key="normal" image="Fill 12">
-                        <color key="titleColor" red="0.96076766300000005" green="0.96076766300000005" blue="0.96076766300000005" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" red="1" green="0.0093617555427757404" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" image="Fill 13">
+                        <color key="titleColor" red="0.96076766300000005" green="0.84037646954665757" blue="0.88335805326576289" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <state key="selected" image="Fill 12">
                         <color key="titleShadowColor" red="0.9951923077" green="0.9903846154" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -62,5 +61,6 @@
     </objects>
     <resources>
         <image name="Fill 12" width="17" height="16"/>
+        <image name="Fill 13" width="17" height="16"/>
     </resources>
 </document>
