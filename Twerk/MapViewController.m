@@ -435,16 +435,18 @@ typedef NSInteger Type;
     
     
     
-    if (arrayCounter == [_picturesChosenByDrag count])
+    if (arrayCounter >= [_picturesChosenByDrag count])
     {
         [_myTimer invalidate];
         _myTimer = nil;
-        double delayInSeconds = .25;
+        /*
+        double delayInSeconds = 1;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
            [self mapView:_mapView didDeselectAnnotationView:[_picturesChosenByDrag lastObject]];
         });
-        //[self mapView:_mapView didDeselectAnnotationView:[_picturesChosenByDrag lastObject]];
+         */
+        [self mapView:_mapView didDeselectAnnotationView:[_picturesChosenByDrag lastObject]];
         return;
     }
     
@@ -478,6 +480,10 @@ typedef NSInteger Type;
     [self animateFadeInAndAddCallOutView:calloutView];
     
     arrayCounter++;
+    //if (arrayCounter == [_picturesChosenByDrag count])
+    //{
+    //    [_myTimer fire];
+    //}
 }
 
 -(void)pauseTimer
@@ -585,8 +591,8 @@ typedef NSInteger Type;
     {
         NSLog(@"Tell me something happened");
         _someUser.currentLocation.coordinate = CLLocationCoordinate2DMake(40, -98); //Approx location center USA
-        lat = 1000000;
-        lng = 1000000;
+        lat = 3000;
+        lng = 3000;
         
     }
     

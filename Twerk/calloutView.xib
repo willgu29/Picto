@@ -45,7 +45,7 @@
                     </state>
                     <state key="selected" image="Fill 12"/>
                     <connections>
-                        <action selector="like:" destination="iN0-l3-epB" eventType="touchDragEnter" id="3Uv-l9-lqk"/>
+                        <action selector="like:" destination="iN0-l3-epB" eventType="touchDown" id="R6k-VZ-dq0"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jp3-OR-TEn">
