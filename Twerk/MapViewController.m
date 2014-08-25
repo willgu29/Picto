@@ -628,7 +628,6 @@ typedef NSInteger Type;
 {
     //TODO: Implement next button!
     //Bring user to next relevant location to explore more pictures;
-    
 }
 
 -(IBAction)friendsButton:(UIButton *)button
@@ -798,8 +797,10 @@ typedef NSInteger Type;
 
 -(void)displayAnnotationCalloutWithAnnotationView:(MKAnnotationView *)view
 {
-    CustomCallout *calloutView = (CustomCallout *)[[[NSBundle mainBundle] loadNibNamed:@"calloutView" owner:self options:nil] objectAtIndex:0];
     
+    //add timer and time to delay... (return BOOL 0 = no click, 1 = click (cancel queue of pictures) )
+    
+    CustomCallout *calloutView = (CustomCallout *)[[[NSBundle mainBundle] loadNibNamed:@"calloutView" owner:self options:nil] objectAtIndex:0];
     CGRect calloutViewFrame  = calloutView.frame;
     calloutViewFrame.origin = CGPointMake(0,self.view.frame.size.height/6);//CGPointMake(-calloutViewFrame.size.width/2 + 15, -calloutViewFrame.size.height);
     calloutView.frame = calloutViewFrame;
@@ -810,15 +811,15 @@ typedef NSInteger Type;
     UIImage *image1 = [[UIImage alloc] initWithData:data];
     
     
-    [calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID andUserLiked:someAnnotation.userHasLiked andAnnotation:view.annotation];
+    [calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID andUserLiked:someAnnotation.userHasLiked];
     
     //Makes pictures circular
-    //calloutView.layer.cornerRadius = calloutView.frame.size.height/30;
-    //calloutView.layer.masksToBounds = YES;
+    calloutView.layer.cornerRadius = calloutView.frame.size.height/30;
+    calloutView.layer.masksToBounds = YES;
     
     //Makes border
     calloutView.layer.borderWidth = 3.0f;
-    calloutView.layer.borderColor = [UIColor blackColor].CGColor;
+    calloutView.layer.borderColor = [UIColor purpleColor].CGColor;
     
     [self animateFadeInAndAddCallOutView:calloutView];
     //[self.view addSubview:calloutView]; //added it to the main view so it will always display picture at center of screen... can change this (replace self.view with view (the MKAnnotationView)
