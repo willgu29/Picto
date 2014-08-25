@@ -346,6 +346,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "William Gu";
 				TargetAttributes = {
+					84DA0D1718F92C2B00DE364F = {
+						DevelopmentTeam = X8C323275L;
+					};
 					84DA0D3718F92C2B00DE364F = {
 						TestTargetID = 84DA0D1718F92C2B00DE364F;
 					};
@@ -554,7 +557,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Norman Ko (6929TGSLCX)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/Gu/Documents/FacebookSDK,
@@ -566,6 +570,7 @@
 				INFOPLIST_FILE = "Twerk/Picto-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = Picto;
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -575,7 +580,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Norman Ko (6929TGSLCX)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/Gu/Documents/FacebookSDK,
@@ -587,6 +593,7 @@
 				INFOPLIST_FILE = "Twerk/Picto-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = Picto;
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
