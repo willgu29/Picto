@@ -98,7 +98,6 @@ typedef NSInteger Type;
 
 
 
-
 //our own custom setter
 -(void)setGlobalType:(NSInteger)globalType
 {
@@ -415,6 +414,7 @@ typedef NSInteger Type;
     
     arrayCounter = 0;
     [self timerBasedAnnotationDisplay];
+    
 }
 
 -(void)timerBasedAnnotationDisplay

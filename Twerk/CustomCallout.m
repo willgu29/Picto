@@ -19,17 +19,6 @@
 
 @implementation CustomCallout
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
- 
-    UITouch *touch = [[event allTouches] anyObject];
-    if ([[self hitTest:[touch locationInView:self] withEvent:event] isKindOfClass:[UIButton class]])
-    {
-        
-    }
-}
-
-
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];

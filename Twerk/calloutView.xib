@@ -39,7 +39,7 @@
                         <color key="titleShadowColor" red="0.9951923077" green="0.9903846154" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
-                        <action selector="like:" destination="iN0-l3-epB" eventType="touchDown" id="R6k-VZ-dq0"/>
+                        <action selector="like:" destination="iN0-l3-epB" eventType="touchUpInside" id="3JD-yH-cSR"/>
                     </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xog-fv-Uea">
