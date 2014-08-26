@@ -614,6 +614,19 @@ typedef NSInteger Type;
     //TODO: Load the user's last saved state
     _onlyFriends = NO;
     
+    //Start the cleanup process on a timer, separate thread
+    
+    // Create a dispatch source that'll act as a timer on the concurrent queue
+    dispatchSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
+    double interval = 30.0;
+    dispatch_time_t startTime = dispatch_time(DISPATCH_TIME_NOW, 0);
+    uint64_t intervalTime = (int64_t)(interval * NSEC_PER_SEC);
+    dispatch_source_set_timer(dispatchSource, startTime, intervalTime, 0);
+    // Attach the block you want to run on the timer fire
+    dispatch_source_set_event_handler(dispatchSource, ^{
+        [_mapView cleanupMap];
+    });
+    dispatch_resume(dispatchSource);
     
     
     
@@ -625,6 +638,10 @@ typedef NSInteger Type;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"Can Find Location" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"Images Loaded" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"CanParseFollowing" object:nil];
+    // Clean the map one last time
+    [_mapView cleanupMap];
+    // Stop the clean timer
+    dispatch_suspend(dispatchSource);
 }
 
 
@@ -648,7 +665,9 @@ typedef NSInteger Type;
     }
     //TODO: make so that it only zooms at start of session.
     [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:lat withLongitude:lng withMap:_mapView];
-   
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning

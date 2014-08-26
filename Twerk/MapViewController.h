@@ -23,6 +23,7 @@
     CLLocationManager *locationManager;
     CLLocation *currentLocation;
     NSMutableArray *matchingItems;
+    dispatch_source_t dispatchSource;
 }
 
 //Our map view will have the actual map and a search bar.

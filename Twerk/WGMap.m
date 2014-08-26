@@ -111,6 +111,7 @@ static const int SECONDS_IN_A_DAY = 86400;
 }
 
 - (void)cleanupMap {
+    NSLog(@"Cleaning up the map!");
     NSSet* visible = [self annotationsInMapRect:[self visibleMapRect]];
     NSArray* all = [self annotations];
     NSMutableArray* discard = [NSMutableArray array];
