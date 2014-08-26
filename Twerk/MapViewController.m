@@ -480,6 +480,10 @@ typedef NSInteger Type;
     }
 }
 
+
+
+
+
 -(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     NSLog(@"Touch cancelled!");
