@@ -14,9 +14,9 @@
 @interface LoginViewController ()
 
 
-@property (nonatomic, strong) IBOutlet UIPageControl *pageControl;
-@property (nonatomic, strong) IBOutlet UIView *currentPage;
-@property (nonatomic, strong) IBOutlet UILabel *text;
+@property (nonatomic, weak) IBOutlet UIPageControl *pageControl;
+@property (nonatomic, weak) IBOutlet UIView *currentPage;
+@property (nonatomic, weak) IBOutlet UILabel *text;
 
 @end
 
