@@ -20,6 +20,7 @@ static const int SECONDS_IN_A_DAY = 86400;
 {
     //A CLLocationCoordinate2D is made of a latitude and longitude. Every map knows where its centerCoordinate is (where it's currently viewing)
     _currentLocation = self.centerCoordinate;
+    
 }
 
 -(CLLocationCoordinate2D) getTopCenterCoordinate
@@ -87,6 +88,15 @@ static const int SECONDS_IN_A_DAY = 86400;
 -(void)findPopularImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance)latitude andLongitude:(CLLocationDistance)longitude; //determine possible pictures in a region and put in an array
 {
     //TODO: Figure how to implement this
+}
+
+-(void)findPopularImages //load popular images (regardless of location)
+{
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"/media/popular"], @"method", nil];
+    //create pointer to app delegate
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    //send the instagram property in our appdelehate.h this message "reqeustWithParams: delegate" (based on the instagram iOS SDK
+    [appDelegate.instagram requestWithParams:params delegate:self];
 }
 
 

@@ -239,10 +239,11 @@ typedef NSInteger Type;
         NSLog(@"RECENT");
          [_mapView findRecentImagesOnMapInRange:(_mapView.radius/1.5) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
     }
-    else if (type == POPULAR)
-    {
-        NSLog(@"POPULAR");
-    }
+    //if (type == POPULAR)
+    //{
+    //NSLog(@"POPULAR");
+    //[_mapView findPopularImages]; //WE"RE GOING TO CALL THIS DIRECTLY FOR NOW
+    //}
 }
 
 -(void)loadFollowing
@@ -263,7 +264,34 @@ typedef NSInteger Type;
 
 -(void)loadPictures
 {
-    [self loadAll];
+    if (_globalType == ALL || _globalType == RECENT)
+    {
+        [self loadAll];
+    }
+    
+    if (_globalType == POPULAR)
+    {
+        [self loadPopularAndPlaceIntoAnArray];
+    }
+}
+
+-(void)zoomToPopular //Called by selector in viewDidLoad
+{
+    if ([_picturesPopular count] > 1)
+    {
+        [self setGlobalType:ALL];
+        CustomAnnotation *myAnnotation = [_picturesPopular objectAtIndex:0];
+        [self zoomToRegion:myAnnotation.coordinate withLatitude:50 withLongitude:50 withMap:_mapView];
+        
+        [_mapView addAnnotation:myAnnotation];
+        [_picturesPopular removeObjectAtIndex:0];
+    }
+    else
+    {
+        //Need to load more
+        NSLog(@"No more popular photos in my array Load more");
+    }
+   
 }
 
 -(void)loadAll
@@ -272,6 +300,17 @@ typedef NSInteger Type;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         for (id pictureURL in _mapView.possiblePics)
         {
+            //Only supporting images right now
+            if ([[pictureURL valueForKeyPath:@"type"] isEqualToString:@"image"])
+            {
+                //we good
+            }
+            else
+            {
+                continue;
+            }
+            
+            
             //TODO: filtering here
             if (_onlyFriends == YES)
             {
@@ -341,8 +380,67 @@ typedef NSInteger Type;
     });
 }
 
--(void)loadPopular
+-(void)loadPopularAndPlaceIntoAnArray
 {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    //Only supporting images right now
+        int someCounter = 0;
+        for (id pictureURL in _mapView.possiblePics)
+        {
+            
+            if (someCounter >= 10)
+            {
+                break;
+            }
+            if ([[pictureURL valueForKeyPath:@"type"] isEqualToString:@"image"])
+            {
+                //we good
+            }
+            else
+            {
+                continue;
+            }
+            
+            
+            if ([[pictureURL valueForKeyPath:@"location"] isKindOfClass:[NSNull class]])
+            {
+                continue;
+            }
+            someCounter++;
+            NSString *stringURL = [pictureURL valueForKeyPath:@"images.thumbnail.url"];
+            NSString *stringURLEnlarged = [pictureURL valueForKeyPath:@"images.standard_resolution.url"];
+            NSString *lat1 = [pictureURL valueForKeyPath:@"location.latitude"];
+            NSString *lng1 = [pictureURL valueForKeyPath:@"location.longitude"];
+            //Convert to CLLocationDegrees (which is a double)
+            CLLocationDegrees lat = [lat1 doubleValue];
+            CLLocationDegrees lng = [lng1 doubleValue];
+            //CONVERT from CLLocationDegrees TO CLLocationCoordinate2D
+            CLLocationCoordinate2D location = CLLocationCoordinate2DMake(lat, lng);
+            
+            NSString *owner = [pictureURL valueForKeyPath:@"user.full_name"];
+            NSString *likes = [pictureURL valueForKeyPath:@"likes.count"];
+            
+            NSString *createdTime = [pictureURL valueForKeyPath:@"created_time"];
+            NSString *mediaID = [pictureURL valueForKeyPath:@"id"];
+            NSString *userHasLiked = [pictureURL valueForKey:@"user_has_liked"];
+            WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged andOwner:owner andLikes:likes andTime:createdTime andMediaID:mediaID andUserLiked:userHasLiked];
+            CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithPhoto:photo];
+            //OR save object as video WGVideo subclass.. (not made yet)
+            [annotation createNewImage];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (_picturesPopular == nil)
+                {
+                    _picturesPopular = [[NSMutableOrderedSet alloc] init];
+                }
+                annotation.isPopular = YES;
+                [_picturesPopular addObject:annotation];
+                
+            });
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"Can Zoom to Popular" object:nil];
+    });
+    
     
 }
 
@@ -609,6 +707,8 @@ typedef NSInteger Type;
     //Tell our VC to watch for a notification called "Images Loaded" and call loadAllPictures when heard.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPictures) name:@"Images Loaded" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomToPopular) name:@"Can Zoom to Popular" object:nil];
+    
     //By default set the type of pictures to display as all
     _globalType = ALL;
     //TODO: Load the user's last saved state
@@ -787,9 +887,11 @@ typedef NSInteger Type;
 {
     //TODO: Implement next button!
     //Bring user to next relevant location to explore more pictures;
-    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"/media/popular"], @"method", nil];
-    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
-    //NSMutableSet* popularPics = (NSMutableSet*)[result objectForKey:@"data"];
+
+    [self setGlobalType:POPULAR];
+    [_mapView removeAnnotations:_mapView.annotations];
+    [_mapView findPopularImages];
+    
 }
 
 -(IBAction)friendsButton:(UIButton *)button
@@ -969,6 +1071,13 @@ typedef NSInteger Type;
     //This will turn yellow border back to white should we happen to zoom out too far or scroll the annotation out of view
     annotationView.layer.borderWidth = 3.0f;
     annotationView.layer.borderColor = [UIColor whiteColor].CGColor;
+    
+    if ([(CustomAnnotation *)annotation isPopular] == YES)
+    {
+        [(CustomAnnotation *)annotationView.annotation setColorType:[UIColor blueColor]];
+        [self updateTheBorderColorOnViewToMatchTheAnnotationType:annotationView];
+    }
+    
     
     return annotationView;
 }

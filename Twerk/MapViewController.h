@@ -36,6 +36,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *type; //TODO: set default to current type (at launch)
 
 @property (nonatomic, strong) NSMutableOrderedSet *picturesChosenByDrag; //of annotation views
+@property (nonatomic, strong) NSMutableOrderedSet *picturesPopular;
 @property (nonatomic, strong) NSTimer *myTimer;
 @property (nonatomic) int arrayPosition;
 
