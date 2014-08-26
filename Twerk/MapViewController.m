@@ -60,6 +60,70 @@ typedef NSInteger Type;
 
 @implementation MapViewController
 
+- (float)randomFloatBetween:(float)smallNumber and:(float)bigNumber {
+    float diff = bigNumber - smallNumber;
+    return (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * diff) + smallNumber;
+}
+
+-(void)animateFade: (MKAnnotationView *)aV withDuration:(float)duration {
+    CGRect endFrame = aV.frame;
+    [aV setAlpha:0];
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:duration];
+    [aV setAlpha:1.0];
+    [UIView commitAnimations];
+    aV.frame = endFrame;
+}
+
+-(void)animateDropFromTop: (MKAnnotationView *)aV view:(NSArray *)views withDuration:(float)duration {
+    CGRect endFrame = aV.frame;
+    
+    // Move annotation out of view
+    aV.frame = CGRectMake(aV.frame.origin.x, aV.frame.origin.y - self.view.frame.size.height, aV.frame.size.width, aV.frame.size.height);
+    
+    // Animate drop
+    [UIView animateWithDuration: duration delay:0.04*[views indexOfObject:aV] options: UIViewAnimationOptionCurveLinear animations:^{
+        
+        aV.frame = endFrame;
+        
+        // Animate squash
+    }completion:^(BOOL finished){
+        if (finished) {
+            [UIView animateWithDuration:0.05 animations:^{
+                aV.transform = CGAffineTransformMakeScale(1.0, 0.8);
+                
+            }completion:^(BOOL finished){
+                if (finished) {
+                    [UIView animateWithDuration:0.1 animations:^{
+                        aV.transform = CGAffineTransformIdentity;
+                    }];
+                }
+            }];
+        }
+    }];
+}
+
+//alpha 0 to 1
+- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
+    MKAnnotationView *aV;
+    
+    for (aV in views) {
+        
+        // Don't pin drop if annotation is user location
+        if ([aV.annotation isKindOfClass:[MKUserLocation class]]) {
+            continue;
+        }
+        
+        // Check if current annotation is inside visible map rect, else go to next one
+        MKMapPoint point =  MKMapPointForCoordinate(aV.annotation.coordinate);
+        if (!MKMapRectContainsPoint(self.mapView.visibleMapRect, point)) {
+            continue;
+        }
+        
+        float randomFloat = [self randomFloatBetween:.8 and:1.3];
+        [self animateDropFromTop:aV view:views withDuration:randomFloat];
+    }
+}
 
 //Need to change this method to support when pictures go off map and to make it non immediate
 //Add method to mapFullyRendered when ready probably
@@ -225,8 +289,6 @@ typedef NSInteger Type;
                 }
             
             }
-            
-            
             
             //path find to thumbnail image... might want to do this in the modal.. NOT SURE. Will get back to you guys.
             NSString *stringURL = [pictureURL valueForKeyPath:@"images.thumbnail.url"];
@@ -706,11 +768,15 @@ typedef NSInteger Type;
 {
     //TODO: Implement next button!
     //Bring user to next relevant location to explore more pictures;
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"/media/popular"], @"method", nil];
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    //NSMutableSet* popularPics = (NSMutableSet*)[result objectForKey:@"data"];
 }
 
 -(IBAction)friendsButton:(UIButton *)button
 {
     SideMenuViewController *sideMenu = [[SideMenuViewController alloc] init];
+    
     [self presentViewController:sideMenu animated:YES completion:nil];
 }
 
