@@ -41,8 +41,8 @@
 //-(CLLocationCoordinate2D)determineBestPhotoLocationOfFriend:(Friend *)someFriend;
 
 //-(MKCoordinateRegion)getBestRegionForFriend:(Friend *)someFriend;
--(MKCoordinateRegion)findNextInterestingLocation;
-
+//-(MKCoordinateRegion)findNextInterestingLocation;
+//TODO: find next interesting location
 
 
 @end

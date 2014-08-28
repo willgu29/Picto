@@ -29,7 +29,6 @@
 @property (strong, nonatomic) NSMutableArray *topMoments;
 
 -(void)getCurrentLocationOnMap:(MKMapView *)map; //Get location of user
--(Friend*) getFriendInfo; //get friend info like top pics, profile pic, etc
 -(void) retrieveFollowersFromIG  __deprecated_msg("Will not work; delegate is currently paginating on retrieveWhoUserIsFollowingFromIG");
 -(void)retrieveWhoUserIsFollowingFromIG;
 

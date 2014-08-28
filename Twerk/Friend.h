@@ -20,7 +20,7 @@
 @property (strong, nonatomic) NSMutableArray *topPictures;
 
 
--(void)loadTopPicturesToArray:(NSMutableArray *)topPictures; //get data from facebook
+//-(void)loadTopPicturesToArray:(NSMutableArray *)topPictures; //get data from facebook
 
 
 @end

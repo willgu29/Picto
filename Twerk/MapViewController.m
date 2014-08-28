@@ -514,11 +514,7 @@ typedef NSInteger AnnotationCheck;
             {
                 break;
             }
-            if ([[pictureURL valueForKeyPath:@"type"] isEqualToString:@"image"])
-            {
-                //we good
-            }
-            else
+            if (! [[pictureURL valueForKeyPath:@"type"] isEqualToString:@"image"])
             {
                 continue;
             }
@@ -1039,11 +1035,12 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     //TODO: Implement next button!
     //Bring user to next relevant location to explore more pictures;
 
-    [self setGlobalType:POPULAR];
+    
     [_mapView removeAnnotations:_mapView.annotations];
     if (_picturesPopular == nil)
     {
         _picturesPopular = [[NSMutableOrderedSet alloc] init];
+        [self setGlobalType:POPULAR];
         [_mapView findPopularImages];
     }
     else

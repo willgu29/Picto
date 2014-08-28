@@ -67,7 +67,7 @@
              CLPlacemark *placemark = [placemarks objectAtIndex:0];
              NSLog(@"Current Location Detected");
             // NSLog(@"placemark %@", placemark);
-             NSString *locatedAt = [[placemark.addressDictionary valueForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
+//            NSString *locatedAt = [[placemark.addressDictionary valueForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
             // NSString *address = [[NSString alloc] initWithString:locatedAt];
              //NSString *area = [[NSString alloc]initWithString:placemark.locality];
              //NSString *country = [[NSString alloc] initWithString:placemark.country];

@@ -36,8 +36,8 @@
 
 -(instancetype)initWithLocation:(CLLocationCoordinate2D)location andImageURL:(NSString *)image andEnlarged:(NSString *)imageURLEnlarged andOwner:(NSString *)owner andLikes:(NSString *)likes andTime:(NSString *)createdTime andMediaID:(NSString *)mediaID andUserLiked:(NSString *)userHasLiked;
 
--(void)retrievePhotoFromIG;
--(void)retrievePhotoFromDatabase;
+//-(void)retrievePhotoFromIG;
+//-(void)retrievePhotoFromDatabase;
 
 @end
 //NOTE: we may need methods here on posting the picture to instagram, I'll see how the data flow is later.
