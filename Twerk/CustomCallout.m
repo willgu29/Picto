@@ -165,7 +165,7 @@
 
 -(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime andMediaID:(NSString *)mediaID andUserLiked:(BOOL)userHasLiked andAnnotation:(CustomAnnotation *)annotation
 {
-    _userLiked = userHasLiked;
+    _userHasLiked = userHasLiked;
     _mediaID = mediaID;
     _infoText.text = [NSString stringWithFormat:@"%@'s Photo",owner];
     _likes.text = [NSString stringWithFormat:@"%@ likes",likes];

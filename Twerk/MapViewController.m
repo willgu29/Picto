@@ -19,6 +19,7 @@
 const NSInteger METERS_PER_MILE = 1609.344;
 const NSInteger MAX_ALLOWED_PICTURES = 50; //TODO: switch this to MAX_ALLOWED ON SCREEN.
 const NSInteger POPULAR_PICTURES_IN_ARRAY = 25;
+const NSInteger ANNOTATION_RADIUS = 25;
 
 enum {
     ALL = 1,
@@ -170,7 +171,21 @@ typedef NSInteger AnnotationCheck;
     _picturesChosenByDrag = picturesChosenByDrag;
 }
 
+-(CGPoint)getAnnotationPositionOnMap:(CustomAnnotation *)annotation
+{
+        return [_mapView convertCoordinate:annotation.coordinate toPointToView:_mapView ];
+    }
 
+-(BOOL)annotation:(CustomAnnotation *)annotation1 tooCloseTo:(CustomAnnotation *)annotation2
+{
+        CGPoint location1 = [self getAnnotationPositionOnMap:annotation1];
+        CGPoint location2 = [self getAnnotationPositionOnMap:annotation2];
+        CGFloat dx = location1.x - location2.x;
+        CGFloat dy = location1.y - location2.y;
+        CGFloat distance = sqrt(dx*dx + dy*dy);
+        CGFloat maxDistance = ANNOTATION_RADIUS * 1.25;
+        return distance < maxDistance;
+}
 
 //our own custom setter
 -(void)setGlobalType:(NSInteger)globalType
@@ -443,8 +458,8 @@ typedef NSInteger AnnotationCheck;
 {
     
   
-    //TODO: change to max_allowed on screen
-    if ([_mapView.annotations count] > MAX_ALLOWED_PICTURES) //I want the count of pictures on the map
+    NSSet* visible = [_mapView annotationsInMapRect:[_mapView visibleMapRect]];
+    if ([visible count] > MAX_ALLOWED_PICTURES) //I want the count of pictures on the map
     {
         NSLog(@"Detecting flood");
         return FLOOD;

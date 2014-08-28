@@ -25,7 +25,7 @@
 
 
 @property (nonatomic) BOOL userHasLiked; //TODO: We have two bools... And we use both in here.. OOPS. 
-@property (nonatomic) BOOL userLiked; //TODO: fetch if userLiked picture from WGPhoto to annotation
+
 
 
 -(void)initCalloutWithAnnotation:(CustomAnnotation *)annotation andImage:(UIImage *)image;
