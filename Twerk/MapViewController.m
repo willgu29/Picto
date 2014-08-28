@@ -231,6 +231,14 @@ typedef NSInteger AnnotationCheck;
     
 }
 
+-(void)zoomStart
+{
+    
+    [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:100 withLongitude:100 withMap:_mapView];
+   // [[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:@"Zoom to map"];
+    
+}
+
 -(void)mapLocationSettled
 {
     [_mapView getCurrentLocationOfMap];
@@ -881,14 +889,15 @@ typedef NSInteger AnnotationCheck;
     CLLocationDistance lat = 50;
     CLLocationDistance lng = 50;
     
+    _someUser.currentLocation = nil;
     if (_someUser.currentLocation.coordinate.latitude == 0 && _someUser.currentLocation.coordinate.longitude == 0)
     {
         NSLog(@"Tell me something happened");
         _someUser.currentLocation.coordinate = CLLocationCoordinate2DMake(40, -98); //Approx location center USA
         lat = 3000;
         lng = 3000;
-        //TODO: Add an observer here that listens to a post from user Location
-        //TODO: Should zoom to user location upon finding it if not already available
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomStart) name:@"Zoom to map" object:nil];
+        [_someUser performSelector:@selector(getCurrentLocationOnMap:) withObject:_mapView afterDelay:1];
         
     }
     //TODO: make so that it only zooms at start of session.
@@ -1233,6 +1242,9 @@ typedef NSInteger AnnotationCheck;
     [_mapView getRadius];
     NSLog(@"RADIUS: %f", _mapView.radius);
 
+    if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
+        return;
+    
     //if we want all pictures set to all etc etc.
     [self selectMethodForType:_globalType];
 }

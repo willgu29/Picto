@@ -21,6 +21,13 @@
     MKUserLocation *userLocation = map.userLocation;
     //set the location to our property in .h
     _currentLocation = userLocation;
+    //NSLog(@")
+    if (!(userLocation == nil))
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"Zoom to map" object:nil];
+    }
+    
+    
 }
 
 
