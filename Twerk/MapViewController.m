@@ -18,7 +18,7 @@
 
 const NSInteger METERS_PER_MILE = 1609.344;
 const NSInteger MAX_ALLOWED_PICTURES = 50; //TODO: switch this to MAX_ALLOWED ON SCREEN.
-const NSInteger POPULAR_PICTURES_IN_ARRAY = 10;
+const NSInteger POPULAR_PICTURES_IN_ARRAY = 25;
 
 enum {
     ALL = 1,
@@ -306,33 +306,7 @@ typedef NSInteger AnnotationCheck;
     
 }
 
--(void)zoomToPopular //Called by selector in viewDidLoad
-{
-    if ([_picturesPopular count] >= 1)
-    {
-        [self setGlobalType:ALL];
-        CustomAnnotation *myAnnotation = [_picturesPopular objectAtIndex:0];
-        [self zoomToRegion:myAnnotation.coordinate withLatitude:50 withLongitude:50 withMap:_mapView];
-        
-        [_mapView addAnnotation:myAnnotation];
-        [_picturesPopular removeObjectAtIndex:0]; //TODO: implement a counter instead
-        
-    }
-    else if ([_picturesPopular count] == 0)
-    {
-        NSLog(@"No more popular photos in my array Load more");
-        _picturesPopular = nil;
-        _picturesPopular = [[NSMutableOrderedSet alloc] init];
-        [_mapView findPopularImages];
-        
-    }
-    else
-    {
-        //????
-        NSLog(@"What.");
-    }
-   
-}
+
 
 -(void)loadAll
 {
@@ -510,6 +484,9 @@ typedef NSInteger AnnotationCheck;
         for (id pictureURL in _mapView.possiblePics)
         {
             
+            //TODO: add some randomization (i.e. skip this random photo and just go to the next)
+            
+            
             if (someCounter >= POPULAR_PICTURES_IN_ARRAY)
             {
                 break;
@@ -576,11 +553,11 @@ typedef NSInteger AnnotationCheck;
             dispatch_async(dispatch_get_main_queue(), ^{
                 annotation.isPopular = YES;
                 [_picturesPopular addObject:annotation];
-                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"Can Zoom to Popular" object:nil];
             });
         }
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"Can Zoom to Popular" object:nil];
+        
     });
     
     
@@ -1060,6 +1037,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
     
     [_mapView removeAnnotations:_mapView.annotations];
+    
     if (_picturesPopular == nil)
     {
         _picturesPopular = [[NSMutableOrderedSet alloc] init];
@@ -1072,6 +1050,36 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     }
     
 }
+
+-(void)zoomToPopular //Called by selector in viewDidLoad
+{
+    if ([_picturesPopular count] >= 1)
+    {
+        [self setGlobalType:ALL];
+        CustomAnnotation *myAnnotation = [_picturesPopular objectAtIndex:0];
+        [self zoomToRegion:myAnnotation.coordinate withLatitude:50 withLongitude:50 withMap:_mapView];
+        
+        [_mapView addAnnotation:myAnnotation];
+        [_picturesPopular removeObjectAtIndex:0]; //TODO: implement a counter instead
+        
+    }
+    else if ([_picturesPopular count] == 0)
+    {
+        NSLog(@"No more popular photos in my array Load more");
+        _picturesPopular = nil;
+        _picturesPopular = [[NSMutableOrderedSet alloc] init];
+        [self setGlobalType:POPULAR];
+        [_mapView findPopularImages];
+        
+    }
+    else
+    {
+        //????
+        NSLog(@"What.");
+    }
+    
+}
+
 
 -(IBAction)friendsButton:(UIButton *)button
 {

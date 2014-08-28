@@ -105,9 +105,7 @@ static const int SECONDS_IN_A_DAY = 86400;
 - (void)request:(IGRequest *)request didLoad:(id)result {
     //NSLog(@"Instagram did load: %@", result);
     self.possiblePics = (NSMutableSet*)[result objectForKey:@"data"];
-    //NSLog(@"%lu",(unsigned long)[self.possiblePics count]);
-    //Let everyone know that you've gotten the images loaded
-    //[[NSNotificationCenter defaultCenter] postNotificationName:@"Images Loaded" object:self];
+
     [[NSNotificationCenter defaultCenter] postNotificationName:@"Load Geo" object:self];
 }
 
