@@ -26,7 +26,7 @@
 @property (nonatomic, readonly, copy) NSString *title;
 @property (nonatomic, readwrite) UIColor* colorType;
 @property (nonatomic, readonly) UIImage *image;
-@property (nonatomic, readonly) UIImage *imageEnlarged;
+@property (atomic, readwrite) UIImage *imageEnlarged; // atomic because it is being preloaded; we don't want a conflict
 @property (nonatomic, readonly) NSString *ownerOfPhoto;
 @property (nonatomic, readwrite) NSString *numberOfLikes;
 @property (nonatomic, readonly) NSString *timeCreated;

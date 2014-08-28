@@ -693,9 +693,29 @@ typedef NSInteger AnnotationCheck;
     }
     else if ([_picturesChosenByDrag count] > 1)
     {
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self startPreloadingFrom:_picturesChosenByDrag];
+        });
         [self startAnnotationTimer];
     }
     
+}
+
+-(void)startPreloadingFrom:(NSOrderedSet*)source
+{
+    for (NSUInteger i = 1; i < [source count]; i++) {
+        MKAnnotationView *curView = [source objectAtIndex:i];
+        CustomAnnotation *curAnnotation = curView.annotation;
+        if (curAnnotation.imageEnlarged == nil)
+        {
+            NSLog(@"Preloading image number %lu", (unsigned long)i);
+            NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[curAnnotation imageURLEnlarged]]];
+            curAnnotation.imageEnlarged = [[UIImage alloc] initWithData:data];
+        }
+        else
+            NSLog(@"Image was preloaded :)");
+    }
 }
 
 dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispatch_queue_t queue, dispatch_block_t block)
@@ -718,7 +738,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     annotationTimer = CreateDispatchTimer(SECONDS_PER_PIC * NSEC_PER_SEC, 10ull * NSEC_PER_MSEC, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [self performSelectorOnMainThread:@selector(timerFireMethod) withObject:nil waitUntilDone:TRUE];
     });
-    
 }
 
 -(void) stopAnnotationTimer
@@ -760,11 +779,15 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     CustomAnnotation *someAnnotation = view.annotation;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[someAnnotation imageURLEnlarged]]];
-        UIImage *image1 = [[UIImage alloc] initWithData:data];
-        
+        if (someAnnotation.imageEnlarged == nil)
+        {
+            NSLog(@"Had to load image :(");
+            NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[someAnnotation imageURLEnlarged]]];
+            ((CustomAnnotation*)[view annotation]).imageEnlarged = someAnnotation.imageEnlarged = [[UIImage alloc] initWithData:data];
+        }
+        else NSLog(@"Image was preloaded :)");
         dispatch_async(dispatch_get_main_queue(), ^{
-            [calloutView initCalloutWithAnnotation:someAnnotation andImage:image1];
+            [calloutView initCalloutWithAnnotation:someAnnotation andImage:someAnnotation.imageEnlarged];
             //[calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID andUserLiked:someAnnotation.userHasLiked andAnnotation:someAnnotation];
             
             //Makes pictures circular
