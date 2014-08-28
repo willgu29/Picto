@@ -87,7 +87,7 @@ static const int SECONDS_IN_A_DAY = 86400;
 
 -(void)findPopularImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance)latitude andLongitude:(CLLocationDistance)longitude; //determine possible pictures in a region and put in an array
 {
-    //TODO: Figure how to implement this
+    // TODO: Figure how to implement this
 }
 
 -(void)findPopularImages //load popular images (regardless of location)
@@ -103,11 +103,12 @@ static const int SECONDS_IN_A_DAY = 86400;
 
 //Same as User.m IGRequestDelegate
 - (void)request:(IGRequest *)request didLoad:(id)result {
-    NSLog(@"Instagram did load: %@", result);
+    //NSLog(@"Instagram did load: %@", result);
     self.possiblePics = (NSMutableSet*)[result objectForKey:@"data"];
-    NSLog(@"%lu",(unsigned long)[self.possiblePics count]);
+    //NSLog(@"%lu",(unsigned long)[self.possiblePics count]);
     //Let everyone know that you've gotten the images loaded
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"Images Loaded" object:self];
+    //[[NSNotificationCenter defaultCenter] postNotificationName:@"Images Loaded" object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Load Geo" object:self];
 }
 
 - (void)request:(IGRequest *)request didFailWithError:(NSError *)error {
@@ -120,6 +121,7 @@ static const int SECONDS_IN_A_DAY = 86400;
     [alertView show];
 }
 
+// ???: This will remove MKUserLocation and MKPointAnnotations as well (Just be aware) (Ask me (WG) if you want to check and not remove these annotations)
 - (void)cleanupMap {
     NSLog(@"Cleaning up the map!");
     NSSet* visible = [self annotationsInMapRect:[self visibleMapRect]];

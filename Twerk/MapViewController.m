@@ -17,6 +17,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 const NSInteger METERS_PER_MILE = 1609.344;
+const NSInteger MAX_ALLOWED_PICTURES = 50; //TODO: switch this to MAX_ALLOWED ON SCREEN.
 
 enum {
     ALL = 1,
@@ -26,6 +27,13 @@ enum {
 };
 typedef NSInteger Type;
 
+enum {
+    DUPLICATE = 0, //trying to add duplicate annotation
+    FLOOD = 1, //... too many annotations being displayed
+    SUCCESS = 69
+    
+};
+typedef NSInteger AnnotationCheck;
 //Picture Border Types: (APPLY TO annotationView.layer.borderColor) (Or rather just change colorType and call updateTheBorderColor....)
 //******************************
 /*
@@ -178,6 +186,8 @@ typedef NSInteger Type;
 
 -(void)configureInfoText:(NSInteger)type
 {
+    
+    //TODO: ANIMATE! (_type is a UILabel)
     NSString *textType = [self formatTypeToString:type];
     if (_onlyFriends == YES)
     {
@@ -262,8 +272,17 @@ typedef NSInteger Type;
     
 }
 
+-(void)loadLocationGeo
+{
+    [self parseStringOfLocation:_mapView.currentLocation];
+}
+
 -(void)loadPictures
 {
+    
+    
+    
+    
     if (_globalType == ALL || _globalType == RECENT)
     {
         [self loadAll];
@@ -273,6 +292,8 @@ typedef NSInteger Type;
     {
         [self loadPopularAndPlaceIntoAnArray];
     }
+    
+    
 }
 
 -(void)zoomToPopular //Called by selector in viewDidLoad
@@ -284,7 +305,8 @@ typedef NSInteger Type;
         [self zoomToRegion:myAnnotation.coordinate withLatitude:50 withLongitude:50 withMap:_mapView];
         
         [_mapView addAnnotation:myAnnotation];
-        [_picturesPopular removeObjectAtIndex:0];
+        [_picturesPopular removeObjectAtIndex:0]; //TODO: implement a counter instead
+        
     }
     else
     {
@@ -329,6 +351,8 @@ typedef NSInteger Type;
             
             }
             
+            
+            
             //path find to thumbnail image... might want to do this in the modal.. NOT SURE. Will get back to you guys.
             NSString *stringURL = [pictureURL valueForKeyPath:@"images.thumbnail.url"];
             NSString *stringURLEnlarged = [pictureURL valueForKeyPath:@"images.standard_resolution.url"];
@@ -354,8 +378,31 @@ typedef NSInteger Type;
             //Save this object in an array of currently displayed photos
             WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged andOwner:owner andLikes:likes andTime:createdTime andMediaID:mediaID andUserLiked:userHasLiked];
             CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithPhoto:photo];
-            //OR save object as video WGVideo subclass.. (not made yet)
+            
+            
+            //We can probably do this right after we check the mediaID (the first thing we should check)
+            NSInteger resultOfCheck = [self canWeAddThisAnnotation:annotation];
+            
+            if (resultOfCheck == DUPLICATE)
+            {
+                //try next pic
+                continue;
+            }
+            else if (resultOfCheck == FLOOD)
+            {
+                //stop loading pictures ffs
+                break;
+            }
+            else if (resultOfCheck == SUCCESS)
+            {
+                //YASS
+            }
+            
             [annotation createNewImage];
+            
+            //OR save object as video WGVideo subclass.. (not made yet)
+            [annotation setLocationString:self.currentMapViewGeoLocation];
+            
             
             //[_mapView.actualPics addObject:photo]; //THIS IS NOT BEING USED RIGHT NOW. WE Probably won't need this as all annotations are placed in _mapView.annotations (an NSArray) anyways..
             //Although we may want to create an array of annotations then add the array of annotations all at once instead of one by one.  addAnnotations:(NSArray *)array
@@ -367,8 +414,24 @@ typedef NSInteger Type;
             - (void)showAnnotations:(NSArray *)annotations animated:(BOOL)animated
             */
             
+            //Check top enum for descriptors
+           
+           // [annotation parseStringOfLocation:annotation.coordinate]; DO this elsewhere/ only once
+            
             //do this when done loading.. on main thread
             dispatch_async(dispatch_get_main_queue(), ^{
+                /*
+                if ([_mapView.actualPics containsObject:annotation])
+                {
+                    //TODO: Can we use the NSTimer cleanup?
+                    continue;
+                    //Don't add this picture to the annotationView (since 
+                }
+                [_mapView.actualPics addObject:annotation];
+                 */
+                
+               //
+                
                 [_mapView addAnnotation:annotation]; //THIS adds an annotation to _mapView.annotations
                 //[self addAnnotationWithWGPhoto:photo]; REVERT HERE 1.0
                 //mapView viewForAnnotation should be automatically called now.. -> (JK. )
@@ -379,6 +442,41 @@ typedef NSInteger Type;
         }
     });
 }
+
+//i.e. Is this a duplicate annotation? etc.
+-(NSInteger)canWeAddThisAnnotation:(CustomAnnotation *)annotation
+{
+    
+  
+    //TODO: change to max_allowed on screen
+    if ([_mapView.annotations count] > MAX_ALLOWED_PICTURES) //I want the count of pictures on the map
+    {
+        NSLog(@"Detecting flood");
+        return FLOOD;
+    }
+    //TODO: Can we optimize this? Detecting duplicates by looping through the NSArray and comparing to this one.
+    for (CustomAnnotation* arrayAnnotation in _mapView.annotations)
+    {
+        if ([arrayAnnotation isKindOfClass:[MKPointAnnotation class]])
+        {
+            continue;
+        }
+        if ([arrayAnnotation isKindOfClass:[MKUserLocation class]])
+        {
+            continue;
+        }
+        
+        if ([arrayAnnotation isEqualToAnnotation:annotation])
+        {
+            NSLog(@"Detecting duplicate");
+            return DUPLICATE;
+        }
+    }
+    
+    return SUCCESS;
+}
+
+
 
 -(void)loadPopularAndPlaceIntoAnArray
 {
@@ -425,8 +523,36 @@ typedef NSInteger Type;
             NSString *userHasLiked = [pictureURL valueForKey:@"user_has_liked"];
             WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged andOwner:owner andLikes:likes andTime:createdTime andMediaID:mediaID andUserLiked:userHasLiked];
             CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithPhoto:photo];
+            
+            
+            
+            //We can probably do this right after we check the mediaID (the first thing we should check)
+            NSInteger resultOfCheck = [self canWeAddThisAnnotation:annotation];
+            
+            if (resultOfCheck == DUPLICATE)
+            {
+                //try next pic
+                continue;
+            }
+            else if (resultOfCheck == FLOOD)
+            {
+                //stop loading pictures ffs
+                break;
+            }
+            else if (resultOfCheck == SUCCESS)
+            {
+                //YASS
+            }
+            
+            
+            
             //OR save object as video WGVideo subclass.. (not made yet)
             [annotation createNewImage];
+            
+            //[annotation setLocationString:self.currentMapViewGeoLocation];
+            
+            [annotation parseStringOfLocation:annotation.coordinate]; //We'll do the parse for popular pictures since we only load a few.
+            
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (_picturesPopular == nil)
                 {
@@ -510,7 +636,7 @@ typedef NSInteger Type;
     if([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[MKAnnotationView class]])
     {
         //This is MKAnnotation! COOL
-        NSLog(@"Moved to annotation");
+        //NSLog(@"Moved to annotation");
         //View did select annotation view... (so go to that delegate)
     }
     /*
@@ -608,8 +734,8 @@ typedef NSInteger Type;
     NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[someAnnotation imageURLEnlarged]]];
     UIImage *image1 = [[UIImage alloc] initWithData:data];
     
-    
-    [calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID andUserLiked:someAnnotation.userHasLiked andAnnotation:someAnnotation];
+    [calloutView initCalloutWithAnnotation:someAnnotation andImage:image1];
+    //[calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID andUserLiked:someAnnotation.userHasLiked andAnnotation:someAnnotation];
     
     //Makes pictures circular
     calloutView.layer.cornerRadius = calloutView.frame.size.height/30;
@@ -709,6 +835,8 @@ typedef NSInteger Type;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomToPopular) name:@"Can Zoom to Popular" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadLocationGeo) name:@"Load Geo" object:nil];
+    
     //By default set the type of pictures to display as all
     _globalType = ALL;
     //TODO: Load the user's last saved state
@@ -759,7 +887,7 @@ typedef NSInteger Type;
         _someUser.currentLocation.coordinate = CLLocationCoordinate2DMake(40, -98); //Approx location center USA
         lat = 3000;
         lng = 3000;
-        
+        //TODO: Add an observer here that listens to a post from user Location
         //TODO: Should zoom to user location upon finding it if not already available
         
     }
@@ -890,7 +1018,14 @@ typedef NSInteger Type;
 
     [self setGlobalType:POPULAR];
     [_mapView removeAnnotations:_mapView.annotations];
-    [_mapView findPopularImages];
+    if ([_picturesPopular count] <= 1)
+    {
+        [_mapView findPopularImages];
+    }
+    else
+    {
+        [self zoomToPopular];
+    }
     
 }
 
@@ -922,7 +1057,7 @@ typedef NSInteger Type;
     UIImage *image1 = [[UIImage alloc] initWithData:data];
     
     
-    [calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID andUserLiked:someAnnotation.userHasLiked];
+    //[calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID andUserLiked:someAnnotation.userHasLiked];
     
     //Makes pictures circular
     calloutView.layer.cornerRadius = calloutView.frame.size.height/30;
@@ -989,8 +1124,6 @@ typedef NSInteger Type;
     }
      */
     
-    //TODO: Not sure if we should use this class... could result in buggy performance
-    //How to safe guard it?
     //looping through main view views... only remove of class CustomCallout.
     NSLog(@"DESELECTING ANNOTATION");
     //return;
@@ -1046,14 +1179,14 @@ typedef NSInteger Type;
     if (!annotationView)
     {
             
-        NSLog(@"making new MKAnnotationView");
+        //NSLog(@"making new MKAnnotationView");
         annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
         //TODO: Add support for video
         
     }
     else
     {
-        NSLog(@"I must have reused it!");
+        //NSLog(@"I must have reused it!");
         annotationView.annotation  = annotation;
     }
   
@@ -1099,6 +1232,7 @@ typedef NSInteger Type;
     [_mapView getCurrentLocationOfMap];
     [_mapView getRadius];
     NSLog(@"RADIUS: %f", _mapView.radius);
+
     //if we want all pictures set to all etc etc.
     [self selectMethodForType:_globalType];
 }
@@ -1120,6 +1254,92 @@ typedef NSInteger Type;
     
 }
 
+
+
+
+
+#pragma mark - UITableView
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 10;//_autoCompleteData.count;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //FOR custom cell later
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    //since we don't have one yet, we'll create a generic one
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        
+    }
+    
+    //fill each row with data
+    //TODO: still need data... simply place data in array and place in.
+    cell.textLabel.text = @"Hello";//[_autoCompleteData objectAtIndex:indexPath.row];
+    return cell;
+}
+
+
+#pragma mark -Parse Location
+
+-(void)parseStringOfLocation:(CLLocationCoordinate2D) location
+{
+    CLLocation *coordinate = [[CLLocation alloc]initWithLatitude:location.latitude longitude:location.longitude];
+    
+    if(coordinate.coordinate.latitude == 0 && coordinate.coordinate.longitude == 0)
+    {
+        return;
+        //Error protect
+    }
+    
+    CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
+    [geoCoder reverseGeocodeLocation:coordinate completionHandler:^(NSArray *placemarks, NSError *error)
+     {
+         if (!error)
+         {
+             //DO SOMETHING HERE
+             CLPlacemark *placemark = [placemarks objectAtIndex:0];
+             NSLog(@"Current Location Detected");
+             // NSLog(@"placemark %@", placemark);
+            // NSString *locatedAt = [[placemark.addressDictionary valueForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
+            // NSString *address = [[NSString alloc] initWithString:locatedAt];
+             //NSString *area = [[NSString alloc]initWithString:placemark.locality];
+            // NSString *country = [[NSString alloc] initWithString:placemark.country];
+             //NSLog(@"%@, %@, %@", address, area, country);
+             
+             if (placemark.locality == nil)
+             {
+                 _currentMapViewGeoLocation = [NSString stringWithFormat:@"%@, %@", placemark.administrativeArea, placemark.country];
+             }
+             else
+             {
+                _currentMapViewGeoLocation = [NSString stringWithFormat:@"%@, %@",placemark.locality, placemark.administrativeArea];
+             }
+             
+             NSLog(@"LOCATION: %@",_currentMapViewGeoLocation);
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"Images Loaded" object:self];
+             
+             
+         }
+         else
+         {
+             //HANDLE ERROR
+             NSLog(@"Geocode failed with error %@", error);
+         }
+     }];
+    
+    
+}
+
+
+
+
+#pragma mark- NOT BEING USED (Saved for later)
+
 //will alloc and init a new Location manager and then start it, there are settings that adjust the distance and accuracy of the manager.  Set delegate to self.
 -(void) startLocationManager
 {
@@ -1132,6 +1352,7 @@ typedef NSInteger Type;
 }
 
 
+//NOT BEING USED RIGHT NOW. FOR LATER NOTIFICATIONS
 //After starting Location manager, this will update locations VERY precisely, use this for things like sending a sound/whatever when a user passes a landmark or moment that another friend has taken
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
@@ -1172,42 +1393,4 @@ typedef NSInteger Type;
 }
 
 
-
-
-#pragma mark - UITableView
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 10;//_autoCompleteData.count;
-}
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    //FOR custom cell later
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    //since we don't have one yet, we'll create a generic one
-    if (cell == nil)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        
-    }
-    
-    //fill each row with data
-    //TODO: still need data... simply place data in array and place in.
-    cell.textLabel.text = @"Hello";//[_autoCompleteData objectAtIndex:indexPath.row];
-    return cell;
-}
-
-/* NOT SURE ABOUT THIS YET
-#pragma mark -IGRequest Delegate
--(void)request:(IGRequest *)request didLoad:(id)result
-{
-    NSLog(@"MapView got some result!");
-    if ([result isKindOfClass:[WGMap class]])
-    {
-        [self performSelector:@selector(loadAllPictures)];
-    }
-}
-*/
 @end

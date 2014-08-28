@@ -17,7 +17,7 @@
 
 
 @property (strong, nonatomic) NSMutableSet *possiblePics; //in data form
-@property (strong, nonatomic) NSMutableArray *actualPics; //of WGPHOTO type
+@property (strong, nonatomic) NSMutableSet *actualPics; //of CUSTOM ANNOTATION TYPE
 @property (nonatomic) CLLocationCoordinate2D currentLocation; //where we are centered at
 @property (nonatomic) CLLocationDistance radius; //the radius of the current mapview
 

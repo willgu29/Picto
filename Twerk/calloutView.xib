@@ -11,7 +11,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cHd-kl-yuX">
-                    <rect key="frame" x="27" y="33" width="264" height="270"/>
+                    <rect key="frame" x="20" y="33" width="280" height="270"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Friend's Name : Approx Loc" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Bf-Q8-wob">
@@ -22,14 +22,15 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Likes: ##" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W1N-Sk-Gl3">
-                    <rect key="frame" x="31" y="305" width="131" height="21"/>
+                    <rect key="frame" x="20" y="305" width="93" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gkP-EK-bhi">
-                    <rect key="frame" x="136" y="301" width="46" height="30"/>
+                    <rect key="frame" x="103" y="301" width="46" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <gestureRecognizers/>
                     <color key="tintColor" red="1" green="0.0093617555427757404" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <state key="normal" image="Fill 13">
                         <color key="titleColor" red="0.96076766300000005" green="0.84037646954665757" blue="0.88335805326576289" alpha="1" colorSpace="calibratedRGB"/>
@@ -47,6 +48,13 @@
                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Location" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPW-ah-9qd">
+                    <rect key="frame" x="157" y="305" width="143" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -55,6 +63,7 @@
                 <outlet property="infoText" destination="5Bf-Q8-wob" id="kOq-m5-tjU"/>
                 <outlet property="likeButton" destination="gkP-EK-bhi" id="Hsb-rI-Cgh"/>
                 <outlet property="likes" destination="W1N-Sk-Gl3" id="4fv-SC-P6U"/>
+                <outlet property="locationString" destination="jPW-ah-9qd" id="dKc-KM-3Fr"/>
                 <outlet property="timeSincePost" destination="xog-fv-Uea" id="Ufp-j3-sTE"/>
             </connections>
         </view>

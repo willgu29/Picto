@@ -39,6 +39,7 @@
 @property (nonatomic, strong) NSMutableOrderedSet *picturesPopular;
 @property (nonatomic, strong) NSTimer *myTimer;
 @property (nonatomic) int arrayPosition;
+@property (nonatomic, strong) NSString *currentMapViewGeoLocation;
 
 @end
 

@@ -548,7 +548,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: William Gu (U79VMUZNWP)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -561,7 +561,7 @@
 				INFOPLIST_FILE = "Twerk/Picto-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = Picto;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "321ba57a-163a-4b47-bb04-9ca54ce37e52";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -571,7 +571,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -584,7 +584,7 @@
 				INFOPLIST_FILE = "Twerk/Picto-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = Picto;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "321ba57a-163a-4b47-bb04-9ca54ce37e52";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

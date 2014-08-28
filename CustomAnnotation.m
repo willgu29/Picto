@@ -43,10 +43,77 @@
     //create the image and assign it to the annotationView
     UIImage *theImage = [[UIImage alloc] initWithData:data scale:3.0];
     //make image annotation look pretty
-    theImage = [self makeImagePretty:theImage];
+    //theImage = [self makeImagePretty:theImage]; //NOT BEING USED AS NOTHING IS THERE
     
     _image = theImage;
 }
+
+//Unfortunately this process takes a while...
+
+//TODO: We'll need to find a better way to do this. Currently we're geoCoding every photo but that's probably not necessary as we can assume that pictures in the same general location will have the same geoData... so don't need to refetch data.
+//BTW: The docs say "you should not send more than one geocoding request per minute". So we'll start getting errors after a bit too...
+
+
+-(void)parseStringOfLocation:(CLLocationCoordinate2D) location
+{
+    CLLocation *coordinate = [[CLLocation alloc]initWithLatitude:location.latitude longitude:location.longitude];
+    
+    CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
+    [geoCoder reverseGeocodeLocation:coordinate completionHandler:^(NSArray *placemarks, NSError *error)
+     {
+         if (!error)
+         {
+             //DO SOMETHING HERE
+             CLPlacemark *placemark = [placemarks objectAtIndex:0];
+             NSLog(@"Current Location Detected");
+            // NSLog(@"placemark %@", placemark);
+             NSString *locatedAt = [[placemark.addressDictionary valueForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
+            // NSString *address = [[NSString alloc] initWithString:locatedAt];
+             //NSString *area = [[NSString alloc]initWithString:placemark.locality];
+             //NSString *country = [[NSString alloc] initWithString:placemark.country];
+             //NSLog(@"%@, %@, %@", address, area, country);
+             
+             
+             if (placemark.locality == nil)
+             {
+                 [self setLocationString:[NSString stringWithFormat:@"%@, %@", placemark.administrativeArea, placemark.country]];
+             }
+             else
+             {
+                 [self setLocationString:[NSString stringWithFormat:@"%@, %@",placemark.locality, placemark.administrativeArea]];
+             }
+             
+             
+             NSLog(@"LOCATION: %@",_locationString);
+             
+         }
+         else
+         {
+             //HANDLE ERROR
+             NSLog(@"Geocode failed with error %@", error);
+         }
+     }];
+    
+    
+}
+
+
+-(BOOL)isEqualToAnnotation:(CustomAnnotation *)annotation
+{
+    if (self == annotation)
+    {
+        return true;
+    }
+    if ([self.mediaID isEqualToString:annotation.mediaID])
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 
 -(UIImage *)makeImagePretty:(UIImage *)image
 {

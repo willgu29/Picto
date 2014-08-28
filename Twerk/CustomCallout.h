@@ -14,22 +14,23 @@
 @interface CustomCallout : UIView <IGRequestDelegate>
 
 @property (strong, nonatomic) CustomAnnotation *referencedAnnotation;
-@property (nonatomic) BOOL userHasLiked;
+
 @property (strong, nonatomic) NSString *mediaID;
 @property (weak, nonatomic) IBOutlet UILabel *timeSincePost;
 @property (weak, nonatomic) IBOutlet UILabel *infoText;
 @property (weak, nonatomic) IBOutlet UIImageView *image;
 @property (weak, nonatomic) IBOutlet UILabel *likes;
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
-@property (weak, nonatomic) IBOutlet UIButton *nextPicture;
-@property (weak, nonatomic) IBOutlet UIButton *prevPicture;
+@property (weak, nonatomic) IBOutlet UILabel *locationString;
+
+
+@property (nonatomic) BOOL userHasLiked; //TODO: We have two bools... And we use both in here.. OOPS. 
 @property (nonatomic) BOOL userLiked; //TODO: fetch if userLiked picture from WGPhoto to annotation
 
 
+-(void)initCalloutWithAnnotation:(CustomAnnotation *)annotation andImage:(UIImage *)image;
 
--(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime;
--(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime andMediaID:(NSString *)mediaID;
--(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime andMediaID:(NSString *)mediaID andUserLiked:(BOOL)userHasLiked;
+
 -(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime andMediaID:(NSString *)mediaID andUserLiked:(BOOL)userHasLiked andAnnotation:(CustomAnnotation *)annotation;
 
 

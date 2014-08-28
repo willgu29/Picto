@@ -14,8 +14,9 @@
 
 @interface CustomAnnotation : NSObject <MKAnnotation>
 
-@property (nonatomic, readwrite
-           ) BOOL isPopular;
+
+@property (nonatomic, readwrite) NSString *locationString;
+@property (nonatomic, readwrite) BOOL isPopular;
 @property (nonatomic, readwrite) BOOL userHasLiked;
 @property (nonatomic, readonly) NSString *mediaID;
 @property (nonatomic, readonly) NSString *imageURL;
@@ -27,7 +28,6 @@
 @property (nonatomic, readonly) UIImage *image;
 @property (nonatomic, readonly) UIImage *imageEnlarged;
 @property (nonatomic, readonly) NSString *ownerOfPhoto;
-@property (nonatomic, readonly) NSString *locationOfPhoto;
 @property (nonatomic, readwrite) NSString *numberOfLikes;
 @property (nonatomic, readonly) NSString *timeCreated;
 //@property (nonatomic, readonly) type video??
@@ -35,6 +35,10 @@
 -(instancetype)initWithPhoto:(WGPhoto *)photo;
 //-(instancetype)initWithVideo:(WGVideo *)video;
 -(void)createNewImage;
+-(void)parseStringOfLocation:(CLLocationCoordinate2D) location;
+-(BOOL)isEqualToAnnotation:(CustomAnnotation *)annotation;
+
+
 -(UIImage *)makeImagePretty:(UIImage *)image;
 
 @end
