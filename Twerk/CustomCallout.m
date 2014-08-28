@@ -157,8 +157,10 @@
     if (_referencedAnnotation.locationString == nil)
     {
         NSLog(@"FUCKED UP");
+        _locationString.text = @"";
     }
-    _locationString.text = [NSString stringWithFormat:@"%@", _referencedAnnotation.locationString];
+    else
+        _locationString.text = [NSString stringWithFormat:@"%@", _referencedAnnotation.locationString];
 }
 
 -(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime andMediaID:(NSString *)mediaID andUserLiked:(BOOL)userHasLiked andAnnotation:(CustomAnnotation *)annotation
