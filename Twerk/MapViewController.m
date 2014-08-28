@@ -359,7 +359,10 @@ typedef NSInteger AnnotationCheck;
             
             }
             
-            
+            if ([[pictureURL valueForKeyPath:@"location"] isKindOfClass:[NSNull class]])
+            {
+                continue;
+            }
             
             //path find to thumbnail image... might want to do this in the modal.. NOT SURE. Will get back to you guys.
             NSString *stringURL = [pictureURL valueForKeyPath:@"images.thumbnail.url"];
