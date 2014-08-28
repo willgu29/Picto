@@ -18,6 +18,7 @@
 
 const NSInteger METERS_PER_MILE = 1609.344;
 const NSInteger MAX_ALLOWED_PICTURES = 50; //TODO: switch this to MAX_ALLOWED ON SCREEN.
+const NSInteger POPULAR_PICTURES_IN_ARRAY = 10;
 
 enum {
     ALL = 1,
@@ -30,6 +31,7 @@ typedef NSInteger Type;
 enum {
     DUPLICATE = 0, //trying to add duplicate annotation
     FLOOD = 1, //... too many annotations being displayed
+    OVERLAP = 2, //annotation views high chance of overlap (i.e. same location)
     SUCCESS = 69
     
 };
@@ -306,7 +308,7 @@ typedef NSInteger AnnotationCheck;
 
 -(void)zoomToPopular //Called by selector in viewDidLoad
 {
-    if ([_picturesPopular count] > 1)
+    if ([_picturesPopular count] >= 1)
     {
         [self setGlobalType:ALL];
         CustomAnnotation *myAnnotation = [_picturesPopular objectAtIndex:0];
@@ -316,10 +318,18 @@ typedef NSInteger AnnotationCheck;
         [_picturesPopular removeObjectAtIndex:0]; //TODO: implement a counter instead
         
     }
+    else if ([_picturesPopular count] == 0)
+    {
+        NSLog(@"No more popular photos in my array Load more");
+        _picturesPopular = nil;
+        _picturesPopular = [[NSMutableOrderedSet alloc] init];
+        [_mapView findPopularImages];
+        
+    }
     else
     {
-        //Need to load more
-        NSLog(@"No more popular photos in my array Load more");
+        //????
+        NSLog(@"What.");
     }
    
 }
@@ -465,6 +475,9 @@ typedef NSInteger AnnotationCheck;
         NSLog(@"Detecting flood");
         return FLOOD;
     }
+    //TODO: Make a function that says... if these annotation locations are too similar then We need to not display
+
+    
     //TODO: Can we optimize this? Detecting duplicates by looping through the NSArray and comparing to this one.
     for (CustomAnnotation* arrayAnnotation in _mapView.annotations)
     {
@@ -497,7 +510,7 @@ typedef NSInteger AnnotationCheck;
         for (id pictureURL in _mapView.possiblePics)
         {
             
-            if (someCounter >= 10)
+            if (someCounter >= POPULAR_PICTURES_IN_ARRAY)
             {
                 break;
             }
@@ -515,7 +528,7 @@ typedef NSInteger AnnotationCheck;
             {
                 continue;
             }
-            someCounter++;
+        
             NSString *stringURL = [pictureURL valueForKeyPath:@"images.thumbnail.url"];
             NSString *stringURLEnlarged = [pictureURL valueForKeyPath:@"images.standard_resolution.url"];
             NSString *lat1 = [pictureURL valueForKeyPath:@"location.latitude"];
@@ -555,7 +568,7 @@ typedef NSInteger AnnotationCheck;
                 //YASS
             }
             
-            
+            someCounter++;
             
             //OR save object as video WGVideo subclass.. (not made yet)
             [annotation createNewImage];
@@ -565,10 +578,6 @@ typedef NSInteger AnnotationCheck;
             [annotation parseStringOfLocation:annotation.coordinate]; //We'll do the parse for popular pictures since we only load a few.
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (_picturesPopular == nil)
-                {
-                    _picturesPopular = [[NSMutableOrderedSet alloc] init];
-                }
                 annotation.isPopular = YES;
                 [_picturesPopular addObject:annotation];
                 
@@ -742,23 +751,33 @@ typedef NSInteger AnnotationCheck;
     
     
     CustomAnnotation *someAnnotation = view.annotation;
-    NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[someAnnotation imageURLEnlarged]]];
-    UIImage *image1 = [[UIImage alloc] initWithData:data];
     
-    [calloutView initCalloutWithAnnotation:someAnnotation andImage:image1];
-    //[calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID andUserLiked:someAnnotation.userHasLiked andAnnotation:someAnnotation];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[someAnnotation imageURLEnlarged]]];
+        UIImage *image1 = [[UIImage alloc] initWithData:data];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [calloutView initCalloutWithAnnotation:someAnnotation andImage:image1];
+            //[calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID andUserLiked:someAnnotation.userHasLiked andAnnotation:someAnnotation];
+            
+            //Makes pictures circular
+            calloutView.layer.cornerRadius = calloutView.frame.size.height/30;
+            calloutView.layer.masksToBounds = YES;
+            
+            //Makes border
+            calloutView.layer.borderWidth = 3.0f;
+            calloutView.layer.borderColor = [UIColor purpleColor].CGColor;
+            [self animateFadeInAndAddCallOutView:calloutView];
+            arrayCounter++;
+        });
+        
+        
+    });
     
-    //Makes pictures circular
-    calloutView.layer.cornerRadius = calloutView.frame.size.height/30;
-    calloutView.layer.masksToBounds = YES;
+
     
-    //Makes border
-    calloutView.layer.borderWidth = 3.0f;
-    calloutView.layer.borderColor = [UIColor purpleColor].CGColor;
     
-    [self animateFadeInAndAddCallOutView:calloutView];
     
-    arrayCounter++;
 }
 
 -(void)pauseTimer
@@ -1030,8 +1049,9 @@ typedef NSInteger AnnotationCheck;
 
     [self setGlobalType:POPULAR];
     [_mapView removeAnnotations:_mapView.annotations];
-    if ([_picturesPopular count] <= 1)
+    if (_picturesPopular == nil)
     {
+        _picturesPopular = [[NSMutableOrderedSet alloc] init];
         [_mapView findPopularImages];
     }
     else
@@ -1221,6 +1241,7 @@ typedef NSInteger AnnotationCheck;
     {
         [(CustomAnnotation *)annotationView.annotation setColorType:[UIColor blueColor]];
         [self updateTheBorderColorOnViewToMatchTheAnnotationType:annotationView];
+        [self.view bringSubviewToFront:annotationView];
     }
     
     
