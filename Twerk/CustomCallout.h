@@ -24,8 +24,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *locationString;
 
 
-@property (nonatomic) BOOL userHasLiked; //TODO: We have two bools... And we use both in here.. OOPS. 
-@property (nonatomic) BOOL userLiked; //TODO: fetch if userLiked picture from WGPhoto to annotation
+@property (nonatomic) BOOL userHasLiked;
 
 
 -(void)initCalloutWithAnnotation:(CustomAnnotation *)annotation andImage:(UIImage *)image;
