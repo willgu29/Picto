@@ -15,6 +15,7 @@
 #import "IGConnect.h"
 #import "WGMap.h"
 #import "WGTimer.h"
+#define SECONDS_PER_PIC 1ull
 
 //That's a lot of delegates!  Check out the protocols in apple documentation! Weee
 @interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IGRequestDelegate>
@@ -24,6 +25,7 @@
     CLLocation *currentLocation;
     NSMutableArray *matchingItems;
     dispatch_source_t dispatchSource;
+    dispatch_source_t annotationTimer;
 }
 
 //Our map view will have the actual map and a search bar.

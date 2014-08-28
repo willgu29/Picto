@@ -628,7 +628,7 @@ typedef NSInteger AnnotationCheck;
         NSLog(@"Began at Callout!");
         //
         // [self pausePhotoShowing];
-        [self pauseTimer];
+        [self stopAnnotationTimer];
         return;
         
     }
@@ -684,7 +684,7 @@ typedef NSInteger AnnotationCheck;
      UITouch *touch = [[event allTouches] anyObject];
     if ([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[CustomCallout class]])
     {
-        [self resumeTimer];
+        [self startAnnotationTimer];
         return;
       
     }
@@ -695,45 +695,56 @@ typedef NSInteger AnnotationCheck;
         //TODO: Just display
         [self displayCallout:[_picturesChosenByDrag objectAtIndex:0]];
     }
-    else
+    else if ([_picturesChosenByDrag count] > 1)
     {
-        [self timerBasedAnnotationDisplay];
+        [self startAnnotationTimer];
     }
     
 }
 
-
--(void)timerBasedAnnotationDisplay
+dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispatch_queue_t queue, dispatch_block_t block)
 {
-    
-    if (_myTimer == nil)
+    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    if (timer)
     {
-        _myTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
-        [[NSRunLoop mainRunLoop] addTimer:_myTimer forMode:NSRunLoopCommonModes];
-        [_myTimer fire]; //Fire the first one immediately
-        [_myTimer setTolerance:0];
+        dispatch_source_set_timer(timer, dispatch_walltime(NULL, 0), interval, leeway);
+        dispatch_source_set_event_handler(timer, block);
+        dispatch_resume(timer);
     }
+    return timer;
+}
+
+-(void) startAnnotationTimer
+{
+    if (annotationTimer != nil) // Just in case..
+        dispatch_source_cancel(annotationTimer);
+    
+    annotationTimer = CreateDispatchTimer(SECONDS_PER_PIC * NSEC_PER_SEC, 10ull * NSEC_PER_MSEC, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [self performSelectorOnMainThread:@selector(timerFireMethod) withObject:nil waitUntilDone:TRUE];
+    });
     
 }
 
-- (void)timerFireMethod:(NSTimer *)timer
+-(void) stopAnnotationTimer
+{
+    if (annotationTimer != nil)
+    {
+        dispatch_source_cancel(annotationTimer);
+        annotationTimer = nil;
+    }
+}
+
+
+- (void)timerFireMethod
 {
    // NSDictionary *data = [_myTimer userInfo];
     //NSMutableOrderedSet *myOrderedSet = [data objectForKey:@"WGannotationViewArray"];
-    
+    NSLog(@"timerFireMethod called!");
     
     
     if (arrayCounter >= [_picturesChosenByDrag count])
     {
-        [_myTimer invalidate];
-        _myTimer = nil;
-        /*
-        double delayInSeconds = 1;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-           [self mapView:_mapView didDeselectAnnotationView:[_picturesChosenByDrag lastObject]];
-        });
-         */
+        [self stopAnnotationTimer];
         [self mapView:_mapView didDeselectAnnotationView:[_picturesChosenByDrag lastObject]];
         return;
     }
@@ -779,25 +790,6 @@ typedef NSInteger AnnotationCheck;
     
     
 }
-
--(void)pauseTimer
-{
-    [_myTimer invalidate];
-    _myTimer = nil;
-}
-
--(void)resumeTimer
-{
-    if (_myTimer == nil)
-    {
-        _myTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
-        [[NSRunLoop mainRunLoop] addTimer:_myTimer forMode:NSRunLoopCommonModes];
-        [_myTimer fire];
-    }
-}
-
-
-
 
 
 -(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
