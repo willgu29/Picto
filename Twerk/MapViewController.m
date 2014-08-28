@@ -19,6 +19,8 @@
 const NSInteger METERS_PER_MILE = 1609.344;
 const NSInteger MAX_ALLOWED_PICTURES = 50; //TODO: switch this to MAX_ALLOWED ON SCREEN.
 const NSInteger POPULAR_PICTURES_IN_ARRAY = 10;
+const NSInteger ANNOTATION_RADIUS = 25;
+
 
 enum {
     ALL = 1,
@@ -188,8 +190,6 @@ typedef NSInteger AnnotationCheck;
 
 -(void)configureInfoText:(NSInteger)type
 {
-    
-    //TODO: ANIMATE! (_type is a UILabel)
     NSString *textType = [self formatTypeToString:type];
     if (_onlyFriends == YES)
     {
@@ -464,20 +464,36 @@ typedef NSInteger AnnotationCheck;
     });
 }
 
+
+
+-(CGPoint)getAnnotationPositionOnMap:(CustomAnnotation *)annotation
+{
+    return [_mapView convertCoordinate:annotation.coordinate toPointToView:_mapView ];
+}
+
+-(BOOL)annotation:(CustomAnnotation *)annotation1 tooCloseTo:(CustomAnnotation *)annotation2
+{
+    CGPoint location1 = [self getAnnotationPositionOnMap:annotation1];
+    CGPoint location2 = [self getAnnotationPositionOnMap:annotation2];
+    CGFloat dx = location1.x - location2.x;
+    CGFloat dy = location1.y - location2.y;
+    CGFloat distance = sqrt(dx*dx + dy*dy);
+    CGFloat maxDistance = ANNOTATION_RADIUS * 1.25;
+    return distance < maxDistance;
+}
+
+
 //i.e. Is this a duplicate annotation? etc.
 -(NSInteger)canWeAddThisAnnotation:(CustomAnnotation *)annotation
 {
-    
-  
-    //TODO: change to max_allowed on screen
-    if ([_mapView.annotations count] > MAX_ALLOWED_PICTURES) //I want the count of pictures on the map
+    NSSet* visible = [_mapView annotationsInMapRect:[_mapView visibleMapRect]];
+    if ([visible count] > MAX_ALLOWED_PICTURES) //I want the count of pictures on the map
     {
         NSLog(@"Detecting flood");
         return FLOOD;
     }
-    //TODO: Make a function that says... if these annotation locations are too similar then We need to not display
 
-    
+    //TODO: Make a function that says... if these annotation locations are too similar then We need to not display
     //TODO: Can we optimize this? Detecting duplicates by looping through the NSArray and comparing to this one.
     for (CustomAnnotation* arrayAnnotation in _mapView.annotations)
     {
@@ -1242,7 +1258,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     //Makes pictures circular
     annotationView.layer.cornerRadius = annotationView.frame.size.height/2;
     annotationView.layer.masksToBounds = YES;
- 
     
     //TODO: FIX BUG
     //This will turn yellow border back to white should we happen to zoom out too far or scroll the annotation out of view
