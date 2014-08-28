@@ -96,7 +96,7 @@
 
 -(NSString*)numberToString:(NSInteger)number
 {
-	NSString *s = [NSString stringWithFormat:@"%d", number];
+	NSString *s = [NSString stringWithFormat:@"%ld", (long)number];
 	return s;
 }
 
