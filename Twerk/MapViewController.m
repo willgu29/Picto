@@ -20,9 +20,16 @@ const NSInteger METERS_PER_MILE = 1609.344;
 const NSInteger MAX_ALLOWED_PICTURES = 1000; //TODO: switch this to MAX_ALLOWED ON SCREEN.
 const NSInteger POPULAR_PICTURES_IN_ARRAY = 50;
 const NSInteger ANNOTATION_RADIUS = 25;
-const double SOME_UPPER_BOUND = 0.003;
-const double SOME_LOWER_BOUND = 0.0015;
-const NSInteger SOME_CONSTANT_R = 6371; //km
+//const double SOME_UPPER_BOUND = 100000; //meters
+//const double SOME_LOWER_BOUND = 100; //meters
+//const NSInteger SOME_CONSTANT_R = 6371; //km
+//const NSInteger SOME_RATIO_OF_THE_MAP = 2009; //meters
+//const NSInteger SOME_PAN_DISTANCE = 500;
+const NSInteger SOME_RATIO_ZOOM = 50;
+const NSInteger SOME_RATIO_PAN = 100;
+const NSInteger SOME_CHANGE_OF_ZOOM = 200;
+const NSInteger SOME_PAN_OF_DISTANCE_TO_LOAD_GEO = 690;
+const NSInteger SOME_PAN_OF_DISTNACE_TO_LOAD_DATA = 100;
 
 enum {
     DUPLICATE = 1, //trying to add duplicate annotation
@@ -303,6 +310,20 @@ typedef NSInteger AnnotationCheck;
     //NSLog(@"POPULAR");
     //[_mapView findPopularImages]; //WE"RE GOING TO CALL THIS DIRECTLY FOR NOW
     //}
+}
+
+-(void)selectMethodForTypeWorkAround
+{
+    if (_globalType == ALL)
+    {
+        NSLog(@"ALL");
+        [_mapView findAllImagesOnMapInRange:(_mapView.radius/1.5) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
+    }
+    else if (_globalType == RECENT)
+    {
+        NSLog(@"RECENT");
+        [_mapView findRecentImagesOnMapInRange:(_mapView.radius/1.5) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
+    }
 }
 
 -(void)loadFollowing
@@ -912,6 +933,8 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadLocationGeo) name:@"Load Geo" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectMethodForTypeWorkAround) name:@"We should load data" object:nil];
+    
     //By default set the type of pictures to display as all
     
     
@@ -1383,24 +1406,22 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 //    
 //        //if we want all pictures set to all etc etc.
 //        [self selectMethodForType:_globalType];
+    
+    
+    //TODO: add this and find a worthing paramter to check
+   // [self getDistanceInMetersFromCenterOfScreenToTop];
+    
 }
 
 
 -(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
+
     [_mapView getCurrentLocationOfMap];
-    [_mapView getRadius];
-    NSLog(@"RADIUS: %f", _mapView.radius);
-    
     if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
         return;
-    
-    //if we want all pictures set to all etc etc.
-    [self selectMethodForType:_globalType];
-    
-    [self getDistanceInMetersFromCenterOfScreenToTop];
-    
-    //[self checkDistanceBetweenLastLoadedAnnotationAndCurrentPointOfMap];
+
+    [self checkDistanceBetweenLastLoadedAnnotationAndCurrentPointOfMap];
 }
 
 
@@ -1417,41 +1438,65 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
             return;
         
         //if we want all pictures set to all etc etc.
-        [self selectMethodForType:_globalType];
+        //[self selectMethodForType:_globalType];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"Load Geo" object:self];
         return;
     }
     
     CustomAnnotation *annotation = [_mapView.annotations lastObject];
     
     [_mapView getCurrentLocationOfMap];
+    [_mapView getRadius];
     //CLLocationCoordinate2D centerPoint = _mapView.currentLocation;
     CLLocationCoordinate2D topPoint = [_mapView getTopCenterCoordinate];
     CLLocationCoordinate2D centerPointOfAnnotation = annotation.coordinate;
     
-    double distance =[self getLatitudeLongitudeDistanceBetweenTwoPoints:topPoint pointTwo:centerPointOfAnnotation];
+    double annotationToTop =[self getMetersBetweenTwoPoints:topPoint pointTwo:centerPointOfAnnotation];
+    double topToCenter = [self getDistanceInMetersFromCenterOfScreenToTop];
+    NSLog(@"Distance between last annotation and center of map %f", annotationToTop);
+    NSLog(@"Distance from top to center of screen %f", topToCenter);
     
-    NSLog(@"Distance between last annotation and center of map %f", distance);
     
-    if (distance > SOME_UPPER_BOUND || distance < SOME_LOWER_BOUND)
+    NSLog(@"Difference Pan: %i",abs(annotationToTop - _previousPanMeterData));
+    NSLog(@"Difference Zoom: %i ", abs(topToCenter - _previousZoomDegree));
+    
+    if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
+        return;
+    
+    
+    //Handle Pan Over Great Distance
+    if (abs((annotationToTop-_previousPanMeterGeo)) > SOME_PAN_OF_DISTANCE_TO_LOAD_GEO) //&& topToCenter > SOME_RATIO_ZOOM)
     {
-        
-        //load some pictures
-        [_mapView getRadius];
-        NSLog(@"RADIUS: %f", _mapView.radius);
-        
-        if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
-            return;
-        
-        //if we want all pictures set to all etc etc.
+        NSLog(@"Loading Geo");
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"Load Geo" object:self];
+        _previousPanMeterGeo = abs((annotationToTop-_previousPanMeterGeo));
+    }
+    else if (abs((annotationToTop-_previousPanMeterData)) > SOME_PAN_OF_DISTNACE_TO_LOAD_DATA)
+    {
+        NSLog(@"Loading Pictures based on Pan");
+        _previousPanMeterData =  abs((annotationToTop-_previousPanMeterData));
+        [self selectMethodForType:_globalType];
+    }
+    //Handle Zoom
+    else if (abs((topToCenter-_previousZoomDegree)) > SOME_CHANGE_OF_ZOOM) //&& annotationToTop > SOME_RATIO_PAN)
+    {
+        NSLog(@"Loading Pictures based on Zoom");
+        _previousZoomDegree = (abs(topToCenter-_previousZoomDegree));
         [self selectMethodForType:_globalType];
     }
     
     
 }
 
+-(float)absoluteValueDifferenceFromPrevious:(float)previousValue currentValue:(float)currentValue
+{
+    //TODO: Add in this function
+    float someDifference = 0;
+    return someDifference;
+}
 
 //Will return an absolute value
--(double)getLatitudeLongitudeDistanceBetweenTwoPoints:(CLLocationCoordinate2D)coordinate1 pointTwo:(CLLocationCoordinate2D)coordinate2
+-(double)getMetersBetweenTwoPoints:(CLLocationCoordinate2D)coordinate1 pointTwo:(CLLocationCoordinate2D)coordinate2
 {
     
     return MKMetersBetweenMapPoints(MKMapPointForCoordinate(coordinate1), MKMapPointForCoordinate(coordinate2));
@@ -1540,14 +1585,18 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
              }
              
              NSLog(@"LOCATION: %@",_currentMapViewGeoLocation);
-             [[NSNotificationCenter defaultCenter] postNotificationName:@"Images Loaded" object:self];
-             
+//             [[NSNotificationCenter defaultCenter] postNotificationName:@"Images Loaded" object:self];
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"We should load data" object:self];
              
          }
          else
          {
              //HANDLE ERROR
              NSLog(@"Geocode failed with error %@", error);
+             
+             //TODO: fix this.. for now we'll just go to loading
+             [self selectMethodForType:_globalType];
+             
          }
      }];
     

@@ -56,6 +56,11 @@ typedef NSInteger Type;
 @property (nonatomic) int arrayPosition;
 @property (nonatomic, strong) NSString *currentMapViewGeoLocation;
 @property (strong, nonatomic) User *someUser;
+
+@property (nonatomic) float previousPanMeterGeo;
+@property (nonatomic) float previousPanMeterData;
+@property (nonatomic) float previousZoomDegree;
+
 @end
 
 
