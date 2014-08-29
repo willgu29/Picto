@@ -164,11 +164,13 @@ NSString* const InstagramErrorDomain = @"instagramErrorDomain";
         //result = [result objectForKey:@"data"];
     } else {
         if (meta) {
+            if (error)
             *error = [self formError:[[meta objectForKey:@"code"] integerValue]
                             userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[meta objectForKey:@"error_type"], @"error_type",
                                       [meta objectForKey:@"error_message"], @"error_message",
                                       nil]];
         } else {
+            if (error)
             *error = [self formError:kGeneralErrorCode
                             userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Unknown", @"error_type",
                                       @"This operation can not be completed", @"error_message",
