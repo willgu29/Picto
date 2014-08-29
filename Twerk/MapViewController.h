@@ -19,7 +19,7 @@
 
 @class User;
 
-#define SECONDS_PER_PIC 1ull
+const unsigned long long SECONDS_PER_PIC =  1.2;
 
 enum {
     ALL = 1,
