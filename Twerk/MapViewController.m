@@ -304,11 +304,11 @@ typedef NSInteger AnnotationCheck;
         NSLog(@"RECENT");
          [_mapView findRecentImagesOnMapInRange:(_mapView.radius/1.5) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
     }
-    //if (type == POPULAR)
-    //{
-    //NSLog(@"POPULAR");
-    //[_mapView findPopularImages]; //WE"RE GOING TO CALL THIS DIRECTLY FOR NOW
-    //}
+    else if (type == POPULAR)
+    {
+        NSLog(@"POPULAR");
+        [_mapView findPopularImages]; //WE"RE GOING TO CALL THIS DIRECTLY FOR NOW
+    }
 }
 
 -(void)selectMethodForTypeWorkAround
@@ -322,6 +322,10 @@ typedef NSInteger AnnotationCheck;
     {
         NSLog(@"RECENT");
         [_mapView findRecentImagesOnMapInRange:(_mapView.radius/1.5) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
+    }
+    else if (_globalType == POPULAR)
+    {
+        [_mapView findPopularImages];
     }
 }
 
@@ -1134,7 +1138,8 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     {
         _picturesPopular = [[NSMutableOrderedSet alloc] init];
         [self setGlobalType:POPULAR];
-        [_mapView findPopularImages];
+        //[_mapView findPopularImages];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"Load Geo" object:self];
     }
     else
     {
@@ -1420,7 +1425,9 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
         return;
 
-    [self loadAnnotationsWhenNecessary];
+    [self performSelector:@selector(loadAnnotationsWhenNecessary) withObject:nil afterDelay:1];
+    
+    //[self loadAnnotationsWhenNecessary];
 }
 
 
@@ -1540,9 +1547,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     
 
     double dist = MKMetersBetweenMapPoints(topPoint, centerPoint);
-    
-    
-    NSLog(@"My result in M: %f", dist);
     
     return dist;
 }
