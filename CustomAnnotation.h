@@ -57,15 +57,15 @@
 
 //Methods
 -(instancetype)initWithLocation:(CLLocationCoordinate2D)location andImageURL:(NSString *)image andEnlarged:(NSString *)imageURLEnlarged andOwner:(NSString *)owner andLikes:(NSString *)likes andTime:(NSString *)createdTime andMediaID:(NSString *)mediaID andUserLiked:(NSString *)userHasLiked andUserID:(NSString *)userID andUsername:(NSString *)username;
--(instancetype)initWithPhoto:(WGPhoto *)photo;
-
+-(void)parseStringOfLocation:(CLLocationCoordinate2D) location; //Use only with popular photos, not normal ones
 
 //TODO: -(instancetype)initWithVideo:(WGVideo *)video;
 -(void)createNewImage;
 -(BOOL)isEqualToAnnotation:(CustomAnnotation *)annotation;
 
 
--(void)parseStringOfLocation:(CLLocationCoordinate2D) location __deprecated_msg("Let mapVC handle instead because the map should determine when we load geo data");
+-(instancetype)initWithPhoto:(WGPhoto *)photo __deprecated;
+
 -(UIImage *)makeImagePretty:(UIImage *)image __deprecated;
 
 @end

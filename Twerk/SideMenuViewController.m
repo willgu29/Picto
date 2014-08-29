@@ -140,6 +140,7 @@
 
 -(IBAction)backButton:(UIButton *) button
 {
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 

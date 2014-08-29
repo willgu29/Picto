@@ -65,7 +65,102 @@ typedef NSInteger AnnotationCheck;
 
 @implementation MapViewController
 
+
+#pragma mark - View Life Cycle
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+    _searchField.delegate = self;
+    _mapView.delegate = self;
+    //there is a hidden TableView in our window for the search later
+    _autoCompleteTableView.hidden = YES;
+    _autoCompleteTableView.delegate = self;
+    _autoCompleteTableView.dataSource = self;
+    _autoCompleteTableView.scrollEnabled = YES;
+    //1.
+    _someUser = [[User alloc] init];
+    [self loadFollowing];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseFollowing) name:@"CanParseFollowing" object:nil];
+    //AND 1.1  Happen at the same time
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mapLocationSettled) name:@"Can Find Location" object:nil];
+    //2.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadLocationGeo) name:@"Load Geo" object:nil];
+    //OR 2.1  One or the either are called (Load Geo segways to We should load data)
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectMethodForTypeWorkAround) name:@"We should load data" object:nil];
+    //3. Allows us to parse data now
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseSelectorMethod) name:@"Images Loaded" object:nil];
+    //4.After Popular Photos are loaded and parsed
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomToPopular) name:@"Can Zoom to Popular" object:nil];
+    
+    [self setUpSavedData];
+    [self updateViewConstraints]; // ???: Did I add this? (WG)
+}
+
+-(void)setUpSavedData
+{
+    [self setGlobalType:[[NSUserDefaults standardUserDefaults] integerForKey:@"WGglobalType"]];
+    [self setOnlyFriends:[[NSUserDefaults standardUserDefaults] boolForKey:@"WGonlyFriends"]];
+    
+    if (_globalType == 0)
+        [self setGlobalType:ALL];
+}
+
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [_someUser getCurrentLocationOnMap:_mapView]; //get location of user
+    //zoom to user location on map
+    CLLocationDistance lat = 100;
+    CLLocationDistance lng = 100;
+    if (_someUser.currentLocation.coordinate.latitude == 0 && _someUser.currentLocation.coordinate.longitude == 0)
+    {
+        //REVERT and uncomment here if users begin getting Error Domain on first login
+//        _someUser.currentLocation.coordinate = CLLocationCoordinate2DMake(40, -98); //Approx location center USA
+//        lat = 3000;
+//        lng = 3000;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomStart) name:@"Zoom to map" object:nil];
+        [_someUser performSelector:@selector(getCurrentLocationOnMap:) withObject:_mapView afterDelay:1];
+        
+    }
+    else
+    {
+        [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:lat withLongitude:lng withMap:_mapView];
+    }
+    
+}
+
+-(void)viewDidUnload
+{
+    //TODO: Set to nil what is needed and remove other observers
+    
+    
+    //remove the observers if we leave this view
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"We should load data" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"Load Geo" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"Can Zoom to Popular" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"Can Find Location" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"Images Loaded" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"CanParseFollowing" object:nil];
+    // Clean the map one last time
+    [_mapView cleanupMap];
+    // Stop the clean timer
+    dispatch_suspend(dispatchSource);
+}
+
+
 #pragma mark - Call Loading Methods
+
+-(void)loadFollowing
+{
+    [_someUser retrieveWhoUserIsFollowingFromIG];
+}
+
+-(void)loadLocationGeo
+{
+    [self parseStringOfLocation:_mapView.currentLocation];
+}
 
 -(void)selectMethodForTypeWorkAround
 {
@@ -86,11 +181,206 @@ typedef NSInteger AnnotationCheck;
 }
 
 
-#pragma mark - Touches Methods
+#pragma mark - Parse Data
 
-#pragma mark - View Life Cycle
+-(void)parseFollowing
+{
+    _someUser.parsedFollowing = [NSMutableSet set];
+    for (id userData in _someUser.following)
+    {
+        NSString *userID = [userData valueForKeyPath:@"username"];
+        [_someUser.parsedFollowing addObject:userID];
+    }
+    
+}
 
-#pragma mark -
+-(void)parseSelectorMethod
+{
+    [_mapView cleanupMap];
+    if (_globalType == ALL || _globalType == RECENT)
+    {
+        [self parseAll];
+    }
+    
+    if (_globalType == POPULAR)
+    {
+        [self parsePopularAndPlaceIntoPicturesPopularArray];
+    }
+    
+}
+
+-(void)parseAll
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        for (id pictureURL in _mapView.possiblePics)
+        {
+            if ( ! [self shouldWeParseThisPicture:pictureURL])
+            {
+                continue;
+            }
+            else
+            {
+                //We good
+            }
+            if (_onlyFriends == YES)
+            {
+                NSString *pictureIDUser = [pictureURL valueForKeyPath:@"user.username"];
+                
+                if ([_someUser.parsedFollowing containsObject:pictureIDUser] == YES)
+                {
+                    
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            
+            CustomAnnotation *annotation = [self parseAndReturnAnnotation:pictureURL];
+            
+            //We can probably do this right after we check the mediaID (the first thing we should check)
+            NSInteger resultOfCheck = [self checkAnnotationEnums:annotation];
+            
+            if (resultOfCheck == DUPLICATE)
+            {
+                //try next pic
+                continue;
+            }
+            else if (resultOfCheck == FLOOD)
+            {
+                //stop loading pictures ffs
+                break;
+            }
+            else if (resultOfCheck == SUCCESS)
+            {
+                //YASS
+            }
+            
+            [annotation createNewImage];
+            [self hasFollowedUser:annotation];
+            [annotation setLocationString:self.currentMapViewGeoLocation];
+            
+            //do this when done loading.. on main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_mapView addAnnotation:annotation]; //THIS adds an annotation to _mapView.annotations
+            });
+        }
+    });
+}
+
+-(void)parsePopularAndPlaceIntoPicturesPopularArray
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        //Only supporting images right now
+        int someCounter = 0;
+        for (id pictureURL in _mapView.possiblePics)
+        {
+            
+            //TODO: add some randomization (i.e. skip this random photo and just go to the next)
+            
+            
+            if (someCounter >= POPULAR_PICTURES_IN_ARRAY)
+            {
+                break;
+            }
+            if ( ! [self shouldWeParseThisPicture:pictureURL])
+            {
+                continue;
+            }
+            else
+            {
+                //We good
+            }
+            
+            CustomAnnotation *annotation = [self parseAndReturnAnnotation:pictureURL];
+            //We can probably do this right after we check the mediaID (the first thing we should check)
+            NSInteger resultOfCheck = [self checkAnnotationEnums:annotation];
+            
+            if (resultOfCheck == DUPLICATE)
+            {
+                //try next pic
+                continue;
+            }
+            else if (resultOfCheck == FLOOD)
+            {
+                //stop loading pictures ffs
+                break;
+            }
+            else if (resultOfCheck == SUCCESS)
+            {
+                //YASS
+            }
+            
+            someCounter++;
+            
+            //OR save object as video WGVideo subclass.. (not made yet)
+            [annotation createNewImage];
+            [self hasFollowedUser:annotation];
+            //[annotation setLocationString:self.currentMapViewGeoLocation];
+            [annotation parseStringOfLocation:annotation.coordinate]; //We'll do the parse for popular pictures since we only load a few.
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                annotation.isPopular = YES;
+                [_picturesPopular addObject:annotation];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"Can Zoom to Popular" object:nil];
+            });
+        }
+    });
+}
+
+
+#pragma mark - Helper Methods for parsing Data
+
+-(CustomAnnotation *)parseAndReturnAnnotation:(id)pictureURL
+{
+    //path find to thumbnail image... might want to do this in the modal.. NOT SURE. Will get back to you guys.
+    NSString *stringURL = [pictureURL valueForKeyPath:@"images.thumbnail.url"];
+    NSString *stringURLEnlarged = [pictureURL valueForKeyPath:@"images.standard_resolution.url"];
+    //NSLog(@"url: %@,", stringURLEnlarged);;
+    //Apparently instagram API returns strings or some other id to lat and long.  We'll need CLLocationDegrees however...
+    NSString *lat1 = [pictureURL valueForKeyPath:@"location.latitude"];
+    NSString *lng1 = [pictureURL valueForKeyPath:@"location.longitude"];
+    
+    //Convert to CLLocationDegrees (which is a double)
+    CLLocationDegrees lat = [lat1 doubleValue];
+    CLLocationDegrees lng = [lng1 doubleValue];
+    
+    //CONVERT from CLLocationDegrees TO CLLocationCoordinate2D
+    CLLocationCoordinate2D location = CLLocationCoordinate2DMake(lat, lng);
+    
+    NSString *owner = [pictureURL valueForKeyPath:@"user.full_name"];
+    NSString *userID = [pictureURL valueForKeyPath:@"user.id"];
+    NSString *likes = [pictureURL valueForKeyPath:@"likes.count"];
+    NSString *username = [pictureURL valueForKeyPath:@"user.username"];
+    
+    NSString *createdTime = [pictureURL valueForKeyPath:@"created_time"];
+    NSString *mediaID = [pictureURL valueForKeyPath:@"id"];
+    NSString *userHasLiked = [pictureURL valueForKey:@"user_has_liked"];
+    
+    
+    //Save this object
+    CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged andOwner:owner andLikes:likes andTime:createdTime andMediaID:mediaID andUserLiked:userHasLiked andUserID:userID andUsername:username];
+    
+    return annotation;
+    
+}
+
+
+-(BOOL)shouldWeParseThisPicture:(id)picture
+{
+    //TODO: Add video support
+    if (![[picture valueForKey:@"type"] isEqualToString:@"image"])
+    {
+        return NO;
+    }
+    
+    if ([[picture valueForKeyPath:@"location"] isKindOfClass:[NSNull class]])
+    {
+        return NO;
+    }
+    
+    return YES;
+}
 
 
 -(void)hasFollowedUser:(CustomAnnotation *)annotation
@@ -105,48 +395,53 @@ typedef NSInteger AnnotationCheck;
     }
 }
 
+
+//i.e. Is this a duplicate annotation? etc.
+-(NSInteger)checkAnnotationEnums:(CustomAnnotation *)annotation
+{
+    
+    NSSet* visible = [_mapView annotationsInMapRect:[_mapView visibleMapRect]];
+    if ([visible count] > MAX_ALLOWED_PICTURES) //I want the count of pictures on the map
+    {
+        NSLog(@"Detecting flood");
+        return FLOOD;
+    }
+    //TODO: Overlap
+    //TODO: Optimize
+    for (CustomAnnotation* arrayAnnotation in _mapView.annotations)
+    {
+        if ([arrayAnnotation isKindOfClass:[MKPointAnnotation class]])
+        {
+            continue;
+        }
+        if ([arrayAnnotation isKindOfClass:[MKUserLocation class]])
+        {
+            continue;
+        }
+        //TODO: Fix Duplicate (cleanUpMap might be cleaning it before we have a chance to detect)
+        if ([arrayAnnotation isEqualToAnnotation:annotation])
+        {
+            // NSLog(@"Detecting duplicate");
+            return DUPLICATE;
+        }
+    }
+    
+    return SUCCESS;
+}
+
+
+#pragma mark - Touches Methods
+
+
+
+#pragma mark - Math Functions
+
 - (float)randomFloatBetween:(float)smallNumber and:(float)bigNumber {
     float diff = bigNumber - smallNumber;
     return (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * diff) + smallNumber;
 }
 
--(void)animateFade: (MKAnnotationView *)aV withDuration:(float)duration {
-    CGRect endFrame = aV.frame;
-    [aV setAlpha:0];
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:duration];
-    [aV setAlpha:1.0];
-    [UIView commitAnimations];
-    aV.frame = endFrame;
-}
 
--(void)animateDropFromTop: (MKAnnotationView *)aV view:(NSArray *)views withDuration:(float)duration {
-    CGRect endFrame = aV.frame;
-    
-    // Move annotation out of view
-    aV.frame = CGRectMake(aV.frame.origin.x, aV.frame.origin.y - self.view.frame.size.height, aV.frame.size.width, aV.frame.size.height);
-    
-    // Animate drop
-    [UIView animateWithDuration: duration delay:0.04*[views indexOfObject:aV] options: UIViewAnimationOptionCurveLinear animations:^{
-        
-        aV.frame = endFrame;
-        
-        // Animate squash
-    }completion:^(BOOL finished){
-        if (finished) {
-            [UIView animateWithDuration:0.05 animations:^{
-                aV.transform = CGAffineTransformMakeScale(1.0, 0.8);
-                
-            }completion:^(BOOL finished){
-                if (finished) {
-                    [UIView animateWithDuration:0.1 animations:^{
-                        aV.transform = CGAffineTransformIdentity;
-                    }];
-                }
-            }];
-        }
-    }];
-}
 
 //alpha 0 to 1
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
@@ -311,350 +606,17 @@ typedef NSInteger AnnotationCheck;
     [_mapView getCurrentLocationOfMap];
 }
 
--(void)selectMethodForType:(NSInteger)type __deprecated_msg("do a postNotification to - We should load data - instead")
-{
-   // NSLog(@"Radius: %f", _mapView.radius);
-    if (type == ALL)
-    {
-        NSLog(@"ALL");
-        [_mapView findAllImagesOnMapInRange:(_mapView.radius/1.5) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
-    }
-    else if (type == RECENT)
-    {
-        NSLog(@"RECENT");
-         [_mapView findRecentImagesOnMapInRange:(_mapView.radius/1.5) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
-    }
-    else if (type == POPULAR)
-    {
-        NSLog(@"POPULAR");
-        [_mapView findPopularImages]; //WE"RE GOING TO CALL THIS DIRECTLY FOR NOW
-    }
-}
-
--(void)loadFollowing
-{
-    [_someUser retrieveWhoUserIsFollowingFromIG];
-}
-
--(void)loadLocationGeo
-{
-    [self parseStringOfLocation:_mapView.currentLocation];
-}
-
-
--(void)loadPictures
-{
-    
-    [_mapView cleanupMap];
-    
-    if (_globalType == ALL || _globalType == RECENT)
-    {
-        [self loadAll];
-    }
-    
-    if (_globalType == POPULAR)
-    {
-        [self loadPopularAndPlaceIntoAnArray];
-    }
-    
-    
-}
-
-
-
-
--(void)parseFollowing
-{
-    _someUser.parsedFollowing = [NSMutableSet set];
-    for (id userData in _someUser.following)
-    {
-        NSString *userID = [userData valueForKeyPath:@"username"];
-        [_someUser.parsedFollowing addObject:userID];
-    }
-    
-}
 
 
 
 
 
--(void)loadAll
-{
-    //do all this stuff in a different thread
-    
-    
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        for (id pictureURL in _mapView.possiblePics)
-        {
-            //Only supporting images right now
-            if ([[pictureURL valueForKeyPath:@"type"] isEqualToString:@"image"])
-            {
-                //we good
-            }
-            else
-            {
-                continue;
-            }
-            
-            
-            //TODO: filtering here
-            if (_onlyFriends == YES)
-            {
-                NSString *pictureIDUser = [pictureURL valueForKeyPath:@"user.username"];
-                NSLog(@"PICTURE FRIEND: %@",pictureIDUser);
-                    
-                if ([_someUser.parsedFollowing containsObject:pictureIDUser] == YES)
-                {
-                    NSLog(@"MATCHED!");
-                    
-                }
-                else
-                {
-                    continue;
-                }
-            
-            }
-            
-            if ([[pictureURL valueForKeyPath:@"location"] isKindOfClass:[NSNull class]])
-            {
-                continue;
-            }
-            
-            //path find to thumbnail image... might want to do this in the modal.. NOT SURE. Will get back to you guys.
-            NSString *stringURL = [pictureURL valueForKeyPath:@"images.thumbnail.url"];
-            NSString *stringURLEnlarged = [pictureURL valueForKeyPath:@"images.standard_resolution.url"];
-            //NSLog(@"url: %@,", stringURLEnlarged);;
-            //Apparently instagram API returns strings or some other id to lat and long.  We'll need CLLocationDegrees however...
-            NSString *lat1 = [pictureURL valueForKeyPath:@"location.latitude"];
-            NSString *lng1 = [pictureURL valueForKeyPath:@"location.longitude"];
-            
-            //Convert to CLLocationDegrees (which is a double)
-            CLLocationDegrees lat = [lat1 doubleValue];
-            CLLocationDegrees lng = [lng1 doubleValue];
-            
-            //CONVERT from CLLocationDegrees TO CLLocationCoordinate2D
-            CLLocationCoordinate2D location = CLLocationCoordinate2DMake(lat, lng);
-            
-            NSString *owner = [pictureURL valueForKeyPath:@"user.full_name"];
-            NSString *userID = [pictureURL valueForKeyPath:@"user.id"];
-            NSString *likes = [pictureURL valueForKeyPath:@"likes.count"];
-            NSString *username = [pictureURL valueForKeyPath:@"user.username"];
-            
-            NSString *createdTime = [pictureURL valueForKeyPath:@"created_time"];
-            NSString *mediaID = [pictureURL valueForKeyPath:@"id"];
-            NSString *userHasLiked = [pictureURL valueForKey:@"user_has_liked"];
-            //Save this object in an array of currently displayed photos
-            WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged andOwner:owner andLikes:likes andTime:createdTime andMediaID:mediaID andUserLiked:userHasLiked andUserID:userID andUsername:username];
-            CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithPhoto:photo];
-            
-            
-            //We can probably do this right after we check the mediaID (the first thing we should check)
-            NSInteger resultOfCheck = [self canWeAddThisAnnotation:annotation];
-            
-            if (resultOfCheck == DUPLICATE)
-            {
-                //try next pic
-                continue;
-            }
-            else if (resultOfCheck == FLOOD)
-            {
-                //stop loading pictures ffs
-                break;
-            }
-            else if (resultOfCheck == SUCCESS)
-            {
-                //YASS
-            }
-            
-            //
-            [annotation createNewImage];
-            
-            [self hasFollowedUser:annotation];
-            //OR save object as video WGVideo subclass.. (not made yet)
-            [annotation setLocationString:self.currentMapViewGeoLocation];
-            
-            
-            //[_mapView.actualPics addObject:photo]; //THIS IS NOT BEING USED RIGHT NOW. WE Probably won't need this as all annotations are placed in _mapView.annotations (an NSArray) anyways..
-            //Although we may want to create an array of annotations then add the array of annotations all at once instead of one by one.  addAnnotations:(NSArray *)array
-            //annotationsInMapRect:
-          /*
-           showAnnotations:animated:
-            Sets the visible region so that the map displays the specified annotations.
-            
-            - (void)showAnnotations:(NSArray *)annotations animated:(BOOL)animated
-            */
-            
-            //Check top enum for descriptors
-           
-           // [annotation parseStringOfLocation:annotation.coordinate]; DO this elsewhere/ only once
-            
-            //do this when done loading.. on main thread
-            dispatch_async(dispatch_get_main_queue(), ^{
-                /*
-                if ([_mapView.actualPics containsObject:annotation])
-                {
-                    //TODO: Can we use the NSTimer cleanup?
-                    continue;
-                    //Don't add this picture to the annotationView (since 
-                }
-                [_mapView.actualPics addObject:annotation];
-                 */
-                
-               //
-                [_mapView addAnnotation:annotation]; //THIS adds an annotation to _mapView.annotations
-                //[self addAnnotationWithWGPhoto:photo]; REVERT HERE 1.0
-                //mapView viewForAnnotation should be automatically called now.. -> (JK. )
-            });
-            
-            
-            
-        }
-    });
-    
-    
-    
-}
-
-//i.e. Is this a duplicate annotation? etc.
--(NSInteger)canWeAddThisAnnotation:(CustomAnnotation *)annotation
-{
-    
-  
-    NSSet* visible = [_mapView annotationsInMapRect:[_mapView visibleMapRect]];
-    if ([visible count] > MAX_ALLOWED_PICTURES) //I want the count of pictures on the map
-    {
-        NSLog(@"Detecting flood");
-        return FLOOD;
-    }
-    //TODO: Make a function that says... if these annotation locations are too similar then We need to not display
-
-    
-    //TODO: Can we optimize this? Detecting duplicates by looping through the NSArray and comparing to this one.
-    for (CustomAnnotation* arrayAnnotation in _mapView.annotations)
-    {
-        if ([arrayAnnotation isKindOfClass:[MKPointAnnotation class]])
-        {
-            continue;
-        }
-        if ([arrayAnnotation isKindOfClass:[MKUserLocation class]])
-        {
-            continue;
-        }
-        
-        if ([arrayAnnotation isEqualToAnnotation:annotation])
-        {
-           // NSLog(@"Detecting duplicate");
-            return DUPLICATE;
-        }
-    }
-    
-    return SUCCESS;
-}
 
 
 
--(void)loadPopularAndPlaceIntoAnArray
-{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-    //Only supporting images right now
-        int someCounter = 0;
-        for (id pictureURL in _mapView.possiblePics)
-        {
-            
-            //TODO: add some randomization (i.e. skip this random photo and just go to the next)
-            
-            
-            if (someCounter >= POPULAR_PICTURES_IN_ARRAY)
-            {
-                break;
-            }
-            if (! [[pictureURL valueForKeyPath:@"type"] isEqualToString:@"image"])
-            {
-                continue;
-            }
-            
-            
-            if ([[pictureURL valueForKeyPath:@"location"] isKindOfClass:[NSNull class]])
-            {
-                continue;
-            }
-        
-            NSString *stringURL = [pictureURL valueForKeyPath:@"images.thumbnail.url"];
-            NSString *stringURLEnlarged = [pictureURL valueForKeyPath:@"images.standard_resolution.url"];
-            NSString *lat1 = [pictureURL valueForKeyPath:@"location.latitude"];
-            NSString *lng1 = [pictureURL valueForKeyPath:@"location.longitude"];
-            //Convert to CLLocationDegrees (which is a double)
-            CLLocationDegrees lat = [lat1 doubleValue];
-            CLLocationDegrees lng = [lng1 doubleValue];
-            //CONVERT from CLLocationDegrees TO CLLocationCoordinate2D
-            CLLocationCoordinate2D location = CLLocationCoordinate2DMake(lat, lng);
-            
-            NSString *owner = [pictureURL valueForKeyPath:@"user.full_name"];
-            NSString *likes = [pictureURL valueForKeyPath:@"likes.count"];
-            NSString *userID = [pictureURL valueForKeyPath:@"user.id"];
-            NSString *username = [pictureURL valueForKeyPath:@"user.username"];
-            
-            NSString *createdTime = [pictureURL valueForKeyPath:@"created_time"];
-            NSString *mediaID = [pictureURL valueForKeyPath:@"id"];
-            NSString *userHasLiked = [pictureURL valueForKey:@"user_has_liked"];
-            WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged andOwner:owner andLikes:likes andTime:createdTime andMediaID:mediaID andUserLiked:userHasLiked andUserID:userID andUsername:username];
-            CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithPhoto:photo];
-            
-            
-            
-            //We can probably do this right after we check the mediaID (the first thing we should check)
-            NSInteger resultOfCheck = [self canWeAddThisAnnotation:annotation];
-            
-            if (resultOfCheck == DUPLICATE)
-            {
-                //try next pic
-                continue;
-            }
-            else if (resultOfCheck == FLOOD)
-            {
-                //stop loading pictures ffs
-                break;
-            }
-            else if (resultOfCheck == SUCCESS)
-            {
-                //YASS
-            }
-            
-            someCounter++;
-            
-            //OR save object as video WGVideo subclass.. (not made yet)
-            [annotation createNewImage];
-            [self hasFollowedUser:annotation];
-            //[annotation setLocationString:self.currentMapViewGeoLocation];
-            
-            [annotation parseStringOfLocation:annotation.coordinate]; //We'll do the parse for popular pictures since we only load a few.
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                annotation.isPopular = YES;
-                [_picturesPopular addObject:annotation];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"Can Zoom to Popular" object:nil];
-            });
-        }
-        
-        
-    });
-    
-    
-}
-
--(void)placePicturePin:(WGPhoto *)image
-{
-    //cool animations anytime bro
-    
-    //place annotation
-    
-    
-}
 
 
 
-;
 #pragma mark - Main Lifecycle
 
 
@@ -888,115 +850,13 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     
 }
 
-- (void)viewDidLoad
-{
-    
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
- 
-    _searchField.delegate = self;
-    _mapView.delegate = self;
-    //there is a hidden TableView in our window for the search later
-    _autoCompleteTableView.hidden = YES;
-    _autoCompleteTableView.delegate = self;
-    _autoCompleteTableView.dataSource = self;
-    _autoCompleteTableView.scrollEnabled = YES;
-
-    
-    //1.
-    _someUser = [[User alloc] init];
-    [self loadFollowing];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseFollowing) name:@"CanParseFollowing" object:nil];
-    
-    
-    //AND 1.1  Happen at the same time
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mapLocationSettled) name:@"Can Find Location" object:nil];
-    
-    //2.
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadLocationGeo) name:@"Load Geo" object:nil];
-    
-    //OR 2.1  One or the either are called (Load Geo segways to Images Loaded"
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPictures) name:@"Images Loaded" object:nil];
-    
-    
-    //3.
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomToPopular) name:@"Can Zoom to Popular" object:nil];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectMethodForTypeWorkAround) name:@"We should load data" object:nil];
-    
-    //By default set the type of pictures to display as all
-    
-    
-
-    
-    [self setGlobalType:[[NSUserDefaults standardUserDefaults] integerForKey:@"WGglobalType"]];
-    [self setOnlyFriends:[[NSUserDefaults standardUserDefaults] boolForKey:@"WGonlyFriends"]];
-    
-    if (_globalType == 0)
-        [self setGlobalType:ALL];
-    
-    //if _onlyFriends will always default to NO
-    [self updateViewConstraints];
-    
-    //Start the cleanup process on a timer, separate thread
-    
-    
-    
-//    // Create a dispatch source that'll act as a timer on the concurrent queue
-//    dispatchSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
-//    double interval = 20.0;
-//    dispatch_time_t startTime = dispatch_time(DISPATCH_TIME_NOW, 0);
-//    uint64_t intervalTime = (int64_t)(interval * NSEC_PER_SEC);
-//    dispatch_source_set_timer(dispatchSource, startTime, intervalTime, 0);
-//    // Attach the block you want to run on the timer fire
-//    dispatch_source_set_event_handler(dispatchSource, ^{
-//        [_mapView cleanupMap];
-//    });
-//    dispatch_resume(dispatchSource);
-    
-    
-    
-}
-
--(void)viewDidUnload
-{
-    //remove the observers if we leave this view
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"Can Find Location" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"Images Loaded" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"CanParseFollowing" object:nil];
-    // Clean the map one last time
-    [_mapView cleanupMap];
-    // Stop the clean timer
-    dispatch_suspend(dispatchSource);
-}
 
 
 
--(void)viewDidAppear:(BOOL)animated
-{
-    [_someUser getCurrentLocationOnMap:_mapView]; //get location of user
-    //zoom to user location on map
-    CLLocationDistance lat = 50;
-    CLLocationDistance lng = 50;
-    
-    //_someUser.currentLocation = nil;
-    if (_someUser.currentLocation.coordinate.latitude == 0 && _someUser.currentLocation.coordinate.longitude == 0)
-    {
-        NSLog(@"Tell me something happened");
-        _someUser.currentLocation.coordinate = CLLocationCoordinate2DMake(40, -98); //Approx location center USA
-        lat = 3000;
-        lng = 3000;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomStart) name:@"Zoom to map" object:nil];
-        [_someUser performSelector:@selector(getCurrentLocationOnMap:) withObject:_mapView afterDelay:1];
-        
-    }
-    //TODO: make so that it only zooms at start of session.
-    [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:lat withLongitude:lng withMap:_mapView];
-    
-    
-    
-}
+
+
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -1385,7 +1245,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 -(void)loadAnnotationsWhenNecessary
 {
-    if ([_mapView.annotations count] <= 1)
+    if ([_mapView.annotations count] <= 2)
     {
         [_mapView getCurrentLocationOfMap];
         //load some pictures
@@ -1587,6 +1447,45 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 }
 
 
+#pragma mark - Animations
+
+-(void)animateFade: (MKAnnotationView *)aV withDuration:(float)duration {
+    CGRect endFrame = aV.frame;
+    [aV setAlpha:0];
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:duration];
+    [aV setAlpha:1.0];
+    [UIView commitAnimations];
+    aV.frame = endFrame;
+}
+
+-(void)animateDropFromTop: (MKAnnotationView *)aV view:(NSArray *)views withDuration:(float)duration {
+    CGRect endFrame = aV.frame;
+    
+    // Move annotation out of view
+    aV.frame = CGRectMake(aV.frame.origin.x, aV.frame.origin.y - self.view.frame.size.height, aV.frame.size.width, aV.frame.size.height);
+    
+    // Animate drop
+    [UIView animateWithDuration: duration delay:0.04*[views indexOfObject:aV] options: UIViewAnimationOptionCurveLinear animations:^{
+        
+        aV.frame = endFrame;
+        
+        // Animate squash
+    }completion:^(BOOL finished){
+        if (finished) {
+            [UIView animateWithDuration:0.05 animations:^{
+                aV.transform = CGAffineTransformMakeScale(1.0, 0.8);
+                
+            }completion:^(BOOL finished){
+                if (finished) {
+                    [UIView animateWithDuration:0.1 animations:^{
+                        aV.transform = CGAffineTransformIdentity;
+                    }];
+                }
+            }];
+        }
+    }];
+}
 
 
 #pragma mark- NOT BEING USED (Saved for later)
@@ -1643,6 +1542,41 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     
 }
 
+-(void)selectMethodForType:(NSInteger)type __deprecated_msg("do a postNotification to - We should load data - instead")
+{
+    // NSLog(@"Radius: %f", _mapView.radius);
+    if (type == ALL)
+    {
+        NSLog(@"ALL");
+        [_mapView findAllImagesOnMapInRange:(_mapView.radius/1.5) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
+    }
+    else if (type == RECENT)
+    {
+        NSLog(@"RECENT");
+        [_mapView findRecentImagesOnMapInRange:(_mapView.radius/1.5) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
+    }
+    else if (type == POPULAR)
+    {
+        NSLog(@"POPULAR");
+        [_mapView findPopularImages];
+    }
+}
+
+-(void)cleanUpTimer __deprecated
+{
+    //Start the cleanup process on a timer, separate thread
+    //    // Create a dispatch source that'll act as a timer on the concurrent queue
+    //    dispatchSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
+    //    double interval = 20.0;
+    //    dispatch_time_t startTime = dispatch_time(DISPATCH_TIME_NOW, 0);
+    //    uint64_t intervalTime = (int64_t)(interval * NSEC_PER_SEC);
+    //    dispatch_source_set_timer(dispatchSource, startTime, intervalTime, 0);
+    //    // Attach the block you want to run on the timer fire
+    //    dispatch_source_set_event_handler(dispatchSource, ^{
+    //        [_mapView cleanupMap];
+    //    });
+    //    dispatch_resume(dispatchSource);
+}
 
 //GO UP THESE METHODS ARE NOT BEING USED
 
