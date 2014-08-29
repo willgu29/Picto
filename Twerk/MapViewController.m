@@ -503,9 +503,60 @@ typedef NSInteger AnnotationCheck;
     
 }
 
+-(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@"Touch cancelled!");
+    //TODO: Handle phones calls/ interruptions
+}
+
 
 #pragma mark - CalloutView and Timer
 
+-(void)displayCallout:(MKAnnotationView *)view
+{
+    CustomCallout *calloutView = (CustomCallout *)[[[NSBundle mainBundle] loadNibNamed:@"calloutView" owner:self options:nil] objectAtIndex:0];
+    CGRect calloutViewFrame  = calloutView.frame;
+    calloutViewFrame.origin = CGPointMake(0,self.view.frame.size.height/6);//CGPointMake(-calloutViewFrame.size.width/2 + 15, -calloutViewFrame.size.height);
+    calloutView.frame = calloutViewFrame;
+    
+    
+    CustomAnnotation *someAnnotation = view.annotation;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if (someAnnotation.imageEnlarged == nil)
+        {
+            NSLog(@"Had to load image :(");
+            NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[someAnnotation imageURLEnlarged]]];
+            ((CustomAnnotation*)[view annotation]).imageEnlarged = someAnnotation.imageEnlarged = [[UIImage alloc] initWithData:data];
+        }
+        if ([_someUser.parsedFollowing containsObject:someAnnotation.username])
+        {
+            someAnnotation.userHasFollowed = YES;
+        }
+        else
+        {
+            someAnnotation.userHasFollowed = NO;
+        }
+        NSLog(@"Image was preloaded :)");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [calloutView initCalloutWithAnnotation:someAnnotation andImage:someAnnotation.imageEnlarged];
+            //[calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID andUserLiked:someAnnotation.userHasLiked andAnnotation:someAnnotation];
+            
+            //Makes pictures circular
+            calloutView.layer.cornerRadius = calloutView.frame.size.height/30;
+            calloutView.layer.masksToBounds = YES;
+            
+            //Makes border
+            calloutView.layer.borderWidth = 3.0f;
+            calloutView.layer.borderColor = [UIColor purpleColor].CGColor;
+            [self animateFadeInAndAddCallOutView:calloutView];
+            arrayCounter++;
+        });
+        
+        
+    });
+    
+}
 
 -(void)startPreloadingFrom:(NSOrderedSet*)source
 {
@@ -554,12 +605,109 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     }
 }
 
+#pragma mark - MKAnnotationView methods
 
+-(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+{
+    if ([view.annotation isKindOfClass:[MKUserLocation class]] || [view.annotation isKindOfClass:[MKPointAnnotation class]])
+    {
+        //Don't add these types to our array;
+        return;
+    }
+    if (_picturesChosenByDrag == nil)
+    {
+        _picturesChosenByDrag = [[NSMutableOrderedSet alloc] init];
+    }
+    NSLog(@"Added to array!");
+    [_picturesChosenByDrag addObject:view];
+    [(CustomAnnotation *)view.annotation setColorType:[UIColor yellowColor]];
+    [self updateTheBorderColorOnViewToMatchTheAnnotationType:view];
+}
 
+-(void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view{
+    
+    //looping through main view views... only remove of class CustomCallout.
+    NSLog(@"DESELECTING ANNOTATION");
+    //return;
+    for (UIView *subView in self.view.subviews)
+    {
+        if ([subView isKindOfClass:[CustomCallout class]])
+            [subView removeFromSuperview];
+    }
+}
 
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+    
+    static NSString *identifier = @"CustomViewAnnotation";
+    
+    //MKUserLocation is considered an annotation and we don't want to change that so just return no view
+    if ([annotation isKindOfClass:[MKUserLocation class]])
+        return nil;
+    if ([annotation isKindOfClass:[MKPointAnnotation class]])
+        return nil;
+    
+    
+    MKAnnotationView *annotationView = (MKAnnotationView *)[_mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
+    if (!annotationView)
+    {
+        annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
+        //TODO: Add support for video
+        
+    }
+    else
+    {
+        //NSLog(@"I must have reused it!");
+        annotationView.annotation  = annotation;
+    }
+    annotationView.image = [(CustomAnnotation *)annotation image];
+    annotationView.enabled = YES;
+    annotationView.canShowCallout = NO; //Revert to yes later?
+    
+    //Makes pictures circular
+    annotationView.layer.cornerRadius = annotationView.frame.size.height/2;
+    annotationView.layer.masksToBounds = YES;
+    //TODO: FIX BUG
+    //This will turn yellow border back to white should we happen to zoom out too far or scroll the annotation out of view
+    annotationView.layer.borderWidth = 3.0f;
+    annotationView.layer.borderColor = [UIColor whiteColor].CGColor;
+    if ([(CustomAnnotation *)annotation isPopular] == YES)
+    {
+        [(CustomAnnotation *)annotationView.annotation setColorType:[UIColor blueColor]];
+        [self updateTheBorderColorOnViewToMatchTheAnnotationType:annotationView];
+        [self.view bringSubviewToFront:annotationView];
+    }
+    
+    return annotationView;
+}
+
+-(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
+{
+    [_mapView getCurrentLocationOfMap];
+    if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
+        return;
+    
+    [self performSelector:@selector(loadAnnotationsWhenNecessary) withObject:nil afterDelay:1];
+    
+    //[self loadAnnotationsWhenNecessary];
+}
+
+-(void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered
+{
+    //REVERT HERE FOR NORMAL
+    //        [_mapView getCurrentLocationOfMap];
+    //        [_mapView getRadius];
+    //        NSLog(@"RADIUS: %f", _mapView.radius);
+    //
+    //        if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
+    //           return;
+    //
+    //        //if we want all pictures set to all etc etc.
+    //        [self selectMethodForType:_globalType];
+}
 
 
 #pragma mark - MKAnnotationView Helper Functions
+
 -(void)updatePicturesBeingDisplayedBasedOnColorOfBorder
 {
     //Loop through all our annotation views
@@ -583,40 +731,27 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     
 }
 
-
-
-
 -(CGPoint)getAnnotationPositionOnMap:(CustomAnnotation *)annotation
 {
-        return [_mapView convertCoordinate:annotation.coordinate toPointToView:_mapView ];
-    }
+    return [_mapView convertCoordinate:annotation.coordinate toPointToView:_mapView ];
+}
 
 -(BOOL)annotation:(CustomAnnotation *)annotation1 tooCloseTo:(CustomAnnotation *)annotation2
 {
-        CGPoint location1 = [self getAnnotationPositionOnMap:annotation1];
-        CGPoint location2 = [self getAnnotationPositionOnMap:annotation2];
-        CGFloat dx = location1.x - location2.x;
-        CGFloat dy = location1.y - location2.y;
-        CGFloat distance = sqrt(dx*dx + dy*dy);
-        CGFloat maxDistance = ANNOTATION_RADIUS * 1.25;
-        return distance < maxDistance;
+    CGPoint location1 = [self getAnnotationPositionOnMap:annotation1];
+    CGPoint location2 = [self getAnnotationPositionOnMap:annotation2];
+    CGFloat dx = location1.x - location2.x;
+    CGFloat dy = location1.y - location2.y;
+    CGFloat distance = sqrt(dx*dx + dy*dy);
+    CGFloat maxDistance = ANNOTATION_RADIUS * 1.25;
+    return distance < maxDistance;
 }
 
 
 
--(void)animateLabelFade:(UILabel *)label toAlpha:(float)newAlphaVal withDuration:(float)duration
-{
-    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseIn
-                     animations:^{ _type.alpha = newAlphaVal;}
-                     completion:nil];
-}
 
--(void)performFadeOnLabel:(UILabel *)label andChangeTextTo:(NSString *)newText withDuration:(float)duration
-{
-    [self animateLabelFade:label toAlpha:0 withDuration:duration/2];
-    label.text = newText;
-    [self animateLabelFade:label toAlpha:1 withDuration:duration/2];
-}
+
+#pragma mark - Formatting UILabel
 
 -(void)configureInfoText:(NSInteger)type
 {
@@ -632,8 +767,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         [self performFadeOnLabel:_type andChangeTextTo:newText withDuration:1.0];
     }
 }
-
-#pragma mark -Helper functions
 
 - (NSString*)formatTypeToString:(NSInteger)typeInt {
     NSString *result = nil;
@@ -657,6 +790,8 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     return result;
 }
 
+#pragma mark - Observer Method Selectors
+
 -(void)zoomToRegion:(CLLocationCoordinate2D)coordinate withLatitude:(CLLocationDistance)latitude withLongitude:(CLLocationDistance)longitude withMap:(MKMapView *)map
 {
     //Makes a region to zoom into with format of the location with a distance of latitude and longitude... sorry that's a little confusing... Better parameter names would be... (centerLocation, span in lat direction, span in longitude direction)  Make sense now?
@@ -669,9 +804,8 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 -(void)zoomStart
 {
-    
     [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:100 withLongitude:100 withMap:_mapView];
-   // [[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:@"Zoom to map"];
+    // [[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:@"Zoom to map"];
     
 }
 
@@ -680,90 +814,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     [_mapView getCurrentLocationOfMap];
 }
 
-
-
-
-
-- (void)timerFireMethod
-{
-   // NSDictionary *data = [_myTimer userInfo];
-    //NSMutableOrderedSet *myOrderedSet = [data objectForKey:@"WGannotationViewArray"];
-    NSLog(@"timerFireMethod called!");
-    
-    
-    if (arrayCounter >= [_picturesChosenByDrag count])
-    {
-        [self stopAnnotationTimer];
-        [self mapView:_mapView didDeselectAnnotationView:[_picturesChosenByDrag lastObject]];
-        return;
-    }
-    
-    [self displayCallout:[_picturesChosenByDrag objectAtIndex:arrayCounter]];
-    
-}
-
--(void)displayCallout:(MKAnnotationView *)view
-{
-    CustomCallout *calloutView = (CustomCallout *)[[[NSBundle mainBundle] loadNibNamed:@"calloutView" owner:self options:nil] objectAtIndex:0];
-    CGRect calloutViewFrame  = calloutView.frame;
-    calloutViewFrame.origin = CGPointMake(0,self.view.frame.size.height/6);//CGPointMake(-calloutViewFrame.size.width/2 + 15, -calloutViewFrame.size.height);
-    calloutView.frame = calloutViewFrame;
-    
-    
-    CustomAnnotation *someAnnotation = view.annotation;
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if (someAnnotation.imageEnlarged == nil)
-        {
-            NSLog(@"Had to load image :(");
-            NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[someAnnotation imageURLEnlarged]]];
-            ((CustomAnnotation*)[view annotation]).imageEnlarged = someAnnotation.imageEnlarged = [[UIImage alloc] initWithData:data];
-        }
-        if ([_someUser.parsedFollowing containsObject:someAnnotation.username])
-        {
-            someAnnotation.userHasFollowed = YES;   
-        }
-        else
-        {
-            someAnnotation.userHasFollowed = NO;
-        }
-        NSLog(@"Image was preloaded :)");
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [calloutView initCalloutWithAnnotation:someAnnotation andImage:someAnnotation.imageEnlarged];
-            //[calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID andUserLiked:someAnnotation.userHasLiked andAnnotation:someAnnotation];
-            
-            //Makes pictures circular
-            calloutView.layer.cornerRadius = calloutView.frame.size.height/30;
-            calloutView.layer.masksToBounds = YES;
-            
-            //Makes border
-            calloutView.layer.borderWidth = 3.0f;
-            calloutView.layer.borderColor = [UIColor purpleColor].CGColor;
-            [self animateFadeInAndAddCallOutView:calloutView];
-            arrayCounter++;
-        });
-        
-        
-    });
-    
-
-    
-    
-    
-}
-
-
--(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    NSLog(@"Touch cancelled!");
-    //
-}
-
-
--(void)viewWillAppear:(BOOL)animated
-{
-    
-}
 
 
 
@@ -884,10 +934,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 -(IBAction)nextButton:(UIButton *)button
 {
-    //TODO: Implement next button!
-    //Bring user to next relevant location to explore more pictures;
-
-    ///[self mapView:_mapView didDeselectAnnotationView:<#(MKAnnotationView *)#>]
     [self stopAnnotationTimer];
     [_mapView removeAnnotations :_mapView.annotations];
     
@@ -947,148 +993,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 
 
--(void)animateFadeInAndAddCallOutView:(CustomCallout *)calloutView
-{
-    [calloutView setAlpha:0];
-    [self.view addSubview:calloutView];
-    [UIView beginAnimations:nil context:nil];
-    [calloutView setAlpha:1.0];
-    [UIView commitAnimations];
-}
-
-#pragma mark - MKAnnotationView methods
-
--(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
-{
-    if ([view.annotation isKindOfClass:[MKUserLocation class]] || [view.annotation isKindOfClass:[MKPointAnnotation class]])
-    {
-        //Don't add these types to our array;
-        return;
-    }
-    if (_picturesChosenByDrag == nil)
-    {
-        _picturesChosenByDrag = [[NSMutableOrderedSet alloc] init];
-    }
-    NSLog(@"Added to array!");
-    [_picturesChosenByDrag addObject:view];
-    [(CustomAnnotation *)view.annotation setColorType:[UIColor yellowColor]];
-    [self updateTheBorderColorOnViewToMatchTheAnnotationType:view];
-}
-
--(void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view{
-   
-    //looping through main view views... only remove of class CustomCallout.
-    NSLog(@"DESELECTING ANNOTATION");
-    //return;
-    for (UIView *subView in self.view.subviews)
-    {
-        if ([subView isKindOfClass:[CustomCallout class]])
-            [subView removeFromSuperview];
-    }
-}
-
-
-//This delegate method is called EVERYTIME WE call [_mapView addAnnotation].. so think data flow... we'll only addAnnotation to pictures we want to display. BINGO.
-- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
-    
-    //Include logic here to choose correct view of appropriate type of annotation object (Later on we'll highlight specific icons (red for liked, yellow for popular, blue for etc.)
-    
-    //Based on apple documentation... an annotation view is either an annotation (a pin/custom) or an overlay (think traffic lines/w/e) I have no idea what this means to us.
-    
-    static NSString *identifier = @"CustomViewAnnotation";
-
-    //MKUserLocation is considered an annotation and we don't want to change that so just return no view
-    if ([annotation isKindOfClass:[MKUserLocation class]])
-        return nil;
-    
-    if ([annotation isKindOfClass:[MKPointAnnotation class]])
-         return nil;
-    
-    //if possible, reuse annotation views from before (with the same identifier) (I think for most of our cases.. we'll have to recreate a new annotationView (if I'm interpreting how its being used correctly..)
-    MKAnnotationView *annotationView = (MKAnnotationView *)[_mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
-    
-    
-    //If we don't have any annotationView... create one.
-    if (!annotationView)
-    {
-            
-        //NSLog(@"making new MKAnnotationView");
-        annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
-        //TODO: Add support for video
-        
-    }
-    else
-    {
-        //NSLog(@"I must have reused it!");
-        annotationView.annotation  = annotation;
-    }
-  
-   
-    annotationView.image = [(CustomAnnotation *)annotation image];
-    annotationView.enabled = YES;
-    annotationView.canShowCallout = NO; //Revert to yes later?
-    
-    //Makes pictures circular
-    annotationView.layer.cornerRadius = annotationView.frame.size.height/2;
-    annotationView.layer.masksToBounds = YES;
- 
-    
-    //TODO: FIX BUG
-    //This will turn yellow border back to white should we happen to zoom out too far or scroll the annotation out of view
-    annotationView.layer.borderWidth = 3.0f;
-    annotationView.layer.borderColor = [UIColor whiteColor].CGColor;
-    
-    if ([(CustomAnnotation *)annotation isPopular] == YES)
-    {
-        [(CustomAnnotation *)annotationView.annotation setColorType:[UIColor blueColor]];
-        [self updateTheBorderColorOnViewToMatchTheAnnotationType:annotationView];
-        [self.view bringSubviewToFront:annotationView];
-    }
-    
-    
-    return annotationView;
-}
-
-
-
-
-
-
-
-
-
--(void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered
-{
-    
-//        [_mapView getCurrentLocationOfMap];
-//        [_mapView getRadius];
-//        NSLog(@"RADIUS: %f", _mapView.radius);
-//    
-//        if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
-//           return;
-//    
-//        //if we want all pictures set to all etc etc.
-//        [self selectMethodForType:_globalType];
-    
-    
-    //TODO: add this and find a worthing paramter to check
-   // [self getDistanceInMetersFromCenterOfScreenToTop];
-    
-}
-
-
--(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
-{
-
-    [_mapView getCurrentLocationOfMap];
-    if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
-        return;
-
-    [self performSelector:@selector(loadAnnotationsWhenNecessary) withObject:nil afterDelay:1];
-    
-    //[self loadAnnotationsWhenNecessary];
-}
-
 
 -(void)loadAnnotationsWhenNecessary
 {
@@ -1109,8 +1013,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         _prevGeoCoord = _prevDataCoord = [_mapView currentLocation];
         return;
     }
-    
-
     
     [_mapView getCurrentLocationOfMap];
     [_mapView getRadius];
@@ -1182,7 +1084,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         _prev_zoomLevel = [self getDistanceInMetersFromCenterOfScreenToTop];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"We should load data" object:self];
     }
-    
     
 }
 
@@ -1296,6 +1197,15 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 #pragma mark - Animations
 
+-(void)animateFadeInAndAddCallOutView:(CustomCallout *)calloutView
+{
+    [calloutView setAlpha:0];
+    [self.view addSubview:calloutView];
+    [UIView beginAnimations:nil context:nil];
+    [calloutView setAlpha:1.0];
+    [UIView commitAnimations];
+}
+
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
     MKAnnotationView *aV;
     
@@ -1316,6 +1226,21 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         [self animateDropFromTop:aV view:views withDuration:randomFloat];
     }
 }
+
+-(void)animateLabelFade:(UILabel *)label toAlpha:(float)newAlphaVal withDuration:(float)duration
+{
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{ _type.alpha = newAlphaVal;}
+                     completion:nil];
+}
+
+-(void)performFadeOnLabel:(UILabel *)label andChangeTextTo:(NSString *)newText withDuration:(float)duration
+{
+    [self animateLabelFade:label toAlpha:0 withDuration:duration/2];
+    label.text = newText;
+    [self animateLabelFade:label toAlpha:1 withDuration:duration/2];
+}
+
 
 -(void)animateFade: (MKAnnotationView *)aV withDuration:(float)duration {
     CGRect endFrame = aV.frame;
