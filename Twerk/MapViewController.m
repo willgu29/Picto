@@ -20,16 +20,10 @@ const NSInteger METERS_PER_MILE = 1609.344;
 const NSInteger MAX_ALLOWED_PICTURES = 1000; //TODO: switch this to MAX_ALLOWED ON SCREEN.
 const NSInteger POPULAR_PICTURES_IN_ARRAY = 50;
 const NSInteger ANNOTATION_RADIUS = 25;
-//const double SOME_UPPER_BOUND = 100000; //meters
-//const double SOME_LOWER_BOUND = 100; //meters
-//const NSInteger SOME_CONSTANT_R = 6371; //km
-//const NSInteger SOME_RATIO_OF_THE_MAP = 2009; //meters
-//const NSInteger SOME_PAN_DISTANCE = 500;
-const NSInteger SOME_RATIO_ZOOM = 50;
-const NSInteger SOME_RATIO_PAN = 100;
-const NSInteger SOME_CHANGE_OF_ZOOM = 200;
-const NSInteger SOME_PAN_OF_DISTANCE_TO_LOAD_GEO = 690;
-const NSInteger SOME_PAN_OF_DISTNACE_TO_LOAD_DATA = 100;
+
+const NSInteger LOAD_DATA_ZOOM_THRESHOLD = 1200;
+const NSInteger LOAD_GEO_PAN_THRESHOLD = 5000;
+const NSInteger LOAD_DATA_PAN_THRESHOLD = 2500;
 
 enum {
     DUPLICATE = 1, //trying to add duplicate annotation
@@ -1421,11 +1415,11 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
         return;
 
-    [self checkDistanceBetweenLastLoadedAnnotationAndCurrentPointOfMap];
+    [self loadAnnotationsWhenNecessary];
 }
 
 
--(void)checkDistanceBetweenLastLoadedAnnotationAndCurrentPointOfMap
+-(void)loadAnnotationsWhenNecessary
 {
     if ([_mapView.annotations count] <= 1)
     {
@@ -1440,60 +1434,54 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         //if we want all pictures set to all etc etc.
         //[self selectMethodForType:_globalType];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"Load Geo" object:self];
+        _prev_zoomLevel = [self getDistanceInMetersFromCenterOfScreenToTop];
+        _prevGeoCoord = _prevDataCoord = [_mapView currentLocation];
         return;
     }
     
-    CustomAnnotation *annotation = [_mapView.annotations lastObject];
+
     
     [_mapView getCurrentLocationOfMap];
     [_mapView getRadius];
+    
     //CLLocationCoordinate2D centerPoint = _mapView.currentLocation;
-    CLLocationCoordinate2D topPoint = [_mapView getTopCenterCoordinate];
-    CLLocationCoordinate2D centerPointOfAnnotation = annotation.coordinate;
-    
-    double annotationToTop =[self getMetersBetweenTwoPoints:topPoint pointTwo:centerPointOfAnnotation];
-    double topToCenter = [self getDistanceInMetersFromCenterOfScreenToTop];
-    NSLog(@"Distance between last annotation and center of map %f", annotationToTop);
-    NSLog(@"Distance from top to center of screen %f", topToCenter);
+    double panDelta = fabs([self getMetersBetweenTwoPoints:[_mapView currentLocation] pointTwo:_prevGeoCoord]);
+    double temp_panDelta = fabs([self getMetersBetweenTwoPoints:[_mapView currentLocation] pointTwo:_prevDataCoord]);
+    double zoomDelta = fabs([self getDistanceInMetersFromCenterOfScreenToTop] - _prev_zoomLevel);
     
     
-    NSLog(@"Difference Pan: %i",abs(annotationToTop - _previousPanMeterData));
-    NSLog(@"Difference Zoom: %i ", abs(topToCenter - _previousZoomDegree));
+    NSLog(@"Difference Pan: %f",panDelta);
+    NSLog(@"Difference Zoom: %f ", zoomDelta);
     
     if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
         return;
     
     
     //Handle Pan Over Great Distance
-    if (abs((annotationToTop-_previousPanMeterGeo)) > SOME_PAN_OF_DISTANCE_TO_LOAD_GEO) //&& topToCenter > SOME_RATIO_ZOOM)
+    if (panDelta > LOAD_GEO_PAN_THRESHOLD) //&& topToCenter > SOME_RATIO_ZOOM)
     {
         NSLog(@"Loading Geo");
         [[NSNotificationCenter defaultCenter] postNotificationName:@"Load Geo" object:self];
-        _previousPanMeterGeo = abs((annotationToTop-_previousPanMeterGeo));
+        _prev_zoomLevel = [self getDistanceInMetersFromCenterOfScreenToTop];
+        _prevGeoCoord = _prevDataCoord = [_mapView currentLocation];
     }
-    else if (abs((annotationToTop-_previousPanMeterData)) > SOME_PAN_OF_DISTNACE_TO_LOAD_DATA)
+    else if (temp_panDelta > LOAD_DATA_PAN_THRESHOLD)
     {
         NSLog(@"Loading Pictures based on Pan");
-        _previousPanMeterData =  abs((annotationToTop-_previousPanMeterData));
+        _prevDataCoord = [_mapView currentLocation];
         [self selectMethodForType:_globalType];
     }
     //Handle Zoom
-    else if (abs((topToCenter-_previousZoomDegree)) > SOME_CHANGE_OF_ZOOM) //&& annotationToTop > SOME_RATIO_PAN)
+    else if (zoomDelta > LOAD_DATA_ZOOM_THRESHOLD) //&& annotationToTop > SOME_RATIO_PAN)
     {
         NSLog(@"Loading Pictures based on Zoom");
-        _previousZoomDegree = (abs(topToCenter-_previousZoomDegree));
+        _prev_zoomLevel = [self getDistanceInMetersFromCenterOfScreenToTop];
         [self selectMethodForType:_globalType];
     }
     
     
 }
 
--(float)absoluteValueDifferenceFromPrevious:(float)previousValue currentValue:(float)currentValue
-{
-    //TODO: Add in this function
-    float someDifference = 0;
-    return someDifference;
-}
 
 //Will return an absolute value
 -(double)getMetersBetweenTwoPoints:(CLLocationCoordinate2D)coordinate1 pointTwo:(CLLocationCoordinate2D)coordinate2

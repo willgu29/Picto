@@ -19,7 +19,7 @@
 
 @class User;
 
-const unsigned long long SECONDS_PER_PIC =  1.2;
+static const unsigned long long SECONDS_PER_PIC =  1.2;
 
 enum {
     ALL = 1,
@@ -57,10 +57,9 @@ typedef NSInteger Type;
 @property (nonatomic, strong) NSString *currentMapViewGeoLocation;
 @property (strong, nonatomic) User *someUser;
 
-@property (nonatomic) float previousPanMeter;
-@property (nonatomic) float previousPanMeterGeo;
-@property (nonatomic) float previousPanMeterData;
-@property (nonatomic) float previousZoomDegree;
+@property (nonatomic) CLLocationCoordinate2D prevGeoCoord;
+@property (nonatomic) CLLocationCoordinate2D prevDataCoord;
+@property (nonatomic) double prev_zoomLevel;
 
 @end
 
