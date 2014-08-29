@@ -33,9 +33,14 @@
     _likeButton.selected = userHasLiked;
     _referencedAnnotation.userHasLiked = userHasLiked;
     if(userHasLiked)
+    {
         _likeButton.tintColor = [UIColor redColor];
+
+    }
     else
+    {
         _likeButton.tintColor = [UIColor blackColor];
+    }
 }
 
 -(void)makeLikeRequest
@@ -65,9 +70,15 @@
     BOOL userLiked = _referencedAnnotation.userHasLiked;
     _likeButton.selected = userLiked;
     if(userLiked)
+    {
         _likeButton.tintColor = [UIColor redColor];
+        [_likeButton setTitle:@"  Liked" forState:UIControlStateNormal];
+    }
     else
+    {
         _likeButton.tintColor = [UIColor blackColor];
+        [_likeButton setTitle:@"  Like" forState:UIControlStateNormal];
+    }
 }
 
 -(IBAction)like:(id)sender //Action read is Touch Drag Inside
@@ -81,6 +92,7 @@
         int numLikes = _referencedAnnotation.numberOfLikes.intValue - 1;
         _referencedAnnotation.numberOfLikes = [self numberToString: numLikes];
         _likes.text = [NSString stringWithFormat:@"%d likes", numLikes];
+        [_likeButton setTitle:@"  Like" forState:UIControlStateNormal];
     }
     else
     {
@@ -90,6 +102,7 @@
         int numLikes = _referencedAnnotation.numberOfLikes.intValue + 1;
         _referencedAnnotation.numberOfLikes = [self numberToString: numLikes];
         _likes.text = [NSString stringWithFormat:@"%d likes", numLikes];
+         [_likeButton setTitle:@"  Liked" forState:UIControlStateNormal];
     }
 }
 
