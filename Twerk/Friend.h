@@ -13,8 +13,8 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 
 //We may add this later as part of our model
-__deprecated_msg("We can use this for moments feature later");
-@interface Friend : NSObject
+
+@interface Friend : NSObject __deprecated_msg("We can use this for moments feature later");
 
 
 @property (strong, nonatomic) NSMutableArray *topPictures;

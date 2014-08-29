@@ -37,9 +37,9 @@ typedef NSInteger Type;
     CLLocationManager *locationManager;
     CLLocation *currentLocation;
     NSMutableArray *matchingItems;
-    dispatch_source_t dispatchSource;
     dispatch_source_t annotationTimer;
 }
+@property (atomic) BOOL lock;
 
 //Our map view will have the actual map and a search bar.
 @property (strong, atomic) IBOutlet WGMap *mapView; //custom map view with new methods to use!

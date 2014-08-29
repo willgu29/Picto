@@ -155,7 +155,6 @@ typedef NSInteger AnnotationCheck;
     // Clean the map one last time
     [_mapView cleanupMap];
     // Stop the clean timer
-    dispatch_suspend(dispatchSource);
 }
 
 - (void)didReceiveMemoryWarning
@@ -211,7 +210,11 @@ typedef NSInteger AnnotationCheck;
 
 -(void)parseSelectorMethod
 {
-    [_mapView cleanupMap];
+    if (!_lock)
+    {
+        [_mapView cleanupMap];
+    }
+    _lock = YES;
     if (_globalType == ALL || _globalType == RECENT)
     {
         [self parseAll];
@@ -280,6 +283,7 @@ typedef NSInteger AnnotationCheck;
                 [_mapView addAnnotation:annotation]; //THIS adds an annotation to _mapView.annotations
             });
         }
+        _lock = NO;
     });
 }
 
@@ -340,6 +344,7 @@ typedef NSInteger AnnotationCheck;
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"Can Zoom to Popular" object:nil];
             });
         }
+        _lock = NO;
     });
 }
 
@@ -584,6 +589,24 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         dispatch_resume(timer);
     }
     return timer;
+}
+
+- (void)timerFireMethod
+{
+    // NSDictionary *data = [_myTimer userInfo];
+    //NSMutableOrderedSet *myOrderedSet = [data objectForKey:@"WGannotationViewArray"];
+    NSLog(@"timerFireMethod called!");
+    
+    
+    if (arrayCounter >= [_picturesChosenByDrag count])
+    {
+        [self stopAnnotationTimer];
+        [self mapView:_mapView didDeselectAnnotationView:[_picturesChosenByDrag lastObject]];
+        return;
+    }
+    
+    [self displayCallout:[_picturesChosenByDrag objectAtIndex:arrayCounter]];
+    
 }
 
 -(void) startAnnotationTimer

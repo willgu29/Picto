@@ -9,6 +9,7 @@
 #import "WGPhoto.h"
 #import "AppDelegate.h"
 
+__deprecated;
 @implementation WGPhoto
 
 
