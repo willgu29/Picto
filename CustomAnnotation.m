@@ -14,6 +14,28 @@
 
 @implementation CustomAnnotation
 
+
+-(instancetype)initWithLocation:(CLLocationCoordinate2D)location andImageURL:(NSString *)imageURL andEnlarged:(NSString *)imageURLEnlarged andOwner:(NSString *)owner andLikes:(NSString *)likes andTime:(NSString *)createdTime andMediaID:(NSString *)mediaID andUserLiked:(NSString *)userHasLiked andUserID:(NSString *)userID andUsername:(NSString *)username
+{
+    self = [super init];
+    
+    if (self)
+    {
+        _imageURL = imageURL;
+        _imageURLEnlarged = imageURLEnlarged;
+        _coordinate = location;
+        _numberOfLikes = likes;
+        _ownerOfPhoto = owner;
+        _timeCreated = createdTime;
+        _mediaID = mediaID;
+        _userHasLiked = userHasLiked.boolValue;
+        _userID = userID;
+        _username = username;
+    }
+    
+    return self;
+}
+
 -(instancetype)initWithPhoto:(WGPhoto *)photo
 {
     _imageURL = photo.photoURL;
@@ -32,11 +54,6 @@
     _username = photo.username;
     return self;
 }
-
-//-(instancetype)initWithVideo:(WGVideo *)video
-//{
-//    return self;
-//}
 
 -(void)createNewImage
 {

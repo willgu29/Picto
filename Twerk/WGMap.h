@@ -16,34 +16,36 @@
 @interface WGMap : MKMapView <IGRequestDelegate>
 
 
+//Data Array that stores ALL REQUESTS
 @property (strong, nonatomic) NSMutableSet *possiblePics; //in data form
-@property (strong, nonatomic) NSMutableArray *actualPics; //of CUSTOM ANNOTATION TYPE
-@property (nonatomic) CLLocationCoordinate2D currentLocation; //where we are centered at
-@property (nonatomic) CLLocationDistance radius; //the radius of the current mapview
 
+
+
+//Data loading methods
 -(void)findAllImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance)latitude andLongitude:(CLLocationDistance)longitude; //determine possible pictures in a region and put in an array
-
 -(void)findRecentImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance) latitude andLongitude:(CLLocationDistance) longitude;
-
--(void)findPopularImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance)latitude andLongitude:(CLLocationDistance)longitude; //determine possible pictures in a region and put in an array
-
 -(void)findPopularImages;
 
 
--(void)getCurrentLocationOfMap;
+//Map Centered At Coordinate
+@property (nonatomic) CLLocationCoordinate2D currentLocation; //where we are centered at
+-(void)getCurrentLocationOfMap; //(Where we are centered) (stores in currentLocation)
 
--(CLLocationCoordinate2D)getTopCenterCoordinate;
 
+
+//Map Radius (mid to top screen point)
+@property (nonatomic) CLLocationDistance radius; //the radius of the current mapview
 -(void)getRadius;
 
+
+//Other Methods
+-(CLLocationCoordinate2D)getTopCenterCoordinate;
 -(void)cleanupMap;
 
-//-(CLLocationCoordinate2D)determineBestPhotoLocationOfFriend:(Friend *)someFriend;
 
-//-(MKCoordinateRegion)getBestRegionForFriend:(Friend *)someFriend;
-//-(MKCoordinateRegion)findNextInterestingLocation;
-//TODO: find next interesting location
 
+//Not used
+@property (strong, nonatomic) NSMutableArray *actualPics __deprecated;
 
 @end
-//TODO: WGMap is a subclass of MKMapView so it can do everything a MKMapView can. Make sure not to repeat functions. Check the apple documentation of MKMapView.  WGMap will need custom methods that allow navigating of the map and locations/coordinates.
+

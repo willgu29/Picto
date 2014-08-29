@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "IGRequest.h"
+#import "IGConnect.h"
 
-@interface SideMenuViewController : UIViewController
+@interface SideMenuViewController : UIViewController <IGSessionDelegate>
 
 @end
 

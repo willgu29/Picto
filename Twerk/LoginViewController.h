@@ -18,6 +18,4 @@
 @end
 
 
-//TODO: Make this page look better!
-//
-//And that's probably it!
+//TODO: Update UI Design

@@ -13,7 +13,6 @@
 
 @interface LoginViewController ()
 
-
 @property (nonatomic, weak) IBOutlet UIPageControl *pageControl;
 @property (nonatomic, weak) IBOutlet UIView *currentPage;
 @property (nonatomic, weak) IBOutlet UILabel *text;
@@ -53,7 +52,6 @@
 
 -(IBAction)swipeLeft:(id)sender
 {
-    NSLog(@"Left?");
     if (_pageControl.currentPage == 2)
     {
         //do nothing... no pages left
@@ -67,11 +65,8 @@
 
 -(void)animateToPage:(NSUInteger)pageNumber
 {
-    NSLog(@"ANIMATE YO");
-    //animate and display page
-    //TODO:
+    //TODO: Animations to view and what not
     
-    //animate text
     self.text.alpha = 0;
     [UIView animateWithDuration:1.0 delay:0 options:UIViewAnimationOptionCurveEaseIn
                      animations:^{ self.text.alpha = 1;}
@@ -138,8 +133,6 @@
     AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
     //Look for the accessToken...
     appDelegate.instagram.accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"accessToken"];
-    
-    //assign delegate to self (IGSessionDelegate)
     appDelegate.instagram.sessionDelegate = self;
     
     
@@ -147,34 +140,8 @@
     _pageControl.currentPage = 0;
     [self animateToPage:0];
     _pageControl.numberOfPages = 3;
-   // UIImage *image = [[UIImage alloc] init];
-    
 
-    
-    
-    //Later on we'll need to let users sign out of the app... the only problem is we're presenting the view controller modally right now and that only allows you to go "1 layer deep" or so I think... i.e. The presenting vc has to dismiss the presented vc.  If we have a logout in the settings page or something we'll have to somehow dismiss the presented vc controllers twice (one for the settings page and one for the map view main)...
-        //TLDR:  We need to switch over to a navigation view controller container. (I think) We'll do this later.
-    /*
-    if ([appDelegate.instagram isSessionValid])
-    {
-        MapViewController* mapVC = [[MapViewController alloc] init];
-        [self presentViewController:mapVC animated:YES completion:nil];
-    }
-    */
-    /*
-    else {
-        //[appDelegate.instagram authorize:[NSArray arrayWithObjects:@"comments", @"likes", nil]];
-          Authorization
-         basic - to read any and all data related to a user (e.g. following/followed-by lists, photos, etc.) (granted by default)
-         comments - to create or delete comments on a user’s behalf
-         relationships - to follow and unfollow users on a user’s behalf
-         likes - to like and unlike items on a user’s behalf
-     
-    }
-    */
 
-    
-    
 }
 
 - (void)didReceiveMemoryWarning
@@ -193,7 +160,7 @@
     AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
     //Storing the accessToken
     [[NSUserDefaults standardUserDefaults] setObject:appDelegate.instagram.accessToken forKey:@"accessToken"];
-    //This line is needed to sync up or something like that... basically it is to make sure the data was actually saved.
+    //Make sure data saved properly
 	[[NSUserDefaults standardUserDefaults] synchronize];
     
     //Make a mapVC

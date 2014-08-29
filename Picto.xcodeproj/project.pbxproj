@@ -639,7 +639,7 @@
 				INFOPLIST_FILE = "Twerk/Picto-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Picto;
-				PROVISIONING_PROFILE = "544b2947-52e3-495d-8799-782f2665c04e";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -660,7 +660,7 @@
 				INFOPLIST_FILE = "Twerk/Picto-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Picto;
-				PROVISIONING_PROFILE = "544b2947-52e3-495d-8799-782f2665c04e";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

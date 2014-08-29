@@ -59,18 +59,17 @@ typedef NSInteger AnnotationCheck;
 
 
 @property (weak, nonatomic) IBOutlet UITableView *autoCompleteTableView;
-
-
-@property (strong, nonatomic) WGPhoto *someData; //???
-@property (strong, nonatomic) UIImagePickerController *mediaPicker;
-@property (strong, nonatomic) UIImage *chosenImage;
-
-
 @property (nonatomic) BOOL isMatch;
 
 @end
 
 @implementation MapViewController
+
+#pragma mark - Touches Methods
+
+#pragma mark - View Life Cycle
+
+#pragma mark -
 
 
 -(void)hasFollowedUser:(CustomAnnotation *)annotation
@@ -886,24 +885,9 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    //make sure there is a camera
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        
-        UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                              message:@"Device has no camera"
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles: nil];
-        [myAlertView show];
-        
-    }
-    
-    //(canCancelTouches ?
-    
-    //assigning delegates and stuff.
+ 
     _searchField.delegate = self;
     _mapView.delegate = self;
-    
     //there is a hidden TableView in our window for the search later
     _autoCompleteTableView.hidden = YES;
     _autoCompleteTableView.delegate = self;
@@ -911,38 +895,32 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     _autoCompleteTableView.scrollEnabled = YES;
 
     
-    
-    //TESTING
+    //1.
     _someUser = [[User alloc] init];
     [self loadFollowing];
-    
-    //After sending these messages there is a slight delay to when the delegate actually places the data in the array... will need a way to fix this (let user know they can't do anything yet/ tell controller to wait till data has loaded.
-  //  [_someUser retrieveFollowersFromIG];
-    
-    
-    /* Data Flow:  1. Wait for map to zoom into our current location, 2. get that location, 3. load the pictures at the position, 4. show those pictures... (continue steps 2-4 as user moves around map (new input)) */
-    
-    //Tell our VC to watch for a notification called "Can Find Location" and call mapLocationFound when done
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mapLocationSettled) name:@"Can Find Location" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseFollowing) name:@"CanParseFollowing" object:nil];
     
-    //Tell our VC to watch for a notification called "Location Found" and call findAll... when done
-    /*[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(findAllImagesOnMapInRange:inLatitude:andLongitude:) name:@"Location Found" object:nil];*/ //this operation is assumed to be fast so we probably don't need this
     
-    //Tell our VC to watch for a notification called "Images Loaded" and call loadAllPictures when heard.
+    //AND 1.1  Happen at the same time
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mapLocationSettled) name:@"Can Find Location" object:nil];
+    
+    //2.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadLocationGeo) name:@"Load Geo" object:nil];
+    
+    //OR 2.1  One or the either are called (Load Geo segways to Images Loaded"
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPictures) name:@"Images Loaded" object:nil];
     
+    
+    //3.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomToPopular) name:@"Can Zoom to Popular" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadLocationGeo) name:@"Load Geo" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectMethodForTypeWorkAround) name:@"We should load data" object:nil];
     
     //By default set the type of pictures to display as all
     
     
-    
-    
+
     
     [self setGlobalType:[[NSUserDefaults standardUserDefaults] integerForKey:@"WGglobalType"]];
     [self setOnlyFriends:[[NSUserDefaults standardUserDefaults] boolForKey:@"WGonlyFriends"]];

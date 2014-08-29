@@ -32,18 +32,7 @@
 
 
 
--(void)retrieveFollowersFromIG
-{
-    
-    //This line of code simply gets a pointer to our appDelegate
-    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
-    //Based on the instagram iOS SDK, check the Instagram API console for how to format requests
-    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"users/self/followed-by", @"method", nil];
-    //tell the property "Instagram" (also part of instagram iOS SDK) the message.. requestWithParams
-    [appDelegate.instagram requestWithParams:params
-                                    delegate:self];
-    
-}
+
 
 -(void)retrieveWhoUserIsFollowingFromIG
 {
@@ -91,6 +80,19 @@
 }
 
 
+
+-(void)retrieveFollowersFromIG __deprecated
+{
+    
+    //This line of code simply gets a pointer to our appDelegate
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    //Based on the instagram iOS SDK, check the Instagram API console for how to format requests
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"users/self/followed-by", @"method", nil];
+    //tell the property "Instagram" (also part of instagram iOS SDK) the message.. requestWithParams
+    [appDelegate.instagram requestWithParams:params
+                                    delegate:self];
+    
+}
 
 
 

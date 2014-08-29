@@ -45,7 +45,7 @@
     self.window.backgroundColor = [UIColor whiteColor];
     
    
-    application.applicationSupportsShakeToEdit = YES; //shake to refresh map?
+    application.applicationSupportsShakeToEdit = YES; //???: Shake to refresh map?
     
     [self.window makeKeyAndVisible];
     
@@ -56,7 +56,6 @@
 -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     return [self.instagram handleOpenURL:url];
-   // return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
 }
 
 -(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url

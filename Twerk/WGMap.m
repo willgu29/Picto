@@ -9,8 +9,6 @@
 #import "WGMap.h"
 #import "AppDelegate.h"
 
-
-
 @implementation WGMap
 
 static const int SECONDS_IN_A_DAY = 86400;

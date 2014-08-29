@@ -13,5 +13,4 @@
 @interface ShareViewController : UIViewController
 
 @end
-//TODO: Don't worry about this yet!
-//We'll need to implement a way to share this app to people later on
+//TODO: Share our app! (For later)

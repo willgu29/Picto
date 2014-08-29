@@ -10,39 +10,62 @@
 #import <MapKit/MapKit.h>
 #import "WGPhoto.h"
 
-//This class manages the DATA pertaining to an annotation.
+//This class manages the DATA pertaining to an annotation (CustomCallout and MKAnnotationView).
 
 @interface CustomAnnotation : NSObject <MKAnnotation>
 
+
+//User IDs
 @property (nonatomic, readonly) NSString *username;
 @property (nonatomic, readonly) NSString *userID;
-@property (nonatomic, readwrite) NSString *locationString;
+
+//Image URLs
+@property (nonatomic, readonly) NSString *imageURL;
+@property (nonatomic, readonly) NSString *imageURLEnlarged;
+
+//Image
+@property (nonatomic, readonly) UIImage *image;
+@property (atomic, readwrite) UIImage *imageEnlarged; // atomic because it is being preloaded; we don't want a conflict
+
+
+//Bool values
 @property (nonatomic, readwrite) BOOL isPopular;
 @property (nonatomic, readwrite) BOOL userHasLiked;
 @property (nonatomic, readwrite) BOOL userHasFollowed;
+
+//Media ID
 @property (nonatomic, readonly) NSString *mediaID;
-@property (nonatomic, readonly) NSString *imageURL;
-@property (nonatomic, readonly) NSString *imageURLEnlarged;
-@property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
 
-@property (nonatomic, readonly, copy) NSString *subtitle;
-@property (nonatomic, readonly, copy) NSString *title;
-@property (nonatomic, readwrite) UIColor* colorType;
-@property (nonatomic, readonly) UIImage *image;
-@property (atomic, readwrite) UIImage *imageEnlarged; // atomic because it is being preloaded; we don't want a conflict
+//UILabel Data (for CustomCallout)
 @property (nonatomic, readonly) NSString *ownerOfPhoto;
 @property (nonatomic, readwrite) NSString *numberOfLikes;
 @property (nonatomic, readonly) NSString *timeCreated;
-//@property (nonatomic, readonly) type video??
+@property (nonatomic, readwrite) NSString *locationString;
 
+
+//MKAnnotation Protocol
+@property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
+@property (nonatomic, readonly, copy) NSString *subtitle;
+@property (nonatomic, readonly, copy) NSString *title;
+
+
+//Sets border color
+@property (nonatomic, readwrite) UIColor* colorType;
+
+
+
+//Methods
+-(instancetype)initWithLocation:(CLLocationCoordinate2D)location andImageURL:(NSString *)image andEnlarged:(NSString *)imageURLEnlarged andOwner:(NSString *)owner andLikes:(NSString *)likes andTime:(NSString *)createdTime andMediaID:(NSString *)mediaID andUserLiked:(NSString *)userHasLiked andUserID:(NSString *)userID andUsername:(NSString *)username;
 -(instancetype)initWithPhoto:(WGPhoto *)photo;
-//-(instancetype)initWithVideo:(WGVideo *)video;
+
+
+//TODO: -(instancetype)initWithVideo:(WGVideo *)video;
 -(void)createNewImage;
--(void)parseStringOfLocation:(CLLocationCoordinate2D) location;
 -(BOOL)isEqualToAnnotation:(CustomAnnotation *)annotation;
 
 
--(UIImage *)makeImagePretty:(UIImage *)image;
+-(void)parseStringOfLocation:(CLLocationCoordinate2D) location __deprecated_msg("Let mapVC handle instead because the map should determine when we load geo data");
+-(UIImage *)makeImagePretty:(UIImage *)image __deprecated;
 
 @end

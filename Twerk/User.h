@@ -16,21 +16,31 @@
 
 @interface User : NSObject <IGRequestDelegate>
 
-@property (strong, nonatomic) NSMutableArray *followers; //of Followers (We'll probably never use this as we don't care about who is following them
-//MONEY
+//Initial Data Load Array
 @property (strong, nonatomic) NSMutableArray *following; //of who following
-
+//USERNAME parsed from *following
 @property (strong, nonatomic) NSMutableSet *parsedFollowing; //array of USERNAMES of who user is following
 
-
-@property (strong, nonatomic) Friend *specificFriend;
+//Represents the MKUserLocation dot's location
 @property (strong, nonatomic) MKUserLocation *currentLocation;
-@property (strong, nonatomic) UIImage *profilePicture;
-@property (strong, nonatomic) NSMutableArray *topMoments;
 
+
+//Methods
 -(void)getCurrentLocationOnMap:(MKMapView *)map; //Get location of user
--(void) retrieveFollowersFromIG  __deprecated_msg("Will not work; delegate is currently paginating on retrieveWhoUserIsFollowingFromIG");
 -(void)retrieveWhoUserIsFollowingFromIG;
+
+
+
+
+//Not used
+@property (strong, nonatomic) Friend *specificFriend __deprecated;
+@property (strong, nonatomic) NSMutableArray *topMoments __deprecated;
+@property (strong, nonatomic) UIImage *profilePicture __deprecated;
+@property (strong, nonatomic) NSMutableArray *followers __deprecated;
+
+
+-(void) retrieveFollowersFromIG  __deprecated_msg("Will not work; delegate is currently paginating on retrieveWhoUserIsFollowingFromIG");
+
 
 
 
