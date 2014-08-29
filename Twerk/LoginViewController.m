@@ -111,9 +111,11 @@
 -(IBAction)goMainVC:(UIButton *)sender
 {
     //create controller CameraController
-    MapViewController *mainController = [[MapViewController alloc] init];
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+
+    appDelegate.mapVC = [[MapViewController alloc] init];
     //present this view controller
-    [self presentViewController:mainController animated:YES completion:nil];
+    [self presentViewController:appDelegate.mapVC animated:YES completion:nil];
 }
 
 
