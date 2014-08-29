@@ -34,8 +34,8 @@
     //BOOL onlyFriends = [[NSUserDefaults standardUserDefaults] boolForKey:@"WGonlyFriends"];
     if ([self.instagram isSessionValid])
     {
-        MapViewController* mapVC = [[MapViewController alloc] init];
-        self.window.rootViewController = mapVC;
+        _mapVC = [[MapViewController alloc] init];
+        self.window.rootViewController = _mapVC;
         //mapVC.globalType = globalType;
         //mapVC.onlyFriends = onlyFriends;
     }
