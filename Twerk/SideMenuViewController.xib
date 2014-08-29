@@ -27,7 +27,7 @@
                         <action selector="backButton:" destination="-1" eventType="touchUpInside" id="h0f-wO-EwB"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0yf-bk-DPN">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0yf-bk-DPN">
                     <rect key="frame" x="91" y="518" width="139" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Logout of Instagram">
@@ -81,6 +81,10 @@
                 </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="0yf-bk-DPN" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="aVn-eU-ijc"/>
+                <constraint firstAttribute="bottom" secondItem="0yf-bk-DPN" secondAttribute="bottom" constant="20" symbolic="YES" id="r8B-r7-aF3"/>
+            </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>

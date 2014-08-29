@@ -34,8 +34,6 @@
     {
         _mapVC = [[MapViewController alloc] init];
         self.window.rootViewController = _mapVC;
-        //mapVC.globalType = globalType;
-        //mapVC.onlyFriends = onlyFriends;
     }
     else
     {
