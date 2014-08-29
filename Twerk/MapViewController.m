@@ -14,6 +14,7 @@
 #import "CustomAnnotation.h"
 #import "CustomCallout.h"
 #import <QuartzCore/QuartzCore.h>
+#import <GLKit/GLKit.h>
 
 const NSInteger METERS_PER_MILE = 1609.344;
 const NSInteger MAX_ALLOWED_PICTURES = 1000; //TODO: switch this to MAX_ALLOWED ON SCREEN.
@@ -21,6 +22,7 @@ const NSInteger POPULAR_PICTURES_IN_ARRAY = 50;
 const NSInteger ANNOTATION_RADIUS = 25;
 const double SOME_UPPER_BOUND = 0.003;
 const double SOME_LOWER_BOUND = 0.0015;
+const NSInteger SOME_CONSTANT_R = 6371; //km
 
 enum {
     DUPLICATE = 1, //trying to add duplicate annotation
@@ -1379,6 +1381,9 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     
     //if we want all pictures set to all etc etc.
     [self selectMethodForType:_globalType];
+    
+    [self getDistanceInMetersFromCenterOfScreenToTop];
+    
     //[self checkDistanceBetweenLastLoadedAnnotationAndCurrentPointOfMap];
 }
 
@@ -1463,17 +1468,33 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     return distance;
 }
 
--(void)getDistanceInMetersFromCenterOfScreenToTop
+-(float)getDistanceInMetersFromCenterOfScreenToTop
 {
     [_mapView getCurrentLocationOfMap];
     CLLocationCoordinate2D centerPoint = _mapView.currentLocation;
     CLLocationCoordinate2D topPoint = [_mapView getTopCenterCoordinate];
     
-    CLLocationCoordinate2D differenceCoordinate = [self getDifferenceInLatLongStoreInCoordinate:centerPoint pointTwo:topPoint];
-    double distance = [self getDistanceBetweenTwoPoints:differenceCoordinate.latitude andY:differenceCoordinate.longitude];
-    
 
+    float lat1 = GLKMathDegreesToRadians(centerPoint.latitude);
+    float long1 = GLKMathDegreesToRadians(centerPoint.longitude);
+    float lat2 = GLKMathDegreesToRadians(topPoint.latitude);
+    float long2 = GLKMathDegreesToRadians(topPoint.longitude);
+
+    float differenceLat = GLKMathDegreesToRadians(lat2 - lat1);
+    float differenceLong = GLKMathDegreesToRadians(long2 - long1);
+    
+    float somethingIWishIKnew = sinf(differenceLat/2) * sinf(differenceLat/2) + cosf(lat1) * cosf(lat2) * sinf(differenceLong/2) * sinf(differenceLong/2);
+    
+    float somethingElse = atan2f((sqrtf(somethingIWishIKnew)), sqrtf(1-somethingIWishIKnew));
+    float myResultInKM = SOME_CONSTANT_R * somethingElse;
+    
+    float meters = myResultInKM*1000;
+    
+    NSLog(@"My result in M: %f", meters);
+    
+    return myResultInKM;
 }
+
 
 #pragma mark - UITableView
 
