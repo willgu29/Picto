@@ -241,8 +241,7 @@
 
 -(void)makeRequestToFollow
 {
-    //TODO: Figure this out
-    //TEXT, action=follow
+
     AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
     NSString* methodName = [NSString stringWithFormat:@"users/%@/relationship", _userID];
     NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"follow", @"action", nil];
@@ -255,8 +254,6 @@
 
 -(void)makeRequestToUnfollow
 {
-    //TODO: Figure this out
-    //TEXT, action=unfollow
     AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
     NSString* methodName = [NSString stringWithFormat:@"users/%@/relationship", _userID];
     NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"unfollow", @"action", nil];
