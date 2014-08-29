@@ -311,7 +311,7 @@ typedef NSInteger AnnotationCheck;
 -(void)loadPictures
 {
     
-    
+    [_mapView cleanupMap];
     
     
     if (_globalType == ALL || _globalType == RECENT)
@@ -332,7 +332,7 @@ typedef NSInteger AnnotationCheck;
 -(void)loadAll
 {
     //do all this stuff in a different thread
-    [_mapView cleanupMap];
+    
     
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -461,9 +461,8 @@ typedef NSInteger AnnotationCheck;
             
             
         }
-        
-        
     });
+    
     
     
 }
