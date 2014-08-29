@@ -18,21 +18,15 @@
 
 const NSInteger METERS_PER_MILE = 1609.344;
 const NSInteger MAX_ALLOWED_PICTURES = 50; //TODO: switch this to MAX_ALLOWED ON SCREEN.
-const NSInteger POPULAR_PICTURES_IN_ARRAY = 25;
+const NSInteger POPULAR_PICTURES_IN_ARRAY = 50;
 const NSInteger ANNOTATION_RADIUS = 25;
 
-enum {
-    ALL = 1,
-    RECENT = 2,
-    POPULAR = 3,
-    
-};
-typedef NSInteger Type;
+
 
 enum {
-    DUPLICATE = 0, //trying to add duplicate annotation
-    FLOOD = 1, //... too many annotations being displayed
-    OVERLAP = 2, //annotation views high chance of overlap (i.e. same location)
+    DUPLICATE = 1, //trying to add duplicate annotation
+    FLOOD = 2, //... too many annotations being displayed
+    OVERLAP = 3, //annotation views high chance of overlap (i.e. same location)
     SUCCESS = 69
     
 };

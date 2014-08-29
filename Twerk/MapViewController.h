@@ -15,7 +15,17 @@
 #import "IGConnect.h"
 #import "WGMap.h"
 #import "WGTimer.h"
+
 #define SECONDS_PER_PIC 1ull
+
+enum {
+    ALL = 1,
+    RECENT = 2,
+    POPULAR = 3,
+    
+};
+typedef NSInteger Type;
+
 
 //That's a lot of delegates!  Check out the protocols in apple documentation! Weee
 @interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IGRequestDelegate>
