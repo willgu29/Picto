@@ -333,6 +333,9 @@ typedef NSInteger AnnotationCheck;
 -(void)loadAll
 {
     //do all this stuff in a different thread
+    [_mapView cleanupMap];
+    
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         for (id pictureURL in _mapView.possiblePics)
         {
@@ -459,7 +462,11 @@ typedef NSInteger AnnotationCheck;
             
             
         }
+        
+        
     });
+    
+    
 }
 
 //i.e. Is this a duplicate annotation? etc.
@@ -882,23 +889,26 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadLocationGeo) name:@"Load Geo" object:nil];
     
     //By default set the type of pictures to display as all
-    _globalType = ALL;
-    //TODO: Load the user's last saved state
-    _onlyFriends = NO;
+    
+    if (_globalType == 0)
+        _globalType = ALL;
+    
     
     //Start the cleanup process on a timer, separate thread
     
-    // Create a dispatch source that'll act as a timer on the concurrent queue
-    dispatchSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
-    double interval = 19.0;
-    dispatch_time_t startTime = dispatch_time(DISPATCH_TIME_NOW, 0);
-    uint64_t intervalTime = (int64_t)(interval * NSEC_PER_SEC);
-    dispatch_source_set_timer(dispatchSource, startTime, intervalTime, 0);
-    // Attach the block you want to run on the timer fire
-    dispatch_source_set_event_handler(dispatchSource, ^{
-        [_mapView cleanupMap];
-    });
-    dispatch_resume(dispatchSource);
+    
+    
+//    // Create a dispatch source that'll act as a timer on the concurrent queue
+//    dispatchSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
+//    double interval = 20.0;
+//    dispatch_time_t startTime = dispatch_time(DISPATCH_TIME_NOW, 0);
+//    uint64_t intervalTime = (int64_t)(interval * NSEC_PER_SEC);
+//    dispatch_source_set_timer(dispatchSource, startTime, intervalTime, 0);
+//    // Attach the block you want to run on the timer fire
+//    dispatch_source_set_event_handler(dispatchSource, ^{
+//        [_mapView cleanupMap];
+//    });
+//    dispatch_resume(dispatchSource);
     
     
     
@@ -1061,8 +1071,9 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     //TODO: Implement next button!
     //Bring user to next relevant location to explore more pictures;
 
-    
-    [_mapView removeAnnotations:_mapView.annotations];
+    ///[self mapView:_mapView didDeselectAnnotationView:<#(MKAnnotationView *)#>]
+    [self stopAnnotationTimer];
+    [_mapView removeAnnotations :_mapView.annotations];
     
     if (_picturesPopular == nil)
     {
