@@ -1438,61 +1438,26 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 -(double)getLatitudeLongitudeDistanceBetweenTwoPoints:(CLLocationCoordinate2D)coordinate1 pointTwo:(CLLocationCoordinate2D)coordinate2
 {
     
-    CLLocationCoordinate2D differenceCoordinate = [self getDifferenceInLatLongStoreInCoordinate:coordinate1 pointTwo:coordinate2];
-    
-    double distance = [self getDistanceBetweenTwoPoints:differenceCoordinate.latitude andY:differenceCoordinate.longitude];
-    
-    
-    return distance;
+    return MKMetersBetweenMapPoints(MKMapPointForCoordinate(coordinate1), MKMapPointForCoordinate(coordinate2));
 }
 
--(CLLocationCoordinate2D)getDifferenceInLatLongStoreInCoordinate:(CLLocationCoordinate2D)coordinate1 pointTwo:(CLLocationCoordinate2D)coordinate2
-{
-    
-    CLLocationDegrees latitude1 = coordinate1.latitude;
-    CLLocationDegrees longitude1 = coordinate1.longitude;
-    
-    CLLocationDegrees latitude2 = coordinate2.latitude;
-    CLLocationDegrees longitude2 = coordinate2.longitude;
-    
-    CLLocationDegrees differenceLat = (latitude2 - latitude1);
-    CLLocationDegrees differenceLong = (longitude2 - longitude1);
-    CLLocationCoordinate2D difference = CLLocationCoordinate2DMake(differenceLat, differenceLong);
-    return difference;
-}
 
--(double)getDistanceBetweenTwoPoints:(CLLocationDegrees)x andY:(CLLocationDegrees)y
-{
-    double distance = sqrt((x*x) + (y*y));
-    
-    return distance;
-}
-
--(float)getDistanceInMetersFromCenterOfScreenToTop
+-(double)getDistanceInMetersFromCenterOfScreenToTop
 {
     [_mapView getCurrentLocationOfMap];
-    CLLocationCoordinate2D centerPoint = _mapView.currentLocation;
-    CLLocationCoordinate2D topPoint = [_mapView getTopCenterCoordinate];
+//    CLLocationCoordinate2D centerPoint = _mapView.currentLocation;
+//    CLLocationCoordinate2D topPoint = [_mapView getTopCenterCoordinate];
+    MKMapPoint centerPoint = MKMapPointForCoordinate([_mapView currentLocation]);
+    MKMapPoint topPoint = MKMapPointForCoordinate([_mapView getTopCenterCoordinate]);
+    
     
 
-    float lat1 = GLKMathDegreesToRadians(centerPoint.latitude);
-    float long1 = GLKMathDegreesToRadians(centerPoint.longitude);
-    float lat2 = GLKMathDegreesToRadians(topPoint.latitude);
-    float long2 = GLKMathDegreesToRadians(topPoint.longitude);
-
-    float differenceLat = GLKMathDegreesToRadians(lat2 - lat1);
-    float differenceLong = GLKMathDegreesToRadians(long2 - long1);
+    double dist = MKMetersBetweenMapPoints(topPoint, centerPoint);
     
-    float somethingIWishIKnew = sinf(differenceLat/2) * sinf(differenceLat/2) + cosf(lat1) * cosf(lat2) * sinf(differenceLong/2) * sinf(differenceLong/2);
     
-    float somethingElse = atan2f((sqrtf(somethingIWishIKnew)), sqrtf(1-somethingIWishIKnew));
-    float myResultInKM = SOME_CONSTANT_R * somethingElse;
+    NSLog(@"My result in M: %f", dist);
     
-    float meters = myResultInKM*1000;
-    
-    NSLog(@"My result in M: %f", meters);
-    
-    return myResultInKM;
+    return dist;
 }
 
 
