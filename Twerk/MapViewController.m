@@ -991,7 +991,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     CLLocationDistance lat = 50;
     CLLocationDistance lng = 50;
     
-    _someUser.currentLocation = nil;
+    //_someUser.currentLocation = nil;
     if (_someUser.currentLocation.coordinate.latitude == 0 && _someUser.currentLocation.coordinate.longitude == 0)
     {
         NSLog(@"Tell me something happened");
