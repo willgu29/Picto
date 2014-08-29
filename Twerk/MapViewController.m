@@ -71,6 +71,19 @@ typedef NSInteger AnnotationCheck;
 
 @implementation MapViewController
 
+
+-(void)hasFollowedUser:(CustomAnnotation *)annotation
+{
+    for (id username in _someUser.following)
+    {
+        if (annotation.username == username)
+        {
+            annotation.userHasFollowed = YES;
+        }
+    }
+    annotation.userHasFollowed = NO;
+}
+
 - (float)randomFloatBetween:(float)smallNumber and:(float)bigNumber {
     float diff = bigNumber - smallNumber;
     return (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * diff) + smallNumber;
@@ -379,14 +392,15 @@ typedef NSInteger AnnotationCheck;
             CLLocationCoordinate2D location = CLLocationCoordinate2DMake(lat, lng);
             
             NSString *owner = [pictureURL valueForKeyPath:@"user.full_name"];
+            NSString *userID = [pictureURL valueForKeyPath:@"user.id"];
             NSString *likes = [pictureURL valueForKeyPath:@"likes.count"];
+              NSString *username = [pictureURL valueForKeyPath:@"user.username"];
             
             NSString *createdTime = [pictureURL valueForKeyPath:@"created_time"];
             NSString *mediaID = [pictureURL valueForKeyPath:@"id"];
             NSString *userHasLiked = [pictureURL valueForKey:@"user_has_liked"];
-            NSLog(@"USER LIKED?: %@", userHasLiked);
             //Save this object in an array of currently displayed photos
-            WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged andOwner:owner andLikes:likes andTime:createdTime andMediaID:mediaID andUserLiked:userHasLiked];
+            WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged andOwner:owner andLikes:likes andTime:createdTime andMediaID:mediaID andUserLiked:userHasLiked andUserID:userID andUsername:username];
             CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithPhoto:photo];
             
             
@@ -408,8 +422,10 @@ typedef NSInteger AnnotationCheck;
                 //YASS
             }
             
+            //
             [annotation createNewImage];
             
+            [self hasFollowedUser:annotation];
             //OR save object as video WGVideo subclass.. (not made yet)
             [annotation setLocationString:self.currentMapViewGeoLocation];
             
@@ -441,7 +457,6 @@ typedef NSInteger AnnotationCheck;
                  */
                 
                //
-                
                 [_mapView addAnnotation:annotation]; //THIS adds an annotation to _mapView.annotations
                 //[self addAnnotationWithWGPhoto:photo]; REVERT HERE 1.0
                 //mapView viewForAnnotation should be automatically called now.. -> (JK. )
@@ -529,11 +544,13 @@ typedef NSInteger AnnotationCheck;
             
             NSString *owner = [pictureURL valueForKeyPath:@"user.full_name"];
             NSString *likes = [pictureURL valueForKeyPath:@"likes.count"];
+            NSString *userID = [pictureURL valueForKeyPath:@"user.id"];
+            NSString *username = [pictureURL valueForKeyPath:@"user.username"];
             
             NSString *createdTime = [pictureURL valueForKeyPath:@"created_time"];
             NSString *mediaID = [pictureURL valueForKeyPath:@"id"];
             NSString *userHasLiked = [pictureURL valueForKey:@"user_has_liked"];
-            WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged andOwner:owner andLikes:likes andTime:createdTime andMediaID:mediaID andUserLiked:userHasLiked];
+            WGPhoto *photo = [[WGPhoto alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged andOwner:owner andLikes:likes andTime:createdTime andMediaID:mediaID andUserLiked:userHasLiked andUserID:userID andUsername:username];
             CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithPhoto:photo];
             
             
@@ -560,7 +577,7 @@ typedef NSInteger AnnotationCheck;
             
             //OR save object as video WGVideo subclass.. (not made yet)
             [annotation createNewImage];
-            
+            [self hasFollowedUser:annotation];
             //[annotation setLocationString:self.currentMapViewGeoLocation];
             
             [annotation parseStringOfLocation:annotation.coordinate]; //We'll do the parse for popular pictures since we only load a few.

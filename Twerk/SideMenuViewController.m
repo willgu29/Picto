@@ -41,7 +41,28 @@
 
 -(void)displayProperButtonHighlights
 {
+    [self displayProperFollowing];
+    [self displayProperAllRecent];
     
+    //TODO: do other buttons
+}
+
+-(void)displayProperAllRecent
+{
+    if ([(MapViewController *)self.presentingViewController globalType] == ALL)
+    {
+        _heart1.hidden = NO;
+        _heart2.hidden = YES;
+    }
+    else if ([(MapViewController *)self.presentingViewController globalType] == RECENT)
+    {
+        _heart1.hidden = YES;
+        _heart2.hidden = NO;
+    }
+}
+
+-(void)displayProperFollowing
+{
     if ([(MapViewController *)self.presentingViewController onlyFriends] == YES)
     {
         _heart3.hidden = NO;
@@ -50,8 +71,6 @@
     {
         _heart3.hidden = YES;
     }
-    
-    //TODO: do other buttons
 }
 
 - (void)didReceiveMemoryWarning

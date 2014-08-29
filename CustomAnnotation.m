@@ -28,6 +28,8 @@
     _mediaID = photo.mediaID;
     _colorType = nil;
     _userHasLiked = photo.userHasLiked.boolValue;
+    _userID = photo.userID;
+    _username = photo.username;
     return self;
 }
 
@@ -113,6 +115,8 @@
         return false;
     }
 }
+
+
 
 
 -(UIImage *)makeImagePretty:(UIImage *)image

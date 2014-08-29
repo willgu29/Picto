@@ -131,6 +131,7 @@ static const int SECONDS_IN_A_DAY = 86400;
             [discard addObject:cur];
     }
     [self removeAnnotations:discard];
+    
 }
 
 

@@ -17,6 +17,8 @@
 
 @property (nonatomic, weak) NSString *userHasLiked;
 @property (nonatomic, weak) NSString *mediaID;
+@property (nonatomic, weak) NSString *userID;
+@property (nonatomic, weak) NSString *username;
 @property (nonatomic, weak) NSString *timeCreated;
 @property (weak, nonatomic) NSString *photoURL;
 @property (weak, nonatomic) NSString *photoURLEnlarged;
@@ -26,15 +28,13 @@
 @property (nonatomic) NSString *likes;
 @property (nonatomic) BOOL userDidView;
 @property (nonatomic) BOOL didLoad;
-@property (nonatomic) BOOL userDidNotChooseLocation; //We don't want users to CHOOSE their own location... this would defeat the purpose of the app. To keep the data accuracy high, users must check Add picture to map AND not specify their own location.  The problem is we may not be able to do this as they'll need to take pictures in native IG. Alt solution: we keep our own location data independent of IG.
 
 
 
--(instancetype)initWithLocation:(CLLocationCoordinate2D)location andImageURL:(NSString *)image andEnlarged:(NSString *)imageURLEnlarged andOwner:(NSString *)owner andLikes:(NSString *)likes;
 
--(instancetype)initWithLocation:(CLLocationCoordinate2D)location andImageURL:(NSString *)image andEnlarged:(NSString *)imageURLEnlarged andOwner:(NSString *)owner andLikes:(NSString *)likes andTime:(NSString *)createdTime andMediaID:(NSString *)mediaID;
 
--(instancetype)initWithLocation:(CLLocationCoordinate2D)location andImageURL:(NSString *)image andEnlarged:(NSString *)imageURLEnlarged andOwner:(NSString *)owner andLikes:(NSString *)likes andTime:(NSString *)createdTime andMediaID:(NSString *)mediaID andUserLiked:(NSString *)userHasLiked;
+-(instancetype)initWithLocation:(CLLocationCoordinate2D)location andImageURL:(NSString *)image andEnlarged:(NSString *)imageURLEnlarged andOwner:(NSString *)owner andLikes:(NSString *)likes andTime:(NSString *)createdTime andMediaID:(NSString *)mediaID andUserLiked:(NSString *)userHasLiked andUserID:(NSString *)userID andUsername:(NSString *)username;
+
 
 //-(void)retrievePhotoFromIG;
 //-(void)retrievePhotoFromDatabase;

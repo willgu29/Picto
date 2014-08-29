@@ -15,7 +15,10 @@
 
 @property (strong, nonatomic) CustomAnnotation *referencedAnnotation;
 
+@property (strong, nonatomic) NSString *userID;
 @property (strong, nonatomic) NSString *mediaID;
+
+@property (weak, nonatomic) IBOutlet UIButton *followUnfolowButton;
 @property (weak, nonatomic) IBOutlet UILabel *timeSincePost;
 @property (weak, nonatomic) IBOutlet UILabel *infoText;
 @property (weak, nonatomic) IBOutlet UIImageView *image;
@@ -24,7 +27,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *locationString;
 
 
-@property (nonatomic) BOOL userHasLiked; //TODO: We have two bools... And we use both in here.. OOPS. 
+@property (nonatomic) BOOL userHasLiked;
+@property (nonatomic) BOOL userHasFollowed;
 
 
 

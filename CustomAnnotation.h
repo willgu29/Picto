@@ -14,14 +14,18 @@
 
 @interface CustomAnnotation : NSObject <MKAnnotation>
 
-
+@property (nonatomic, readonly) NSString *username;
+@property (nonatomic, readonly) NSString *userID;
 @property (nonatomic, readwrite) NSString *locationString;
 @property (nonatomic, readwrite) BOOL isPopular;
 @property (nonatomic, readwrite) BOOL userHasLiked;
+@property (nonatomic, readwrite) BOOL userHasFollowed;
 @property (nonatomic, readonly) NSString *mediaID;
 @property (nonatomic, readonly) NSString *imageURL;
 @property (nonatomic, readonly) NSString *imageURLEnlarged;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
+
+
 @property (nonatomic, readonly, copy) NSString *subtitle;
 @property (nonatomic, readonly, copy) NSString *title;
 @property (nonatomic, readwrite) UIColor* colorType;

@@ -132,11 +132,14 @@
     [_image setImage:image];
     
     _userHasLiked = annotation.userHasLiked;
+    _userHasFollowed = annotation.userHasFollowed;
     _mediaID = annotation.mediaID;
+    _userID = annotation.userID;
 
     
     [self setUpTextLabels];
     [self updateDisplayOfHeart];
+    [self updateFollowButton];
     
 }
 
@@ -185,6 +188,72 @@
 }
 
 
+-(IBAction)followUnFolow:(UIButton *)sender
+{
+    NSLog(@"Follow button pressed");
+    
+    [self makeRequestToFollow];
+    [self updateVariableUserHasFollowed];
+    [self updateFollowButton];
+    
+}
+
+-(void)updateVariableUserHasFollowed;
+{
+    if (_userHasFollowed == YES)
+    {
+        _referencedAnnotation.userHasFollowed = NO;
+        _userHasFollowed = NO;
+    }
+    else
+    {
+        _referencedAnnotation.userHasFollowed = YES;
+        _userHasFollowed = YES;
+    }
+}
+
+-(void)updateFollowButton
+{
+    if (_userHasFollowed == YES)
+    {
+        _followUnfolowButton.selected = YES;
+        [_followUnfolowButton setTitle:@"√ Following" forState:UIControlStateNormal];
+    }
+    else
+    {
+        _followUnfolowButton.selected = NO;
+        [_followUnfolowButton setTitle:@"Follow +" forState:UIControlStateNormal];
+    }
+}
+
+-(void)makeRequestToFollow
+{
+    //TODO: Figure this out
+    //TEXT, action=follow
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    NSString* methodName = [NSString stringWithFormat:@"users/%@/relationship", _userID];
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"follow", @"action", nil];
+    [appDelegate.instagram requestWithMethodName:methodName
+                                          params: params
+                                      httpMethod:@"POST"
+                                        delegate: self];
+    
+}
+
+-(void)makeRequestToUnfollow
+{
+    //TODO: Figure this out
+    //TEXT, action=unfollow
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    NSString* methodName = [NSString stringWithFormat:@"users/%@/relationship", _userID];
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"unfollow", @"action", nil];
+    [appDelegate.instagram requestWithMethodName:methodName
+                                          params: params
+                                      httpMethod:@"POST"
+                                        delegate: self];
+}
+
+
 /* NOT WORKING DO NOT USE
 - (IBAction)handleGesture:(UIGestureRecognizer *)gestureRecognizer
 {
@@ -200,9 +269,11 @@
  
 
 
+
+
 -(void)request:(IGRequest *)request didLoad:(id)result
 {
-    
+    NSLog(@"WHAT RESULT: %@", result);
 }
 
 -(void)request:(IGRequest *)request didFailWithError:(NSError *)error
