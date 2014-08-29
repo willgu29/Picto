@@ -68,6 +68,17 @@ typedef NSInteger AnnotationCheck;
 
 #pragma mark - View Life Cycle
 
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+        
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -134,8 +145,6 @@ typedef NSInteger AnnotationCheck;
 -(void)viewDidUnload
 {
     //TODO: Set to nil what is needed and remove other observers
-    
-    
     //remove the observers if we leave this view
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"We should load data" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"Load Geo" object:nil];
@@ -149,6 +158,12 @@ typedef NSInteger AnnotationCheck;
     dispatch_suspend(dispatchSource);
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    //TODO: Handle memory warning
+    // Dispose of any resources that can be recreated.
+}
 
 #pragma mark - Call Loading Methods
 
@@ -433,40 +448,118 @@ typedef NSInteger AnnotationCheck;
 #pragma mark - Touches Methods
 
 
-
-#pragma mark - Math Functions
-
-- (float)randomFloatBetween:(float)smallNumber and:(float)bigNumber {
-    float diff = bigNumber - smallNumber;
-    return (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * diff) + smallNumber;
-}
-
-
-
-//alpha 0 to 1
-- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
-    MKAnnotationView *aV;
-    
-    for (aV in views) {
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@"Touches began!");
+    UITouch *touch = [[event allTouches] anyObject];
+    if ([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[CustomCallout class]])
+    {
+        [self stopAnnotationTimer];
+        return;
         
-        // Don't pin drop if annotation is user location
-        if ([aV.annotation isKindOfClass:[MKUserLocation class]]) {
-            continue;
-        }
-        
-        // Check if current annotation is inside visible map rect, else go to next one
-        MKMapPoint point =  MKMapPointForCoordinate(aV.annotation.coordinate);
-        if (!MKMapRectContainsPoint(self.mapView.visibleMapRect, point)) {
-            continue;
-        }
-        
-        float randomFloat = [self randomFloatBetween:.8 and:1.3];
-        [self animateDropFromTop:aV view:views withDuration:randomFloat];
+    }
+    [_picturesChosenByDrag removeAllObjects];
+    arrayCounter = 0;
+    if([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[MKAnnotationView class]])
+    {
+        //This is MKAnnotation! COOL
+        NSLog(@"Began at annotation!");
     }
 }
 
-//Need to change this method to support when pictures go off map and to make it non immediate
-//Add method to mapFullyRendered when ready probably
+-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
+    UITouch *touch = [[event allTouches] anyObject];
+    if([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[MKAnnotationView class]])
+    {
+    }
+    
+}
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
+    NSLog(@"Touches ended!");
+    UITouch *touch = [[event allTouches] anyObject];
+    if ([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[CustomCallout class]])
+    {
+        [self startAnnotationTimer];
+        return;
+    }
+    arrayCounter = 0;
+    if ([_picturesChosenByDrag count] == 1)
+    {
+        //TODO: Just display
+        [self displayCallout:[_picturesChosenByDrag objectAtIndex:0]];
+    }
+    else if ([_picturesChosenByDrag count] > 1)
+    {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self startPreloadingFrom:_picturesChosenByDrag];
+        });
+        [self startAnnotationTimer];
+    }
+    
+}
+
+
+#pragma mark - CalloutView and Timer
+
+
+-(void)startPreloadingFrom:(NSOrderedSet*)source
+{
+    for (NSUInteger i = 1; i < [source count]; i++) {
+        MKAnnotationView *curView = [source objectAtIndex:i];
+        CustomAnnotation *curAnnotation = curView.annotation;
+        if (curAnnotation.imageEnlarged == nil)
+        {
+            NSLog(@"Preloading image number %lu", (unsigned long)i);
+            NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[curAnnotation imageURLEnlarged]]];
+            curAnnotation.imageEnlarged = [[UIImage alloc] initWithData:data];
+        }
+        else
+            NSLog(@"Image was preloaded :)");
+    }
+}
+
+dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispatch_queue_t queue, dispatch_block_t block)
+{
+    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    if (timer)
+    {
+        dispatch_source_set_timer(timer, dispatch_walltime(NULL, 0), interval, leeway);
+        dispatch_source_set_event_handler(timer, block);
+        dispatch_resume(timer);
+    }
+    return timer;
+}
+
+-(void) startAnnotationTimer
+{
+    if (annotationTimer != nil) // Just in case..
+        dispatch_source_cancel(annotationTimer);
+    
+    annotationTimer = CreateDispatchTimer(SECONDS_PER_PIC * NSEC_PER_SEC, 10ull * NSEC_PER_MSEC, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [self performSelectorOnMainThread:@selector(timerFireMethod) withObject:nil waitUntilDone:TRUE];
+    });
+}
+
+-(void) stopAnnotationTimer
+{
+    if (annotationTimer != nil)
+    {
+        dispatch_source_cancel(annotationTimer);
+        annotationTimer = nil;
+    }
+}
+
+
+
+
+
+
+#pragma mark - MKAnnotationView Helper Functions
 -(void)updatePicturesBeingDisplayedBasedOnColorOfBorder
 {
     //Loop through all our annotation views
@@ -491,14 +584,7 @@ typedef NSInteger AnnotationCheck;
 }
 
 
--(void)setPicturesChosenByDrag:(NSMutableOrderedSet *)picturesChosenByDrag
-{
-    if (_picturesChosenByDrag == nil)
-    {
-        _picturesChosenByDrag = [[NSMutableOrderedSet alloc] init];
-    }
-    _picturesChosenByDrag = picturesChosenByDrag;
-}
+
 
 -(CGPoint)getAnnotationPositionOnMap:(CustomAnnotation *)annotation
 {
@@ -516,19 +602,7 @@ typedef NSInteger AnnotationCheck;
         return distance < maxDistance;
 }
 
-//our own custom setter
--(void)setGlobalType:(NSInteger)globalType
-{
-    _globalType = globalType;
-    [self configureInfoText:_globalType];
-    
-}
 
--(void)setOnlyFriends:(BOOL)onlyFriends
-{
-    _onlyFriends = onlyFriends;
-    [self configureInfoText:_globalType];
-}
 
 -(void)animateLabelFade:(UILabel *)label toAlpha:(float)newAlphaVal withDuration:(float)duration
 {
@@ -608,165 +682,6 @@ typedef NSInteger AnnotationCheck;
 
 
 
-
-
-
-
-
-
-
-
-
-#pragma mark - Main Lifecycle
-
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-        
-    }
-    return self;
-}
-
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    //if holding and on an annotation, call the mapView, didSelectAnnotation method
-    //if holding and off annotation, call the mapView, didUnselectAnnotation method
-    //... if user taps an annotation it should zoom in. so in didSelectAnnotation (detect if touch is tap to just return)... we'll define our own custom behavior in another method.
-    UITouch *touch = [[event allTouches] anyObject];
-    
-    
-    if ([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[CustomCallout class]])
-    {
-        NSLog(@"Began at Callout!");
-        //
-        // [self pausePhotoShowing];
-        [self stopAnnotationTimer];
-        return;
-        
-    }
-    
-    
-    [_picturesChosenByDrag removeAllObjects];
-    arrayCounter = 0;
-    
-    if([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[MKAnnotationView class]])
-    {
-        //This is MKAnnotation! COOL
-        NSLog(@"Began at annotation!");
-        //Makes border
-        //View Did select annotation view... (so go to that delegate)
-        
-    }
-    
-    
-}
-
--(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    
-    UITouch *touch = [[event allTouches] anyObject];
-    if([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[MKAnnotationView class]])
-    {
-        //This is MKAnnotation! COOL
-        //NSLog(@"Moved to annotation");
-        //View did select annotation view... (so go to that delegate)
-    }
-    /*
-    UITouch *touch = [[event allTouches] anyObject];
-    CGPoint touchLocation = [touch locationInView:_mapView.annotations];
-        
-    for (UIView *view in self.contentView.subviews)
-    {
-        if ([view isKindOfClass:[MyCustomView class]] &&
-            CGRectContainsPoint(view.frame, touchLocation))
-        {
-                
-        }
-    }
-     */
-    
-}
-
-
--(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    
-    NSLog(@"Touches ended!");
-    
-     UITouch *touch = [[event allTouches] anyObject];
-    if ([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[CustomCallout class]])
-    {
-        [self startAnnotationTimer];
-        return;
-      
-    }
-   
-    arrayCounter = 0;
-    if ([_picturesChosenByDrag count] == 1)
-    {
-        //TODO: Just display
-        [self displayCallout:[_picturesChosenByDrag objectAtIndex:0]];
-    }
-    else if ([_picturesChosenByDrag count] > 1)
-    {
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [self startPreloadingFrom:_picturesChosenByDrag];
-        });
-        [self startAnnotationTimer];
-    }
-    
-}
-
--(void)startPreloadingFrom:(NSOrderedSet*)source
-{
-    for (NSUInteger i = 1; i < [source count]; i++) {
-        MKAnnotationView *curView = [source objectAtIndex:i];
-        CustomAnnotation *curAnnotation = curView.annotation;
-        if (curAnnotation.imageEnlarged == nil)
-        {
-            NSLog(@"Preloading image number %lu", (unsigned long)i);
-            NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[curAnnotation imageURLEnlarged]]];
-            curAnnotation.imageEnlarged = [[UIImage alloc] initWithData:data];
-        }
-        else
-            NSLog(@"Image was preloaded :)");
-    }
-}
-
-dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispatch_queue_t queue, dispatch_block_t block)
-{
-    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
-    if (timer)
-    {
-        dispatch_source_set_timer(timer, dispatch_walltime(NULL, 0), interval, leeway);
-        dispatch_source_set_event_handler(timer, block);
-        dispatch_resume(timer);
-    }
-    return timer;
-}
-
--(void) startAnnotationTimer
-{
-    if (annotationTimer != nil) // Just in case..
-        dispatch_source_cancel(annotationTimer);
-    
-    annotationTimer = CreateDispatchTimer(SECONDS_PER_PIC * NSEC_PER_SEC, 10ull * NSEC_PER_MSEC, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [self performSelectorOnMainThread:@selector(timerFireMethod) withObject:nil waitUntilDone:TRUE];
-    });
-}
-
--(void) stopAnnotationTimer
-{
-    if (annotationTimer != nil)
-    {
-        dispatch_source_cancel(annotationTimer);
-        annotationTimer = nil;
-    }
-}
 
 
 - (void)timerFireMethod
@@ -858,11 +773,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+
 
 #pragma mark - UITextField (search bar)
 
@@ -1045,7 +956,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     [UIView commitAnimations];
 }
 
-#pragma mark - Map view delegates/methods
+#pragma mark - MKAnnotationView methods
 
 -(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
@@ -1054,39 +965,18 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         //Don't add these types to our array;
         return;
     }
-    
     if (_picturesChosenByDrag == nil)
     {
         _picturesChosenByDrag = [[NSMutableOrderedSet alloc] init];
     }
-    
     NSLog(@"Added to array!");
     [_picturesChosenByDrag addObject:view];
-    
-    
-    //DO ANIMATION HERE
-    //Makes border
     [(CustomAnnotation *)view.annotation setColorType:[UIColor yellowColor]];
     [self updateTheBorderColorOnViewToMatchTheAnnotationType:view];
-    
-    return;
-    //REVERT TO HERE
-    NSLog(@"Tapped it!");
-    if (![view.annotation isKindOfClass:[MKUserLocation class]] && ![view.annotation isKindOfClass:[MKPointAnnotation class]])
-    {
-        //[self displayAnnotationCalloutWithAnnotationView:view];
-    }
 }
 
--(void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
-    //loops through the MKAnnotationView views..
-    /*
-    for (UIView *subview in view.subviews )
-    {
-        [subview removeFromSuperview];
-    }
-     */
-    
+-(void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view{
+   
     //looping through main view views... only remove of class CustomCallout.
     NSLog(@"DESELECTING ANNOTATION");
     //return;
@@ -1097,26 +987,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     }
 }
 
--(id<MKAnnotation>)addAnnotationWithWGPhoto:(WGPhoto *)photo
-{
-    CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithPhoto:photo];
-    
-    //background queue
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        //DO THIS
-        [annotation createNewImage];
-        //And when it's finished
-        dispatch_async(dispatch_get_main_queue(), ^{
-            //do this (on main queue)
-            [_mapView addAnnotation:annotation];
-        });
-    });
-    
-  //  [_mapView addAnnotation:annotation];
-    
-    return annotation;
-    //^^^ This is not being used currently...
-}
 
 //This delegate method is called EVERYTIME WE call [_mapView addAnnotation].. so think data flow... we'll only addAnnotation to pictures we want to display. BINGO.
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
@@ -1179,35 +1049,12 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     return annotationView;
 }
 
--(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
-{
-    
-}
-
-
--(void)mapViewDidFinishLoadingMap:(MKMapView *)mapView
-{
-    //We need some way to detect when the user has clicked the "Allow our map to use location services.." B/c currently we always try to get the location and load pictures (in viewWillAppear then mapViewDidFinishRenderingMap), but if have no location, we can't load anything. Or find another solution... something like if lat/lng = 0 reload coordinates and zoom to user location.
-}
 
 
 
--(void)mapViewWillStartLoadingMap:(MKMapView *)mapView
-{
-    
-}
 
 
-//Start the location manager, get the current location, and then zoom  into that location.
--(void) zoomMapToCurrentRegion
-{
-    [self startLocationManager];
-    CLLocationCoordinate2D zoomLocation = [currentLocation coordinate];
-    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, METERS_PER_MILE, METERS_PER_MILE);
-    [_mapView setRegion:viewRegion animated:YES];
-    
-    
-}
+
 
 
 -(void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered
@@ -1449,6 +1296,27 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 #pragma mark - Animations
 
+- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
+    MKAnnotationView *aV;
+    
+    for (aV in views) {
+        
+        // Don't pin drop if annotation is user location
+        if ([aV.annotation isKindOfClass:[MKUserLocation class]]) {
+            continue;
+        }
+        
+        // Check if current annotation is inside visible map rect, else go to next one
+        MKMapPoint point =  MKMapPointForCoordinate(aV.annotation.coordinate);
+        if (!MKMapRectContainsPoint(self.mapView.visibleMapRect, point)) {
+            continue;
+        }
+        
+        float randomFloat = [self randomFloatBetween:.8 and:1.3];
+        [self animateDropFromTop:aV view:views withDuration:randomFloat];
+    }
+}
+
 -(void)animateFade: (MKAnnotationView *)aV withDuration:(float)duration {
     CGRect endFrame = aV.frame;
     [aV setAlpha:0];
@@ -1487,9 +1355,53 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     }];
 }
 
+#pragma mark - Math Functions
+
+- (float)randomFloatBetween:(float)smallNumber and:(float)bigNumber {
+    float diff = bigNumber - smallNumber;
+    return (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * diff) + smallNumber;
+}
+
+
+
+#pragma mark - Setter Methods
+
+//our own custom setters
+
+-(void)setPicturesChosenByDrag:(NSMutableOrderedSet *)picturesChosenByDrag
+{
+    if (_picturesChosenByDrag == nil)
+    {
+        _picturesChosenByDrag = [[NSMutableOrderedSet alloc] init];
+    }
+    _picturesChosenByDrag = picturesChosenByDrag;
+}
+
+-(void)setGlobalType:(NSInteger)globalType
+{
+    _globalType = globalType;
+    [self configureInfoText:_globalType];
+    
+}
+
+-(void)setOnlyFriends:(BOOL)onlyFriends
+{
+    _onlyFriends = onlyFriends;
+    [self configureInfoText:_globalType];
+}
+
 
 #pragma mark- NOT BEING USED (Saved for later)
 
+
+//Start the location manager, get the current location, and then zoom  into that location.
+-(void) zoomMapToCurrentRegion
+{
+    [self startLocationManager];
+    CLLocationCoordinate2D zoomLocation = [currentLocation coordinate];
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, METERS_PER_MILE, METERS_PER_MILE);
+    [_mapView setRegion:viewRegion animated:YES];
+}
 //will alloc and init a new Location manager and then start it, there are settings that adjust the distance and accuracy of the manager.  Set delegate to self.
 -(void) startLocationManager
 {
