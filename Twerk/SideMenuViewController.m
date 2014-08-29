@@ -35,12 +35,16 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self displayProperButtonHighlights];
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    [self displayProperButtonHighlights];
+    
 
 }
 
@@ -130,7 +134,7 @@
         [(MapViewController *)self.presentingViewController setOnlyFriends:YES];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"WGonlyFriends"];
     }
-    [self displayProperButtonHighlights];
+    [self displayProperFollowing];
 }
 
 
