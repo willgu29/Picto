@@ -65,6 +65,27 @@ typedef NSInteger AnnotationCheck;
 
 @implementation MapViewController
 
+#pragma mark - Call Loading Methods
+
+-(void)selectMethodForTypeWorkAround
+{
+    if (_globalType == ALL)
+    {
+        NSLog(@"ALL");
+        [_mapView findAllImagesOnMapInRange:(_mapView.radius/1.5) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
+    }
+    else if (_globalType == RECENT)
+    {
+        NSLog(@"RECENT");
+        [_mapView findRecentImagesOnMapInRange:(_mapView.radius/1.5) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
+    }
+    else if (_globalType == POPULAR)
+    {
+        [_mapView findPopularImages];
+    }
+}
+
+
 #pragma mark - Touches Methods
 
 #pragma mark - View Life Cycle
@@ -290,7 +311,7 @@ typedef NSInteger AnnotationCheck;
     [_mapView getCurrentLocationOfMap];
 }
 
--(void)selectMethodForType:(NSInteger)type
+-(void)selectMethodForType:(NSInteger)type __deprecated_msg("do a postNotification to - We should load data - instead")
 {
    // NSLog(@"Radius: %f", _mapView.radius);
     if (type == ALL)
@@ -310,38 +331,9 @@ typedef NSInteger AnnotationCheck;
     }
 }
 
--(void)selectMethodForTypeWorkAround
-{
-    if (_globalType == ALL)
-    {
-        NSLog(@"ALL");
-        [_mapView findAllImagesOnMapInRange:(_mapView.radius/1.5) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
-    }
-    else if (_globalType == RECENT)
-    {
-        NSLog(@"RECENT");
-        [_mapView findRecentImagesOnMapInRange:(_mapView.radius/1.5) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
-    }
-    else if (_globalType == POPULAR)
-    {
-        [_mapView findPopularImages];
-    }
-}
-
 -(void)loadFollowing
 {
     [_someUser retrieveWhoUserIsFollowingFromIG];
-}
-
--(void)parseFollowing
-{
-    _someUser.parsedFollowing = [NSMutableSet set];
-    for (id userData in _someUser.following)
-    {
-        NSString *userID = [userData valueForKeyPath:@"username"];
-        [_someUser.parsedFollowing addObject:userID];
-    }
-    
 }
 
 -(void)loadLocationGeo
@@ -349,11 +341,11 @@ typedef NSInteger AnnotationCheck;
     [self parseStringOfLocation:_mapView.currentLocation];
 }
 
+
 -(void)loadPictures
 {
     
     [_mapView cleanupMap];
-    
     
     if (_globalType == ALL || _globalType == RECENT)
     {
@@ -367,6 +359,22 @@ typedef NSInteger AnnotationCheck;
     
     
 }
+
+
+
+
+-(void)parseFollowing
+{
+    _someUser.parsedFollowing = [NSMutableSet set];
+    for (id userData in _someUser.following)
+    {
+        NSString *userID = [userData valueForKeyPath:@"username"];
+        [_someUser.parsedFollowing addObject:userID];
+    }
+    
+}
+
+
 
 
 
@@ -1166,40 +1174,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 }
 
 
-#pragma mark - Display Annotation View/Callout
-
-
-//CURRENTLY NOT BEING USED ***********
--(void)displayAnnotationCalloutWithAnnotationView:(MKAnnotationView *)view
-{
-    
-    //add timer and time to delay... (return BOOL 0 = no click, 1 = click (cancel queue of pictures) )
-    
-    CustomCallout *calloutView = (CustomCallout *)[[[NSBundle mainBundle] loadNibNamed:@"calloutView" owner:self options:nil] objectAtIndex:0];
-    CGRect calloutViewFrame  = calloutView.frame;
-    calloutViewFrame.origin = CGPointMake(0,self.view.frame.size.height/6);//CGPointMake(-calloutViewFrame.size.width/2 + 15, -calloutViewFrame.size.height);
-    calloutView.frame = calloutViewFrame;
-    
-    
-    CustomAnnotation *someAnnotation = view.annotation;
-    NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[someAnnotation imageURLEnlarged]]];
-    UIImage *image1 = [[UIImage alloc] initWithData:data];
-    
-    
-    //[calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID andUserLiked:someAnnotation.userHasLiked];
-    
-    //Makes pictures circular
-    calloutView.layer.cornerRadius = calloutView.frame.size.height/30;
-    calloutView.layer.masksToBounds = YES;
-    
-    //Makes border
-    calloutView.layer.borderWidth = 3.0f;
-    calloutView.layer.borderColor = [UIColor purpleColor].CGColor;
-    
-    [self animateFadeInAndAddCallOutView:calloutView];
-    NSLog(@"Displaying Callout View");
-}
-//CURRENTLY NOT BEING USED **************
 
 
 -(void)animateFadeInAndAddCallOutView:(CustomCallout *)calloutView
@@ -1473,7 +1447,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         {
             NSLog(@"Loading Pictures on Pan lower");
             _prevDataCoord = [_mapView currentLocation];
-            [self selectMethodForType:_globalType];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"We should load data" object:self];
             return;
         }
     }
@@ -1483,7 +1457,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         {
             NSLog(@"Loading Pictures on Pan lower");
             _prevDataCoord = [_mapView currentLocation];
-            [self selectMethodForType:_globalType];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"We should load data" object:self];
             return;
         }
     }
@@ -1492,14 +1466,14 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     {
         NSLog(@"Loading Pictures based on Pan");
         _prevDataCoord = [_mapView currentLocation];
-        [self selectMethodForType:_globalType];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"We should load data" object:self];
     }
     //Handle Zoom
     else if (zoomDelta > LOAD_DATA_ZOOM_THRESHOLD) //&& annotationToTop > SOME_RATIO_PAN)
     {
         NSLog(@"Loading Pictures based on Zoom");
         _prev_zoomLevel = [self getDistanceInMetersFromCenterOfScreenToTop];
-        [self selectMethodForType:_globalType];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"We should load data" object:self];
     }
     
     
@@ -1603,7 +1577,8 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
              NSLog(@"Geocode failed with error %@", error);
              
              //TODO: fix this.. for now we'll just go to loading
-             [self selectMethodForType:_globalType];
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"We should load data" object:self];
+             //[self selectMethodForType:_globalType];
              
          }
      }];

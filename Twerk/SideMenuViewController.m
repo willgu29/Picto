@@ -151,14 +151,21 @@
     [self presentViewController:loginVC animated:YES completion:nil]; //THIS IS INCORRECT, MAKE AN NAVIGATION CONTROLLER AND REVAMP THE WHOLE APP NAVIGATION.(OR  as long as we let go of views that we no longer use this is ok, but we don't currently...)
 }
 
--(void)igDidLogout {
+-(void)igDidLogin
+{
+    //We shouldn't need to do anything here.. No login should happen when we are logged in already
+}
+
+-(void)igDidLogout
+{
     NSLog(@"Instagram did logout");
     // remove the accessToken
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"accessToken"];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
--(void)igSessionInvalidated {
+-(void)igSessionInvalidated
+{
     // ???: We'll probably need to add this to our mapVC in case our session is invalidated there OR we can alloc init this VC so it can catch and handle this
     NSLog(@"Instagram session was invalidated");
 }
