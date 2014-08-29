@@ -17,6 +17,7 @@
 
 @property (strong, nonatomic) NSString *userID;
 @property (strong, nonatomic) NSString *mediaID;
+@property (strong, nonatomic) NSString *username;
 
 @property (weak, nonatomic) IBOutlet UIButton *followUnfolowButton;
 @property (weak, nonatomic) IBOutlet UILabel *timeSincePost;

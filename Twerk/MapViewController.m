@@ -9,7 +9,6 @@
 #include <mach/mach_time.h>
 #import "MapViewController.h"
 #import "CameraAppViewController.h"
-#import "User.h"
 #import "WGMap.h"
 #import "WGPhoto.h"
 #import "CustomAnnotation.h"
@@ -52,7 +51,7 @@ typedef NSInteger AnnotationCheck;
 
 
 @property (weak, nonatomic) IBOutlet UITableView *autoCompleteTableView;
-@property (strong, nonatomic) User *someUser;
+
 
 @property (strong, nonatomic) WGPhoto *someData; //???
 @property (strong, nonatomic) UIImagePickerController *mediaPicker;

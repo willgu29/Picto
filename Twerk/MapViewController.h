@@ -14,7 +14,10 @@
 #import "IGRequest.h"
 #import "IGConnect.h"
 #import "WGMap.h"
+#import "User.h"
 #import "WGTimer.h"
+
+@class User;
 
 #define SECONDS_PER_PIC 1ull
 
@@ -52,7 +55,7 @@ typedef NSInteger Type;
 @property (nonatomic, strong) NSTimer *myTimer;
 @property (nonatomic) int arrayPosition;
 @property (nonatomic, strong) NSString *currentMapViewGeoLocation;
-
+@property (strong, nonatomic) User *someUser;
 @end
 
 

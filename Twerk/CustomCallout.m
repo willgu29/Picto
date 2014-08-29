@@ -148,7 +148,7 @@
     _userHasFollowed = annotation.userHasFollowed;
     _mediaID = annotation.mediaID;
     _userID = annotation.userID;
-
+    _username = annotation.username;
     
     [self setUpTextLabels];
     [self updateDisplayOfHeart];
