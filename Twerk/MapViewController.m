@@ -1316,19 +1316,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     //We need some way to detect when the user has clicked the "Allow our map to use location services.." B/c currently we always try to get the location and load pictures (in viewWillAppear then mapViewDidFinishRenderingMap), but if have no location, we can't load anything. Or find another solution... something like if lat/lng = 0 reload coordinates and zoom to user location.
 }
 
--(void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered
-{
 
-//    [_mapView getCurrentLocationOfMap];
-//    [_mapView getRadius];
-//    NSLog(@"RADIUS: %f", _mapView.radius);
-//
-//    if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
-//        return;
-//    
-//    //if we want all pictures set to all etc etc.
-//    [self selectMethodForType:_globalType];
-}
 
 -(void)mapViewWillStartLoadingMap:(MKMapView *)mapView
 {
@@ -1348,9 +1336,24 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 }
 
 
+-(void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered
+{
+    
+        [_mapView getCurrentLocationOfMap];
+        [_mapView getRadius];
+        NSLog(@"RADIUS: %f", _mapView.radius);
+    
+        if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
+           return;
+    
+        //if we want all pictures set to all etc etc.
+        [self selectMethodForType:_globalType];
+}
+
+
 -(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
-    [self checkDistanceBetweenLastLoadedAnnotationAndCurrentPointOfMap];
+    //[self checkDistanceBetweenLastLoadedAnnotationAndCurrentPointOfMap];
 }
 
 
