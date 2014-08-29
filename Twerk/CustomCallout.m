@@ -173,7 +173,7 @@
     if (_referencedAnnotation.locationString == nil)
     {
         NSLog(@"FUCKED UP");
-        _locationString.text = @"";
+        _locationString.text = @"Unknown";
     }
     else
         _locationString.text = [NSString stringWithFormat:@"%@", _referencedAnnotation.locationString];
