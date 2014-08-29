@@ -204,26 +204,38 @@
 -(IBAction)followUnFolow:(UIButton *)sender
 {
     NSLog(@"Follow button pressed");
-    
-    [self makeRequestToFollow];
-    [self updateVariableUserHasFollowed];
-    [self updateFollowButton];
-    
-}
-
--(void)updateVariableUserHasFollowed;
-{
-    if (_userHasFollowed == YES)
+    if (_userHasFollowed)
     {
-        _referencedAnnotation.userHasFollowed = NO;
-        _userHasFollowed = NO;
+        [self unfollow];
     }
     else
     {
-        _referencedAnnotation.userHasFollowed = YES;
-        _userHasFollowed = YES;
+        [self follow];
     }
+        
+    
 }
+
+-(void)follow
+{
+    [self makeRequestToFollow];
+    _userHasFollowed = YES;
+    _referencedAnnotation.userHasFollowed = YES;
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    [appDelegate.mapVC.someUser.parsedFollowing addObject:_username];
+    [self updateFollowButton];
+}
+
+-(void)unfollow
+{
+    [self makeRequestToUnfollow];
+    _userHasFollowed = NO;
+    _referencedAnnotation.userHasFollowed = NO;
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    [appDelegate.mapVC.someUser.parsedFollowing removeObject:_username];
+    [self updateFollowButton];
+}
+
 
 -(void)updateFollowButton
 {
@@ -283,12 +295,12 @@
 
 -(void)request:(IGRequest *)request didLoad:(id)result
 {
-    NSLog(@"WHAT RESULT: %@", result);
+    NSLog(@"CustomCallout - Instagram did load: %@", result);
 }
 
 -(void)request:(IGRequest *)request didFailWithError:(NSError *)error
 {
-    
+    NSLog(@"CustomCallout - Instagram ERROR: %@", error);
 }
 
 /*

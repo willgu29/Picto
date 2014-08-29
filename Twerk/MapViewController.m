@@ -67,14 +67,14 @@ typedef NSInteger AnnotationCheck;
 
 -(void)hasFollowedUser:(CustomAnnotation *)annotation
 {
-    for (id username in _someUser.parsedFollowing)
+    if ([_someUser.parsedFollowing containsObject:annotation.username])
     {
-        if ([annotation.username isEqualToString:username])
-        {
-            annotation.userHasFollowed = YES;
-        }
+        annotation.userHasFollowed = YES;
     }
-    annotation.userHasFollowed = NO;
+    else
+    {
+        annotation.userHasFollowed = NO;
+    }
 }
 
 - (float)randomFloatBetween:(float)smallNumber and:(float)bigNumber {
@@ -294,7 +294,7 @@ typedef NSInteger AnnotationCheck;
 
 -(void)parseFollowing
 {
-    _someUser.parsedFollowing = [[NSMutableArray alloc] init];
+    _someUser.parsedFollowing = [NSMutableSet set];
     for (id userData in _someUser.following)
     {
         NSString *userID = [userData valueForKeyPath:@"username"];
@@ -794,7 +794,15 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
             NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[someAnnotation imageURLEnlarged]]];
             ((CustomAnnotation*)[view annotation]).imageEnlarged = someAnnotation.imageEnlarged = [[UIImage alloc] initWithData:data];
         }
-        else NSLog(@"Image was preloaded :)");
+        if ([_someUser.parsedFollowing containsObject:someAnnotation.username])
+        {
+            someAnnotation.userHasFollowed = YES;   
+        }
+        else
+        {
+            someAnnotation.userHasFollowed = NO;
+        }
+        NSLog(@"Image was preloaded :)");
         dispatch_async(dispatch_get_main_queue(), ^{
             [calloutView initCalloutWithAnnotation:someAnnotation andImage:someAnnotation.imageEnlarged];
             //[calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID andUserLiked:someAnnotation.userHasLiked andAnnotation:someAnnotation];
