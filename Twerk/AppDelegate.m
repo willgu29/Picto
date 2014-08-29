@@ -30,10 +30,14 @@
     
     //if logged in go straight to map, otherwise go to login.
     self.instagram.accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"accessToken"];
+    //NSInteger globalType = [[NSUserDefaults standardUserDefaults] integerForKey:@"WGglobalType"];
+    //BOOL onlyFriends = [[NSUserDefaults standardUserDefaults] boolForKey:@"WGonlyFriends"];
     if ([self.instagram isSessionValid])
     {
         MapViewController* mapVC = [[MapViewController alloc] init];
         self.window.rootViewController = mapVC;
+        //mapVC.globalType = globalType;
+        //mapVC.onlyFriends = onlyFriends;
     }
     else
     {

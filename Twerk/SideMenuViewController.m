@@ -96,14 +96,18 @@
 -(IBAction)presentAll:(id)sender
 {
     [self removeAllPinsButUserLocation];
-    [(MapViewController *)self.presentingViewController setGlobalType:1];
+    [(MapViewController *)self.presentingViewController setGlobalType:ALL];
+    [[NSUserDefaults standardUserDefaults] setInteger:ALL forKey:@"WGglobalType"];
+    [self displayProperAllRecent];
      
 }
 
 -(IBAction)presentRecent:(id)sender
 {
     [self removeAllPinsButUserLocation];
-    [(MapViewController *)self.presentingViewController setGlobalType:2];
+    [(MapViewController *)self.presentingViewController setGlobalType:RECENT];
+    [[NSUserDefaults standardUserDefaults] setInteger:RECENT forKey:@"WGglobalType"];
+    [self displayProperAllRecent];
 }
 
 -(IBAction)onlyFriends:(id)sender
