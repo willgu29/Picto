@@ -107,16 +107,7 @@
     
 }
 
-//Will go to map view
--(IBAction)goMainVC:(UIButton *)sender
-{
-    //create controller CameraController
-    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
 
-    appDelegate.mapVC = [[MapViewController alloc] init];
-    //present this view controller
-    [self presentViewController:appDelegate.mapVC animated:YES completion:nil];
-}
 
 
 //This is a button on the xib (Login)
@@ -127,17 +118,6 @@
     [appDelegate.instagram authorize:[NSArray arrayWithObjects:@"comments", @"likes", @"relationships", nil]];
     //WE DON"T USE COMMENTS LUL
 }
-
-//This is a button on the xib (Logout)
--(IBAction)logOutInsta:(UIButton *)sender
-{
-    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
-    //logout of instagram (the instagram iOS SDK handles this)
-    [appDelegate.instagram logout];
-    
-}
-
-
 
 
 
@@ -217,9 +197,9 @@
 	[[NSUserDefaults standardUserDefaults] synchronize];
     
     //Make a mapVC
-    MapViewController *mapVC = [[MapViewController alloc] init];
+    appDelegate.mapVC = [[MapViewController alloc] init];
     //present it
-    [self presentViewController:mapVC animated:YES completion:nil];
+    [self presentViewController:appDelegate.mapVC animated:YES completion:nil];
 }
 
 -(void)igDidNotLogin:(BOOL)cancelled {

@@ -19,7 +19,7 @@
 
 @class User;
 
-static const unsigned long long SECONDS_PER_PIC =  1.2;
+static const unsigned long long SECONDS_PER_PIC =  1.3;
 
 enum {
     ALL = 1,

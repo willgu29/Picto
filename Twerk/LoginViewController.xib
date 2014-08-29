@@ -17,17 +17,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0iC-Ff-TBS">
-                    <rect key="frame" x="219" y="518" width="81" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Skip to App">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="goMainVC:" destination="-1" eventType="touchUpInside" id="Qw5-8F-Udl"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Se2-YZ-ipg">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Se2-YZ-ipg">
                     <rect key="frame" x="96" y="496" width="129" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Login to Instagram">
@@ -37,23 +27,16 @@
                         <action selector="loginToInsta:" destination="-1" eventType="touchUpInside" id="eDb-sU-TM3"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b8X-xr-mKo">
-                    <rect key="frame" x="20" y="518" width="124" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Logout for Testing">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="logOutInsta:" destination="-1" eventType="touchUpInside" id="SJh-ss-Erh"/>
-                    </connections>
-                </button>
-                <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="RAE-Fb-cWP">
+                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="RAE-Fb-cWP">
                     <rect key="frame" x="131" y="467" width="59" height="37"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="59" id="tiH-hj-vV3"/>
+                    </constraints>
                     <color key="pageIndicatorTintColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="currentPageIndicatorTintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </pageControl>
-                <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UUb-DQ-bOu">
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UUb-DQ-bOu">
                     <rect key="frame" x="0.0" y="28" width="320" height="408"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -64,7 +47,7 @@
                         <outletCollection property="gestureRecognizers" destination="Miw-DT-Ika" appends="YES" id="yCx-f7-htR"/>
                     </connections>
                 </view>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Holder" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jml-eq-jaA">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Holder" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jml-eq-jaA">
                     <rect key="frame" x="20" y="450" width="280" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -73,6 +56,19 @@
                 </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="RAE-Fb-cWP" firstAttribute="top" secondItem="UUb-DQ-bOu" secondAttribute="bottom" constant="31" id="5vB-Ms-Fwq"/>
+                <constraint firstItem="UUb-DQ-bOu" firstAttribute="leading" secondItem="f79-2S-4Hd" secondAttribute="leading" id="BQH-7a-iGX"/>
+                <constraint firstItem="Se2-YZ-ipg" firstAttribute="centerX" secondItem="Jml-eq-jaA" secondAttribute="centerX" id="C7m-ou-9Mz"/>
+                <constraint firstItem="Se2-YZ-ipg" firstAttribute="top" secondItem="Jml-eq-jaA" secondAttribute="bottom" constant="25" id="MB7-Bi-XhL"/>
+                <constraint firstAttribute="bottom" secondItem="RAE-Fb-cWP" secondAttribute="bottom" constant="64" id="TcJ-5r-Wyg"/>
+                <constraint firstAttribute="bottom" secondItem="Se2-YZ-ipg" secondAttribute="bottom" constant="42" id="tYN-Yh-F1y"/>
+                <constraint firstItem="Se2-YZ-ipg" firstAttribute="centerX" secondItem="UUb-DQ-bOu" secondAttribute="centerX" id="u6I-Pe-N1b"/>
+                <constraint firstItem="UUb-DQ-bOu" firstAttribute="top" secondItem="f79-2S-4Hd" secondAttribute="top" constant="28" id="ufh-fj-aM3"/>
+                <constraint firstItem="Se2-YZ-ipg" firstAttribute="centerX" secondItem="RAE-Fb-cWP" secondAttribute="centerX" id="v7N-O2-k5v"/>
+                <constraint firstItem="RAE-Fb-cWP" firstAttribute="centerX" secondItem="UUb-DQ-bOu" secondAttribute="centerX" id="v95-7x-2YI"/>
+                <constraint firstItem="Se2-YZ-ipg" firstAttribute="centerX" secondItem="f79-2S-4Hd" secondAttribute="centerX" id="wjS-UP-7HW"/>
+            </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
