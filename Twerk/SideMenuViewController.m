@@ -35,8 +35,13 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [self displayProperButtonHighlights];
     
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [self displayProperButtonHighlights];
+
 }
 
 -(void)displayProperButtonHighlights
@@ -117,10 +122,13 @@
     if ([(MapViewController *)self.presentingViewController onlyFriends] == YES)
     {
         [(MapViewController *)self.presentingViewController setOnlyFriends:NO];
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WGonlyFriends"];
+
     }
     else
     {
         [(MapViewController *)self.presentingViewController setOnlyFriends:YES];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"WGonlyFriends"];
     }
     [self displayProperButtonHighlights];
 }

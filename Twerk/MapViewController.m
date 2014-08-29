@@ -16,7 +16,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 const NSInteger METERS_PER_MILE = 1609.344;
-const NSInteger MAX_ALLOWED_PICTURES = 50; //TODO: switch this to MAX_ALLOWED ON SCREEN.
+const NSInteger MAX_ALLOWED_PICTURES = 1000; //TODO: switch this to MAX_ALLOWED ON SCREEN.
 const NSInteger POPULAR_PICTURES_IN_ARRAY = 50;
 const NSInteger ANNOTATION_RADIUS = 25;
 const double SOME_UPPER_BOUND = 0.003;
@@ -897,9 +897,19 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     
     //By default set the type of pictures to display as all
     
+    
+    
+    
+    
+    [self setGlobalType:[[NSUserDefaults standardUserDefaults] integerForKey:@"WGglobalType"]];
+    [self setOnlyFriends:[[NSUserDefaults standardUserDefaults] boolForKey:@"WGonlyFriends"]];
+    
     if (_globalType == 0)
+        [self setGlobalType:ALL];
         _globalType = ALL;
     
+    //if _onlyFriends will always default to NO
+    [self updateViewConstraints];
     
     //Start the cleanup process on a timer, separate thread
     
@@ -1127,6 +1137,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 -(IBAction)friendsButton:(UIButton *)button
 {
+    
     SideMenuViewController *sideMenu = [[SideMenuViewController alloc] init];
     
     [self presentViewController:sideMenu animated:YES completion:nil];
@@ -1346,20 +1357,29 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 -(void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered
 {
     
-        [_mapView getCurrentLocationOfMap];
-        [_mapView getRadius];
-        NSLog(@"RADIUS: %f", _mapView.radius);
-    
-        if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
-           return;
-    
-        //if we want all pictures set to all etc etc.
-        [self selectMethodForType:_globalType];
+//        [_mapView getCurrentLocationOfMap];
+//        [_mapView getRadius];
+//        NSLog(@"RADIUS: %f", _mapView.radius);
+//    
+//        if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
+//           return;
+//    
+//        //if we want all pictures set to all etc etc.
+//        [self selectMethodForType:_globalType];
 }
 
 
 -(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
+    [_mapView getCurrentLocationOfMap];
+    [_mapView getRadius];
+    NSLog(@"RADIUS: %f", _mapView.radius);
+    
+    if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
+        return;
+    
+    //if we want all pictures set to all etc etc.
+    [self selectMethodForType:_globalType];
     //[self checkDistanceBetweenLastLoadedAnnotationAndCurrentPointOfMap];
 }
 
@@ -1385,10 +1405,10 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     
     [_mapView getCurrentLocationOfMap];
     //CLLocationCoordinate2D centerPoint = _mapView.currentLocation;
-    CLLocationCoordinate2D sidePoint = [_mapView getTopCenterCoordinate];
+    CLLocationCoordinate2D topPoint = [_mapView getTopCenterCoordinate];
     CLLocationCoordinate2D centerPointOfAnnotation = annotation.coordinate;
     
-    double distance =[self getLatitudeLongitudeDistanceBetweenTwoPoints:sidePoint pointTwo:centerPointOfAnnotation];
+    double distance =[self getLatitudeLongitudeDistanceBetweenTwoPoints:topPoint pointTwo:centerPointOfAnnotation];
     
     NSLog(@"Distance between last annotation and center of map %f", distance);
     
@@ -1413,6 +1433,18 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 //Will return an absolute value
 -(double)getLatitudeLongitudeDistanceBetweenTwoPoints:(CLLocationCoordinate2D)coordinate1 pointTwo:(CLLocationCoordinate2D)coordinate2
 {
+    
+    CLLocationCoordinate2D differenceCoordinate = [self getDifferenceInLatLongStoreInCoordinate:coordinate1 pointTwo:coordinate2];
+    
+    double distance = [self getDistanceBetweenTwoPoints:differenceCoordinate.latitude andY:differenceCoordinate.longitude];
+    
+    
+    return distance;
+}
+
+-(CLLocationCoordinate2D)getDifferenceInLatLongStoreInCoordinate:(CLLocationCoordinate2D)coordinate1 pointTwo:(CLLocationCoordinate2D)coordinate2
+{
+    
     CLLocationDegrees latitude1 = coordinate1.latitude;
     CLLocationDegrees longitude1 = coordinate1.longitude;
     
@@ -1421,13 +1453,8 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     
     CLLocationDegrees differenceLat = (latitude2 - latitude1);
     CLLocationDegrees differenceLong = (longitude2 - longitude1);
-    
-    
-    double distance = [self getDistanceBetweenTwoPoints:differenceLat andY:differenceLong];
-    
-//    CLLocationCoordinate2D difference = CLLocationCoordinate2DMake(abs(differenceLat), abs(differenceLong));
-    
-    return distance;
+    CLLocationCoordinate2D difference = CLLocationCoordinate2DMake(differenceLat, differenceLong);
+    return difference;
 }
 
 -(double)getDistanceBetweenTwoPoints:(CLLocationDegrees)x andY:(CLLocationDegrees)y
@@ -1435,6 +1462,18 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     double distance = sqrt((x*x) + (y*y));
     
     return distance;
+}
+
+-(void)getDistanceInMetersFromCenterOfScreenToTop
+{
+    [_mapView getCurrentLocationOfMap];
+    CLLocationCoordinate2D centerPoint = _mapView.currentLocation;
+    CLLocationCoordinate2D topPoint = [_mapView getTopCenterCoordinate];
+    
+    CLLocationCoordinate2D differenceCoordinate = [self getDifferenceInLatLongStoreInCoordinate:centerPoint pointTwo:topPoint];
+    double distance = [self getDistanceBetweenTwoPoints:differenceCoordinate.latitude andY:differenceCoordinate.longitude];
+    
+
 }
 
 #pragma mark - UITableView
@@ -1571,5 +1610,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     
 }
 
+
+//GO UP THESE METHODS ARE NOT BEING USED
 
 @end
