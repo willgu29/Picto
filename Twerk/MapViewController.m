@@ -209,18 +209,32 @@ typedef NSInteger AnnotationCheck;
     [self configureInfoText:_globalType];
 }
 
+-(void)animateLabelFade:(UILabel *)label toAlpha:(float)newAlphaVal withDuration:(float)duration
+{
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{ _type.alpha = newAlphaVal;}
+                     completion:nil];
+}
+
+-(void)performFadeOnLabel:(UILabel *)label andChangeTextTo:(NSString *)newText withDuration:(float)duration
+{
+    [self animateLabelFade:label toAlpha:0 withDuration:duration/2];
+    label.text = newText;
+    [self animateLabelFade:label toAlpha:1 withDuration:duration/2];
+}
+
 -(void)configureInfoText:(NSInteger)type
 {
-    
-    //TODO: ANIMATE! (_type is a UILabel)
     NSString *textType = [self formatTypeToString:type];
-    if (_onlyFriends == YES)
+    if (_onlyFriends == YES  && ![_type.text isEqualToString:[NSString stringWithFormat:@"• %@   • FRIENDS",textType]])
     {
-        _type.text = [NSString stringWithFormat:@"• %@   • FRIENDS",textType];
+        NSString *newText = [NSString stringWithFormat:@"• %@   • FRIENDS",textType];
+        [self performFadeOnLabel:_type andChangeTextTo:newText withDuration:1.0];
     }
-    else
+    else if(![_type.text isEqualToString:[NSString stringWithFormat:@"• %@",textType]])
     {
-        _type.text = [NSString stringWithFormat:@"• %@",textType];
+        NSString *newText = [NSString stringWithFormat:@"• %@",textType];
+        [self performFadeOnLabel:_type andChangeTextTo:newText withDuration:1.0];
     }
 }
 
@@ -230,6 +244,8 @@ typedef NSInteger AnnotationCheck;
     NSString *result = nil;
     
     switch(typeInt) {
+        case 0:
+            break;
         case ALL:
             result = @"ALL";
             break;
@@ -907,7 +923,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     
     if (_globalType == 0)
         [self setGlobalType:ALL];
-        _globalType = ALL;
     
     //if _onlyFriends will always default to NO
     [self updateViewConstraints];
@@ -1138,10 +1153,11 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 -(IBAction)friendsButton:(UIButton *)button
 {
-    
     SideMenuViewController *sideMenu = [[SideMenuViewController alloc] init];
     
-    [self presentViewController:sideMenu animated:YES completion:nil];
+    //[self presentViewController:sideMenu animated:YES completion:nil];
+    AppDelegate *app = [UIApplication sharedApplication].delegate;
+    [app.mapVC presentViewController:sideMenu animated:YES completion:nil];
 }
 
 
