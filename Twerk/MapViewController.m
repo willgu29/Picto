@@ -21,9 +21,14 @@ const NSInteger MAX_ALLOWED_PICTURES = 1000; //TODO: switch this to MAX_ALLOWED 
 const NSInteger POPULAR_PICTURES_IN_ARRAY = 50;
 const NSInteger ANNOTATION_RADIUS = 25;
 
-const NSInteger LOAD_DATA_ZOOM_THRESHOLD = 1200;
-const NSInteger LOAD_GEO_PAN_THRESHOLD = 5000;
-const NSInteger LOAD_DATA_PAN_THRESHOLD = 2500;
+const NSInteger LOAD_DATA_ZOOM_THRESHOLD = 400;
+const NSInteger LOAD_GEO_PAN_THRESHOLD = 10000;
+const NSInteger LOAD_DATA_PAN_THRESHOLD = 100;
+
+const NSInteger LOAD_DATA_LOWER = 10;
+const NSInteger LOAD_DATA_UPPER = 10000;
+
+const double SCALE_FACTOR = 500.0;
 
 enum {
     DUPLICATE = 1, //trying to add duplicate annotation
@@ -1449,12 +1454,21 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     double temp_panDelta = fabs([self getMetersBetweenTwoPoints:[_mapView currentLocation] pointTwo:_prevDataCoord]);
     double zoomDelta = fabs([self getDistanceInMetersFromCenterOfScreenToTop] - _prev_zoomLevel);
     
+    panDelta *= [self getDistanceInMetersFromCenterOfScreenToTop] / SCALE_FACTOR;
+    temp_panDelta *= [self getDistanceInMetersFromCenterOfScreenToTop] / SCALE_FACTOR;
+    
+    
+    double currentZoomLevel = [self getDistanceInMetersFromCenterOfScreenToTop];
+    NSLog(@"Level of Zoom: %f", currentZoomLevel);
     
     NSLog(@"Difference Pan: %f",panDelta);
     NSLog(@"Difference Zoom: %f ", zoomDelta);
     
     if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
         return;
+    
+    
+    
     
     
     //Handle Pan Over Great Distance
@@ -1464,8 +1478,32 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         [[NSNotificationCenter defaultCenter] postNotificationName:@"Load Geo" object:self];
         _prev_zoomLevel = [self getDistanceInMetersFromCenterOfScreenToTop];
         _prevGeoCoord = _prevDataCoord = [_mapView currentLocation];
+        return;
     }
-    else if (temp_panDelta > LOAD_DATA_PAN_THRESHOLD)
+    
+    
+    if (currentZoomLevel < 150)
+    {
+        if (panDelta > LOAD_DATA_LOWER)
+        {
+            NSLog(@"Loading Pictures on Pan lower");
+            _prevDataCoord = [_mapView currentLocation];
+            [self selectMethodForType:_globalType];
+            return;
+        }
+    }
+    else if (currentZoomLevel > 5000)
+    {
+        if (panDelta >LOAD_DATA_UPPER)
+        {
+            NSLog(@"Loading Pictures on Pan lower");
+            _prevDataCoord = [_mapView currentLocation];
+            [self selectMethodForType:_globalType];
+            return;
+        }
+    }
+    
+    if (temp_panDelta > LOAD_DATA_PAN_THRESHOLD)
     {
         NSLog(@"Loading Pictures based on Pan");
         _prevDataCoord = [_mapView currentLocation];

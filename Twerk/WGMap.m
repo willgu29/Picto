@@ -32,15 +32,16 @@ static const int SECONDS_IN_A_DAY = 86400;
 - (void)getRadius
 {
     [self getCurrentLocationOfMap];
-    // init center location from center coordinate
-    CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:_currentLocation.latitude longitude:_currentLocation.longitude];
+    //    CLLocationCoordinate2D centerPoint = _mapView.currentLocation;
+    //    CLLocationCoordinate2D topPoint = [_mapView getTopCenterCoordinate];
+    MKMapPoint centerPoint = MKMapPointForCoordinate([self currentLocation]);
+    MKMapPoint topPoint = MKMapPointForCoordinate([self getTopCenterCoordinate]);
     
-    CLLocationCoordinate2D topCenterCoor = [self getTopCenterCoordinate];
-    CLLocation *topCenterLocation = [[CLLocation alloc] initWithLatitude:topCenterCoor.latitude longitude:topCenterCoor.longitude];
     
-    CLLocationDistance radius = [centerLocation distanceFromLocation:topCenterLocation];
     
-    _radius = radius;
+    double dist = MKMetersBetweenMapPoints(topPoint, centerPoint);
+    
+    _radius = dist * 1.6;
 }
 
 //For finding pictures in the currently show region. We'll have to determine the latitude and longitude (easy since of previous method) but also how many meters the view is currently representing.  (There is probably a method for this too) (Actually there is... but I'm on a plane so I can't search for it.)
