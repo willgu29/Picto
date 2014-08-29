@@ -6,6 +6,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SideMenuViewController">
             <connections>
+                <outlet property="heart1" destination="HEd-5I-0Fn" id="EzA-rf-Chj"/>
+                <outlet property="heart2" destination="Usa-2d-eWi" id="S8q-ph-wvX"/>
                 <outlet property="heart3" destination="vvC-hq-fG0" id="8Re-3G-V1F"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
