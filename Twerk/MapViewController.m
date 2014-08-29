@@ -20,8 +20,8 @@ const NSInteger METERS_PER_MILE = 1609.344;
 const NSInteger MAX_ALLOWED_PICTURES = 50; //TODO: switch this to MAX_ALLOWED ON SCREEN.
 const NSInteger POPULAR_PICTURES_IN_ARRAY = 50;
 const NSInteger ANNOTATION_RADIUS = 25;
-
-
+const double SOME_UPPER_BOUND = 0.003;
+const double SOME_LOWER_BOUND = 0.0015;
 
 enum {
     DUPLICATE = 1, //trying to add duplicate annotation
@@ -68,9 +68,9 @@ typedef NSInteger AnnotationCheck;
 
 -(void)hasFollowedUser:(CustomAnnotation *)annotation
 {
-    for (id username in _someUser.following)
+    for (id username in _someUser.parsedFollowing)
     {
-        if (annotation.username == username)
+        if ([annotation.username isEqualToString:username])
         {
             annotation.userHasFollowed = YES;
         }
@@ -376,7 +376,7 @@ typedef NSInteger AnnotationCheck;
             //path find to thumbnail image... might want to do this in the modal.. NOT SURE. Will get back to you guys.
             NSString *stringURL = [pictureURL valueForKeyPath:@"images.thumbnail.url"];
             NSString *stringURLEnlarged = [pictureURL valueForKeyPath:@"images.standard_resolution.url"];
-            NSLog(@"url: %@,", stringURLEnlarged);;
+            //NSLog(@"url: %@,", stringURLEnlarged);;
             //Apparently instagram API returns strings or some other id to lat and long.  We'll need CLLocationDegrees however...
             NSString *lat1 = [pictureURL valueForKeyPath:@"location.latitude"];
             NSString *lng1 = [pictureURL valueForKeyPath:@"location.longitude"];
@@ -391,7 +391,7 @@ typedef NSInteger AnnotationCheck;
             NSString *owner = [pictureURL valueForKeyPath:@"user.full_name"];
             NSString *userID = [pictureURL valueForKeyPath:@"user.id"];
             NSString *likes = [pictureURL valueForKeyPath:@"likes.count"];
-              NSString *username = [pictureURL valueForKeyPath:@"user.username"];
+            NSString *username = [pictureURL valueForKeyPath:@"user.username"];
             
             NSString *createdTime = [pictureURL valueForKeyPath:@"created_time"];
             NSString *mediaID = [pictureURL valueForKeyPath:@"id"];
@@ -497,7 +497,7 @@ typedef NSInteger AnnotationCheck;
         
         if ([arrayAnnotation isEqualToAnnotation:annotation])
         {
-            NSLog(@"Detecting duplicate");
+           // NSLog(@"Detecting duplicate");
             return DUPLICATE;
         }
     }
@@ -1319,15 +1319,15 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 -(void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered
 {
 
-    [_mapView getCurrentLocationOfMap];
-    [_mapView getRadius];
-    NSLog(@"RADIUS: %f", _mapView.radius);
-
-    if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
-        return;
-    
-    //if we want all pictures set to all etc etc.
-    [self selectMethodForType:_globalType];
+//    [_mapView getCurrentLocationOfMap];
+//    [_mapView getRadius];
+//    NSLog(@"RADIUS: %f", _mapView.radius);
+//
+//    if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
+//        return;
+//    
+//    //if we want all pictures set to all etc etc.
+//    [self selectMethodForType:_globalType];
 }
 
 -(void)mapViewWillStartLoadingMap:(MKMapView *)mapView
@@ -1348,8 +1348,84 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 }
 
 
+-(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
+{
+    [self checkDistanceBetweenLastLoadedAnnotationAndCurrentPointOfMap];
+}
 
 
+-(void)checkDistanceBetweenLastLoadedAnnotationAndCurrentPointOfMap
+{
+    if ([_mapView.annotations count] <= 1)
+    {
+        [_mapView getCurrentLocationOfMap];
+        //load some pictures
+        [_mapView getRadius];
+        NSLog(@"RADIUS: %f", _mapView.radius);
+        
+        if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
+            return;
+        
+        //if we want all pictures set to all etc etc.
+        [self selectMethodForType:_globalType];
+        return;
+    }
+    
+    CustomAnnotation *annotation = [_mapView.annotations lastObject];
+    
+    [_mapView getCurrentLocationOfMap];
+    //CLLocationCoordinate2D centerPoint = _mapView.currentLocation;
+    CLLocationCoordinate2D sidePoint = [_mapView getTopCenterCoordinate];
+    CLLocationCoordinate2D centerPointOfAnnotation = annotation.coordinate;
+    
+    double distance =[self getLatitudeLongitudeDistanceBetweenTwoPoints:sidePoint pointTwo:centerPointOfAnnotation];
+    
+    NSLog(@"Distance between last annotation and center of map %f", distance);
+    
+    if (distance > SOME_UPPER_BOUND || distance < SOME_LOWER_BOUND)
+    {
+        
+        //load some pictures
+        [_mapView getRadius];
+        NSLog(@"RADIUS: %f", _mapView.radius);
+        
+        if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
+            return;
+        
+        //if we want all pictures set to all etc etc.
+        [self selectMethodForType:_globalType];
+    }
+    
+    
+}
+
+
+//Will return an absolute value
+-(double)getLatitudeLongitudeDistanceBetweenTwoPoints:(CLLocationCoordinate2D)coordinate1 pointTwo:(CLLocationCoordinate2D)coordinate2
+{
+    CLLocationDegrees latitude1 = coordinate1.latitude;
+    CLLocationDegrees longitude1 = coordinate1.longitude;
+    
+    CLLocationDegrees latitude2 = coordinate2.latitude;
+    CLLocationDegrees longitude2 = coordinate2.longitude;
+    
+    CLLocationDegrees differenceLat = (latitude2 - latitude1);
+    CLLocationDegrees differenceLong = (longitude2 - longitude1);
+    
+    
+    double distance = [self getDistanceBetweenTwoPoints:differenceLat andY:differenceLong];
+    
+//    CLLocationCoordinate2D difference = CLLocationCoordinate2DMake(abs(differenceLat), abs(differenceLong));
+    
+    return distance;
+}
+
+-(double)getDistanceBetweenTwoPoints:(CLLocationDegrees)x andY:(CLLocationDegrees)y
+{
+    double distance = sqrt((x*x) + (y*y));
+    
+    return distance;
+}
 
 #pragma mark - UITableView
 
