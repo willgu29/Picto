@@ -13,7 +13,6 @@
 
 @interface SideMenuViewController ()
 
-//TODO: show which is selected...
 @property (nonatomic, weak) IBOutlet UIImageView *heart1;
 @property (nonatomic, weak) IBOutlet UIImageView *heart2;
 @property (nonatomic, weak) IBOutlet UIImageView *heart3;
@@ -53,7 +52,6 @@
     [self displayProperFollowing];
     [self displayProperAllRecent];
     
-    //TODO: do other buttons
 }
 
 -(void)displayProperAllRecent

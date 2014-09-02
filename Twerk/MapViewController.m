@@ -495,7 +495,6 @@ typedef NSInteger AnnotationCheck;
     arrayCounter = 0;
     if ([_picturesChosenByDrag count] == 1)
     {
-        //TODO: Just display
         [self displayCallout:[_picturesChosenByDrag objectAtIndex:0]];
     }
     else if ([_picturesChosenByDrag count] > 1)

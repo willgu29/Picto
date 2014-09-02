@@ -113,7 +113,6 @@
 	return s;
 }
 
-//TODO: TEST Function
 -(NSString*)getTimeString:(float)postedTime
 {
     
