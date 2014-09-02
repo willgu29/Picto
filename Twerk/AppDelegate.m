@@ -30,7 +30,7 @@
     
     //if logged in go straight to map, otherwise go to login.
     self.instagram.accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"accessToken"];
-    if ([self.instagram isSessionValid])
+    if (false)//([self.instagram isSessionValid])
     {
         _mapVC = [[MapViewController alloc] init];
         self.window.rootViewController = _mapVC;

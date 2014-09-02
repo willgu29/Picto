@@ -16,11 +16,15 @@
 @property (nonatomic, weak) IBOutlet UIPageControl *pageControl;
 @property (nonatomic, weak) IBOutlet UIView *currentPage;
 @property (nonatomic, weak) IBOutlet UILabel *text;
+@property (nonatomic, weak) IBOutlet UIButton *loginButton;
+
 
 @end
 
 @implementation LoginViewController
 
+
+//TODO: implement swipe for iphone viewing pictures change holder text
 
 
 -(IBAction)tap:(id)sender
@@ -140,6 +144,14 @@
     _pageControl.currentPage = 0;
     [self animateToPage:0];
     _pageControl.numberOfPages = 3;
+
+    
+    _loginButton.layer.cornerRadius = 15.0;
+    _loginButton.layer.borderWidth = 1;
+    _loginButton.clipsToBounds = YES;
+    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]];
+    
 
 
 }

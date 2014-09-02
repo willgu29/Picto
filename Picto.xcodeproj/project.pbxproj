@@ -15,7 +15,6 @@
 		84068DA4196B8F750053355C /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84068DA3196B8F750053355C /* MobileCoreServices.framework */; };
 		8439845219AA6BFB002E3047 /* WGTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8439845119AA6BFB002E3047 /* WGTimer.m */; };
 		8439845519AAF93A002E3047 /* MachTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8439845419AAF93A002E3047 /* MachTimer.m */; };
-		8461E931194E73B200E2D809 /* Image.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8461E930194E73B200E2D809 /* Image.xcassets */; };
 		8461E93F194ED24700E2D809 /* READ.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 8461E93E194ED24700E2D809 /* READ.rtf */; };
 		8461E943194ED2C300E2D809 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8461E941194ED2C300E2D809 /* LoginViewController.m */; };
 		8461E944194ED2C300E2D809 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8461E942194ED2C300E2D809 /* LoginViewController.xib */; };
@@ -46,6 +45,7 @@
 		84DA0D3D18F92C2B00DE364F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DA0D2118F92C2B00DE364F /* CoreData.framework */; };
 		84DA0D4518F92C2B00DE364F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84DA0D4318F92C2B00DE364F /* InfoPlist.strings */; };
 		84DA0D4718F92C2B00DE364F /* TwerkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DA0D4618F92C2B00DE364F /* TwerkTests.m */; };
+		84DEE24519B56883004C58E4 /* Image.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84DEE24419B56883004C58E4 /* Image.xcassets */; };
 		84F24FE41973970000013F47 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FE31973970000013F47 /* User.m */; };
 		84F24FEC1974EBB500013F47 /* SearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FEB1974EBB500013F47 /* SearchData.m */; };
 		84F24FEF1975F17300013F47 /* WGMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FEE1975F17300013F47 /* WGMap.m */; };
@@ -95,7 +95,6 @@
 		8439845119AA6BFB002E3047 /* WGTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WGTimer.m; sourceTree = "<group>"; };
 		8439845319AAF93A002E3047 /* MachTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachTimer.h; sourceTree = "<group>"; };
 		8439845419AAF93A002E3047 /* MachTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MachTimer.m; sourceTree = "<group>"; };
-		8461E930194E73B200E2D809 /* Image.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Image.xcassets; sourceTree = "<group>"; };
 		8461E93E194ED24700E2D809 /* READ.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = READ.rtf; sourceTree = "<group>"; };
 		8461E940194ED2C300E2D809 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		8461E941194ED2C300E2D809 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
@@ -133,6 +132,7 @@
 		84DA0D4218F92C2B00DE364F /* PictoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PictoTests-Info.plist"; sourceTree = "<group>"; };
 		84DA0D4418F92C2B00DE364F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		84DA0D4618F92C2B00DE364F /* TwerkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TwerkTests.m; sourceTree = "<group>"; };
+		84DEE24419B56883004C58E4 /* Image.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Image.xcassets; sourceTree = "<group>"; };
 		84F24FE21973970000013F47 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		84F24FE31973970000013F47 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		84F24FEA1974EBB500013F47 /* SearchData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchData.h; sourceTree = "<group>"; };
@@ -263,8 +263,8 @@
 				84068D9F196B4ED80053355C /* Data */,
 				84DA0D2C18F92C2B00DE364F /* AppDelegate.h */,
 				84DA0D2D18F92C2B00DE364F /* AppDelegate.m */,
-				8461E930194E73B200E2D809 /* Image.xcassets */,
 				84DA0D2F18F92C2B00DE364F /* Twerk.xcdatamodeld */,
+				84DEE24419B56883004C58E4 /* Image.xcassets */,
 				8461E940194ED2C300E2D809 /* LoginViewController.h */,
 				8461E941194ED2C300E2D809 /* LoginViewController.m */,
 				8461E942194ED2C300E2D809 /* LoginViewController.xib */,
@@ -416,6 +416,11 @@
 				TargetAttributes = {
 					84DA0D1718F92C2B00DE364F = {
 						DevelopmentTeam = X8C323275L;
+						SystemCapabilities = {
+							com.apple.InterAppAudio = {
+								enabled = 0;
+							};
+						};
 					};
 					84DA0D3718F92C2B00DE364F = {
 						TestTargetID = 84DA0D1718F92C2B00DE364F;
@@ -465,12 +470,12 @@
 				8402703318F9E71800598EE2 /* butt.png in Resources */,
 				84CC1D10198599DF00AFECC4 /* calloutView.xib in Resources */,
 				C7808E8E19B05FFA002E525E /* iTunesArtwork@2x.png in Resources */,
-				8461E931194E73B200E2D809 /* Image.xcassets in Resources */,
 				C7808E7F19B05FFA002E525E /* AppIcon29x29.png in Resources */,
 				C7808E8119B05FFA002E525E /* AppIcon40x40.png in Resources */,
 				C7808E8A19B05FFA002E525E /* AppIcon72x72@2x.png in Resources */,
 				84B15D3D199AE15D00F94E9C /* wouldbang.png in Resources */,
 				C7808E8519B05FFA002E525E /* AppIcon57x57.png in Resources */,
+				84DEE24519B56883004C58E4 /* Image.xcassets in Resources */,
 				84F24FF919764A5A00013F47 /* TODO.rtf in Resources */,
 				C7808E8319B05FFA002E525E /* AppIcon50x50.png in Resources */,
 				C7808E8719B05FFA002E525E /* AppIcon60x60.png in Resources */,
@@ -606,8 +611,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: William Gu (X8C323275L)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: William Gu (U79VMUZNWP)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -637,7 +642,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Twerk/Picto-Prefix.pch";
 				INFOPLIST_FILE = "Twerk/Picto-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = Picto;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -649,8 +654,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: William Gu (X8C323275L)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -658,7 +663,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Twerk/Picto-Prefix.pch";
 				INFOPLIST_FILE = "Twerk/Picto-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = Picto;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
