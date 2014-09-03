@@ -115,7 +115,11 @@ typedef NSInteger AnnotationCheck;
     [self setOnlyFriends:[[NSUserDefaults standardUserDefaults] boolForKey:@"WGonlyFriends"]];
     
     if (_globalType == 0)
+    {
+        [[NSUserDefaults standardUserDefaults] setInteger:ALL forKey:@"WGglobalType"];
         [self setGlobalType:ALL];
+    }
+    
 }
 
 
@@ -269,6 +273,10 @@ typedef NSInteger AnnotationCheck;
                 //stop loading pictures ffs
                 break;
             }
+            else if (resultOfCheck == OVERLAP)
+            {
+                continue;
+            }
             else if (resultOfCheck == SUCCESS)
             {
                 //YASS
@@ -324,6 +332,10 @@ typedef NSInteger AnnotationCheck;
             {
                 //stop loading pictures ffs
                 break;
+            }
+            else if (resultOfCheck == OVERLAP)
+            {
+                continue;
             }
             else if (resultOfCheck == SUCCESS)
             {
@@ -420,6 +432,7 @@ typedef NSInteger AnnotationCheck;
 -(NSInteger)checkAnnotationEnums:(CustomAnnotation *)annotation
 {
     
+    //EXC_BAD_ACCESS here..) (visible was nil)
     NSSet* visible = [_mapView annotationsInMapRect:[_mapView visibleMapRect]];
     if ([visible count] > MAX_ALLOWED_PICTURES) //I want the count of pictures on the map
     {
@@ -438,10 +451,14 @@ typedef NSInteger AnnotationCheck;
         {
             continue;
         }
+        if ([self annotation:annotation tooCloseTo:arrayAnnotation]) //Change annotation radius for configuring
+        {
+            return OVERLAP;
+        }
         //TODO: Fix Duplicate (cleanUpMap might be cleaning it before we have a chance to detect)
         if ([arrayAnnotation isEqualToAnnotation:annotation])
         {
-            // NSLog(@"Detecting duplicate");
+            NSLog(@"Detecting duplicate");
             return DUPLICATE;
         }
     }
@@ -708,7 +725,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
         return;
     
-    [self performSelector:@selector(loadAnnotationsWhenNecessary) withObject:nil afterDelay:1];
+    [self performSelector:@selector(loadAnnotationsWhenNecessary) withObject:nil afterDelay:0.5];
     
     //[self loadAnnotationsWhenNecessary];
 }
@@ -758,6 +775,17 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     return [_mapView convertCoordinate:annotation.coordinate toPointToView:_mapView ];
 }
 
+-(CGFloat)getDistanceBetweenCoordinate:(CLLocationCoordinate2D)location1 and:(CLLocationCoordinate2D)location2
+{
+    CGPoint point1 = [_mapView convertCoordinate:location1 toPointToView:_mapView];
+    CGPoint point2 = [_mapView convertCoordinate:location2 toPointToView:_mapView];
+    CGFloat dx = point1.x - point2.x;
+    CGFloat dy = point1.y - point2.y;
+    return sqrt(dx*dx + dy*dy);
+}
+
+
+
 -(BOOL)annotation:(CustomAnnotation *)annotation1 tooCloseTo:(CustomAnnotation *)annotation2
 {
     CGPoint location1 = [self getAnnotationPositionOnMap:annotation1];
@@ -769,7 +797,16 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     return distance < maxDistance;
 }
 
-
+//takes in two annotations and determines if they are too close to eachother
+-(BOOL)annotation:(CustomAnnotation *)annotation1 tooCloseTo:(CustomAnnotation *)annotation2 withMaxDistance:(CGFloat)maxDistance
+{
+    CGPoint location1 = [self getAnnotationPositionOnMap:annotation1];
+    CGPoint location2 = [self getAnnotationPositionOnMap:annotation2];
+    CGFloat dx = location1.x - location2.x;
+    CGFloat dy = location1.y - location2.y;
+    CGFloat distance = sqrt(dx*dx + dy*dy);
+    return distance < maxDistance;
+}
 
 
 
@@ -977,7 +1014,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 {
     if ([_picturesPopular count] >= 1)
     {
-        [self setGlobalType:ALL];
+        [self setGlobalType:[[NSUserDefaults standardUserDefaults] integerForKey:@"WGglobalType"]];
         CustomAnnotation *myAnnotation = [_picturesPopular objectAtIndex:0];
         [self zoomToRegion:myAnnotation.coordinate withLatitude:50 withLongitude:50 withMap:_mapView];
         
@@ -1014,6 +1051,32 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 
 
+
+//-(void)loadAnnotationsWhenNecessary
+//{
+//    //    get current location
+//    CLLocationCoordinate2D currLocation = [_mapView currentLocation];
+//    //    if _prevGeoCoord not initialized, set it equal to the current location
+//    if(!CLLocationCoordinate2DIsValid(_prevGeoCoord)){
+//        _prevGeoCoord = _prevDataCoord = currLocation;
+//        return;
+//    }
+//    //    get the distance between the previous geo coordinate and the current location
+//    //    if this distance is greater than a third the width of the map view, set _prevGeoCoord to currentLocation and search for new annotations
+//    //    TODO: figure out a better max distance before searching for new photos, maybe account for vertical and horizontal movement differently too account for scrolling upwards
+//    CGFloat distance = [self getDistanceBetweenCoordinate:_prevGeoCoord and:currLocation];
+//    if(distance > self.view.frame.size.width/3)
+//    {
+//        _prevGeoCoord = _prevDataCoord = [_mapView currentLocation];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"We should load data" object:self];
+//        //[self selectMethodForType:_globalType];
+//    }
+//    //    TODO: find a better time/way to call the geocoding service, or work on implementing mapquest/google maps apis with higher limits
+//    if(distance > self.view.frame.size.width * 3)
+//    {
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"Load Geo" object:self];
+//    }
+//}
 
 
 -(void)loadAnnotationsWhenNecessary
@@ -1056,10 +1119,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     
     if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
         return;
-    
-    
-    
-    
     
     //Handle Pan Over Great Distance
     if (panDelta > LOAD_GEO_PAN_THRESHOLD) //&& topToCenter > SOME_RATIO_ZOOM)
@@ -1336,6 +1395,12 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     _onlyFriends = onlyFriends;
     [self configureInfoText:_globalType];
 }
+
+
+#pragma mark- New functions
+
+
+
 
 
 #pragma mark- NOT BEING USED (Saved for later)
