@@ -521,6 +521,7 @@ typedef NSInteger AnnotationCheck;
     }
     else if ([_picturesChosenByDrag count] > 1)
     {
+        [self preloadSingleAnnotation:[[_picturesChosenByDrag firstObject] annotation]];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [self startPreloadingFrom:_picturesChosenByDrag];
         });
@@ -584,19 +585,22 @@ typedef NSInteger AnnotationCheck;
     
 }
 
+-(void)preloadSingleAnnotation:(CustomAnnotation*)annotation
+{
+    if (annotation.imageEnlarged == nil)
+    {
+        NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[annotation imageURLEnlarged]]];
+        annotation.imageEnlarged = [[UIImage alloc] initWithData:data];
+    }
+}
+
 -(void)startPreloadingFrom:(NSOrderedSet*)source
 {
-    for (NSUInteger i = 1; i < [source count]; i++) {
+    for (NSUInteger i = 1; i < [source count]; i++)
+    {
         MKAnnotationView *curView = [source objectAtIndex:i];
         CustomAnnotation *curAnnotation = curView.annotation;
-        if (curAnnotation.imageEnlarged == nil)
-        {
-            NSLog(@"Preloading image number %lu", (unsigned long)i);
-            NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[curAnnotation imageURLEnlarged]]];
-            curAnnotation.imageEnlarged = [[UIImage alloc] initWithData:data];
-        }
-        else
-            NSLog(@"Image was preloaded :)");
+        [self preloadSingleAnnotation:curAnnotation];
     }
 }
 
