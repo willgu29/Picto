@@ -434,6 +434,11 @@ typedef NSInteger AnnotationCheck;
     
     //EXC_BAD_ACCESS here..) (visible was nil)
     NSSet* visible = [_mapView annotationsInMapRect:[_mapView visibleMapRect]];
+    if (!visible)
+    {
+        NSLog(@"CRITICAL ERROR: annotationsInMapRect returned null, continuing even though we shouldn't..");
+        return SUCCESS;
+    }
     if ([visible count] > MAX_ALLOWED_PICTURES) //I want the count of pictures on the map
     {
         NSLog(@"Detecting flood");
