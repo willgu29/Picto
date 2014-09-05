@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="autoCompleteTableView" destination="nMw-Xq-3Dn" id="w5p-79-BaO"/>
                 <outlet property="mapView" destination="Pth-zs-LoA" id="pk8-ei-rzT"/>
+                <outlet property="nextButton" destination="g3Y-Jg-OoV" id="lTP-Ej-jcW"/>
                 <outlet property="searchField" destination="RAq-AA-wPQ" id="ml3-8W-dzS"/>
                 <outlet property="type" destination="9Ax-co-X8e" id="TH6-5T-biu"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
