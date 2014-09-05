@@ -21,3 +21,4 @@
 
 
 @end
+//TODO: This class will probably handle friend pictures, popular, and tags.
