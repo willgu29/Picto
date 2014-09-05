@@ -47,6 +47,8 @@
 		84DA0D4718F92C2B00DE364F /* TwerkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DA0D4618F92C2B00DE364F /* TwerkTests.m */; };
 		84DEE24519B56883004C58E4 /* Image.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84DEE24419B56883004C58E4 /* Image.xcassets */; };
 		84DEE29C19B96B64004C58E4 /* PictureArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DEE29B19B96B64004C58E4 /* PictureArray.m */; };
+		84DEE2AF19BA5285004C58E4 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DEE2AD19BA5285004C58E4 /* SettingsTableViewController.m */; };
+		84DEE2B019BA5285004C58E4 /* SettingsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84DEE2AE19BA5285004C58E4 /* SettingsTableViewController.xib */; };
 		84F24FE41973970000013F47 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FE31973970000013F47 /* User.m */; };
 		84F24FEC1974EBB500013F47 /* SearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FEB1974EBB500013F47 /* SearchData.m */; };
 		84F24FEF1975F17300013F47 /* WGMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FEE1975F17300013F47 /* WGMap.m */; };
@@ -136,6 +138,9 @@
 		84DEE24419B56883004C58E4 /* Image.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Image.xcassets; sourceTree = "<group>"; };
 		84DEE29A19B96B64004C58E4 /* PictureArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureArray.h; sourceTree = "<group>"; };
 		84DEE29B19B96B64004C58E4 /* PictureArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureArray.m; sourceTree = "<group>"; };
+		84DEE2AC19BA5285004C58E4 /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
+		84DEE2AD19BA5285004C58E4 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
+		84DEE2AE19BA5285004C58E4 /* SettingsTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsTableViewController.xib; sourceTree = "<group>"; };
 		84F24FE21973970000013F47 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		84F24FE31973970000013F47 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		84F24FEA1974EBB500013F47 /* SearchData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchData.h; sourceTree = "<group>"; };
@@ -332,6 +337,9 @@
 				84068D9A196B250F0053355C /* SideMenuViewController.h */,
 				84068D9B196B250F0053355C /* SideMenuViewController.m */,
 				84068D9C196B250F0053355C /* SideMenuViewController.xib */,
+				84DEE2AC19BA5285004C58E4 /* SettingsTableViewController.h */,
+				84DEE2AD19BA5285004C58E4 /* SettingsTableViewController.m */,
+				84DEE2AE19BA5285004C58E4 /* SettingsTableViewController.xib */,
 			);
 			name = "Settings VC";
 			sourceTree = "<group>";
@@ -495,6 +503,7 @@
 				C7808E8119B05FFA002E525E /* AppIcon40x40.png in Resources */,
 				C7808E8A19B05FFA002E525E /* AppIcon72x72@2x.png in Resources */,
 				84B15D3D199AE15D00F94E9C /* wouldbang.png in Resources */,
+				84DEE2B019BA5285004C58E4 /* SettingsTableViewController.xib in Resources */,
 				C7808E8519B05FFA002E525E /* AppIcon57x57.png in Resources */,
 				84DEE24519B56883004C58E4 /* Image.xcassets in Resources */,
 				84F24FF919764A5A00013F47 /* TODO.rtf in Resources */,
@@ -530,6 +539,7 @@
 				846F8A47196498AE000401E8 /* MapViewController.m in Sources */,
 				84F250001977630200013F47 /* IGRequest.m in Sources */,
 				84F24FEF1975F17300013F47 /* WGMap.m in Sources */,
+				84DEE2AF19BA5285004C58E4 /* SettingsTableViewController.m in Sources */,
 				84CC1D0E1985967B00AFECC4 /* CustomCallout.m in Sources */,
 				84DA0D2E18F92C2B00DE364F /* AppDelegate.m in Sources */,
 				8461E94F1950188F00E2D809 /* ShareViewController.m in Sources */,
