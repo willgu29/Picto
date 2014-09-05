@@ -107,7 +107,7 @@ typedef NSInteger AnnotationCheck;
     //4.After Popular Photos are loaded and parsed
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomToPopular) name:@"Can Zoom to Popular" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parsePopularAndPlaceIntoPicturesPopularArray) name:@"Next Array Data Loaded" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseNextSelectorMethod) name:@"Next Array Data Loaded" object:nil];
         
     
     
@@ -230,10 +230,6 @@ typedef NSInteger AnnotationCheck;
         NSLog(@"RECENT");
         [_mapView findRecentImagesOnMapInRange:(_mapView.radius/1.5) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
     }
-    else if (_globalType == POPULAR)
-    {
-        [_mapView findPopularImages];
-    }
 }
 
 
@@ -262,11 +258,12 @@ typedef NSInteger AnnotationCheck;
         [self parseAll];
     }
     
-    if (_globalType == POPULAR)
-    {
-        [self parsePopularAndPlaceIntoPicturesPopularArray];
-    }
-    
+}
+
+-(void)parseNextSelectorMethod
+{
+    //if popular and not.. say friends
+    [self parsePopularAndPlaceIntoPicturesPopularArray];
 }
 
 -(void)parseAll
@@ -393,12 +390,8 @@ typedef NSInteger AnnotationCheck;
             dispatch_async(dispatch_get_main_queue(), ^{
                 annotation.isPopular = YES;
                 [_picturesArray.nextPicturesSet addObject:annotation];
-//                [_picturesPopular addObject:annotation];
-//                [self setUpSavedData]; // ???: not sure if this is right location
-
             });
         }
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"Can Zoom to Popular" object:nil];
         _lock = NO;
     });
 }
@@ -517,11 +510,23 @@ typedef NSInteger AnnotationCheck;
 
 #pragma mark - Touches Methods
 
+-(void)tapOutOfSearchBar:(UITouch *)touch
+{
+    if ([_searchField isFirstResponder] && [touch view] != _searchField) {
+        [_searchField resignFirstResponder];
+    }
+}
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     NSLog(@"Touches began!");
     UITouch *touch = [[event allTouches] anyObject];
+    
+        
+    
+    [self tapOutOfSearchBar:touch];
+//    [super touchesBegan:touches withEvent:event];
+    
     if ([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[CustomCallout class]])
     {
         [self stopAnnotationTimer];

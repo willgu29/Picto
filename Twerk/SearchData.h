@@ -11,7 +11,7 @@
 #import "Friend.h"
 
 
-__deprecated_msg("We can use this later for search bar probably");
+__deprecated_msg("We can use this later for search bar probably")
 @interface SearchData : NSObject 
 
 @property (strong, nonatomic) NSMutableArray *autoCompleteSearch;
