@@ -18,7 +18,7 @@
 
 const NSInteger METERS_PER_MILE = 1609.344;
 const NSInteger MAX_ALLOWED_PICTURES = 1000; //TODO: switch this to MAX_ALLOWED ON SCREEN.
-const NSInteger POPULAR_PICTURES_IN_ARRAY = 50;
+const NSInteger POPULAR_PICTURES_IN_ARRAY = 5;
 const NSInteger ANNOTATION_RADIUS = 25;
 
 const NSInteger LOAD_DATA_ZOOM_THRESHOLD = 400;
@@ -60,6 +60,7 @@ typedef NSInteger AnnotationCheck;
 
 @property (weak, nonatomic) IBOutlet UITableView *autoCompleteTableView;
 @property (nonatomic) BOOL isMatch;
+@property (weak, nonatomic) IBOutlet UIButton *nextButton;
 
 @end
 
@@ -93,6 +94,7 @@ typedef NSInteger AnnotationCheck;
     //1.
     _someUser = [[User alloc] init];
     [self loadFollowing];
+    [self setUpPicturesArray];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseFollowing) name:@"CanParseFollowing" object:nil];
     //AND 1.1  Happen at the same time
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mapLocationSettled) name:@"Can Find Location" object:nil];
@@ -105,9 +107,39 @@ typedef NSInteger AnnotationCheck;
     //4.After Popular Photos are loaded and parsed
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomToPopular) name:@"Can Zoom to Popular" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parsePopularAndPlaceIntoPicturesPopularArray) name:@"Next Array Data Loaded" object:nil];
+        
+    
+    
     [self setUpSavedData];
+    
+
+    
+    
     [self updateViewConstraints]; // ???: Did I add this? (WG)
 }
+
+-(void)setUpPicturesArray
+{
+    if (_picturesArray == nil)
+    {
+        _picturesArray = [[PictureArray alloc] init];
+    }
+    [_picturesArray findPopularImages];
+}
+
+//-(void)setUpPicturesArray
+//{
+//    //Popular pictures will automatically get its own location data (never use load geo for popular pictures)
+//    if (_picturesPopular == nil)
+//    {
+//        _picturesPopular = [[NSMutableOrderedSet alloc] init];
+//
+//    }
+//    [self setGlobalType:POPULAR];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"We should load data" object:nil];
+//    
+//}
 
 -(void)setUpSavedData
 {
@@ -119,6 +151,11 @@ typedef NSInteger AnnotationCheck;
         [[NSUserDefaults standardUserDefaults] setInteger:ALL forKey:@"WGglobalType"];
         [self setGlobalType:ALL];
     }
+//    else if (_globalType == POPULAR)
+//    {
+//        [[NSUserDefaults standardUserDefaults] setInteger:ALL forKey:@"WGglobalType"];
+//        [self setGlobalType:ALL];
+//    }
     
 }
 
@@ -143,8 +180,9 @@ typedef NSInteger AnnotationCheck;
     {
         [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:lat withLongitude:lng withMap:_mapView];
     }
-    
+
 }
+
 
 -(void)viewDidUnload
 {
@@ -263,7 +301,11 @@ typedef NSInteger AnnotationCheck;
             //We can probably do this right after we check the mediaID (the first thing we should check)
             NSInteger resultOfCheck = [self checkAnnotationEnums:annotation];
             
-            if (resultOfCheck == DUPLICATE)
+            if (resultOfCheck == OVERLAP)
+            {
+                continue;
+            }
+            else if (resultOfCheck == DUPLICATE)
             {
                 //try next pic
                 continue;
@@ -272,10 +314,6 @@ typedef NSInteger AnnotationCheck;
             {
                 //stop loading pictures ffs
                 break;
-            }
-            else if (resultOfCheck == OVERLAP)
-            {
-                continue;
             }
             else if (resultOfCheck == SUCCESS)
             {
@@ -295,12 +333,14 @@ typedef NSInteger AnnotationCheck;
     });
 }
 
+//TODO: move this to separate data object with different array
 -(void)parsePopularAndPlaceIntoPicturesPopularArray
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         //Only supporting images right now
         int someCounter = 0;
-        for (id pictureURL in _mapView.possiblePics)
+//        for (id pictureURL in _mapView.possiblePics)
+        for (id pictureURL in _picturesArray.nextPicturesData)
         {
             
             //TODO: add some randomization (i.e. skip this random photo and just go to the next)
@@ -323,7 +363,11 @@ typedef NSInteger AnnotationCheck;
             //We can probably do this right after we check the mediaID (the first thing we should check)
             NSInteger resultOfCheck = [self checkAnnotationEnums:annotation];
             
-            if (resultOfCheck == DUPLICATE)
+            if (resultOfCheck == OVERLAP)
+            {
+                continue;
+            }
+            else if (resultOfCheck == DUPLICATE)
             {
                 //try next pic
                 continue;
@@ -332,10 +376,6 @@ typedef NSInteger AnnotationCheck;
             {
                 //stop loading pictures ffs
                 break;
-            }
-            else if (resultOfCheck == OVERLAP)
-            {
-                continue;
             }
             else if (resultOfCheck == SUCCESS)
             {
@@ -352,10 +392,13 @@ typedef NSInteger AnnotationCheck;
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 annotation.isPopular = YES;
-                [_picturesPopular addObject:annotation];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"Can Zoom to Popular" object:nil];
+                [_picturesArray.nextPicturesSet addObject:annotation];
+//                [_picturesPopular addObject:annotation];
+//                [self setUpSavedData]; // ???: not sure if this is right location
+
             });
         }
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"Can Zoom to Popular" object:nil];
         _lock = NO;
     });
 }
@@ -734,6 +777,9 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     if (_mapView.currentLocation.latitude == 0 && _mapView.currentLocation.longitude == 0)
         return;
     
+    if (_globalType == POPULAR)
+        return; //TODO: Need to recall this method to load
+        
     [self performSelector:@selector(loadAnnotationsWhenNecessary) withObject:nil afterDelay:0.5];
     
     //[self loadAnnotationsWhenNecessary];
@@ -897,7 +943,15 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 -(void) textFieldDidBeginEditing:(UITextField *)textField
 {
+    NSLog(@"Did being editing");
 }
+/*
+-(BOOL)textFieldShouldClear:(UITextField *)textField
+{
+    NSLog(@"should clear?");
+    return YES;
+}
+*/
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
@@ -940,6 +994,13 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     _autoCompleteTableView.hidden = YES;
 }
 
+-(BOOL) textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    [_mapView removeAnnotations:[_mapView annotations]];
+    [self performSearch:textField];
+    
+    return YES;
+}
 
 //Will get an array of locations based on the search prameters.
 -(void) performSearch:(UITextField *)textField
@@ -989,13 +1050,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     
 }
 
--(BOOL) textFieldShouldReturn:(UITextField *)textField{
-    [textField resignFirstResponder];
-    [_mapView removeAnnotations:[_mapView annotations]];
-    [self performSearch:textField];
-    
-    return YES;
-}
+
 
 
 #pragma mark - Buttons
@@ -1005,46 +1060,67 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     [self stopAnnotationTimer];
     [_mapView removeAnnotations :_mapView.annotations];
     
-    if (_picturesPopular == nil)
+//    
+//    if (_picturesPopular == nil)
+//    {
+//        _picturesPopular = [[NSMutableOrderedSet alloc] init];
+//        [self setGlobalType:POPULAR];
+//        //[_mapView findPopularImages];
+////        [[NSNotificationCenter defaultCenter] postNotificationName:@"Load Geo" object:self];
+//    }
+    
+    
+    if ([_picturesArray.nextPicturesSet count] > 2)
     {
-        _picturesPopular = [[NSMutableOrderedSet alloc] init];
-        [self setGlobalType:POPULAR];
-        //[_mapView findPopularImages];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"Load Geo" object:self];
+        [self zoomToPopular];
     }
     else
     {
         [self zoomToPopular];
+        [_picturesArray findPopularImages];
+        //TODO: AND load some more photos
+//        [self setGlobalType:POPULAR];
+//        [_mapView findPopularImages];
     }
+    
     
 }
 
 -(void)zoomToPopular //Called by selector in viewDidLoad
 {
-    if ([_picturesPopular count] >= 1)
+    if ([_picturesArray.nextPicturesSet count] >= 1)
     {
-        [self setGlobalType:[[NSUserDefaults standardUserDefaults] integerForKey:@"WGglobalType"]];
-        CustomAnnotation *myAnnotation = [_picturesPopular objectAtIndex:0];
+        CustomAnnotation *myAnnotation = [_picturesArray.nextPicturesSet objectAtIndex:0];
         [self zoomToRegion:myAnnotation.coordinate withLatitude:50 withLongitude:50 withMap:_mapView];
-        
         [_mapView addAnnotation:myAnnotation];
-        [_picturesPopular removeObjectAtIndex:0]; //TODO: implement a counter instead
-        
+//        [_picturesPopular removeObjectAtIndex:0]; //TODO: implement a counter instead
+        [_picturesArray.nextPicturesSet removeObjectAtIndex:0];
+    
     }
-    else if ([_picturesPopular count] == 0)
-    {
-        NSLog(@"No more popular photos in my array Load more");
-        _picturesPopular = nil;
-        _picturesPopular = [[NSMutableOrderedSet alloc] init];
-        [self setGlobalType:POPULAR];
-        [_mapView findPopularImages];
-        
-    }
-    else
-    {
-        //????
-        NSLog(@"What.");
-    }
+//    else if ([_picturesPopular count] == 0)
+//    {
+//        NSLog(@"No more popular photos in my array Load more");
+////        _picturesPopular = nil;
+////        _picturesPopular = [[NSMutableOrderedSet alloc] init];
+//        [self setGlobalType:POPULAR];
+//        //[[NSNotificationCenter defaultCenter] postNotificationName:@"We should load data" object:nil];
+//        [_mapView findPopularImages];
+//        
+//    }
+//    else if (_picturesPopular == nil)
+//    {
+//        NSLog(@"No more popular photos in my array Load more");
+//        _picturesPopular = [[NSMutableOrderedSet alloc] init];
+//        [self setGlobalType:POPULAR];
+////        [[NSNotificationCenter defaultCenter] postNotificationName:@"We should load data" object:nil];
+//
+//        [_mapView findPopularImages];
+//    }
+//    else
+//    {
+//        //????
+//        NSLog(@"What.");
+//    }
     
 }
 

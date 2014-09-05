@@ -7,7 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "IGRequest.h"
 
-@interface PictureArray : NSObject
+@interface PictureArray : NSObject <IGRequestDelegate>
+
+
+@property (nonatomic, strong) NSMutableSet *nextPicturesData; //not parsed
+@property (nonatomic, strong) NSMutableOrderedSet *nextPicturesSet; //parsed
+
+
+-(void)findPopularImages;
+-(instancetype)init;
+
 
 @end

@@ -16,6 +16,7 @@
 #import "WGMap.h"
 #import "User.h"
 #import "WGTimer.h"
+#import "PictureArray.h"
 
 @class User;
 
@@ -43,12 +44,15 @@ typedef NSInteger Type;
 
 //Our map view will have the actual map and a search bar.
 @property (strong, atomic) IBOutlet WGMap *mapView; //custom map view with new methods to use!
-
 @property (strong, nonatomic) IBOutlet UITextField *searchField; //There's actually a UISearchBar class (oops)... we can switch this out later. Should be simple since UISearchBar is a subclass of UITextField...
 @property (nonatomic) NSInteger globalType;
 @property (nonatomic) BOOL displayingPictures;
-@property (nonatomic) BOOL onlyFriends; //TODO: remember state (default no)
-@property (strong, nonatomic) IBOutlet UILabel *type; //TODO: set default to current type (at launch)
+@property (nonatomic) BOOL onlyFriends;
+@property (strong, nonatomic) IBOutlet UILabel *type;
+
+@property (strong, atomic) PictureArray *picturesArray;
+
+
 
 @property (nonatomic, strong) NSMutableOrderedSet *picturesChosenByDrag; //of annotation views
 @property (nonatomic, strong) NSMutableOrderedSet *picturesPopular;
