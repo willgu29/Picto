@@ -91,6 +91,8 @@ typedef NSInteger AnnotationCheck;
     _autoCompleteTableView.delegate = self;
     _autoCompleteTableView.dataSource = self;
     _autoCompleteTableView.scrollEnabled = YES;
+    
+    _searchData = [[SearchData alloc] init];
     //1.
     _someUser = [[User alloc] init];
     [self loadFollowing];
@@ -946,10 +948,24 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 #pragma mark - UITextField (search bar)
 
+
+
 -(void) textFieldDidBeginEditing:(UITextField *)textField
 {
+    //TODO: Animate into view
     NSLog(@"Did being editing");
+    
+//    _autoCompleteTableView.hidden = NO;
+    
 }
+
+
+-(void) textFieldDidEndEditing:(UITextField *)textField
+{
+    //TODO: Animate out of view
+    _autoCompleteTableView.hidden = YES;
+}
+
 /*
 -(BOOL)textFieldShouldClear:(UITextField *)textField
 {
@@ -960,15 +976,19 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    _autoCompleteTableView.hidden = YES;
+//    _autoCompleteTableView.hidden = YES;
     //TODO: Implement autoCompleteTable (Switch to NO when ready)
-    //_autoCompleteTableView.hidden = NO;
-    /*
+
+    _autoCompleteTableView.hidden = NO;
+    
     NSString *substring = [NSString stringWithFormat:_searchField.text];
     substring = [substring stringByReplacingCharactersInRange:range withString:string];
-    [self searchAutoCompleteEntriesWithSubstring:substring];
+    [_searchData fillSearchOptionsAvailable:substring];
+    [_autoCompleteTableView reloadData];
+
+//    [self searchAutoCompleteEntriesWithSubstring:substring];
     
-     */
+    
     return YES;
 }
 
@@ -994,10 +1014,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     */
 }
 
--(void) textFieldDidEndEditing:(UITextField *)textField
-{
-    _autoCompleteTableView.hidden = YES;
-}
+
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
@@ -1287,7 +1304,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;//_autoCompleteData.count;
+    return [_searchData.autoCompleteSearchData count];
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -1304,10 +1321,51 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     
     //fill each row with data
     //TODO: still need data... simply place data in array and place in.
-    cell.textLabel.text = @"Hello";//[_autoCompleteData objectAtIndex:indexPath.row];
+    cell.textLabel.text = [_searchData.autoCompleteSearchData objectAtIndex:indexPath.row];
     return cell;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+    if (! ([[_searchData.autoCompleteSearchData objectAtIndex:indexPath.row] rangeOfString:@"Search for users"].location == NSNotFound))
+    {
+        NSLog(@"Search for users selected");
+        //TODO: load user possibilities
+        [_searchData fillAutoCompleteSearchData];
+    }
+    else if (! ([[_searchData.autoCompleteSearchData objectAtIndex:indexPath.row] rangeOfString:@"Search for hashtags"].location == NSNotFound))
+    {
+        NSLog(@"Search for hashtags selected");
+        //TODO: load hashtag possibilties
+    }
+    else if (! ([[_searchData.autoCompleteSearchData objectAtIndex:indexPath.row] rangeOfString:@"Search for locations"].location == NSNotFound))
+    {
+        NSLog(@"Search for locations selected");
+        //TODO: load location possibilities
+    }
+    else
+    {
+        NSString *string = [self getStringAtRow:indexPath.row];
+        [self placeSelectionInSearch:string];
+        //TODO: hide tableview and keyboard and do search
+    }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [_autoCompleteTableView performSelector:@selector(reloadData) withObject:nil afterDelay:1]; //To simulate actually loading
+//    [tableView reloadData]; //TODO: do this after data done loading instead
+
+}
+
+-(NSString *)getStringAtRow:(NSInteger)row
+{
+    NSString *theString = [_searchData.autoCompleteSearchData objectAtIndex:row];
+    return theString;
+}
+
+-(void)placeSelectionInSearch:(NSString *) text
+{
+    _searchField.text = text;
+}
 
 #pragma mark -Parse Location
 

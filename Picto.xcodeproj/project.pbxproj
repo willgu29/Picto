@@ -211,8 +211,6 @@
 				84068DA1196B4EFA0053355C /* Friend.m */,
 				84F24FE21973970000013F47 /* User.h */,
 				84F24FE31973970000013F47 /* User.m */,
-				84F24FEA1974EBB500013F47 /* SearchData.h */,
-				84F24FEB1974EBB500013F47 /* SearchData.m */,
 				84F24FED1975F17300013F47 /* WGMap.h */,
 				84F24FEE1975F17300013F47 /* WGMap.m */,
 				84F24FF01976045200013F47 /* WGPhoto.h */,
@@ -341,6 +339,8 @@
 		84DEE29D19B98937004C58E4 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				84F24FEA1974EBB500013F47 /* SearchData.h */,
+				84F24FEB1974EBB500013F47 /* SearchData.m */,
 			);
 			name = Search;
 			sourceTree = "<group>";

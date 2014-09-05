@@ -8,26 +8,30 @@
 
 #import <Foundation/Foundation.h>
 #import "User.h"
-#import "Friend.h"
+#import "IGRequest.h"
 
 
-__deprecated_msg("We can use this later for search bar probably")
-@interface SearchData : NSObject 
+@interface SearchData : NSObject <IGRequestDelegate>
 
-@property (strong, nonatomic) NSMutableArray *autoCompleteSearch;
-@property (strong, nonatomic) NSMutableArray *bestFriends;
-@property (strong, nonatomic) NSMutableArray *bestPictures;
 
-@property (nonatomic) BOOL shouldDisplayBestOfFriend; //if true, display single best, otherwise display a region of photos of that friend
+@property (strong, nonatomic) NSMutableArray *autoCompleteSearchData; //OF NSSTRING * (for tableView)
+@property (strong, nonatomic) NSMutableSet *searchResultData; //For IGRequestDelegate (non parsed data)
+@property (strong, nonatomic) NSMutableOrderedSet *searchPicturesArray; //Parsed
 
-//-(void)determineRegionOrSinglePhotoForFriend:(Friend *) someFriend;
+
+-(void)fillSearchOptionsAvailable:(NSString *)searchText;
+-(void)fillAutoCompleteSearchData;
+
+
+-(void)loadUserPictures;
+-(void)loadHashTagPictures;
+-(void)loadLocationPictures;
+
+//@property (strong, nonatomic) NSMutableArray *autoCompleteSearch;
+//@property (strong, nonatomic) NSMutableArray *bestFriends;
+//@property (strong, nonatomic) NSMutableArray *bestPictures;
 //
-//-(void)retrieveBestFriendsFromFacebook; //some algorithm determining best friends
-//-(void)retrieveBestFriendsFromDatabase;
-//-(void)retrieveBestPicturesFromFacebook; //some algorithm determing best pictures
-//-(void)retrieveBestPicturesFromDatabase;
-//
-//-(void)editObjectsInAutoCompleteSearch; //place objects in autocomplete search array
+//@property (nonatomic) BOOL shouldDisplayBestOfFriend; //if true, display single best, otherwise display a region of photos of that friend
 
 
 @end

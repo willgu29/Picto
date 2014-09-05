@@ -17,8 +17,9 @@
 #import "User.h"
 #import "WGTimer.h"
 #import "PictureArray.h"
-
+#import "SearchData.h"
 @class User;
+@class SearchData;
 
 static const unsigned long long SECONDS_PER_PIC =  1.3;
 
@@ -51,7 +52,7 @@ typedef NSInteger Type;
 @property (strong, nonatomic) IBOutlet UILabel *type;
 
 @property (strong, atomic) PictureArray *picturesArray;
-
+@property (strong, nonatomic) SearchData *searchData;
 
 
 @property (nonatomic, strong) NSMutableOrderedSet *picturesChosenByDrag; //of annotation views
