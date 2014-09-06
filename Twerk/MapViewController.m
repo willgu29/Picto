@@ -56,6 +56,7 @@ typedef NSInteger AnnotationCheck;
 @interface MapViewController ()
 {
     int arrayCounter;
+    int nextPictureSetCounter;
 }
 
 
@@ -86,6 +87,8 @@ typedef NSInteger AnnotationCheck;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+
     // Do any additional setup after loading the view from its nib.
     _searchField.delegate = self;
     _mapView.delegate = self;
@@ -113,7 +116,6 @@ typedef NSInteger AnnotationCheck;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomToPopular) name:@"Can Zoom to Popular" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseNextSelectorMethod) name:@"Next Array Data Loaded" object:nil];
-        
     
     
     [self setUpSavedData];
@@ -350,8 +352,6 @@ typedef NSInteger AnnotationCheck;
         for (id pictureURL in _picturesArray.nextPicturesData)
         {
             
-            //TODO: add some randomization (i.e. skip this random photo and just go to the next)
-            
             
             if (someCounter >= POPULAR_PICTURES_IN_ARRAY)
             {
@@ -366,7 +366,30 @@ typedef NSInteger AnnotationCheck;
                 //We good
             }
             
+            
+           
+            
             CustomAnnotation *annotation = [self parseAndReturnAnnotation:pictureURL];
+            
+            
+            //How can we not load the same popular/user feed pictures?
+            //TODO: more efficient way?
+            //Continues if user has already seen this picture
+            BOOL samePicture = NO;
+            for (CustomAnnotation* picture in _picturesArray.nextPicturesSet)
+            {
+                if ([picture isEqualToAnnotation:annotation])
+                {
+                    samePicture = YES;
+                    break;
+                }
+            }
+            
+            if (samePicture == YES)
+            {
+                continue;
+            }
+            
             //We can probably do this right after we check the mediaID (the first thing we should check)
             NSInteger resultOfCheck = [self checkAnnotationEnums:annotation];
             
@@ -377,6 +400,7 @@ typedef NSInteger AnnotationCheck;
             else if (resultOfCheck == DUPLICATE)
             {
                 //try next pic
+                NSLog(@"Duplicate detected");
                 continue;
             }
             else if (resultOfCheck == FLOOD)
@@ -388,6 +412,8 @@ typedef NSInteger AnnotationCheck;
             {
                 //YASS
             }
+            
+            
             
             someCounter++;
             
@@ -406,8 +432,8 @@ typedef NSInteger AnnotationCheck;
                 {
                     annotation.isFriend = YES;
                 }
-                
                 [_picturesArray.nextPicturesSet addObject:annotation];
+                
             });
         }
 //        _lock = NO;
@@ -1115,7 +1141,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 //    }
     
     
-    if ([_picturesArray.nextPicturesSet count] > 2)
+    if (([_picturesArray.nextPicturesSet count]-nextPictureSetCounter) > 2)
     {
         [self zoomToPopular];
     }
@@ -1152,13 +1178,13 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 -(void)zoomToPopular //Called by selector in viewDidLoad
 {
-    if ([_picturesArray.nextPicturesSet count] >= 1)
+    if ([_picturesArray.nextPicturesSet count] > nextPictureSetCounter)
     {
-        CustomAnnotation *myAnnotation = [_picturesArray.nextPicturesSet objectAtIndex:0];
+        CustomAnnotation *myAnnotation = [_picturesArray.nextPicturesSet objectAtIndex:nextPictureSetCounter];
+        nextPictureSetCounter++;
         [self zoomToRegion:myAnnotation.coordinate withLatitude:50 withLongitude:50 withMap:_mapView];
         [_mapView addAnnotation:myAnnotation];
-//        [_picturesPopular removeObjectAtIndex:0]; //TODO: implement a counter instead
-        [_picturesArray.nextPicturesSet removeObjectAtIndex:0];
+//        [_picturesArray.nextPicturesSet removeObjectAtIndex:0];
     
     }
 //    else if ([_picturesPopular count] == 0)

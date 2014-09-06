@@ -7,6 +7,7 @@
 //
 
 #import "SearchData.h"
+#import "AppDelegate.h"
 
 @implementation SearchData
 
@@ -42,5 +43,50 @@
     [self setAutoCompleteSearchData:array];
     
 }
+
+-(void)searchUsernameWithName:(NSString *)nameOfUser
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"users/%@/media/recent", nameOfUser], @"method", nil];
+    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    [appDelegate.instagram requestWithParams:params delegate:self];
+}
+
+-(void)searchTagWithName:(NSString *)nameOfTag
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"tags/%@/media/recent", nameOfTag], @"method", nil];
+    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    [appDelegate.instagram requestWithParams:params delegate:self];
+    
+}
+
+
+-(void)searchLocationWithName:(NSString *)nameOfLocation
+{
+    //We should just do a normal search probably (give name location option and on select we do our normal search)
+    //Check performSearch: in MapViewController.m
+}
+
+
+
+//Same as User.m IGRequestDelegate
+- (void)request:(IGRequest *)request didLoad:(id)result {
+    //NSLog(@"Instagram did load: %@", result);
+    _searchResultsData = (NSMutableSet*)[result objectForKey:@"data"];
+    
+    // [[NSNotificationCenter defaultCenter] postNotificationName:@"Load Geo" object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Next Array Data Loaded" object:self];
+}
+
+- (void)request:(IGRequest *)request didFailWithError:(NSError *)error {
+    NSLog(@"Instagram did fail: %@", error);
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:[error localizedDescription]
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil];
+    [alertView show];
+}
+
+
 
 @end

@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) NSMutableSet *nextPicturesData; //not parsed
 @property (nonatomic, strong) NSMutableOrderedSet *nextPicturesSet; //parsed
+//@property (nonatomic, strong) NSMutableOrderedSet *nextPicturesFollowingSet; //parsed
 
 
 -(void)findPopularImages;

@@ -15,7 +15,7 @@
 
 
 @property (strong, nonatomic) NSMutableArray *autoCompleteSearchData; //OF NSSTRING * (for tableView)
-@property (strong, nonatomic) NSMutableSet *searchResultData; //For IGRequestDelegate (non parsed data)
+@property (strong, nonatomic) NSMutableSet *searchResultsData; //For IGRequestDelegate (non parsed data)
 @property (strong, nonatomic) NSMutableOrderedSet *searchPicturesArray; //Parsed
 
 
