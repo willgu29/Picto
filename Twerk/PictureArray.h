@@ -17,6 +17,8 @@
 
 
 -(void)findPopularImages;
+-(void)findFollowingImages;
+
 -(instancetype)init;
 
 

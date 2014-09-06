@@ -5,6 +5,7 @@
 //  Created by William Gu on 7/2/14.
 //  Copyright (c) 2014 William Gu. All rights reserved.
 //
+#include <stdlib.h>
 #include <mach/mach.h>
 #include <mach/mach_time.h>
 #import "MapViewController.h"
@@ -61,6 +62,8 @@ typedef NSInteger AnnotationCheck;
 @property (weak, nonatomic) IBOutlet UITableView *autoCompleteTableView;
 @property (nonatomic) BOOL isMatch;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
+
+@property (nonatomic) BOOL lockNext;
 
 @end
 
@@ -127,7 +130,10 @@ typedef NSInteger AnnotationCheck;
     {
         _picturesArray = [[PictureArray alloc] init];
     }
-    [_picturesArray findPopularImages];
+//    [_picturesArray findPopularImages];
+    _isPopularNotFriend = NO;
+    _lockNext = YES;
+    [_picturesArray findFollowingImages];
 }
 
 //-(void)setUpPicturesArray
@@ -266,6 +272,8 @@ typedef NSInteger AnnotationCheck;
 {
     //if popular and not.. say friends
     [self parsePopularAndPlaceIntoPicturesPopularArray];
+
+    
 }
 
 -(void)parseAll
@@ -390,11 +398,20 @@ typedef NSInteger AnnotationCheck;
             [annotation parseStringOfLocation:annotation.coordinate]; //We'll do the parse for popular pictures since we only load a few.
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                annotation.isPopular = YES;
+                if (_isPopularNotFriend == YES)
+                {
+                    annotation.isPopular = YES;
+                }
+                else
+                {
+                    annotation.isFriend = YES;
+                }
+                
                 [_picturesArray.nextPicturesSet addObject:annotation];
             });
         }
-        _lock = NO;
+//        _lock = NO;
+        _lockNext = NO;
     });
 }
 
@@ -774,6 +791,12 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         [self updateTheBorderColorOnViewToMatchTheAnnotationType:annotationView];
         [self.view bringSubviewToFront:annotationView];
     }
+    if ([(CustomAnnotation *)annotation isFriend] == YES)
+    {
+        [(CustomAnnotation *)annotationView.annotation setColorType:[UIColor redColor]];
+        [self updateTheBorderColorOnViewToMatchTheAnnotationType:annotationView];
+        [self.view bringSubviewToFront:annotationView];
+    }
     
     return annotationView;
 }
@@ -1099,7 +1122,26 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     else
     {
         [self zoomToPopular];
-        [_picturesArray findPopularImages];
+        
+        if (_lockNext == YES)
+        {
+            return;
+        }
+
+        _lockNext = YES;
+
+        
+        int r = arc4random_uniform(2);//Random number 0 or 1
+        if (r == 0)
+        {
+            _isPopularNotFriend = NO;
+            [_picturesArray findFollowingImages];
+        }
+        else if (r == 1)
+        {
+            _isPopularNotFriend = YES;
+            [_picturesArray findPopularImages];
+        }
         //TODO: AND load some more photos
 //        [self setGlobalType:POPULAR];
 //        [_mapView findPopularImages];

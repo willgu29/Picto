@@ -32,7 +32,13 @@
     [appDelegate.instagram requestWithParams:params delegate:self];
 }
 
-
+-(void)findFollowingImages
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"/users/self/feed"], @"method",nil];
+    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    [appDelegate.instagram requestWithParams:params delegate:self];
+    
+}
 
 //Same as User.m IGRequestDelegate
 - (void)request:(IGRequest *)request didLoad:(id)result {

@@ -66,6 +66,8 @@ typedef NSInteger Type;
 @property (nonatomic) CLLocationCoordinate2D prevDataCoord;
 @property (nonatomic) double prev_zoomLevel;
 
+@property (nonatomic) BOOL isPopularNotFriend;
+
 @end
 
 

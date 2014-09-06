@@ -30,6 +30,7 @@
 
 //Bool values
 @property (nonatomic, readwrite) BOOL isPopular;
+@property (nonatomic, readwrite) BOOL isFriend;
 @property (nonatomic, readwrite) BOOL userHasLiked;
 @property (nonatomic, readwrite) BOOL userHasFollowed;
 
