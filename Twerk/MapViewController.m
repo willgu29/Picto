@@ -19,7 +19,7 @@
 
 const NSInteger METERS_PER_MILE = 1609.344;
 const NSInteger MAX_ALLOWED_PICTURES = 1000; //TODO: switch this to MAX_ALLOWED ON SCREEN.
-const NSInteger POPULAR_PICTURES_IN_ARRAY = 5;
+const NSInteger POPULAR_PICTURES_IN_ARRAY = 7;
 const NSInteger ANNOTATION_RADIUS = 25;
 
 const NSInteger LOAD_DATA_ZOOM_THRESHOLD = 400;
@@ -335,6 +335,11 @@ typedef NSInteger AnnotationCheck;
             
             //do this when done loading.. on main thread
             dispatch_async(dispatch_get_main_queue(), ^{
+                if (annotation.numberOfLikes.intValue > 1000)
+                {
+                    annotation.isPopular = YES;
+                }
+                //TODO: check for friend
                 [_mapView addAnnotation:annotation]; //THIS adds an annotation to _mapView.annotations
             });
         }
@@ -376,14 +381,24 @@ typedef NSInteger AnnotationCheck;
             //TODO: more efficient way?
             //Continues if user has already seen this picture
             BOOL samePicture = NO;
-            for (CustomAnnotation* picture in _picturesArray.nextPicturesSet)
+            for (int i = 0; i < [_picturesArray.nextPicturesSet count]; i++)
             {
+                CustomAnnotation *picture = [_picturesArray.nextPicturesSet objectAtIndex:i];
                 if ([picture isEqualToAnnotation:annotation])
                 {
                     samePicture = YES;
                     break;
                 }
             }
+//            for (CustomAnnotation* picture in _picturesArray.nextPicturesSet)
+//            {
+//                //BAD_ACCESS HERE
+//            if ([picture isEqualToAnnotation:annotation])
+//            {
+//                samePicture = YES;
+//                break;
+//            }
+//            }
             
             if (samePicture == YES)
             {
@@ -400,7 +415,6 @@ typedef NSInteger AnnotationCheck;
             else if (resultOfCheck == DUPLICATE)
             {
                 //try next pic
-                NSLog(@"Duplicate detected");
                 continue;
             }
             else if (resultOfCheck == FLOOD)
@@ -814,13 +828,13 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     if ([(CustomAnnotation *)annotation isPopular] == YES)
     {
         [(CustomAnnotation *)annotationView.annotation setColorType:[UIColor blueColor]];
-        [self updateTheBorderColorOnViewToMatchTheAnnotationType:annotationView];
+        annotationView = [self updateTheBorderColorOnViewToMatchTheAnnotationType:annotationView];
         [self.view bringSubviewToFront:annotationView];
     }
     if ([(CustomAnnotation *)annotation isFriend] == YES)
     {
         [(CustomAnnotation *)annotationView.annotation setColorType:[UIColor redColor]];
-        [self updateTheBorderColorOnViewToMatchTheAnnotationType:annotationView];
+        annotationView = [self updateTheBorderColorOnViewToMatchTheAnnotationType:annotationView];
         [self.view bringSubviewToFront:annotationView];
     }
     
@@ -872,13 +886,13 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     }
 }
 
--(void)updateTheBorderColorOnViewToMatchTheAnnotationType:(MKAnnotationView *)annotationView
+-(MKAnnotationView *)updateTheBorderColorOnViewToMatchTheAnnotationType:(MKAnnotationView *)annotationView
 {
     NSLog(@"Update color");
     annotationView.layer.borderWidth = 3.0f;
     annotationView.layer.borderColor = [(CustomAnnotation *)annotationView.annotation colorType].CGColor;
     
-    
+    return annotationView;
 }
 
 -(CGPoint)getAnnotationPositionOnMap:(CustomAnnotation *)annotation
@@ -1141,7 +1155,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 //    }
     
     
-    if (([_picturesArray.nextPicturesSet count]-nextPictureSetCounter) > 2)
+    if (([_picturesArray.nextPicturesSet count]-nextPictureSetCounter) > 4)
     {
         [self zoomToPopular];
     }
@@ -1186,6 +1200,10 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         [_mapView addAnnotation:myAnnotation];
 //        [_picturesArray.nextPicturesSet removeObjectAtIndex:0];
     
+    }
+    else if([_picturesArray.nextPicturesSet count] == nextPictureSetCounter)
+    {
+        NSLog(@"No more pictures!");
     }
 //    else if ([_picturesPopular count] == 0)
 //    {
