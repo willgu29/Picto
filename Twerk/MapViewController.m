@@ -18,7 +18,7 @@
 #import <GLKit/GLKit.h>
 
 const NSInteger METERS_PER_MILE = 1609.344;
-const NSInteger MAX_ALLOWED_PICTURES = 1000; //TODO: switch this to MAX_ALLOWED ON SCREEN.
+const NSInteger MAX_ALLOWED_PICTURES = 100; //ON SCREEN
 const NSInteger POPULAR_PICTURES_IN_ARRAY = 7;
 const NSInteger ANNOTATION_RADIUS = 25;
 
@@ -189,6 +189,7 @@ typedef NSInteger AnnotationCheck;
     else
     {
         [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:lat withLongitude:lng withMap:_mapView];
+//        [self zoomToRegion:_mapView.currentLocation withLatitude:50 withLongitude:50 withMap:_mapView];
     }
 
 }
@@ -1171,7 +1172,8 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         _lockNext = YES;
 
         
-        int r = arc4random_uniform(2);//Random number 0 or 1
+//        int r = arc4random_uniform(2);//Random number 0 or 1
+        int r =1; //We'll allows load popular pictures after the 1st 7 pictures that are friends
         if (r == 0)
         {
             _isPopularNotFriend = NO;
@@ -1198,6 +1200,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         nextPictureSetCounter++;
         [self zoomToRegion:myAnnotation.coordinate withLatitude:50 withLongitude:50 withMap:_mapView];
         [_mapView addAnnotation:myAnnotation];
+//        [self mapView:_mapView didSelectAnnotationView:<#(MKAnnotationView *)#>
 //        [_picturesArray.nextPicturesSet removeObjectAtIndex:0];
     
     }
