@@ -380,17 +380,25 @@ typedef NSInteger AnnotationCheck;
             
             //How can we not load the same popular/user feed pictures?
             //TODO: more efficient way?
-            //Continues if user has already seen this picture
-            BOOL samePicture = NO;
-            for (int i = 0; i < [_picturesArray.nextPicturesSet count]; i++)
-            {
-                CustomAnnotation *picture = [_picturesArray.nextPicturesSet objectAtIndex:i];
-                if ([picture isEqualToAnnotation:annotation])
-                {
-                    samePicture = YES;
-                    break;
-                }
-            }
+            
+//            //Continues if user has already seen this picture
+//            BOOL samePicture = NO;
+//            for (int i = 0; i < [_picturesArray.nextPicturesSet count]; i++)
+//            {
+//                CustomAnnotation *picture = [_picturesArray.nextPicturesSet objectAtIndex:i];
+//                if ([picture isEqualToAnnotation:annotation])
+//                {
+//                    samePicture = YES;
+//                    break;
+//                }
+//            }
+            
+//            if (samePicture == YES)
+//            {
+//                continue;
+//            }
+            
+            
 //            for (CustomAnnotation* picture in _picturesArray.nextPicturesSet)
 //            {
 //                //BAD_ACCESS HERE
@@ -401,10 +409,7 @@ typedef NSInteger AnnotationCheck;
 //            }
 //            }
             
-            if (samePicture == YES)
-            {
-                continue;
-            }
+            
             
             //We can probably do this right after we check the mediaID (the first thing we should check)
             NSInteger resultOfCheck = [self checkAnnotationEnums:annotation];
@@ -433,7 +438,7 @@ typedef NSInteger AnnotationCheck;
             someCounter++;
             
             //OR save object as video WGVideo subclass.. (not made yet)
-            [annotation createNewImage];
+            [annotation createNewImage]; //TODO: Call this only when we need to preload
             [self hasFollowedUser:annotation];
             //[annotation setLocationString:self.currentMapViewGeoLocation];
             [annotation parseStringOfLocation:annotation.coordinate]; //We'll do the parse for popular pictures since we only load a few.
@@ -1156,7 +1161,11 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 //    }
     
     
-    if (([_picturesArray.nextPicturesSet count]-nextPictureSetCounter) > 4)
+//    if (([_picturesArray.nextPicturesSet count]-nextPictureSetCounter) > 4)
+//    {
+//        [self zoomToPopular];
+//    }
+    if ([_picturesArray.nextPicturesSet count] > 4)
     {
         [self zoomToPopular];
     }
@@ -1194,17 +1203,18 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 -(void)zoomToPopular //Called by selector in viewDidLoad
 {
-    if ([_picturesArray.nextPicturesSet count] > nextPictureSetCounter)
+    if ([_picturesArray.nextPicturesSet count] >= 1)
     {
-        CustomAnnotation *myAnnotation = [_picturesArray.nextPicturesSet objectAtIndex:nextPictureSetCounter];
-        nextPictureSetCounter++;
+        CustomAnnotation *myAnnotation = [_picturesArray.nextPicturesSet objectAtIndex:0];
+//        CustomAnnotation *myAnnotation = [_picturesArray.nextPicturesSet objectAtIndex:nextPictureSetCounter];
+//        nextPictureSetCounter++;
         [self zoomToRegion:myAnnotation.coordinate withLatitude:50 withLongitude:50 withMap:_mapView];
         [_mapView addAnnotation:myAnnotation];
 //        [self mapView:_mapView didSelectAnnotationView:<#(MKAnnotationView *)#>
-//        [_picturesArray.nextPicturesSet removeObjectAtIndex:0];
+        [_picturesArray.nextPicturesSet removeObjectAtIndex:0];
     
     }
-    else if([_picturesArray.nextPicturesSet count] == nextPictureSetCounter)
+    else if([_picturesArray.nextPicturesSet count] == 0)
     {
         NSLog(@"No more pictures!");
     }
