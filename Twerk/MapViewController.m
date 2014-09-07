@@ -587,10 +587,9 @@ typedef NSInteger AnnotationCheck;
     NSLog(@"Touches began!");
     UITouch *touch = [[event allTouches] anyObject];
     
-        
     
     [self tapOutOfSearchBar:touch];
-//    [super touchesBegan:touches withEvent:event];
+    [super touchesBegan:touches withEvent:event];
     
     if ([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[CustomCallout class]])
     {
