@@ -252,7 +252,7 @@ typedef NSInteger AnnotationCheck;
     for (id userData in _someUser.following)
     {
         NSString *userID = [userData valueForKeyPath:@"username"];
-        [_someUser.parsedFollowing addObject:userID];
+        [_someUser.parsedFollowing addObject:userID]; //valueForKey:@"username"]
     }
     
 }
@@ -1034,13 +1034,16 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     _autoCompleteTableView.hidden = YES;
 }
 
-/*
+
 -(BOOL)textFieldShouldClear:(UITextField *)textField
 {
     NSLog(@"should clear?");
+    _searchType = NONE;
+    [_searchData fillSearchOptionsAvailable:@""];
+    [_autoCompleteTableView reloadData];
     return YES;
 }
-*/
+
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
@@ -1120,20 +1123,21 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
                  //add to array
                  [matchingItems addObject:item];
                  //place a marker on mapView of location
-                 MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
-                 annotation.coordinate = item.placemark.coordinate;
-                 annotation.title = item.name;
-                 [_mapView addAnnotation:annotation];
+//                 MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+//                 annotation.coordinate = item.placemark.coordinate;
+//                 annotation.title = item.name;
+//                 [_mapView addAnnotation:annotation];
                  NSLog(@"name = %@", item.name);
                  NSLog(@"Phone = %@", item.phoneNumber);
+                 NSLog(@"URL = %@", item.url);
                  NSLog(@"Placemark = %@", item.placemark);
-                // NSLog(@"Coordinate = %@", item.placemark.coordinate);
+//                 NSLog(@"Coordinate = %@", item.placemark.coordinate);
                  
              }
              //Zoom into the 1st result provided by search
-             MKMapItem *item1 = matchingItems[0];
-             MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(item1.placemark.coordinate, [(CLCircularRegion *)item1.placemark.region radius], [(CLCircularRegion *)item1.placemark.region radius]);
-             [_mapView setRegion:viewRegion animated:YES];
+//             MKMapItem *item1 = matchingItems[0];
+//             MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(item1.placemark.coordinate, [(CLCircularRegion *)item1.placemark.region radius], [(CLCircularRegion *)item1.placemark.region radius]);
+//             [_mapView setRegion:viewRegion animated:YES];
          }
      }];
     
@@ -1426,30 +1430,49 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
+    if ([_searchField.text isEqualToString:@""])
+    {
+        [self textFieldDidEndEditing:_searchField];
+        [_searchField resignFirstResponder];
+        return;
+    }
+    
     if (! ([[_searchData.autoCompleteSearchData objectAtIndex:indexPath.row] rangeOfString:@"Search for users"].location == NSNotFound))
     {
         NSLog(@"Search for users selected");
         //TODO: load user possibilities
-        [_searchData fillAutoCompleteSearchData];
+        
+        [_searchData fillAutoCompleteSearchDataWithUsers:_searchField.text withArrayOfFollowing:_someUser.parsedFollowing];
+        _searchType = USER;
+        
     }
     else if (! ([[_searchData.autoCompleteSearchData objectAtIndex:indexPath.row] rangeOfString:@"Search for hashtags"].location == NSNotFound))
     {
         NSLog(@"Search for hashtags selected");
         //TODO: load hashtag possibilties
+        
+        [_searchData fillAutoCompleteSearchDataWithHashTags:_searchField.text];
+        _searchType = HASHTAG;
     }
     else if (! ([[_searchData.autoCompleteSearchData objectAtIndex:indexPath.row] rangeOfString:@"Search for locations"].location == NSNotFound))
     {
         NSLog(@"Search for locations selected");
         //TODO: load location possibilities
+        
+//        [self performSearch:_searchField];
+        [_searchData fillAutoCompleteSearchDataWithLocations:_searchField.text];
+        _searchType = LOCATION;
     }
     else
     {
         NSString *string = [self getStringAtRow:indexPath.row];
         [self placeSelectionInSearch:string];
         //TODO: hide tableview and keyboard and do search
+        //use _searchType to determine type for now
+        
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [_autoCompleteTableView performSelector:@selector(reloadData) withObject:nil afterDelay:1]; //To simulate actually loading
+    [_autoCompleteTableView performSelector:@selector(reloadData) withObject:nil afterDelay:.5]; //To simulate actually loading
 //    [tableView reloadData]; //TODO: do this after data done loading instead
 
 }

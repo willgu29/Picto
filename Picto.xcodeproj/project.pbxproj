@@ -49,6 +49,8 @@
 		84DEE29C19B96B64004C58E4 /* PictureArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DEE29B19B96B64004C58E4 /* PictureArray.m */; };
 		84DEE2AF19BA5285004C58E4 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DEE2AD19BA5285004C58E4 /* SettingsTableViewController.m */; };
 		84DEE2B019BA5285004C58E4 /* SettingsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84DEE2AE19BA5285004C58E4 /* SettingsTableViewController.xib */; };
+		84ECA6B419BD0EE000757F87 /* HashTagSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 84ECA6B319BD0EE000757F87 /* HashTagSearch.m */; };
+		84ECA6B719BD24AC00757F87 /* LocationSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 84ECA6B619BD24AC00757F87 /* LocationSearch.m */; };
 		84F24FE41973970000013F47 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FE31973970000013F47 /* User.m */; };
 		84F24FEC1974EBB500013F47 /* SearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FEB1974EBB500013F47 /* SearchData.m */; };
 		84F24FEF1975F17300013F47 /* WGMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FEE1975F17300013F47 /* WGMap.m */; };
@@ -141,6 +143,10 @@
 		84DEE2AC19BA5285004C58E4 /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
 		84DEE2AD19BA5285004C58E4 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
 		84DEE2AE19BA5285004C58E4 /* SettingsTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsTableViewController.xib; sourceTree = "<group>"; };
+		84ECA6B219BD0EE000757F87 /* HashTagSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HashTagSearch.h; sourceTree = "<group>"; };
+		84ECA6B319BD0EE000757F87 /* HashTagSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HashTagSearch.m; sourceTree = "<group>"; };
+		84ECA6B519BD24AC00757F87 /* LocationSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationSearch.h; sourceTree = "<group>"; };
+		84ECA6B619BD24AC00757F87 /* LocationSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationSearch.m; sourceTree = "<group>"; };
 		84F24FE21973970000013F47 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		84F24FE31973970000013F47 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		84F24FEA1974EBB500013F47 /* SearchData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchData.h; sourceTree = "<group>"; };
@@ -349,6 +355,10 @@
 			children = (
 				84F24FEA1974EBB500013F47 /* SearchData.h */,
 				84F24FEB1974EBB500013F47 /* SearchData.m */,
+				84ECA6B219BD0EE000757F87 /* HashTagSearch.h */,
+				84ECA6B319BD0EE000757F87 /* HashTagSearch.m */,
+				84ECA6B519BD24AC00757F87 /* LocationSearch.h */,
+				84ECA6B619BD24AC00757F87 /* LocationSearch.m */,
 			);
 			name = Search;
 			sourceTree = "<group>";
@@ -528,10 +538,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				84F250071981BD9600013F47 /* CustomAnnotation.m in Sources */,
+				84ECA6B419BD0EE000757F87 /* HashTagSearch.m in Sources */,
 				84F24FE41973970000013F47 /* User.m in Sources */,
 				84068D9D196B250F0053355C /* SideMenuViewController.m in Sources */,
 				84DA0D3118F92C2B00DE364F /* Twerk.xcdatamodeld in Sources */,
 				8439845519AAF93A002E3047 /* MachTimer.m in Sources */,
+				84ECA6B719BD24AC00757F87 /* LocationSearch.m in Sources */,
 				84DEE29C19B96B64004C58E4 /* PictureArray.m in Sources */,
 				84068DA2196B4EFA0053355C /* Friend.m in Sources */,
 				8439845219AA6BFB002E3047 /* WGTimer.m in Sources */,

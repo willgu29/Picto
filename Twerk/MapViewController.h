@@ -32,6 +32,16 @@ enum {
 typedef NSInteger Type;
 
 
+enum {
+    NONE = 0,
+    USER = 1,
+    HASHTAG = 2,
+    LOCATION = 3,
+    
+};
+typedef NSInteger Search;
+
+
 //That's a lot of delegates!  Check out the protocols in apple documentation! Weee
 @interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IGRequestDelegate>
 {
@@ -46,7 +56,8 @@ typedef NSInteger Type;
 //Our map view will have the actual map and a search bar.
 @property (strong, atomic) IBOutlet WGMap *mapView; //custom map view with new methods to use!
 @property (strong, nonatomic) IBOutlet UITextField *searchField; //There's actually a UISearchBar class (oops)... we can switch this out later. Should be simple since UISearchBar is a subclass of UITextField...
-@property (nonatomic) NSInteger globalType;
+@property (nonatomic) NSInteger globalType; //All vs recent
+@property (nonatomic) NSInteger searchType; //User vs hashtag vs location
 @property (nonatomic) BOOL displayingPictures;
 @property (nonatomic) BOOL onlyFriends;
 @property (strong, nonatomic) IBOutlet UILabel *type;

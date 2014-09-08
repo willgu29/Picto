@@ -9,18 +9,26 @@
 #import <Foundation/Foundation.h>
 #import "User.h"
 #import "IGRequest.h"
-
+#import "HashTagSearch.h"
+#import "LocationSearch.h"
 
 @interface SearchData : NSObject <IGRequestDelegate>
 
-
+@property (strong, nonatomic) LocationSearch *location;
+@property (strong, nonatomic) HashTagSearch *hashTag;
 @property (strong, nonatomic) NSMutableArray *autoCompleteSearchData; //OF NSSTRING * (for tableView)
 @property (strong, nonatomic) NSMutableSet *searchResultsData; //For IGRequestDelegate (non parsed data)
 @property (strong, nonatomic) NSMutableOrderedSet *searchPicturesArray; //Parsed
 
 
--(void)fillSearchOptionsAvailable:(NSString *)searchText;
+-(void)fillSearchOptionsAvailable:(NSString *)searchText; //initial 3 (users, hashtags, location)
 -(void)fillAutoCompleteSearchData;
+
+
+-(void)fillAutoCompleteSearchDataWithUsers:(NSString *)searchText withArrayOfFollowing:(NSMutableSet *)parsedFollowing;
+-(void)fillAutoCompleteSearchDataWithHashTags:(NSString *)searchText;
+-(void)fillAutoCompleteSearchDataWithLocations:(NSString *)searchText;
+
 
 
 -(void)loadUserPictures;

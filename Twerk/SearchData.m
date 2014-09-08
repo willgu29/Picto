@@ -44,6 +44,88 @@
     
 }
 
+
+-(void)fillAutoCompleteSearchDataWithUsers:(NSString *)searchText withArrayOfFollowing:(NSMutableSet *)parsedFollowing
+{
+    NSString *predicateFormat = @"%K BEGINSWITH[cd] %@";
+    NSString *searchAttribute = @"self";
+//    NSString *searchAttribute = @"username";
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateFormat, searchAttribute, searchText];
+    
+    //BEGINSWITH, ENDSWITH LIKE MATCHES CONTAINS
+    NSArray *array = [NSArray arrayWithArray:[parsedFollowing allObjects]];
+    [self setAutoCompleteSearchData:[array filteredArrayUsingPredicate:predicate]];
+    
+    if ([_autoCompleteSearchData count] == 0)
+    {
+        [self setAutoCompleteSearchData:@[@"No matches found"]];
+        //TODO: add some suggestions
+    }
+}
+
+-(void)fillAutoCompleteSearchDataWithHashTags:(NSString *)searchText
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayHashTagData) name:@"done parsing hashtag" object:nil];
+    _hashTag = [[HashTagSearch alloc] init];
+    [_hashTag fillAutoCompleteSearchDataWithHashTags:searchText];
+}
+
+-(void)displayHashTagData
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"done parsing hashtag" object:nil];
+    if ([_hashTag mediaCount] == 0)
+    {
+        //TODO: add some suggestions
+        [self setAutoCompleteSearchData:@[@"No matches found"]];
+    }
+    else
+    {
+//        [self setAutoCompleteSearchData:@[[NSString stringWithFormat:@"%@  %ld",_hashTag.name, (long)_hashTag.mediaCount]]];
+        [self setAutoCompleteSearchData:@[[NSString stringWithFormat:@"%@",_hashTag.name]]];
+        //TODO: add post count to table view
+    }
+}
+
+-(void)fillAutoCompleteSearchDataWithLocations:(NSString *)searchText
+{
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displaySearchResults) name:@"location search done" object:nil];
+    
+    _location = [[LocationSearch alloc] init];
+    [_location performSearch:searchText];
+    
+//    location search done
+    
+    
+    
+}
+
+-(void)displaySearchResults
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"location search done" object:nil];
+    if ([_location.searchResults count] == 0)
+    {
+        [self setAutoCompleteSearchData:@[@"No matches found"]];
+    }
+    else
+    {
+        NSMutableSet *names = [[NSMutableSet alloc] init];
+        for (MKMapItem* mapItem in _location.searchResults)
+        {
+            [names addObject:mapItem.name];
+        }
+        NSArray *array = [NSArray arrayWithArray:[names allObjects]];
+        [self setAutoCompleteSearchData:array];
+        
+    }
+}
+
+
+
+
+
+
+
 -(void)searchUsernameWithName:(NSString *)nameOfUser
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"users/%@/media/recent", nameOfUser], @"method", nil];
@@ -58,7 +140,6 @@
     [appDelegate.instagram requestWithParams:params delegate:self];
     
 }
-
 
 -(void)searchLocationWithName:(NSString *)nameOfLocation
 {
