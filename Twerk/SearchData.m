@@ -66,6 +66,7 @@
 -(void)fillAutoCompleteSearchDataWithHashTags:(NSString *)searchText
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayHashTagData) name:@"done parsing hashtag" object:nil];
+    _hashTag = nil;
     _hashTag = [[HashTagSearch alloc] init];
     [_hashTag fillAutoCompleteSearchDataWithHashTags:searchText];
 }
@@ -90,7 +91,7 @@
 {
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displaySearchResults) name:@"location search done" object:nil];
-    
+    _location = nil;
     _location = [[LocationSearch alloc] init];
     [_location performSearch:searchText];
     
@@ -132,7 +133,7 @@
     [appDelegate.instagram requestWithParams:params delegate:self];
 }
 
--(void)searchTagWithName:(NSString *)nameOfTag
+-(void)searchHashTagWithName:(NSString *)nameOfTag
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"tags/%@/media/recent", nameOfTag], @"method", nil];
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
@@ -146,15 +147,41 @@
     //Check performSearch: in MapViewController.m
 }
 
+-(void)searchLocationWithLocation:(MKMapItem *)item1
+{
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(item1.placemark.coordinate, [(CLCircularRegion *)item1.placemark.region radius], [(CLCircularRegion *)item1.placemark.region radius]);
+    
+    MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+    annotation.coordinate = item1.placemark.coordinate;
+    annotation.title = item1.name;
+    
+    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    
+    [appDelegate.mapVC.mapView addAnnotation:annotation];
+    [appDelegate.mapVC.mapView setRegion:viewRegion animated:YES];
 
+}
+
+-(void)setSearchResultsData:(NSMutableOrderedSet *)searchResultsData
+{
+    if (_searchResultsData == searchResultsData)
+    {
+        return;
+    }
+    if (_searchResultsData == nil)
+    {
+        _searchResultsData = [[NSMutableOrderedSet alloc] init];
+    }
+    _searchResultsData = searchResultsData;
+    
+}
 
 //Same as User.m IGRequestDelegate
 - (void)request:(IGRequest *)request didLoad:(id)result {
     //NSLog(@"Instagram did load: %@", result);
-    _searchResultsData = (NSMutableSet*)[result objectForKey:@"data"];
+    [self setSearchResultsData:(NSMutableOrderedSet *)[result objectForKey:@"data"]];
     
-    // [[NSNotificationCenter defaultCenter] postNotificationName:@"Load Geo" object:self];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"Next Array Data Loaded" object:self];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"Next Array Data Loaded" object:self];
 }
 
 - (void)request:(IGRequest *)request didFailWithError:(NSError *)error {

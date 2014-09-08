@@ -861,7 +861,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     if (_globalType == POPULAR)
         return; //TODO: Need to recall this method to load
         
-    [self performSelector:@selector(loadAnnotationsWhenNecessary) withObject:nil afterDelay:0.5];
+    [self performSelector:@selector(loadAnnotationsWhenNecessary) withObject:nil afterDelay:0.3];
     
     //[self loadAnnotationsWhenNecessary];
 }
@@ -1044,10 +1044,29 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 -(BOOL)textFieldShouldClear:(UITextField *)textField
 {
     NSLog(@"should clear?");
+    if (_autoCompleteTableView.hidden == NO)
+    {
+        [_searchData fillSearchOptionsAvailable:@""];
+        [_autoCompleteTableView reloadData];
+    }
+    else if ([_searchField isFirstResponder])
+    {
+        textField.text = @"";
+    }
+    else
+    {
+        //Clears field without opening keyboard
+        textField.enabled = NO;
+        [self performSelector:@selector(enableSearchField:) withObject:_searchField afterDelay:.2];
+    }
     _searchType = NONE;
-    [_searchData fillSearchOptionsAvailable:@""];
-    [_autoCompleteTableView reloadData];
+
     return YES;
+}
+
+-(void)enableSearchField:(UITextField *)textField
+{
+    textField.enabled = YES;
 }
 
 
@@ -1095,8 +1114,8 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
-    [_mapView removeAnnotations:[_mapView annotations]];
-    [self performSearch:textField];
+//    [_mapView removeAnnotations:[_mapView annotations]];
+//    [self performSearch:textField];
     
     return YES;
 }
@@ -1473,14 +1492,34 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     {
         NSString *string = [self getStringAtRow:indexPath.row];
         [self placeSelectionInSearch:string];
-        //TODO: hide tableview and keyboard and do search
-        //use _searchType to determine type for now
         
+        //TODO: hide tableview and keyboard and do search
+        [self textFieldShouldReturn:_searchField];
+        //use _searchType to determine type for now
+        [self selectSearchMethod:_searchType withSearchText:string andRow:indexPath.row];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [_autoCompleteTableView performSelector:@selector(reloadData) withObject:nil afterDelay:.5]; //To simulate actually loading
 //    [tableView reloadData]; //TODO: do this after data done loading instead
 
+}
+
+-(void)selectSearchMethod:(NSInteger)searchType withSearchText:(NSString *)searchText andRow:(NSInteger)row
+{
+    if (searchType == USER)
+    {
+        [_searchData searchUsernameWithName:searchText];
+    }
+    else if (searchType == HASHTAG)
+    {
+        [_searchData searchHashTagWithName:searchText];
+    }
+    else if (searchType == LOCATION)
+    {
+        MKMapItem *item = [_searchData.location.searchResults objectAtIndex:row];
+        [_searchData searchLocationWithLocation:item];
+        // ???: can later make it so next will take them to pictures within that area (currently just zooms there)
+    }
 }
 
 -(NSString *)getStringAtRow:(NSInteger)row

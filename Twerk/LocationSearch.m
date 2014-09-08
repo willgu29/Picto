@@ -8,6 +8,7 @@
 
 #import "LocationSearch.h"
 #import <MapKit/MapKit.h>
+#import "AppDelegate.h"
 
 @implementation LocationSearch
 
@@ -25,12 +26,12 @@
 
 -(void) performSearch:(NSString *)searchText
 {
+    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     //request a search with words from textField
     MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
     request.naturalLanguageQuery = searchText;
     // ???: maybe change VV later
-    //request.region = _mapView.region; //search results only in currently shown area of map
-    
+    request.region = appDelegate.mapVC.mapView.region; //search results only in currently shown area of map
     //do the search
     MKLocalSearch *search = [[MKLocalSearch alloc] initWithRequest:request];
     [search startWithCompletionHandler:^(MKLocalSearchResponse *response, NSError *error)
