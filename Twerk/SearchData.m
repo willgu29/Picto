@@ -125,7 +125,6 @@
 
 
 
-
 -(void)searchUsernameWithName:(NSString *)nameOfUser
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"users/%@/media/recent", nameOfUser], @"method", nil];

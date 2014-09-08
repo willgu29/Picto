@@ -59,7 +59,6 @@ typedef NSInteger AnnotationCheck;
     int nextPictureSetCounter;
 }
 
-
 @property (weak, nonatomic) IBOutlet UITableView *autoCompleteTableView;
 @property (nonatomic) BOOL isMatch;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
@@ -70,6 +69,13 @@ typedef NSInteger AnnotationCheck;
 
 @implementation MapViewController
 
+#pragma mark - Picto
+
+-(IBAction)returnToHome:(UIButton *)sender
+{
+    MKCoordinateRegion zoomLocation = MKCoordinateRegionMakeWithDistance(_someUser.currentLocation.coordinate, 100, 100);
+    [_mapView setRegion:zoomLocation animated:YES];
+}
 
 #pragma mark - View Life Cycle
 
@@ -1022,7 +1028,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 {
     //TODO: Animate into view
     NSLog(@"Did being editing");
-    
+    [self mapView:_mapView didDeselectAnnotationView:nil];
 //    _autoCompleteTableView.hidden = NO;
     
 }
