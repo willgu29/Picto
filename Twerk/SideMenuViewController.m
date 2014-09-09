@@ -155,6 +155,11 @@
     //We shouldn't need to do anything here.. No login should happen when we are logged in already
 }
 
+-(void)igDidNotLogin:(BOOL)cancelled
+{
+    
+}
+
 -(void)igDidLogout
 {
     NSLog(@"Instagram did logout");

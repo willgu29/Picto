@@ -17,7 +17,8 @@
 @property (strong, nonatomic) LocationSearch *location;
 @property (strong, nonatomic) HashTagSearch *hashTag;
 @property (strong, nonatomic) NSArray *autoCompleteSearchData; //OF BaseDisplay or class of
-@property (strong, nonatomic) NSMutableOrderedSet *searchResultsData; //For IGRequestDelegate (non parsed data)
+@property (strong, nonatomic) NSMutableSet *searchResultsData; //For IGRequestDelegate (non parsed data)
+@property (strong, nonatomic) NSMutableOrderedSet *searchResultsWithLocation; //For parsed but not image loaded
 @property (strong, nonatomic) NSMutableOrderedSet *searchPicturesArray; //Parsed
 
 
@@ -28,7 +29,7 @@
 -(void)fillAutoCompleteSearchDataWithUsers:(NSString *)searchText withArrayOfFollowing:(NSMutableSet *)parsedFollowing;
 -(void)fillAutoCompleteSearchDataWithHashTags:(NSString *)searchText;
 -(void)fillAutoCompleteSearchDataWithLocations:(NSString *)searchText;
--(void)parseData;
+-(void)parseDataWithSearchType;
 
 -(instancetype)init;
 
@@ -36,6 +37,8 @@
 -(void)searchHashTagWithName:(NSString *)nameOfHashTag;
 -(void)searchLocationWithName:(NSString *)nameOfLocation;
 -(void)searchLocationWithLocation:(MKMapItem *)item1;
+
+
 //@property (strong, nonatomic) NSMutableArray *autoCompleteSearch;
 //@property (strong, nonatomic) NSMutableArray *bestFriends;
 //@property (strong, nonatomic) NSMutableArray *bestPictures;

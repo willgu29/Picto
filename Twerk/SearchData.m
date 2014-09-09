@@ -15,22 +15,27 @@
 #import "LocationDisplay.h"
 #import "CustomAnnotation.h"
 #import "MapViewController.h"
+
+const NSInteger TIMES_TO_PAGINATE = 0;
+
 @implementation SearchData
+{
+    int countPaginations;
+    NSString *mostRecentMaxTagID;
+    NSString *userIDPrivate;
+}
 
 -(instancetype)init
 {
     self = [super init];
     if (self)
     {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseData) name:@"Search Data Loaded" object:nil];
+        _location = [[LocationSearch alloc] init];
+        _hashTag = [[HashTagSearch alloc] init];
     }
     return self;
 }
 
--(void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
 -(void)setAutoCompleteSearchData:(NSArray *)autoCompleteSearchData
 {
@@ -51,6 +56,11 @@
 
 -(void)fillSearchOptionsAvailable:(NSString *)searchText
 {
+    countPaginations = 0;
+    
+    _searchPicturesArray = nil;
+    _searchResultsData = nil;
+    
     NSString *user = [NSString stringWithFormat:@"Search for users: \"%@\"", searchText];
     NSString *hashtag = [NSString stringWithFormat:@"Search for hashtags: \"%@\"", searchText];
     NSString *location = [NSString stringWithFormat:@"Search for locations: \"%@\"", searchText];
@@ -104,8 +114,8 @@
 -(void)fillAutoCompleteSearchDataWithHashTags:(NSString *)searchText
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayHashTagData) name:@"done parsing hashtag" object:nil];
-    _hashTag = nil;
-    _hashTag = [[HashTagSearch alloc] init];
+//    _hashTag = nil;
+//    _hashTag = [[HashTagSearch alloc] init];
     [_hashTag fillAutoCompleteSearchDataWithHashTags:searchText];
 }
 
@@ -132,8 +142,8 @@
 {
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displaySearchResults) name:@"location search done" object:nil];
-    _location = nil;
-    _location = [[LocationSearch alloc] init];
+//    _location = nil;
+//    _location = [[LocationSearch alloc] init];
     [_location performSearch:searchText];
     
 //    location search done
@@ -172,6 +182,8 @@
 
 -(void)searchUsernameWithName:(NSString *)userID
 {
+    userIDPrivate = userID;
+    
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"users/%d/media/recent", userID.intValue], @"method", nil];
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     [appDelegate.instagram requestWithParams:params delegate:self];
@@ -206,7 +218,7 @@
 
 }
 
--(void)setSearchResultsData:(NSMutableOrderedSet *)searchResultsData
+-(void)setSearchResultsData:(NSMutableSet *)searchResultsData
 {
     if (_searchResultsData == searchResultsData)
     {
@@ -214,7 +226,7 @@
     }
     if (_searchResultsData == nil)
     {
-        _searchResultsData = [[NSMutableOrderedSet alloc] init];
+        _searchResultsData = [[NSMutableSet alloc] init];
     }
     _searchResultsData = searchResultsData;
     
@@ -236,39 +248,86 @@
 
 #pragma mark - Parse Data
 
--(void)parseData
+-(void)parseDataWithSearchType
 {
+    //TODO: Display error on no pictures or whatever
+    
+    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     if (_searchPicturesArray == nil)
     {
         _searchPicturesArray = [[NSMutableOrderedSet alloc] init];
     }
-    
-    if ([_searchResultsData count] == 0)
+    if (_searchResultsWithLocation == nil)
     {
-        //load more data (send another request)
+        _searchResultsWithLocation = [[NSMutableOrderedSet alloc] init];
     }
-    if ([_searchPicturesArray count] <= 4)
+    
+    if ([_searchResultsData count] == 0 && ([_searchPicturesArray count] <= 6) && (_lock == NO) && (mostRecentMaxTagID != nil))
     {
-        //preload frmom searchResultsData
-        [self zoomToNextPicture];
-        [self parseNextPicture];
+        if (appDelegate.mapVC.searchType == USER)
+        {
+            [self searchUsernameWithName:userIDPrivate andMaxID:mostRecentMaxTagID];
+        }
+        else if(appDelegate.mapVC.searchType == HASHTAG)
+        {
+            [self searchHashTagWithName:appDelegate.mapVC.searchField.text andMaxID:mostRecentMaxTagID];
+        }
     }
     else
     {
         [self zoomToNextPicture];
+   
     }
+//    if ([_searchPicturesArray count] <= 3)
+//    {
+//        [self zoomToNextPicture];
+//        [self parseNextPicture];
+//    }
+//    else
+//    {
+//        [self zoomToNextPicture];
+//
+//    }
     
     
+//    if ([_searchResultsWithLocation count] < 5)
+//    {
+//        [self zoomToNextPicture];
+//        [self parseNumber:3 ofImagesInArray:_searchPicturesArray];
+//
+//    }
+//    else
+//    {
+//        [self zoomToNextPicture];
+//    }
+//    
+//    
     
  
     
  
 }
 
+//-(void)parseNumber:(NSInteger)count ofImagesInArray:(NSMutableOrderedSet *)annotationArray
+//{
+//    for (int i = 0; i < count; i++)
+//    {
+//        if ([annotationArray count] == 0)
+//        {
+//            break;
+//        }
+//        CustomAnnotation *annotation = [annotationArray objectAtIndex:0];
+//        [annotation createNewImage]; //TODO: Call this only when we need to preload
+//        [annotation parseStringOfLocation:annotation.coordinate];
+//        [annotationArray removeObjectAtIndex:0];
+//        
+//    }
+//
+//}
+
 -(void)zoomToNextPicture
 {
     AppDelegate *delegate = [UIApplication sharedApplication].delegate;
-
     if ([_searchPicturesArray count] >= 1)
     {
         CustomAnnotation *myAnnotation = [_searchPicturesArray objectAtIndex:0];
@@ -276,6 +335,10 @@
         [delegate.mapVC.mapView addAnnotation:myAnnotation];
         [_searchPicturesArray removeObjectAtIndex:0];
         
+    }
+    else
+    {
+    
     }
 }
 
@@ -292,6 +355,10 @@
     
     //TODO: pagination
     //... Recent requests return 20 pictures (with or without location) and then give pagination.
+    if (_searchPicturesArray == nil)
+    {
+        _searchPicturesArray = [[NSMutableOrderedSet alloc] init];
+    }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
@@ -299,10 +366,7 @@
 
         for (id pictureURL in _searchResultsData)
         {
-            if (someCounter >= 7)
-            {
-                break;
-            }
+            
             if ( ! [appDelegate.mapVC shouldWeParseThisPicture:pictureURL])
             {
                 continue;
@@ -313,31 +377,31 @@
             }
             
             CustomAnnotation *annotation = [appDelegate.mapVC parseAndReturnAnnotation:pictureURL];
-            NSInteger resultOfCheck = [appDelegate.mapVC checkAnnotationEnums:annotation];
-            
-            if (resultOfCheck == OVERLAP)
-            {
-                continue;
-            }
-            else if (resultOfCheck == DUPLICATE)
-            {
-                //try next pic
-                continue;
-            }
-            else if (resultOfCheck == FLOOD)
-            {
-                //stop loading pictures ffs
-                break;
-            }
-            else if (resultOfCheck == SUCCESS)
-            {
-                //YASS
-            }
+//            NSInteger resultOfCheck = [appDelegate.mapVC checkAnnotationEnums:annotation];
+//            
+//            if (resultOfCheck == OVERLAP)
+//            {
+//                continue;
+//            }
+//            else if (resultOfCheck == DUPLICATE)
+//            {
+//                //try next pic
+//                continue;
+//            }
+//            else if (resultOfCheck == FLOOD)
+//            {
+//                //stop loading pictures ffs
+//                break;
+//            }
+//            else if (resultOfCheck == SUCCESS)
+//            {
+//                //YASS
+//            }
             
             someCounter++;
-            [annotation createNewImage]; //TODO: Call this only when we need to preload
             [appDelegate.mapVC hasFollowedUser:annotation];
-            [annotation parseStringOfLocation:annotation.coordinate]; //We'll do the parse for popular pictures since we only load a few.
+            [annotation createNewImage]; //TODO: Call this only when we need to preload
+            [annotation parseStringOfLocation:annotation.coordinate];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (appDelegate.mapVC.searchType == HASHTAG)
@@ -350,22 +414,73 @@
                 }
                 
                 [_searchPicturesArray addObject:annotation];
-                if (([_searchPicturesArray count]-1) == 0)
-                {
-                    [self zoomToNextPicture];
-                }
+                
             });
         }
         _lock = NO;
+        _searchResultsData = nil;
+        
+        [self performSelectorOnMainThread:@selector(parseDataWithSearchType) withObject:nil waitUntilDone:YES];
     });
+}
+
+-(void)searchUsernameWithName:(NSString *)userID andMaxID:(NSString *)maxID
+{
+    countPaginations = 0;
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"users/%d/media/recent?max_id=%@", userID.intValue, maxID], @"method", nil];
+    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    [appDelegate.instagram requestWithParams:params delegate:self];
+}
+
+-(void)searchHashTagWithName:(NSString *)nameOfTag andMaxID:(NSString *)maxID
+{
+    countPaginations = 0;
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"tags/%@/media/recent?max_id=%@", nameOfTag, maxID], @"method", nil];
+    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    [appDelegate.instagram requestWithParams:params delegate:self];
 }
 
 
 //Same as User.m IGRequestDelegate
 - (void)request:(IGRequest *)request didLoad:(id)result {
     //NSLog(@"Instagram did load: %@", result);
-    [self setSearchResultsData:(NSMutableOrderedSet *)[result objectForKey:@"data"]];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"Search Data Loaded" object:self];
+    if (_searchResultsData == nil)
+    {
+        _searchResultsData = [[NSMutableSet alloc]init];
+    }
+    [_searchResultsData addObjectsFromArray:[result objectForKey:@"data"]];
+
+    
+//    if ([(NSMutableArray*)[result objectForKey:@"pagination"] count] > 1  && (countPaginations < TIMES_TO_PAGINATE))
+//    {
+//        countPaginations++;
+//        NSString* cursor = [result valueForKeyPath:@"pagination.next_max_tag_id"];
+//        mostRecentMaxTagID = cursor;
+//        AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+//        NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"tags/%@/media/recent?max_id=%@", appDelegate.mapVC.searchField.text, cursor], @"method", nil];
+//        [appDelegate.instagram requestWithParams:params delegate:self];
+//    }
+    if ([(NSMutableArray*)[result objectForKey:@"pagination"] count] > 1)
+    {
+        
+        AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+        NSString* cursor = [[NSString alloc] init];
+        if (delegate.mapVC.searchType == USER)
+        {
+            cursor = [result valueForKeyPath:@"pagination.next_max_id"];
+        }
+        else
+        {
+            cursor = [result valueForKeyPath:@"pagination.next_max_tag_id"];
+        }
+        mostRecentMaxTagID = cursor;
+        [self performSelectorOnMainThread:@selector(parseNextPicture) withObject:nil waitUntilDone:YES];
+
+    }
+    else
+    {
+        [self performSelectorOnMainThread:@selector(parseNextPicture) withObject:nil waitUntilDone:YES];
+    }
 }
 
 - (void)request:(IGRequest *)request didFailWithError:(NSError *)error {

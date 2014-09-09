@@ -25,7 +25,6 @@
 
 -(void)fillAutoCompleteSearchDataWithHashTags:(NSString *)searchText
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseHashTagData) name:@"parse hashtag" object:nil];
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"tags/%@", searchText], @"method", nil];
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     [appDelegate.instagram requestWithParams:params delegate:self];
@@ -57,8 +56,7 @@
     //NSLog(@"Instagram did load: %@", result);
     _hashTagData = (NSMutableArray *)[result objectForKey:@"data"];
     
-    // [[NSNotificationCenter defaultCenter] postNotificationName:@"Load Geo" object:self];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"parse hashtag" object:self];
+    [self performSelectorOnMainThread:@selector(parseHashTagData) withObject:nil waitUntilDone:YES];
 }
 
 - (void)request:(IGRequest *)request didFailWithError:(NSError *)error {

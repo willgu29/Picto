@@ -102,7 +102,6 @@ const double SCALE_FACTOR = 500.0;
     _autoCompleteTableView.dataSource = self;
     _autoCompleteTableView.scrollEnabled = YES;
     
-    _searchData = [[SearchData alloc] init];
     //1.
     _someUser = [[User alloc] init];
     [self loadFollowing];
@@ -557,6 +556,7 @@ const double SCALE_FACTOR = 500.0;
     //TODO: Optimize
 //    for (CustomAnnotation* arrayAnnotation in _mapView.annotations)
 //            {
+    // !!!: NSSetM addobject object can't be nil uncaught exception (on nextButton spam)
     for (int i = 0; i < [_mapView.annotations count]; i++)
     {
         CustomAnnotation *arrayAnnotation = [_mapView.annotations objectAtIndex:i];
@@ -1039,6 +1039,12 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 -(void) textFieldDidBeginEditing:(UITextField *)textField
 {
+    _searchData = nil;
+    if (_searchData == nil)
+    {
+        _searchData = [[SearchData alloc] init];
+
+    }
     //TODO: Animate into view
     NSLog(@"Did being editing");
     [self mapView:_mapView didDeselectAnnotationView:nil];
@@ -1192,9 +1198,15 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     [self stopAnnotationTimer];
     [_mapView removeAnnotations :_mapView.annotations];
     
+    if (_searchType == LOCATION)
+    {
+        //for now..
+        _searchField.text = @"";
+        _searchType = 0;
+    }
     if (_searchType != 0)
     {
-        [_searchData parseData];
+        [_searchData parseDataWithSearchType];
         return;
     }
     
@@ -1470,6 +1482,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     }
     if (! ([baseDisplay.name rangeOfString:@"No matches found"].location == NSNotFound))
     {
+        _searchField.text = @"";
         [self textFieldDidEndEditing:_searchField];
         [_searchField resignFirstResponder];
         return;
