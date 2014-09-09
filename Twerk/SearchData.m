@@ -13,7 +13,24 @@
 #import "UserDisplay.h"
 #import "HashDisplay.h"
 #import "LocationDisplay.h"
+#import "CustomAnnotation.h"
+#import "MapViewController.h"
 @implementation SearchData
+
+-(instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseData) name:@"Search Data Loaded" object:nil];
+    }
+    return self;
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 -(void)setAutoCompleteSearchData:(NSArray *)autoCompleteSearchData
 {
@@ -29,6 +46,8 @@
     
     
 }
+
+#pragma mark -Fill TableView with entries
 
 -(void)fillSearchOptionsAvailable:(NSString *)searchText
 {
@@ -46,13 +65,12 @@
 }
 
 
--(void)fillAutoCompleteSearchData
-{
-    //TODO: place actual data here
-    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:@[@"Los Angeles",@"California", @"Boston", @"UCLA", @"Will Gu", @"willgu29", @"#cars", @"#hot", @"#tfmgirls"]];
-    [self setAutoCompleteSearchData:array];
-    
-}
+//-(void)fillAutoCompleteSearchData
+//{
+//    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:@[@"Los Angeles",@"California", @"Boston", @"UCLA", @"Will Gu", @"willgu29", @"#cars", @"#hot", @"#tfmgirls"]];
+//    [self setAutoCompleteSearchData:array];
+//    
+//}
 
 
 -(void)fillAutoCompleteSearchDataWithUsers:(NSString *)searchText withArrayOfFollowing:(NSMutableSet *)parsedFollowing
@@ -149,6 +167,7 @@
 }
 
 
+#pragma mark - Perform IGRequest searches
 
 
 -(void)searchUsernameWithName:(NSString *)userID
@@ -201,12 +220,152 @@
     
 }
 
+-(void)setSearchPicturesArray:(NSMutableOrderedSet *)searchPicturesArray
+{
+    if (_searchPicturesArray == searchPicturesArray)
+    {
+        return;
+    }
+    if (_searchPicturesArray == nil)
+    {
+        _searchPicturesArray = [[NSMutableOrderedSet alloc] init];
+    }
+    _searchPicturesArray = searchPicturesArray;
+    
+}
+
+#pragma mark - Parse Data
+
+-(void)parseData
+{
+    if (_searchPicturesArray == nil)
+    {
+        _searchPicturesArray = [[NSMutableOrderedSet alloc] init];
+    }
+    
+    if ([_searchResultsData count] == 0)
+    {
+        //load more data (send another request)
+    }
+    if ([_searchPicturesArray count] <= 4)
+    {
+        //preload frmom searchResultsData
+        [self zoomToNextPicture];
+        [self parseNextPicture];
+    }
+    else
+    {
+        [self zoomToNextPicture];
+    }
+    
+    
+    
+ 
+    
+ 
+}
+
+-(void)zoomToNextPicture
+{
+    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+
+    if ([_searchPicturesArray count] >= 1)
+    {
+        CustomAnnotation *myAnnotation = [_searchPicturesArray objectAtIndex:0];
+        [delegate.mapVC zoomToRegion:myAnnotation.coordinate withLatitude:50 withLongitude:50 withMap:delegate.mapVC.mapView];
+        [delegate.mapVC.mapView addAnnotation:myAnnotation];
+        [_searchPicturesArray removeObjectAtIndex:0];
+        
+    }
+}
+
+-(void)parseNextPicture
+{
+    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    
+    if (_lock == YES)
+    {
+        return;
+    }
+    
+    _lock = YES;
+    
+    //TODO: pagination
+    //... Recent requests return 20 pictures (with or without location) and then give pagination.
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
+        int someCounter = 0;
+
+        for (id pictureURL in _searchResultsData)
+        {
+            if (someCounter >= 7)
+            {
+                break;
+            }
+            if ( ! [appDelegate.mapVC shouldWeParseThisPicture:pictureURL])
+            {
+                continue;
+            }
+            else
+            {
+                //We good
+            }
+            
+            CustomAnnotation *annotation = [appDelegate.mapVC parseAndReturnAnnotation:pictureURL];
+            NSInteger resultOfCheck = [appDelegate.mapVC checkAnnotationEnums:annotation];
+            
+            if (resultOfCheck == OVERLAP)
+            {
+                continue;
+            }
+            else if (resultOfCheck == DUPLICATE)
+            {
+                //try next pic
+                continue;
+            }
+            else if (resultOfCheck == FLOOD)
+            {
+                //stop loading pictures ffs
+                break;
+            }
+            else if (resultOfCheck == SUCCESS)
+            {
+                //YASS
+            }
+            
+            someCounter++;
+            [annotation createNewImage]; //TODO: Call this only when we need to preload
+            [appDelegate.mapVC hasFollowedUser:annotation];
+            [annotation parseStringOfLocation:annotation.coordinate]; //We'll do the parse for popular pictures since we only load a few.
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (appDelegate.mapVC.searchType == HASHTAG)
+                {
+                    annotation.isHashTag = YES;
+                }
+                else
+                {
+                    annotation.isFriend = YES;
+                }
+                
+                [_searchPicturesArray addObject:annotation];
+                if (([_searchPicturesArray count]-1) == 0)
+                {
+                    [self zoomToNextPicture];
+                }
+            });
+        }
+        _lock = NO;
+    });
+}
+
+
 //Same as User.m IGRequestDelegate
 - (void)request:(IGRequest *)request didLoad:(id)result {
     //NSLog(@"Instagram did load: %@", result);
     [self setSearchResultsData:(NSMutableOrderedSet *)[result objectForKey:@"data"]];
-    
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"Next Array Data Loaded" object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Search Data Loaded" object:self];
 }
 
 - (void)request:(IGRequest *)request didFailWithError:(NSError *)error {

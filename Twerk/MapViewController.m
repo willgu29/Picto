@@ -36,14 +36,7 @@ const NSInteger LOAD_DATA_UPPER = 10000;
 
 const double SCALE_FACTOR = 500.0;
 
-enum {
-    DUPLICATE = 1, //trying to add duplicate annotation
-    FLOOD = 2, //... too many annotations being displayed
-    OVERLAP = 3, //annotation views high chance of overlap (i.e. same location)
-    SUCCESS = 69
-    
-};
-typedef NSInteger AnnotationCheck;
+
 //Picture Border Types: (APPLY TO annotationView.layer.borderColor) (Or rather just change colorType and call updateTheBorderColor....)
 //******************************
 /*
@@ -849,6 +842,12 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     //This will turn yellow border back to white should we happen to zoom out too far or scroll the annotation out of view
     annotationView.layer.borderWidth = 3.0f;
     annotationView.layer.borderColor = [UIColor whiteColor].CGColor;
+    if ([(CustomAnnotation *)annotation isHashTag] == YES)
+    {
+        [(CustomAnnotation *)annotationView.annotation setColorType:[UIColor greenColor]];
+        annotationView = [self updateTheBorderColorOnViewToMatchTheAnnotationType:annotationView];
+        [self.view bringSubviewToFront:annotationView];
+    }
     if ([(CustomAnnotation *)annotation isPopular] == YES)
     {
         [(CustomAnnotation *)annotationView.annotation setColorType:[UIColor blueColor]];
@@ -861,6 +860,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         annotationView = [self updateTheBorderColorOnViewToMatchTheAnnotationType:annotationView];
         [self.view bringSubviewToFront:annotationView];
     }
+    
     
     return annotationView;
 }
@@ -1192,20 +1192,13 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     [self stopAnnotationTimer];
     [_mapView removeAnnotations :_mapView.annotations];
     
-//    
-//    if (_picturesPopular == nil)
-//    {
-//        _picturesPopular = [[NSMutableOrderedSet alloc] init];
-//        [self setGlobalType:POPULAR];
-//        //[_mapView findPopularImages];
-////        [[NSNotificationCenter defaultCenter] postNotificationName:@"Load Geo" object:self];
-//    }
+    if (_searchType != 0)
+    {
+        [_searchData parseData];
+        return;
+    }
     
     
-//    if (([_picturesArray.nextPicturesSet count]-nextPictureSetCounter) > 4)
-//    {
-//        [self zoomToPopular];
-//    }
     if ([_picturesArray.nextPicturesSet count] > 4)
     {
         [self zoomToPopular];

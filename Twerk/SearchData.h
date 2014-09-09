@@ -13,7 +13,7 @@
 #import "LocationSearch.h"
 
 @interface SearchData : NSObject <IGRequestDelegate>
-
+@property (nonatomic) BOOL lock;
 @property (strong, nonatomic) LocationSearch *location;
 @property (strong, nonatomic) HashTagSearch *hashTag;
 @property (strong, nonatomic) NSArray *autoCompleteSearchData; //OF BaseDisplay or class of
@@ -22,13 +22,15 @@
 
 
 -(void)fillSearchOptionsAvailable:(NSString *)searchText; //initial 3 (users, hashtags, location)
--(void)fillAutoCompleteSearchData;
+//-(void)fillAutoCompleteSearchData;
 
 
 -(void)fillAutoCompleteSearchDataWithUsers:(NSString *)searchText withArrayOfFollowing:(NSMutableSet *)parsedFollowing;
 -(void)fillAutoCompleteSearchDataWithHashTags:(NSString *)searchText;
 -(void)fillAutoCompleteSearchDataWithLocations:(NSString *)searchText;
+-(void)parseData;
 
+-(instancetype)init;
 
 -(void)searchUsernameWithName:(NSString *)userID;
 -(void)searchHashTagWithName:(NSString *)nameOfHashTag;

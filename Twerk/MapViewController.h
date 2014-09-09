@@ -18,6 +18,7 @@
 #import "WGTimer.h"
 #import "PictureArray.h"
 #import "SearchData.h"
+#import "CustomAnnotation.h"
 @class User;
 @class SearchData;
 
@@ -41,6 +42,14 @@ enum {
 };
 typedef NSInteger Search;
 
+enum {
+    DUPLICATE = 1, //trying to add duplicate annotation
+    FLOOD = 2, //... too many annotations being displayed
+    OVERLAP = 3, //annotation views high chance of overlap (i.e. same location)
+    SUCCESS = 69
+    
+};
+typedef NSInteger AnnotationCheck;
 
 //That's a lot of delegates!  Check out the protocols in apple documentation! Weee
 @interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, IGRequestDelegate>
@@ -80,6 +89,11 @@ typedef NSInteger Search;
 
 @property (nonatomic) BOOL isPopularNotFriend;
 
+-(BOOL)shouldWeParseThisPicture:(id)picture;
+-(CustomAnnotation *)parseAndReturnAnnotation:(id)pictureURL;
+-(NSInteger)checkAnnotationEnums:(CustomAnnotation *)annotation;
+-(void)hasFollowedUser:(CustomAnnotation *)annotation;
+-(void)zoomToRegion:(CLLocationCoordinate2D)coordinate withLatitude:(CLLocationDistance)latitude withLongitude:(CLLocationDistance)longitude withMap:(MKMapView *)map;
 @end
 
 
