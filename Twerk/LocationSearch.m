@@ -9,6 +9,7 @@
 #import "LocationSearch.h"
 #import <MapKit/MapKit.h>
 #import "AppDelegate.h"
+#import "LocationDisplay.h"
 
 @implementation LocationSearch
 
@@ -47,7 +48,9 @@
              for (MKMapItem *item in response.mapItems)
              {
                  //add to array
-                 [_searchResults addObject:item];
+//                 [_searchResults addObject:item];
+                 LocationDisplay *display = [[LocationDisplay alloc] initWithName:item.name andCoordinate:item.placemark.coordinate andURL:item.url andPlacemark:item.placemark];
+                 [_searchResults addObject:display];
                  NSLog(@"name = %@", item.name);
                  NSLog(@"Phone = %@", item.phoneNumber);
                  NSLog(@"URL = %@", item.url);

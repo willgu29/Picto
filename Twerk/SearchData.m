@@ -15,7 +15,7 @@
 #import "LocationDisplay.h"
 @implementation SearchData
 
--(void)setAutoCompleteSearchData:(NSMutableArray *)autoCompleteSearchData
+-(void)setAutoCompleteSearchData:(NSArray *)autoCompleteSearchData
 {
     if (_autoCompleteSearchData == autoCompleteSearchData)
     {
@@ -23,7 +23,7 @@
     }
     if (_autoCompleteSearchData == nil)
     {
-        _autoCompleteSearchData = [[NSMutableArray alloc] init];
+        _autoCompleteSearchData = [[NSArray alloc] init];
     }
     _autoCompleteSearchData = autoCompleteSearchData;
     
@@ -128,13 +128,7 @@
     }
     else
     {
-        NSMutableSet *names = [[NSMutableSet alloc] init];
-        for (MKMapItem* mapItem in _location.searchResults)
-        {
-            [names addObject:mapItem.name];
-        }
-        NSArray *array = [NSArray arrayWithArray:[names allObjects]];
-        [self setAutoCompleteSearchData:array];
+        [self setAutoCompleteSearchData:_location.searchResults];
         
     }
 }

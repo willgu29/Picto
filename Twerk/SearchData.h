@@ -16,7 +16,7 @@
 
 @property (strong, nonatomic) LocationSearch *location;
 @property (strong, nonatomic) HashTagSearch *hashTag;
-@property (strong, nonatomic) NSMutableArray *autoCompleteSearchData; //OF NSSTRING * (for tableView)
+@property (strong, nonatomic) NSArray *autoCompleteSearchData; //OF BaseDisplay or class of
 @property (strong, nonatomic) NSMutableOrderedSet *searchResultsData; //For IGRequestDelegate (non parsed data)
 @property (strong, nonatomic) NSMutableOrderedSet *searchPicturesArray; //Parsed
 
