@@ -8,7 +8,11 @@
 
 #import "SearchData.h"
 #import "AppDelegate.h"
-
+#import "UserData.h"
+#import "BaseDisplay.h"
+#import "UserDisplay.h"
+#import "HashDisplay.h"
+#import "LocationDisplay.h"
 @implementation SearchData
 
 -(void)setAutoCompleteSearchData:(NSMutableArray *)autoCompleteSearchData
@@ -31,7 +35,13 @@
     NSString *user = [NSString stringWithFormat:@"Search for users: \"%@\"", searchText];
     NSString *hashtag = [NSString stringWithFormat:@"Search for hashtags: \"%@\"", searchText];
     NSString *location = [NSString stringWithFormat:@"Search for locations: \"%@\"", searchText];
-    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:@[user, hashtag, location]];
+    
+    BaseDisplay *user1 = [[BaseDisplay alloc] initWithName:user];
+    BaseDisplay *hashtag1 = [[BaseDisplay alloc] initWithName:hashtag];
+    BaseDisplay *location1 = [[BaseDisplay alloc] initWithName:location];
+    
+    
+    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:@[user1, hashtag1, location1]];
     [self setAutoCompleteSearchData:array];
 }
 
@@ -48,17 +58,25 @@
 -(void)fillAutoCompleteSearchDataWithUsers:(NSString *)searchText withArrayOfFollowing:(NSMutableSet *)parsedFollowing
 {
     NSString *predicateFormat = @"%K BEGINSWITH[cd] %@";
-    NSString *searchAttribute = @"self";
-//    NSString *searchAttribute = @"username";
+//    NSString *searchAttribute = @"self";
+    NSString *searchAttribute = @"self.name";
     NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateFormat, searchAttribute, searchText];
     
     //BEGINSWITH, ENDSWITH LIKE MATCHES CONTAINS
     NSArray *array = [NSArray arrayWithArray:[parsedFollowing allObjects]];
+//    NSMutableArray *nameArray = [[NSMutableArray alloc] init];
+//    for (UserData* user in parsedFollowing)
+//    {
+//        [nameArray addObject:user.name];
+//    }
+//    
     [self setAutoCompleteSearchData:[array filteredArrayUsingPredicate:predicate]];
+    
     
     if ([_autoCompleteSearchData count] == 0)
     {
-        [self setAutoCompleteSearchData:@[@"No matches found"]];
+//        UserData *nilData = [[UserData alloc] initWithUsername:@"No matches found" andID:nil andProfilePicURL:nil];
+        [self setAutoCompleteSearchData:[self createNoMatchesArray]];
         //TODO: add some suggestions
     }
 }
@@ -77,7 +95,7 @@
     if ([_hashTag mediaCount] == 0)
     {
         //TODO: add some suggestions
-        [self setAutoCompleteSearchData:@[@"No matches found"]];
+        [self setAutoCompleteSearchData:[self createNoMatchesArray]];
     }
     else
     {
@@ -106,7 +124,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"location search done" object:nil];
     if ([_location.searchResults count] == 0)
     {
-        [self setAutoCompleteSearchData:@[@"No matches found"]];
+        [self setAutoCompleteSearchData:[self createNoMatchesArray]];
     }
     else
     {
@@ -122,6 +140,12 @@
 }
 
 
+-(NSArray *)createNoMatchesArray
+{
+    BaseDisplay *baseDisplay = [[BaseDisplay alloc] initWithName:@"No matches found"];
+    NSArray *array = @[baseDisplay];
+    return array;
+}
 
 
 

@@ -16,6 +16,9 @@
 #import "CustomCallout.h"
 #import <QuartzCore/QuartzCore.h>
 #import <GLKit/GLKit.h>
+#import "UserData.h"
+#import "BaseDisplay.h"
+#import "UserDisplay.h"
 
 const NSInteger METERS_PER_MILE = 1609.344;
 const NSInteger MAX_ALLOWED_PICTURES = 100; //ON SCREEN
@@ -254,11 +257,15 @@ typedef NSInteger AnnotationCheck;
 
 -(void)parseFollowing
 {
-    _someUser.parsedFollowing = [NSMutableSet set];
+    _someUser.parsedFollowing = [[NSMutableSet alloc] init];
     for (id userData in _someUser.following)
     {
-        NSString *userID = [userData valueForKeyPath:@"username"];
-        [_someUser.parsedFollowing addObject:userID]; //valueForKey:@"username"]
+        NSLog(@"USER: %@", userData);
+        NSString *username = [userData valueForKeyPath:@"username"];
+        NSString *userID = [userData valueForKeyPath:@"id"];
+        NSString *profilePicURL = [userData valueForKeyPath:@"profile_picture"];
+        UserDisplay *data = [[UserDisplay alloc] initWithName:username andID:userID andProfilePicURL:profilePicURL];
+        [_someUser.parsedFollowing addObject:data]; //valueForKey:@"username"]
     }
     
 }
@@ -1439,30 +1446,37 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    //since we don't have one yet, we'll create a generic one
     if (cell == nil)
     {
+        //TODO: if user.. if hashtag... if location
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
     }
     
-    //fill each row with data
-    //TODO: still need data... simply place data in array and place in.
-    cell.textLabel.text = [_searchData.autoCompleteSearchData objectAtIndex:indexPath.row];
+    BaseDisplay *baseDisplay = [_searchData.autoCompleteSearchData objectAtIndex:indexPath.row];
+    cell.textLabel.text = baseDisplay.name;
+    
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    BaseDisplay *baseDisplay = [_searchData.autoCompleteSearchData objectAtIndex:indexPath.row];
+    
     if ([_searchField.text isEqualToString:@""])
     {
         [self textFieldDidEndEditing:_searchField];
         [_searchField resignFirstResponder];
         return;
     }
+    if (! ([baseDisplay.name rangeOfString:@"No matches found"].location == NSNotFound))
+    {
+        [self textFieldDidEndEditing:_searchField];
+        [_searchField resignFirstResponder];
+        return;
+    }
     
-    if (! ([[_searchData.autoCompleteSearchData objectAtIndex:indexPath.row] rangeOfString:@"Search for users"].location == NSNotFound))
+    if (! ([baseDisplay.name rangeOfString:@"Search for users"].location == NSNotFound))
     {
         NSLog(@"Search for users selected");
         //TODO: load user possibilities
@@ -1471,7 +1485,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         _searchType = USER;
         
     }
-    else if (! ([[_searchData.autoCompleteSearchData objectAtIndex:indexPath.row] rangeOfString:@"Search for hashtags"].location == NSNotFound))
+    else if (! ([baseDisplay.name rangeOfString:@"Search for hashtags"].location == NSNotFound))
     {
         NSLog(@"Search for hashtags selected");
         //TODO: load hashtag possibilties
@@ -1479,7 +1493,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         [_searchData fillAutoCompleteSearchDataWithHashTags:_searchField.text];
         _searchType = HASHTAG;
     }
-    else if (! ([[_searchData.autoCompleteSearchData objectAtIndex:indexPath.row] rangeOfString:@"Search for locations"].location == NSNotFound))
+    else if (! ([baseDisplay.name rangeOfString:@"Search for locations"].location == NSNotFound))
     {
         NSLog(@"Search for locations selected");
         //TODO: load location possibilities
@@ -1524,7 +1538,8 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 -(NSString *)getStringAtRow:(NSInteger)row
 {
-    NSString *theString = [_searchData.autoCompleteSearchData objectAtIndex:row];
+    BaseDisplay *baseDisplay = [_searchData.autoCompleteSearchData objectAtIndex:row];
+    NSString *theString = baseDisplay.name;
     return theString;
 }
 

@@ -19,7 +19,9 @@
 //Initial Data Load Array
 @property (strong, nonatomic) NSMutableArray *following; //of who following
 //USERNAME parsed from *following
-@property (strong, nonatomic) NSMutableSet *parsedFollowing; //array of USERNAMES of who user is following
+@property (strong, nonatomic) NSMutableSet *parsedFollowing; //array of UserData of who user is following
+//@property (strong, nonatomic) NSMutableArray *parsedFollowing; //array of UserData of who user is following
+
 
 //Represents the MKUserLocation dot's location
 @property (strong, nonatomic) MKUserLocation *currentLocation;
