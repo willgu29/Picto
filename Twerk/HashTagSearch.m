@@ -17,7 +17,6 @@
     if (self)
     {
         _hashTagData = [[NSMutableArray alloc] init];
-        _hashTagParsed = [[NSMutableArray alloc] init];
     }
     
     return self;
@@ -34,7 +33,8 @@
 {
     //_hasTagData will ALWAYS only have 1 return result
     NSLog(@"HASH: %@", _hashTagData);
-    
+    _hashTagParsed = nil;
+    _hashTagParsed = [[NSMutableArray alloc] init];
 //    NSArray *data = [_hashTagData componentsSeparatedByString:@"\n"];
 //    NSLog(@"Object: %@, Object 2: %@", [data objectAtIndex:0], [data objectAtIndex:1]);
 //    NSLog(@"COUNT: %lu", (unsigned long)[data count]);
