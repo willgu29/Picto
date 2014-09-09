@@ -8,7 +8,7 @@
 
 #import "HashTagSearch.h"
 #import "AppDelegate.h"
-
+#import "HashDisplay.h"
 @implementation HashTagSearch
 
 -(instancetype)init
@@ -16,7 +16,8 @@
     self = [super init];
     if (self)
     {
-        _hashTagData = [[NSArray alloc] init];
+        _hashTagData = [[NSMutableArray alloc] init];
+        _hashTagParsed = [[NSMutableArray alloc] init];
     }
     
     return self;
@@ -42,9 +43,10 @@
     NSString *name = [_hashTagData valueForKeyPath:@"name"];
     NSString *mediaCountString = [_hashTagData valueForKeyPath:@"media_count"];
 
-    _name = name;
-    _mediaCount = mediaCountString.intValue;
-    
+    HashDisplay *display = [[HashDisplay alloc] initWithName:name andMediaCount:mediaCountString.intValue];
+//    _name = name;
+//    _mediaCount = mediaCountString.intValue;
+    [_hashTagParsed addObject:display];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"done parsing hashtag" object:nil];
 //    [[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:@"parse hashtag"];
 }
@@ -53,7 +55,7 @@
 //Same as User.m IGRequestDelegate
 - (void)request:(IGRequest *)request didLoad:(id)result {
     //NSLog(@"Instagram did load: %@", result);
-    _hashTagData = (NSArray *)[result objectForKey:@"data"];
+    _hashTagData = (NSMutableArray *)[result objectForKey:@"data"];
     
     // [[NSNotificationCenter defaultCenter] postNotificationName:@"Load Geo" object:self];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"parse hashtag" object:self];

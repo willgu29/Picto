@@ -10,8 +10,8 @@
 
 @interface HashDisplay : BaseDisplay
 
-@property (strong, nonatomic) NSString *mediaCount;
+@property (nonatomic) NSInteger mediaCount;
 
--(instancetype)initWithName:(NSString *)name andMediaCount:(NSString *)mediaCount;
+-(instancetype)initWithName:(NSString *)name andMediaCount:(NSInteger)mediaCount;
 
 @end

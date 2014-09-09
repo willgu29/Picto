@@ -10,17 +10,27 @@
 
 @implementation LocationDisplay
 
--(instancetype)initWithName:(NSString *)name andCoordinate:(CLLocationCoordinate2D)coordinate andURL:(NSURL *)url andPlacemark:(MKPlacemark *)placemark
+-(instancetype)initWithName:(NSString *)name andItem:(MKMapItem *)item
 {
     self = [super initWithName:name];
     if (self)
     {
-        _coordinate = coordinate;
-        _url = url;
-        _placemark = placemark;
+        _item = item;
     }
-    
     return self;
 }
+
+//-(instancetype)initWithName:(NSString *)name andCoordinate:(CLLocationCoordinate2D)coordinate andURL:(NSURL *)url andPlacemark:(MKPlacemark *)placemark
+//{
+//    self = [super initWithName:name];
+//    if (self)
+//    {
+//        _coordinate = coordinate;
+//        _url = url;
+//        _placemark = placemark;
+//    }
+//    
+//    return self;
+//}
 
 @end

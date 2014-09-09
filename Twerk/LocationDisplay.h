@@ -11,10 +11,15 @@
 
 @interface LocationDisplay : BaseDisplay
 
-@property (nonatomic) CLLocationCoordinate2D coordinate;
-@property (nonatomic,strong) NSURL *url;
-@property (strong, nonatomic) MKPlacemark *placemark;
+@property (strong, nonatomic) MKMapItem *item;
 
--(instancetype)initWithName:(NSString *)name andCoordinate:(CLLocationCoordinate2D)coordinate andURL:(NSURL *)url andPlacemark:(MKPlacemark *)placemark;
+//@property (nonatomic) CLLocationCoordinate2D coordinate;
+//@property (nonatomic,strong) NSURL *url;
+//@property (strong, nonatomic) MKPlacemark *placemark;
+
+
+//-(instancetype)initWithName:(NSString *)name andCoordinate:(CLLocationCoordinate2D)coordinate andURL:(NSURL *)url andPlacemark:(MKPlacemark *)placemark;
+
+-(instancetype)initWithName:(NSString *)name andItem:(MKMapItem *)item;
 
 @end

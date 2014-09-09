@@ -12,9 +12,10 @@
 @interface HashTagSearch : NSObject <IGRequestDelegate>
 
 
-@property (strong, nonatomic) NSArray *hashTagData;
-@property (nonatomic) NSInteger mediaCount;
-@property (strong, nonatomic) NSString *name;
+@property (strong, nonatomic) NSMutableArray *hashTagData;
+@property (strong, nonatomic) NSMutableArray *hashTagParsed;
+//@property (nonatomic) NSInteger mediaCount;
+//@property (strong, nonatomic) NSString *name;
 
 
 -(void)fillAutoCompleteSearchDataWithHashTags:(NSString *)searchText;

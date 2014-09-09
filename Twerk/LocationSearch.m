@@ -49,7 +49,8 @@
              {
                  //add to array
 //                 [_searchResults addObject:item];
-                 LocationDisplay *display = [[LocationDisplay alloc] initWithName:item.name andCoordinate:item.placemark.coordinate andURL:item.url andPlacemark:item.placemark];
+//                 LocationDisplay *display = [[LocationDisplay alloc] initWithName:item.name andCoordinate:item.placemark.coordinate andURL:item.url andPlacemark:item.placemark];
+                 LocationDisplay *display = [[LocationDisplay alloc] initWithName:item.name andItem:item];
                  [_searchResults addObject:display];
                  NSLog(@"name = %@", item.name);
                  NSLog(@"Phone = %@", item.phoneNumber);

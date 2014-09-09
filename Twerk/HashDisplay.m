@@ -10,7 +10,7 @@
 
 @implementation HashDisplay
 
--(instancetype)initWithName:(NSString *)name andMediaCount:(NSString *)mediaCount
+-(instancetype)initWithName:(NSString *)name andMediaCount:(NSInteger)mediaCount
 {
     self = [super initWithName:name];
     if (self)

@@ -79,6 +79,8 @@
         [self setAutoCompleteSearchData:[self createNoMatchesArray]];
         //TODO: add some suggestions
     }
+    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+    [delegate.mapVC.autoCompleteTableView reloadData];
 }
 
 -(void)fillAutoCompleteSearchDataWithHashTags:(NSString *)searchText
@@ -92,7 +94,8 @@
 -(void)displayHashTagData
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"done parsing hashtag" object:nil];
-    if ([_hashTag mediaCount] == 0)
+    HashDisplay *display = [_hashTag.hashTagParsed lastObject]; //Only parses 1 hashtag
+    if (display.mediaCount == 0)
     {
         //TODO: add some suggestions
         [self setAutoCompleteSearchData:[self createNoMatchesArray]];
@@ -100,9 +103,11 @@
     else
     {
 //        [self setAutoCompleteSearchData:@[[NSString stringWithFormat:@"%@  %ld",_hashTag.name, (long)_hashTag.mediaCount]]];
-        [self setAutoCompleteSearchData:@[[NSString stringWithFormat:@"%@",_hashTag.name]]];
+        [self setAutoCompleteSearchData:_hashTag.hashTagParsed];
         //TODO: add post count to table view
     }
+    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+    [delegate.mapVC.autoCompleteTableView reloadData];
 }
 
 -(void)fillAutoCompleteSearchDataWithLocations:(NSString *)searchText
@@ -131,6 +136,8 @@
         [self setAutoCompleteSearchData:_location.searchResults];
         
     }
+    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+    [delegate.mapVC.autoCompleteTableView reloadData];
 }
 
 
@@ -144,9 +151,9 @@
 
 
 
--(void)searchUsernameWithName:(NSString *)nameOfUser
+-(void)searchUsernameWithName:(NSString *)userID
 {
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"users/%@/media/recent", nameOfUser], @"method", nil];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"users/%d/media/recent", userID.intValue], @"method", nil];
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     [appDelegate.instagram requestWithParams:params delegate:self];
 }

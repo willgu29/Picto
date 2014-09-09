@@ -1,4 +1,4 @@
-//
+
 //  MapViewController.m
 //  Picto
 //
@@ -19,6 +19,8 @@
 #import "UserData.h"
 #import "BaseDisplay.h"
 #import "UserDisplay.h"
+#import "LocationDisplay.h"
+#import "HashDisplay.h"
 
 const NSInteger METERS_PER_MILE = 1609.344;
 const NSInteger MAX_ALLOWED_PICTURES = 100; //ON SCREEN
@@ -62,7 +64,7 @@ typedef NSInteger AnnotationCheck;
     int nextPictureSetCounter;
 }
 
-@property (weak, nonatomic) IBOutlet UITableView *autoCompleteTableView;
+
 @property (nonatomic) BOOL isMatch;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 
@@ -560,8 +562,12 @@ typedef NSInteger AnnotationCheck;
     }
     //TODO: Overlap
     //TODO: Optimize
-    for (CustomAnnotation* arrayAnnotation in _mapView.annotations)
+//    for (CustomAnnotation* arrayAnnotation in _mapView.annotations)
+//            {
+    for (int i = 0; i < [_mapView.annotations count]; i++)
     {
+        CustomAnnotation *arrayAnnotation = [_mapView.annotations objectAtIndex:i];
+        
         if ([arrayAnnotation isKindOfClass:[MKPointAnnotation class]])
         {
             continue;
@@ -1513,7 +1519,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         [self selectSearchMethod:_searchType withSearchText:string andRow:indexPath.row];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [_autoCompleteTableView performSelector:@selector(reloadData) withObject:nil afterDelay:.5]; //To simulate actually loading
+//    [_autoCompleteTableView performSelector:@selector(reloadData) withObject:nil afterDelay:.5]; //To simulate actually loading
 //    [tableView reloadData]; //TODO: do this after data done loading instead
 
 }
@@ -1522,16 +1528,18 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 {
     if (searchType == USER)
     {
-        [_searchData searchUsernameWithName:searchText];
+        UserDisplay *display = [_searchData.autoCompleteSearchData objectAtIndex:row];
+        [_searchData searchUsernameWithName:display.userID];
     }
     else if (searchType == HASHTAG)
     {
-        [_searchData searchHashTagWithName:searchText];
+        HashDisplay *display = [_searchData.autoCompleteSearchData objectAtIndex:row];
+        [_searchData searchHashTagWithName:display.name];
     }
     else if (searchType == LOCATION)
     {
-        MKMapItem *item = [_searchData.location.searchResults objectAtIndex:row];
-        [_searchData searchLocationWithLocation:item];
+        LocationDisplay *display = [_searchData.autoCompleteSearchData objectAtIndex:row];
+        [_searchData searchLocationWithLocation:display.item];
         // ???: can later make it so next will take them to pictures within that area (currently just zooms there)
     }
 }

@@ -30,7 +30,7 @@
 -(void)fillAutoCompleteSearchDataWithLocations:(NSString *)searchText;
 
 
--(void)searchUsernameWithName:(NSString *)nameOfUser;
+-(void)searchUsernameWithName:(NSString *)userID;
 -(void)searchHashTagWithName:(NSString *)nameOfHashTag;
 -(void)searchLocationWithName:(NSString *)nameOfLocation;
 -(void)searchLocationWithLocation:(MKMapItem *)item1;

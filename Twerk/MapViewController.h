@@ -54,6 +54,7 @@ typedef NSInteger Search;
 @property (atomic) BOOL lock;
 
 //Our map view will have the actual map and a search bar.
+@property (weak, nonatomic) IBOutlet UITableView *autoCompleteTableView;
 @property (strong, atomic) IBOutlet WGMap *mapView; //custom map view with new methods to use!
 @property (strong, nonatomic) IBOutlet UITextField *searchField; //There's actually a UISearchBar class (oops)... we can switch this out later. Should be simple since UISearchBar is a subclass of UITextField...
 @property (nonatomic) NSInteger globalType; //All vs recent
