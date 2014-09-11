@@ -30,6 +30,9 @@
 		84A2819D19C12825001AAC1F /* TVTableSettingsViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84A2819B19C12825001AAC1F /* TVTableSettingsViewCell.xib */; };
 		84A281A019C12874001AAC1F /* TVSettingsObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A2819F19C12874001AAC1F /* TVSettingsObject.m */; };
 		84A281A419C181DD001AAC1F /* BoxManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A281A319C181DD001AAC1F /* BoxManager.m */; };
+		84A281AD19C2403B001AAC1F /* BoxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A281AB19C2403B001AAC1F /* BoxViewController.m */; };
+		84A281AE19C2403B001AAC1F /* BoxViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84A281AC19C2403B001AAC1F /* BoxViewController.xib */; };
+		84A281B219C2412C001AAC1F /* BoxFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A281B119C2412C001AAC1F /* BoxFinder.m */; };
 		84B15D2D19995F2100F94E9C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84B15D2C19995F2100F94E9C /* QuartzCore.framework */; };
 		84B15D2F19995FCB00F94E9C /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84B15D2E19995FCB00F94E9C /* CoreImage.framework */; };
 		84B15D39199ADDA500F94E9C /* lulsides.png in Resources */ = {isa = PBXBuildFile; fileRef = 84B15D38199ADDA500F94E9C /* lulsides.png */; };
@@ -129,6 +132,11 @@
 		84A2819F19C12874001AAC1F /* TVSettingsObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVSettingsObject.m; sourceTree = "<group>"; };
 		84A281A219C181DD001AAC1F /* BoxManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoxManager.h; sourceTree = "<group>"; };
 		84A281A319C181DD001AAC1F /* BoxManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoxManager.m; sourceTree = "<group>"; };
+		84A281AA19C2403B001AAC1F /* BoxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoxViewController.h; sourceTree = "<group>"; };
+		84A281AB19C2403B001AAC1F /* BoxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoxViewController.m; sourceTree = "<group>"; };
+		84A281AC19C2403B001AAC1F /* BoxViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BoxViewController.xib; sourceTree = "<group>"; };
+		84A281B019C2412C001AAC1F /* BoxFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoxFinder.h; sourceTree = "<group>"; };
+		84A281B119C2412C001AAC1F /* BoxFinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoxFinder.m; sourceTree = "<group>"; };
 		84B15D2C19995F2100F94E9C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		84B15D2E19995FCB00F94E9C /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		84B15D38199ADDA500F94E9C /* lulsides.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lulsides.png; sourceTree = "<group>"; };
@@ -269,8 +277,21 @@
 			children = (
 				84A281A219C181DD001AAC1F /* BoxManager.h */,
 				84A281A319C181DD001AAC1F /* BoxManager.m */,
+				84A281AA19C2403B001AAC1F /* BoxViewController.h */,
+				84A281AB19C2403B001AAC1F /* BoxViewController.m */,
+				84A281AC19C2403B001AAC1F /* BoxViewController.xib */,
+				84A281AF19C24111001AAC1F /* Data */,
 			);
 			name = BoxMode;
+			sourceTree = "<group>";
+		};
+		84A281AF19C24111001AAC1F /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				84A281B019C2412C001AAC1F /* BoxFinder.h */,
+				84A281B119C2412C001AAC1F /* BoxFinder.m */,
+			);
+			name = Data;
 			sourceTree = "<group>";
 		};
 		84DA0D0F18F92C2B00DE364F = {
@@ -547,6 +568,7 @@
 				C7808E8D19B05FFA002E525E /* iTunesArtwork.png in Resources */,
 				8461E9501950188F00E2D809 /* ShareViewController.xib in Resources */,
 				C7808E8419B05FFA002E525E /* AppIcon50x50@2x.png in Resources */,
+				84A281AE19C2403B001AAC1F /* BoxViewController.xib in Resources */,
 				8461E944194ED2C300E2D809 /* LoginViewController.xib in Resources */,
 				846F8A48196498AE000401E8 /* MapViewController.xib in Resources */,
 				C7808E8C19B05FFA002E525E /* AppIcon76x76@2x.png in Resources */,
@@ -593,9 +615,11 @@
 				84A2819C19C12825001AAC1F /* TVTableSettingsViewCell.m in Sources */,
 				84068DA2196B4EFA0053355C /* Friend.m in Sources */,
 				84F250011977630200013F47 /* Instagram.m in Sources */,
+				84A281B219C2412C001AAC1F /* BoxFinder.m in Sources */,
 				846F8A47196498AE000401E8 /* MapViewController.m in Sources */,
 				8438BF1D19BE815C00E5B4FA /* LocationDisplay.m in Sources */,
 				84F250001977630200013F47 /* IGRequest.m in Sources */,
+				84A281AD19C2403B001AAC1F /* BoxViewController.m in Sources */,
 				84F24FEF1975F17300013F47 /* WGMap.m in Sources */,
 				84A281A019C12874001AAC1F /* TVSettingsObject.m in Sources */,
 				84DEE2AF19BA5285004C58E4 /* SettingsTableViewController.m in Sources */,
