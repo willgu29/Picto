@@ -32,6 +32,7 @@
 		84A2819C19C12825001AAC1F /* TVTableSettingsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A2819A19C12825001AAC1F /* TVTableSettingsViewCell.m */; };
 		84A2819D19C12825001AAC1F /* TVTableSettingsViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84A2819B19C12825001AAC1F /* TVTableSettingsViewCell.xib */; };
 		84A281A019C12874001AAC1F /* TVSettingsObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A2819F19C12874001AAC1F /* TVSettingsObject.m */; };
+		84A281A419C181DD001AAC1F /* BoxManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A281A319C181DD001AAC1F /* BoxManager.m */; };
 		84B15D2D19995F2100F94E9C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84B15D2C19995F2100F94E9C /* QuartzCore.framework */; };
 		84B15D2F19995FCB00F94E9C /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84B15D2E19995FCB00F94E9C /* CoreImage.framework */; };
 		84B15D39199ADDA500F94E9C /* lulsides.png in Resources */ = {isa = PBXBuildFile; fileRef = 84B15D38199ADDA500F94E9C /* lulsides.png */; };
@@ -135,6 +136,8 @@
 		84A2819B19C12825001AAC1F /* TVTableSettingsViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TVTableSettingsViewCell.xib; sourceTree = "<group>"; };
 		84A2819E19C12874001AAC1F /* TVSettingsObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVSettingsObject.h; sourceTree = "<group>"; };
 		84A2819F19C12874001AAC1F /* TVSettingsObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVSettingsObject.m; sourceTree = "<group>"; };
+		84A281A219C181DD001AAC1F /* BoxManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoxManager.h; sourceTree = "<group>"; };
+		84A281A319C181DD001AAC1F /* BoxManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoxManager.m; sourceTree = "<group>"; };
 		84B15D2C19995F2100F94E9C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		84B15D2E19995FCB00F94E9C /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		84B15D38199ADDA500F94E9C /* lulsides.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lulsides.png; sourceTree = "<group>"; };
@@ -272,6 +275,15 @@
 			name = TableData;
 			sourceTree = "<group>";
 		};
+		84A281A119C18191001AAC1F /* BoxMode */ = {
+			isa = PBXGroup;
+			children = (
+				84A281A219C181DD001AAC1F /* BoxManager.h */,
+				84A281A319C181DD001AAC1F /* BoxManager.m */,
+			);
+			name = BoxMode;
+			sourceTree = "<group>";
+		};
 		84DA0D0F18F92C2B00DE364F = {
 			isa = PBXGroup;
 			children = (
@@ -323,6 +335,7 @@
 				8461E940194ED2C300E2D809 /* LoginViewController.h */,
 				8461E941194ED2C300E2D809 /* LoginViewController.m */,
 				8461E942194ED2C300E2D809 /* LoginViewController.xib */,
+				84A281A119C18191001AAC1F /* BoxMode */,
 				84DEE29D19B98937004C58E4 /* Search */,
 				84DEE29919B8E955004C58E4 /* Settings VC */,
 				84DA0D2418F92C2B00DE364F /* Supporting Files */,
@@ -605,6 +618,7 @@
 				84A281A019C12874001AAC1F /* TVSettingsObject.m in Sources */,
 				84DEE2AF19BA5285004C58E4 /* SettingsTableViewController.m in Sources */,
 				84CC1D0E1985967B00AFECC4 /* CustomCallout.m in Sources */,
+				84A281A419C181DD001AAC1F /* BoxManager.m in Sources */,
 				84DA0D2E18F92C2B00DE364F /* AppDelegate.m in Sources */,
 				8461E94F1950188F00E2D809 /* ShareViewController.m in Sources */,
 				84F24FEC1974EBB500013F47 /* SearchData.m in Sources */,

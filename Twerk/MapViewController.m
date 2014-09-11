@@ -58,12 +58,14 @@ const double SCALE_FACTOR = 500.0;
     CGPoint lastPoint;
     BOOL beganInAnnotation;
     UIImageView *tempImageView;
+    BOOL isInBoxMode;
 }
 
 @property (nonatomic, strong) NSMutableArray *paths;
 
 @property (nonatomic) BOOL isMatch;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
+@property (weak, nonatomic) IBOutlet UIImageView *pictoOverlay;
 
 @property (nonatomic) BOOL lockNext;
 
@@ -72,6 +74,29 @@ const double SCALE_FACTOR = 500.0;
 @implementation MapViewController
 
 #pragma mark - Picto
+
+-(IBAction)swipeRightToBox:(id)sender
+{
+    NSLog(@"Switch modes!");
+
+    if (isInBoxMode)
+    {
+        isInBoxMode = NO;
+        UIImage *image = [UIImage imageNamed:@"Overlay 80"];
+        [_pictoOverlay setImage:image];
+
+    }
+    else
+    {
+        isInBoxMode = YES;
+        UIImage *image1 = [UIImage imageNamed:@"Overlay 81"]; //Or 82
+        [_pictoOverlay setImage:image1];
+        
+        
+    }
+    
+    
+}
 
 -(IBAction)returnToHome:(UIButton *)sender
 {
@@ -561,7 +586,7 @@ const double SCALE_FACTOR = 500.0;
     //TODO: Optimize
 //    for (CustomAnnotation* arrayAnnotation in _mapView.annotations)
 //            {
-    // !!!: NSSetM addobject object can't be nil uncaught exception (on nextButton spam) (on just scrolling...) (on clean up map) (out of bounds as well)
+    // !!!: NSSetM addobject object can't be nil uncaught exception (on nextButton spam) (on just scrolling...) (on clean up map) (out of bounds as well) (on next Button non spam)
     for (int i = 0; i < [_mapView.annotations count]; i++)
     {
         CustomAnnotation *arrayAnnotation = [_mapView.annotations objectAtIndex:i];
@@ -635,22 +660,7 @@ const double SCALE_FACTOR = 500.0;
     if (beganInAnnotation)
     {
         UITouch *touch = [[event allTouches] anyObject];
-        CGPoint currentPoint = [touch locationInView:self.view.window];
-        
-        UIGraphicsBeginImageContext(self.view.window.frame.size);
-        [tempImageView.image drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
-        CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
-        CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
-        CGContextSetLineWidth(UIGraphicsGetCurrentContext(), 3.0 );
-        CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
-        
-        CGContextStrokePath(UIGraphicsGetCurrentContext());
-        tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
-        [tempImageView setAlpha:1];
-        UIGraphicsEndImageContext();
-        
-        lastPoint = currentPoint;
+        [self drawLineWithTouch:touch];
     }
     
     
@@ -661,6 +671,27 @@ const double SCALE_FACTOR = 500.0;
 //        
 //    }
     
+}
+
+-(void)drawLineWithTouch:(UITouch *)touch
+{
+
+    CGPoint currentPoint = [touch locationInView:self.view.window];
+    
+    UIGraphicsBeginImageContext(self.view.window.frame.size);
+    [tempImageView.image drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
+    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
+    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
+    CGContextSetLineWidth(UIGraphicsGetCurrentContext(), 3.0 );
+    CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
+    
+    CGContextStrokePath(UIGraphicsGetCurrentContext());
+    tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    [tempImageView setAlpha:1];
+    UIGraphicsEndImageContext();
+    
+    lastPoint = currentPoint;
 }
 
 

@@ -9,6 +9,7 @@
                 <outlet property="autoCompleteTableView" destination="fGV-4b-aA2" id="hfh-PH-33E"/>
                 <outlet property="mapView" destination="Pth-zs-LoA" id="pk8-ei-rzT"/>
                 <outlet property="nextButton" destination="g3Y-Jg-OoV" id="lTP-Ej-jcW"/>
+                <outlet property="pictoOverlay" destination="kvS-8o-GFg" id="K9v-xR-9jZ"/>
                 <outlet property="searchField" destination="RAq-AA-wPQ" id="ml3-8W-dzS"/>
                 <outlet property="type" destination="9Ax-co-X8e" id="TH6-5T-biu"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -26,6 +27,10 @@
                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="Overlay 80" translatesAutoresizingMaskIntoConstraints="NO" id="kvS-8o-GFg">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
                     <autoresizingMask key="autoresizingMask"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="QPx-Il-lPP" appends="YES" id="D8o-Xa-Nqk"/>
+                    </connections>
                 </imageView>
                 <textField clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search" textAlignment="center" minimumFontSize="17" background="Overlay 80" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="RAq-AA-wPQ">
                     <rect key="frame" x="106" y="32" width="159" height="30"/>
@@ -100,6 +105,11 @@
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
+        <swipeGestureRecognizer direction="right" id="QPx-Il-lPP">
+            <connections>
+                <action selector="swipeRightToBox:" destination="-1" id="j8g-MW-cC2"/>
+            </connections>
+        </swipeGestureRecognizer>
     </objects>
     <resources>
         <image name="Overlay 80" width="320" height="81"/>
