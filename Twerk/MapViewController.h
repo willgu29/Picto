@@ -15,7 +15,6 @@
 #import "IGConnect.h"
 #import "WGMap.h"
 #import "User.h"
-#import "WGTimer.h"
 #import "PictureArray.h"
 #import "SearchData.h"
 #import "CustomAnnotation.h"
@@ -91,7 +90,7 @@ typedef NSInteger AnnotationCheck;
 @property (nonatomic) BOOL isInBoxMode;
 
 -(BOOL)shouldWeParseThisPicture:(id)picture;
--(CustomAnnotation *)parseAndReturnAnnotation:(id)pictureURL;
+//-(CustomAnnotation *)parseAndReturnAnnotation:(id)pictureURL;
 -(NSInteger)checkAnnotationEnums:(CustomAnnotation *)annotation;
 -(void)hasFollowedUser:(CustomAnnotation *)annotation;
 -(void)zoomToRegion:(CLLocationCoordinate2D)coordinate withLatitude:(CLLocationDistance)latitude withLongitude:(CLLocationDistance)longitude withMap:(MKMapView *)map;

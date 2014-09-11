@@ -59,16 +59,16 @@
 
 
 //Methods
--(instancetype)initWithLocation:(CLLocationCoordinate2D)location andImageURL:(NSString *)image andEnlarged:(NSString *)imageURLEnlarged andOwner:(NSString *)owner andLikes:(NSString *)likes andTime:(NSString *)createdTime andMediaID:(NSString *)mediaID andUserLiked:(NSString *)userHasLiked andUserID:(NSString *)userID andUsername:(NSString *)username;
+-(instancetype)initWithPictureData:(id)pictureURL;
+
+-(instancetype)initWithLocation:(CLLocationCoordinate2D)location andImageURL:(NSString *)image andEnlarged:(NSString *)imageURLEnlarged andOwner:(NSString *)owner andLikes:(NSString *)likes andTime:(NSString *)createdTime andMediaID:(NSString *)mediaID andUserLiked:(NSString *)userHasLiked andUserID:(NSString *)userID andUsername:(NSString *)username __deprecated_msg("Use initWIthPictureData Instead");
+
 -(void)parseStringOfLocation:(CLLocationCoordinate2D) location; //Use only with popular photos, not normal ones
 
 //TODO: -(instancetype)initWithVideo:(WGVideo *)video;
+
 -(void)createNewImage;
 -(BOOL)isEqualToAnnotation:(CustomAnnotation *)annotation;
 
-
--(instancetype)initWithPhoto:(WGPhoto *)photo __deprecated;
-
--(UIImage *)makeImagePretty:(UIImage *)image __deprecated;
 
 @end

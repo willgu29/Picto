@@ -377,7 +377,7 @@ const NSInteger TIMES_TO_PAGINATE = 0;
                 //We good
             }
             
-            CustomAnnotation *annotation = [appDelegate.mapVC parseAndReturnAnnotation:pictureURL];
+            CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithPictureData:pictureURL];
 //            NSInteger resultOfCheck = [appDelegate.mapVC checkAnnotationEnums:annotation];
 //            
 //            if (resultOfCheck == OVERLAP)

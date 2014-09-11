@@ -18,7 +18,6 @@
 		8438BF1719BE803300E5B4FA /* UserDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 8438BF1619BE803300E5B4FA /* UserDisplay.m */; };
 		8438BF1A19BE810A00E5B4FA /* HashDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 8438BF1919BE810A00E5B4FA /* HashDisplay.m */; };
 		8438BF1D19BE815C00E5B4FA /* LocationDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 8438BF1C19BE815C00E5B4FA /* LocationDisplay.m */; };
-		8439845219AA6BFB002E3047 /* WGTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8439845119AA6BFB002E3047 /* WGTimer.m */; };
 		8439845519AAF93A002E3047 /* MachTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8439845419AAF93A002E3047 /* MachTimer.m */; };
 		8461E93F194ED24700E2D809 /* READ.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 8461E93E194ED24700E2D809 /* READ.rtf */; };
 		8461E943194ED2C300E2D809 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8461E941194ED2C300E2D809 /* LoginViewController.m */; };
@@ -115,8 +114,6 @@
 		8438BF1919BE810A00E5B4FA /* HashDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HashDisplay.m; sourceTree = "<group>"; };
 		8438BF1B19BE815C00E5B4FA /* LocationDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationDisplay.h; sourceTree = "<group>"; };
 		8438BF1C19BE815C00E5B4FA /* LocationDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationDisplay.m; sourceTree = "<group>"; };
-		8439845019AA6BFB002E3047 /* WGTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WGTimer.h; sourceTree = "<group>"; };
-		8439845119AA6BFB002E3047 /* WGTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WGTimer.m; sourceTree = "<group>"; };
 		8439845319AAF93A002E3047 /* MachTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachTimer.h; sourceTree = "<group>"; };
 		8439845419AAF93A002E3047 /* MachTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MachTimer.m; sourceTree = "<group>"; };
 		8461E93E194ED24700E2D809 /* READ.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = READ.rtf; sourceTree = "<group>"; };
@@ -350,8 +347,6 @@
 				84CC1D0C1985967B00AFECC4 /* CustomCallout.h */,
 				84CC1D0D1985967B00AFECC4 /* CustomCallout.m */,
 				84CC1D0F198599DF00AFECC4 /* calloutView.xib */,
-				8439845019AA6BFB002E3047 /* WGTimer.h */,
-				8439845119AA6BFB002E3047 /* WGTimer.m */,
 				8439845319AAF93A002E3047 /* MachTimer.h */,
 				8439845419AAF93A002E3047 /* MachTimer.m */,
 			);
@@ -609,7 +604,6 @@
 				8438BF1419BE801200E5B4FA /* BaseDisplay.m in Sources */,
 				84A2819C19C12825001AAC1F /* TVTableSettingsViewCell.m in Sources */,
 				84068DA2196B4EFA0053355C /* Friend.m in Sources */,
-				8439845219AA6BFB002E3047 /* WGTimer.m in Sources */,
 				84F250011977630200013F47 /* Instagram.m in Sources */,
 				846F8A47196498AE000401E8 /* MapViewController.m in Sources */,
 				8438BF1D19BE815C00E5B4FA /* LocationDisplay.m in Sources */,

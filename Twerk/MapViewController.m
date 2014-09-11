@@ -342,7 +342,8 @@ const double SCALE_FACTOR = 500.0;
                 }
             }
             
-            CustomAnnotation *annotation = [self parseAndReturnAnnotation:pictureURL];
+            CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithPictureData:pictureURL];
+//            CustomAnnotation *annotation = [self parseAndReturnAnnotation:pictureURL];
             
             //We can probably do this right after we check the mediaID (the first thing we should check)
             NSInteger resultOfCheck = [self checkAnnotationEnums:annotation];
@@ -410,8 +411,8 @@ const double SCALE_FACTOR = 500.0;
             
             
            
-            
-            CustomAnnotation *annotation = [self parseAndReturnAnnotation:pictureURL];
+            CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithPictureData:pictureURL];
+//            CustomAnnotation *annotation = [self parseAndReturnAnnotation:pictureURL];
             
             
             //How can we not load the same popular/user feed pictures?
@@ -499,40 +500,6 @@ const double SCALE_FACTOR = 500.0;
 
 
 #pragma mark - Helper Methods for parsing Data
-
--(CustomAnnotation *)parseAndReturnAnnotation:(id)pictureURL
-{
-    //path find to thumbnail image... might want to do this in the modal.. NOT SURE. Will get back to you guys.
-    NSString *stringURL = [pictureURL valueForKeyPath:@"images.thumbnail.url"];
-    NSString *stringURLEnlarged = [pictureURL valueForKeyPath:@"images.standard_resolution.url"];
-    //NSLog(@"url: %@,", stringURLEnlarged);;
-    //Apparently instagram API returns strings or some other id to lat and long.  We'll need CLLocationDegrees however...
-    NSString *lat1 = [pictureURL valueForKeyPath:@"location.latitude"];
-    NSString *lng1 = [pictureURL valueForKeyPath:@"location.longitude"];
-    
-    //Convert to CLLocationDegrees (which is a double)
-    CLLocationDegrees lat = [lat1 doubleValue];
-    CLLocationDegrees lng = [lng1 doubleValue];
-    
-    //CONVERT from CLLocationDegrees TO CLLocationCoordinate2D
-    CLLocationCoordinate2D location = CLLocationCoordinate2DMake(lat, lng);
-    
-    NSString *owner = [pictureURL valueForKeyPath:@"user.full_name"];
-    NSString *userID = [pictureURL valueForKeyPath:@"user.id"];
-    NSString *likes = [pictureURL valueForKeyPath:@"likes.count"];
-    NSString *username = [pictureURL valueForKeyPath:@"user.username"];
-    
-    NSString *createdTime = [pictureURL valueForKeyPath:@"created_time"];
-    NSString *mediaID = [pictureURL valueForKeyPath:@"id"];
-    NSString *userHasLiked = [pictureURL valueForKey:@"user_has_liked"];
-    
-    
-    //Save this object
-    CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithLocation:location andImageURL:stringURL andEnlarged:stringURLEnlarged andOwner:owner andLikes:likes andTime:createdTime andMediaID:mediaID andUserLiked:userHasLiked andUserID:userID andUsername:username];
-    
-    return annotation;
-    
-}
 
 
 -(BOOL)shouldWeParseThisPicture:(id)picture
