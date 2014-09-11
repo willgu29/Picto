@@ -55,8 +55,12 @@ const double SCALE_FACTOR = 500.0;
 {
     int arrayCounter;
     int nextPictureSetCounter;
+    CGPoint lastPoint;
+    BOOL beganInAnnotation;
+    UIImageView *tempImageView;
 }
 
+@property (nonatomic, strong) NSMutableArray *paths;
 
 @property (nonatomic) BOOL isMatch;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
@@ -301,7 +305,9 @@ const double SCALE_FACTOR = 500.0;
             {
                 NSString *pictureIDUser = [pictureURL valueForKeyPath:@"user.username"];
                 
-                if ([_someUser.parsedFollowing containsObject:pictureIDUser] == YES)
+                NSArray *usernames = [_someUser.parsedFollowing valueForKey:@"name"];
+//                if ([_someUser.parsedFollowing containsObject:pictureIDUser] == YES)
+                if ([usernames containsObject:pictureIDUser] == YES)
                 {
                     
                 }
@@ -523,7 +529,8 @@ const double SCALE_FACTOR = 500.0;
 
 -(void)hasFollowedUser:(CustomAnnotation *)annotation
 {
-    if ([_someUser.parsedFollowing containsObject:annotation.username])
+    NSArray *usernames = [_someUser.parsedFollowing valueForKey:@"name"];
+    if ([usernames containsObject:annotation.username])
     {
         annotation.userHasFollowed = YES;
     }
@@ -554,7 +561,7 @@ const double SCALE_FACTOR = 500.0;
     //TODO: Optimize
 //    for (CustomAnnotation* arrayAnnotation in _mapView.annotations)
 //            {
-    // !!!: NSSetM addobject object can't be nil uncaught exception (on nextButton spam) (on just scrolling...) (on clean up map)
+    // !!!: NSSetM addobject object can't be nil uncaught exception (on nextButton spam) (on just scrolling...) (on clean up map) (out of bounds as well)
     for (int i = 0; i < [_mapView.annotations count]; i++)
     {
         CustomAnnotation *arrayAnnotation = [_mapView.annotations objectAtIndex:i];
@@ -595,6 +602,7 @@ const double SCALE_FACTOR = 500.0;
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     NSLog(@"Touches began!");
+    
     UITouch *touch = [[event allTouches] anyObject];
     
     
@@ -611,24 +619,59 @@ const double SCALE_FACTOR = 500.0;
     arrayCounter = 0;
     if([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[MKAnnotationView class]])
     {
-        //This is MKAnnotation! COOL
-        NSLog(@"Began at annotation!");
+        if (tempImageView == nil)
+        {
+            tempImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 568)];
+            [self.view.window addSubview:tempImageView];
+        }
+        beganInAnnotation = YES;
+        lastPoint = [touch locationInView:self.view.window];
     }
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     
-    UITouch *touch = [[event allTouches] anyObject];
-    if([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[MKAnnotationView class]])
+    if (beganInAnnotation)
     {
+        UITouch *touch = [[event allTouches] anyObject];
+        CGPoint currentPoint = [touch locationInView:self.view.window];
+        
+        UIGraphicsBeginImageContext(self.view.window.frame.size);
+        [tempImageView.image drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
+        CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
+        CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
+        CGContextSetLineWidth(UIGraphicsGetCurrentContext(), 3.0 );
+        CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
+        
+        CGContextStrokePath(UIGraphicsGetCurrentContext());
+        tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+        [tempImageView setAlpha:1];
+        UIGraphicsEndImageContext();
+        
+        lastPoint = currentPoint;
     }
+    
+    
+    
+//    UITouch *touch = [[event allTouches] anyObject];
+//    if([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[MKAnnotationView class]])
+//    {
+//        
+//    }
     
 }
 
+
+
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    
+    beganInAnnotation = NO;
+//    tempImageView.image = nil;
+    [tempImageView removeFromSuperview];
+    tempImageView = nil;
+
     NSLog(@"Touches ended!");
     UITouch *touch = [[event allTouches] anyObject];
     if ([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[CustomCallout class]])
@@ -682,7 +725,8 @@ const double SCALE_FACTOR = 500.0;
             NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[someAnnotation imageURLEnlarged]]];
             ((CustomAnnotation*)[view annotation]).imageEnlarged = someAnnotation.imageEnlarged = [[UIImage alloc] initWithData:data];
         }
-        if ([_someUser.parsedFollowing containsObject:someAnnotation.username])
+        NSArray *usernames = [_someUser.parsedFollowing valueForKey:@"name"];
+        if ([usernames containsObject:someAnnotation.username])
         {
             someAnnotation.userHasFollowed = YES;
         }
