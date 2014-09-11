@@ -8,7 +8,6 @@
 
 #import "SearchData.h"
 #import "AppDelegate.h"
-#import "UserData.h"
 #import "BaseDisplay.h"
 #import "UserDisplay.h"
 #import "HashDisplay.h"

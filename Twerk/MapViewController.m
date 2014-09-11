@@ -16,7 +16,6 @@
 #import "CustomCallout.h"
 #import <QuartzCore/QuartzCore.h>
 #import <GLKit/GLKit.h>
-#import "UserData.h"
 #import "BaseDisplay.h"
 #import "UserDisplay.h"
 #import "LocationDisplay.h"
@@ -1861,11 +1860,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         NSLog(@"RECENT");
         [_mapView findRecentImagesOnMapInRange:(_mapView.radius/1.5) inLatitude:_mapView.currentLocation.latitude andLongitude:_mapView.currentLocation.longitude];
     }
-    else if (type == POPULAR)
-    {
-        NSLog(@"POPULAR");
-        [_mapView findPopularImages];
-    }
+    
 }
 
 -(void)cleanUpTimer __deprecated
