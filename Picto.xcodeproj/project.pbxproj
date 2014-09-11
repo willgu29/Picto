@@ -29,6 +29,9 @@
 		846F8A48196498AE000401E8 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 846F8A46196498AE000401E8 /* MapViewController.xib */; };
 		846F8A4C1965C184000401E8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 846F8A4B1965C184000401E8 /* CoreLocation.framework */; };
 		846F8A4E1965D450000401E8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 846F8A4D1965D450000401E8 /* MapKit.framework */; };
+		84A2819C19C12825001AAC1F /* TVTableSettingsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A2819A19C12825001AAC1F /* TVTableSettingsViewCell.m */; };
+		84A2819D19C12825001AAC1F /* TVTableSettingsViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84A2819B19C12825001AAC1F /* TVTableSettingsViewCell.xib */; };
+		84A281A019C12874001AAC1F /* TVSettingsObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A2819F19C12874001AAC1F /* TVSettingsObject.m */; };
 		84B15D2D19995F2100F94E9C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84B15D2C19995F2100F94E9C /* QuartzCore.framework */; };
 		84B15D2F19995FCB00F94E9C /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84B15D2E19995FCB00F94E9C /* CoreImage.framework */; };
 		84B15D39199ADDA500F94E9C /* lulsides.png in Resources */ = {isa = PBXBuildFile; fileRef = 84B15D38199ADDA500F94E9C /* lulsides.png */; };
@@ -127,6 +130,11 @@
 		846F8A46196498AE000401E8 /* MapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
 		846F8A4B1965C184000401E8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		846F8A4D1965D450000401E8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		84A2819919C12825001AAC1F /* TVTableSettingsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVTableSettingsViewCell.h; sourceTree = "<group>"; };
+		84A2819A19C12825001AAC1F /* TVTableSettingsViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVTableSettingsViewCell.m; sourceTree = "<group>"; };
+		84A2819B19C12825001AAC1F /* TVTableSettingsViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TVTableSettingsViewCell.xib; sourceTree = "<group>"; };
+		84A2819E19C12874001AAC1F /* TVSettingsObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVSettingsObject.h; sourceTree = "<group>"; };
+		84A2819F19C12874001AAC1F /* TVSettingsObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVSettingsObject.m; sourceTree = "<group>"; };
 		84B15D2C19995F2100F94E9C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		84B15D2E19995FCB00F94E9C /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		84B15D38199ADDA500F94E9C /* lulsides.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lulsides.png; sourceTree = "<group>"; };
@@ -373,12 +381,17 @@
 		84DEE29919B8E955004C58E4 /* Settings VC */ = {
 			isa = PBXGroup;
 			children = (
+				84A2819919C12825001AAC1F /* TVTableSettingsViewCell.h */,
+				84A2819A19C12825001AAC1F /* TVTableSettingsViewCell.m */,
+				84A2819B19C12825001AAC1F /* TVTableSettingsViewCell.xib */,
 				84068D9A196B250F0053355C /* SideMenuViewController.h */,
 				84068D9B196B250F0053355C /* SideMenuViewController.m */,
 				84068D9C196B250F0053355C /* SideMenuViewController.xib */,
 				84DEE2AC19BA5285004C58E4 /* SettingsTableViewController.h */,
 				84DEE2AD19BA5285004C58E4 /* SettingsTableViewController.m */,
 				84DEE2AE19BA5285004C58E4 /* SettingsTableViewController.xib */,
+				84A2819E19C12874001AAC1F /* TVSettingsObject.h */,
+				84A2819F19C12874001AAC1F /* TVSettingsObject.m */,
 			);
 			name = "Settings VC";
 			sourceTree = "<group>";
@@ -528,6 +541,7 @@
 				C7808E8B19B05FFA002E525E /* AppIcon76x76.png in Resources */,
 				C7808E8619B05FFA002E525E /* AppIcon57x57@2x.png in Resources */,
 				C7808E8219B05FFA002E525E /* AppIcon40x40@2x.png in Resources */,
+				84A2819D19C12825001AAC1F /* TVTableSettingsViewCell.xib in Resources */,
 				84B15D39199ADDA500F94E9C /* lulsides.png in Resources */,
 				84DA0D2818F92C2B00DE364F /* InfoPlist.strings in Resources */,
 				C7808E8919B05FFA002E525E /* AppIcon72x72.png in Resources */,
@@ -580,6 +594,7 @@
 				84ECA6B719BD24AC00757F87 /* LocationSearch.m in Sources */,
 				84DEE29C19B96B64004C58E4 /* PictureArray.m in Sources */,
 				8438BF1419BE801200E5B4FA /* BaseDisplay.m in Sources */,
+				84A2819C19C12825001AAC1F /* TVTableSettingsViewCell.m in Sources */,
 				84068DA2196B4EFA0053355C /* Friend.m in Sources */,
 				8439845219AA6BFB002E3047 /* WGTimer.m in Sources */,
 				84F250011977630200013F47 /* Instagram.m in Sources */,
@@ -587,6 +602,7 @@
 				8438BF1D19BE815C00E5B4FA /* LocationDisplay.m in Sources */,
 				84F250001977630200013F47 /* IGRequest.m in Sources */,
 				84F24FEF1975F17300013F47 /* WGMap.m in Sources */,
+				84A281A019C12874001AAC1F /* TVSettingsObject.m in Sources */,
 				84DEE2AF19BA5285004C58E4 /* SettingsTableViewController.m in Sources */,
 				84CC1D0E1985967B00AFECC4 /* CustomCallout.m in Sources */,
 				84DA0D2E18F92C2B00DE364F /* AppDelegate.m in Sources */,
@@ -693,7 +709,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: William Gu (U79VMUZNWP)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;

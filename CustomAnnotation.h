@@ -34,6 +34,7 @@
 @property (nonatomic, readwrite) BOOL isHashTag;
 @property (nonatomic, readwrite) BOOL userHasLiked;
 @property (nonatomic, readwrite) BOOL userHasFollowed;
+@property (nonatomic, readwrite) BOOL shouldDisplayNow;
 
 //Media ID
 @property (nonatomic, readonly) NSString *mediaID;

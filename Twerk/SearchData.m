@@ -332,6 +332,7 @@ const NSInteger TIMES_TO_PAGINATE = 0;
     {
         CustomAnnotation *myAnnotation = [_searchPicturesArray objectAtIndex:0];
         [delegate.mapVC zoomToRegion:myAnnotation.coordinate withLatitude:50 withLongitude:50 withMap:delegate.mapVC.mapView];
+        myAnnotation.shouldDisplayNow = YES;
         [delegate.mapVC.mapView addAnnotation:myAnnotation];
         [_searchPicturesArray removeObjectAtIndex:0];
         

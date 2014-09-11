@@ -7,6 +7,9 @@
 //
 
 #import "SettingsTableViewController.h"
+#import "TVSettingsObject.h"
+#import "TVTableSettingsViewCell.h"
+#import "MapViewController.h"
 
 @interface SettingsTableViewController ()
 
@@ -18,7 +21,18 @@
 
 -(void)createSettingsArray
 {
-    _settingsArray = @[@"Recent Pictures Only", @"Display Following Only", @"Log Out"];
+    //TODO: Load proper on from correct state
+    TVSettingsObject *row1 = [[TVSettingsObject alloc] initWithMainTitle:@"View Recent or All" andSubText:@"Switch between viewing pictures posted in the last 24 hours or all pictures"];
+    TVSettingsObject *row2 = [[TVSettingsObject alloc] initWithMainTitle:@"View Friends Only" andSubText:@"Picto will only display who you are following when browsing the map"];
+    TVSettingsObject *row3 = [[TVSettingsObject alloc] initWithMainTitle:@"Filler Option" andSubText:@"Something that could possibly go here"];
+    _settingsArray = @[row1, row2, row3];
+}
+
+
+
+-(void)createArrayOfOptionsToDisplay
+{
+    
 }
 
 - (void)viewDidLoad
@@ -31,6 +45,60 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self displayProperButtonHighlights];
+}
+
+-(void)displayProperButtonHighlights
+{
+    [self displayProperFollowing];
+    [self displayProperAllRecent];
+    
+}
+
+-(void)displayProperAllRecent
+{
+    TVSettingsObject *allRecent = [_settingsArray objectAtIndex:0];
+
+    if ([(MapViewController *)self.presentingViewController globalType] == ALL)
+    {
+        allRecent.on = YES;
+    }
+    else if ([(MapViewController *)self.presentingViewController globalType] == RECENT)
+    {
+        allRecent.on = NO;
+    }
+}
+
+-(void)displayProperFollowing
+{
+    TVSettingsObject *friendsOnly = [_settingsArray objectAtIndex:1];
+    if ([(MapViewController *)self.presentingViewController onlyFriends] == YES)
+    {
+        friendsOnly.on = YES;
+    }
+    else
+    {
+        friendsOnly.on = NO;
+    }
+}
+
+
+- (void)removeAllPinsButUserLocation
+{
+    WGMap *myMap = [(MapViewController *)self.presentingViewController mapView];
+    [myMap removeAnnotations:myMap.annotations];
+    
+    
+    // id userLocation = [myMap userLocation];
+    
+    //if ( userLocation != nil ) {
+    //[myMap addAnnotation:userLocation]; // will cause user location pin to blink
+    //[myMap setShowsUserLocation:YES];
+    // }
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,26 +119,55 @@
 {
 #warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return 1;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //FOR custom cell later
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    static NSString *identifier = @"TVTableSettingsViewCell";
     
-    //since we don't have one yet, we'll create a generic one
+    TVTableSettingsViewCell *cell = (TVTableSettingsViewCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+    // Configure the cell...
+    
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        
+        //Use the TVTableViewCell.xib file
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"TVTableSettingsViewCell" owner:self options:nil];
+        cell = [nib objectAtIndex:0];
+        //cell = [[TVTableViewCell alloc] initWithRow:indexPath.row];
+        //cell = [[TVTableViewCell alloc] init];
     }
-    //fill each row with data
-    cell.textLabel.text = [_settingsArray objectAtIndex:indexPath.row];
+    
+    if (indexPath.row >= [_settingsArray count])
+    {
+        //Other settings (Logout, share, etc.)
+        
+        return cell;
+    }
+    
+    TVSettingsObject *myObjectForRow = [_settingsArray objectAtIndex:indexPath.row];
+    
+    cell.mainTitle.text = myObjectForRow.mainTitle;
+    cell.subText.text = myObjectForRow.subText;
+    cell.onOffSwitch.on = myObjectForRow.on;
+    
     return cell;
 }
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] init];
+    //TODO: return a proper view
+    return view;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForHeaderInSection:(NSInteger)section
+{
+    
+    return 80;
+}
+
 
 
 /*

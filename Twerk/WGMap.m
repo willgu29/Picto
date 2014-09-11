@@ -75,6 +75,8 @@ static const int SECONDS_IN_A_DAY = 86400;
     
     
     NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"media/search?lat=%f&lng=%f&max_timestamp=%ld&min_timestamp=%ld&distance=%ld",latitude, longitude,todayInUnix, yesterdayInUnix, (long)rangeInMeters], @"method", nil];
+    if (rangeInMeters > 5000)
+        NSLog(@"Radius %ld is greater than 5000!", (long)rangeInMeters);
     
     //just creates a pointer to our app delegate. Nothing else to understand in this code
     AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;

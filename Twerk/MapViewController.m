@@ -92,7 +92,7 @@ const double SCALE_FACTOR = 500.0;
 {
     [super viewDidLoad];
     
-
+    _zoomToLocationOnLaunch = YES;
     // Do any additional setup after loading the view from its nib.
     _searchField.delegate = self;
     _mapView.delegate = self;
@@ -175,16 +175,15 @@ const double SCALE_FACTOR = 500.0;
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    if (_zoomToLocationOnLaunch == NO)
+        return;
+    
     [_someUser getCurrentLocationOnMap:_mapView]; //get location of user
     //zoom to user location on map
     CLLocationDistance lat = 100;
     CLLocationDistance lng = 100;
     if (_someUser.currentLocation.coordinate.latitude == 0 && _someUser.currentLocation.coordinate.longitude == 0)
     {
-        //REVERT and uncomment here if users begin getting Error Domain on first login
-//        _someUser.currentLocation.coordinate = CLLocationCoordinate2DMake(40, -98); //Approx location center USA
-//        lat = 3000;
-//        lng = 3000;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomStart) name:@"Zoom to map" object:nil];
         [_someUser performSelector:@selector(getCurrentLocationOnMap:) withObject:_mapView afterDelay:1];
         
@@ -192,7 +191,6 @@ const double SCALE_FACTOR = 500.0;
     else
     {
         [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:lat withLongitude:lng withMap:_mapView];
-//        [self zoomToRegion:_mapView.currentLocation withLatitude:50 withLongitude:50 withMap:_mapView];
     }
 
 }
@@ -556,7 +554,7 @@ const double SCALE_FACTOR = 500.0;
     //TODO: Optimize
 //    for (CustomAnnotation* arrayAnnotation in _mapView.annotations)
 //            {
-    // !!!: NSSetM addobject object can't be nil uncaught exception (on nextButton spam)
+    // !!!: NSSetM addobject object can't be nil uncaught exception (on nextButton spam) (on just scrolling...) (on clean up map)
     for (int i = 0; i < [_mapView.annotations count]; i++)
     {
         CustomAnnotation *arrayAnnotation = [_mapView.annotations objectAtIndex:i];
@@ -650,6 +648,10 @@ const double SCALE_FACTOR = 500.0;
             [self startPreloadingFrom:_picturesChosenByDrag];
         });
         [self startAnnotationTimer];
+    }
+    else
+    {
+        [self deselectAllAnnotations];
     }
     
 }
@@ -796,6 +798,15 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     [self updateTheBorderColorOnViewToMatchTheAnnotationType:view];
 }
 
+-(void)deselectAllAnnotations
+{
+    for (UIView *subView in self.view.subviews)
+    {
+        if ([subView isKindOfClass:[CustomCallout class]])
+            [subView removeFromSuperview];
+    }
+}
+
 -(void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view{
     
     //looping through main view views... only remove of class CustomCallout.
@@ -861,6 +872,10 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         [self.view bringSubviewToFront:annotationView];
     }
     
+    if ([(CustomAnnotation *)annotation shouldDisplayNow] == YES)
+    {
+        [self displayCallout:annotationView];
+    }
     
     return annotationView;
 }
@@ -1255,6 +1270,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 //        CustomAnnotation *myAnnotation = [_picturesArray.nextPicturesSet objectAtIndex:nextPictureSetCounter];
 //        nextPictureSetCounter++;
         [self zoomToRegion:myAnnotation.coordinate withLatitude:50 withLongitude:50 withMap:_mapView];
+        myAnnotation.shouldDisplayNow = YES;
         [_mapView addAnnotation:myAnnotation];
 //        [self mapView:_mapView didSelectAnnotationView:<#(MKAnnotationView *)#>
         [_picturesArray.nextPicturesSet removeObjectAtIndex:0];

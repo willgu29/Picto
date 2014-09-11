@@ -44,7 +44,7 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     
-
+    [(MapViewController *)self.presentingViewController setZoomToLocationOnLaunch:NO];
 }
 
 -(void)displayProperButtonHighlights

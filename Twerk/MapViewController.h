@@ -61,7 +61,7 @@ typedef NSInteger AnnotationCheck;
     dispatch_source_t annotationTimer;
 }
 @property (atomic) BOOL lock;
-
+@property (nonatomic) BOOL zoomToLocationOnLaunch;
 //Our map view will have the actual map and a search bar.
 @property (weak, nonatomic) IBOutlet UITableView *autoCompleteTableView;
 @property (strong, atomic) IBOutlet WGMap *mapView; //custom map view with new methods to use!
