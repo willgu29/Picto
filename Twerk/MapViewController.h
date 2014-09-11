@@ -88,6 +88,7 @@ typedef NSInteger AnnotationCheck;
 @property (nonatomic) double prev_zoomLevel;
 
 @property (nonatomic) BOOL isPopularNotFriend;
+@property (nonatomic) BOOL isInBoxMode;
 
 -(BOOL)shouldWeParseThisPicture:(id)picture;
 -(CustomAnnotation *)parseAndReturnAnnotation:(id)pictureURL;

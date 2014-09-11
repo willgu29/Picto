@@ -58,7 +58,6 @@ const double SCALE_FACTOR = 500.0;
     CGPoint lastPoint;
     BOOL beganInAnnotation;
     UIImageView *tempImageView;
-    BOOL isInBoxMode;
 }
 
 @property (nonatomic, strong) NSMutableArray *paths;
@@ -79,16 +78,16 @@ const double SCALE_FACTOR = 500.0;
 {
     NSLog(@"Switch modes!");
 
-    if (isInBoxMode)
+    if (_isInBoxMode)
     {
-        isInBoxMode = NO;
+        _isInBoxMode = NO;
         UIImage *image = [UIImage imageNamed:@"Overlay 80"];
         [_pictoOverlay setImage:image];
 
     }
     else
     {
-        isInBoxMode = YES;
+        _isInBoxMode = YES;
         UIImage *image1 = [UIImage imageNamed:@"Overlay 81"]; //Or 82
         [_pictoOverlay setImage:image1];
         
@@ -121,6 +120,7 @@ const double SCALE_FACTOR = 500.0;
 {
     [super viewDidLoad];
     
+    _isInBoxMode = NO;
     _zoomToLocationOnLaunch = YES;
     // Do any additional setup after loading the view from its nib.
     _searchField.delegate = self;
