@@ -86,20 +86,6 @@ static const int SECONDS_IN_A_DAY = 86400;
     
 }
 
--(void)findPopularImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance)latitude andLongitude:(CLLocationDistance)longitude; //determine possible pictures in a region and put in an array
-{
-    // TODO: Figure how to implement this
-}
-
--(void)findPopularImages //load popular images (regardless of location)
-{
-    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"/media/popular"], @"method", nil];
-    //create pointer to app delegate
-    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
-    //send the instagram property in our appdelehate.h this message "reqeustWithParams: delegate" (based on the instagram iOS SDK
-    [appDelegate.instagram requestWithParams:params delegate:self];
-}
-
 
 
 //Same as User.m IGRequestDelegate
@@ -121,7 +107,7 @@ static const int SECONDS_IN_A_DAY = 86400;
     [alertView show];
 }
 
-// ???: This will remove MKUserLocation and MKPointAnnotations as well (Just be aware) (Ask me (WG) if you want to check and not remove these annotations)
+// ???: This will remove MKUserLocation and MKPointAnnotations as well?
 - (void)cleanupMap {
     NSLog(@"Cleaning up the map!");
     NSSet* visible = [self annotationsInMapRect:[self visibleMapRect]];

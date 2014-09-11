@@ -21,7 +21,7 @@
 @class User;
 @class SearchData;
 
-static const unsigned long long SECONDS_PER_PIC =  1.3;
+static const unsigned long long SECONDS_PER_PIC =  1.4;
 
 enum {
     ALL = 1,
@@ -94,6 +94,7 @@ typedef NSInteger AnnotationCheck;
 -(NSInteger)checkAnnotationEnums:(CustomAnnotation *)annotation;
 -(void)hasFollowedUser:(CustomAnnotation *)annotation;
 -(void)zoomToRegion:(CLLocationCoordinate2D)coordinate withLatitude:(CLLocationDistance)latitude withLongitude:(CLLocationDistance)longitude withMap:(MKMapView *)map;
+-(void)parseFollowing;
 @end
 
 

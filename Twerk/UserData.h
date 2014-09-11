@@ -15,7 +15,6 @@
 @property (strong, nonatomic) NSString *profilePicURL;
 
 -(instancetype)initWithUsername:(NSString *)name andID:(NSString *)ID andProfilePicURL:(NSString *)picURL;
-//- (id)copyWithZone:(NSZone *)zone;
 
 
 @end

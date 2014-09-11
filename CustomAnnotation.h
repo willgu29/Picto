@@ -65,7 +65,7 @@
 
 -(void)parseStringOfLocation:(CLLocationCoordinate2D) location; //Use only with popular photos, not normal ones
 
-//TODO: -(instancetype)initWithVideo:(WGVideo *)video;
+//-(instancetype)initWithVideo:(WGVideo *)video;
 
 -(void)createNewImage;
 -(BOOL)isEqualToAnnotation:(CustomAnnotation *)annotation;

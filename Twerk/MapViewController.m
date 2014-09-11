@@ -135,17 +135,15 @@ const double SCALE_FACTOR = 500.0;
     _someUser = [[User alloc] init];
     [self loadFollowing];
     [self setUpPicturesArray];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseFollowing) name:@"CanParseFollowing" object:nil];
-    //AND 1.1  Happen at the same time
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mapLocationSettled) name:@"Can Find Location" object:nil];
-    //2.
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadLocationGeo) name:@"Load Geo" object:nil];
     //OR 2.1  One or the either are called (Load Geo segways to We should load data)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectMethodForTypeWorkAround) name:@"We should load data" object:nil];
     //3. Allows us to parse data now
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseSelectorMethod) name:@"Images Loaded" object:nil];
     //4.After Popular Photos are loaded and parsed
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomToPopular) name:@"Can Zoom to Popular" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomToPopular) name:@"Can Zoom to Popular" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseNextSelectorMethod) name:@"Next Array Data Loaded" object:nil];
     
@@ -164,24 +162,11 @@ const double SCALE_FACTOR = 500.0;
     {
         _picturesArray = [[PictureArray alloc] init];
     }
-//    [_picturesArray findPopularImages];
     _isPopularNotFriend = NO;
     _lockNext = YES;
     [_picturesArray findFollowingImages];
 }
 
-//-(void)setUpPicturesArray
-//{
-//    //Popular pictures will automatically get its own location data (never use load geo for popular pictures)
-//    if (_picturesPopular == nil)
-//    {
-//        _picturesPopular = [[NSMutableOrderedSet alloc] init];
-//
-//    }
-//    [self setGlobalType:POPULAR];
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"We should load data" object:nil];
-//    
-//}
 
 -(void)setUpSavedData
 {
@@ -193,11 +178,6 @@ const double SCALE_FACTOR = 500.0;
         [[NSUserDefaults standardUserDefaults] setInteger:ALL forKey:@"WGglobalType"];
         [self setGlobalType:ALL];
     }
-//    else if (_globalType == POPULAR)
-//    {
-//        [[NSUserDefaults standardUserDefaults] setInteger:ALL forKey:@"WGglobalType"];
-//        [self setGlobalType:ALL];
-//    }
     
 }
 
@@ -315,7 +295,7 @@ const double SCALE_FACTOR = 500.0;
 
 -(void)parseAll
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         for (id pictureURL in _mapView.possiblePics)
         {
             if ( ! [self shouldWeParseThisPicture:pictureURL])
@@ -538,24 +518,28 @@ const double SCALE_FACTOR = 500.0;
 {
     
     //EXC_BAD_ACCESS here..) (visible was nil)
+    // !!!: The problem is when using next button/search we add an extra annotation and idk.. but it's only out of bounds by 1 index so 
     NSSet* visible = [_mapView annotationsInMapRect:[_mapView visibleMapRect]];
-    if (!visible)
+//    if (!visible)
+    if ([visible count] == 0)
     {
         NSLog(@"CRITICAL ERROR: annotationsInMapRect returned null, continuing even though we shouldn't..");
         return SUCCESS;
     }
-    if ([visible count] > MAX_ALLOWED_PICTURES) //I want the count of pictures on the map
+    if ([visible count] > MAX_ALLOWED_PICTURES)
     {
         NSLog(@"Detecting flood");
         return FLOOD;
     }
-    //TODO: Overlap
-    //TODO: Optimize
-//    for (CustomAnnotation* arrayAnnotation in _mapView.annotations)
-//            {
+ 
     // !!!: NSSetM addobject object can't be nil uncaught exception (on nextButton spam) (on just scrolling...) (on clean up map) (out of bounds as well) (on next Button non spam)
     for (int i = 0; i < [_mapView.annotations count]; i++)
     {
+        if (i >= [_mapView.annotations count])
+        {
+            NSLog(@"ERROR");
+            break;
+        }
         CustomAnnotation *arrayAnnotation = [_mapView.annotations objectAtIndex:i];
         
         if ([arrayAnnotation isKindOfClass:[MKPointAnnotation class]])
@@ -631,13 +615,6 @@ const double SCALE_FACTOR = 500.0;
     }
     
     
-    
-//    UITouch *touch = [[event allTouches] anyObject];
-//    if([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[MKAnnotationView class]])
-//    {
-//        
-//    }
-    
 }
 
 -(void)drawLineWithTouch:(UITouch *)touch
@@ -685,7 +662,7 @@ const double SCALE_FACTOR = 500.0;
     else if ([_picturesChosenByDrag count] > 1)
     {
         [self preloadSingleAnnotation:[[_picturesChosenByDrag firstObject] annotation]];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             [self startPreloadingFrom:_picturesChosenByDrag];
         });
         [self startAnnotationTimer];
@@ -1063,7 +1040,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     MKCoordinateRegion zoomLocation = MKCoordinateRegionMakeWithDistance(coordinate, latitude, longitude);
     //tell the map to zoom to that location (no animation needed here..)
     [map setRegion:zoomLocation animated:NO];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"Can Find Location" object:self];
+    [self performSelector:@selector(mapLocationSettled)];
     
 }
 

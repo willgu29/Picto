@@ -20,7 +20,6 @@ const NSInteger TIMES_TO_PAGINATE = 0;
 
 @implementation SearchData
 {
-    int countPaginations;
     NSString *mostRecentMaxTagID;
     NSString *userIDPrivate;
 }
@@ -56,7 +55,6 @@ const NSInteger TIMES_TO_PAGINATE = 0;
 
 -(void)fillSearchOptionsAvailable:(NSString *)searchText
 {
-    countPaginations = 0;
     
     _searchPicturesArray = nil;
     _searchResultsData = nil;
@@ -75,14 +73,6 @@ const NSInteger TIMES_TO_PAGINATE = 0;
 }
 
 
-//-(void)fillAutoCompleteSearchData
-//{
-//    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:@[@"Los Angeles",@"California", @"Boston", @"UCLA", @"Will Gu", @"willgu29", @"#cars", @"#hot", @"#tfmgirls"]];
-//    [self setAutoCompleteSearchData:array];
-//    
-//}
-
-
 -(void)fillAutoCompleteSearchDataWithUsers:(NSString *)searchText withArrayOfFollowing:(NSMutableSet *)parsedFollowing
 {
     NSString *predicateFormat = @"%K BEGINSWITH[cd] %@";
@@ -92,18 +82,11 @@ const NSInteger TIMES_TO_PAGINATE = 0;
     
     //BEGINSWITH, ENDSWITH LIKE MATCHES CONTAINS
     NSArray *array = [NSArray arrayWithArray:[parsedFollowing allObjects]];
-//    NSMutableArray *nameArray = [[NSMutableArray alloc] init];
-//    for (UserData* user in parsedFollowing)
-//    {
-//        [nameArray addObject:user.name];
-//    }
-//    
     [self setAutoCompleteSearchData:[array filteredArrayUsingPredicate:predicate]];
     
     
     if ([_autoCompleteSearchData count] == 0)
     {
-//        UserData *nilData = [[UserData alloc] initWithUsername:@"No matches found" andID:nil andProfilePicURL:nil];
         [self setAutoCompleteSearchData:[self createNoMatchesArray]];
         //TODO: add some suggestions
     }
@@ -130,7 +113,6 @@ const NSInteger TIMES_TO_PAGINATE = 0;
     }
     else
     {
-//        [self setAutoCompleteSearchData:@[[NSString stringWithFormat:@"%@  %ld",_hashTag.name, (long)_hashTag.mediaCount]]];
         [self setAutoCompleteSearchData:_hashTag.hashTagParsed];
         //TODO: add post count to table view
     }
@@ -157,6 +139,7 @@ const NSInteger TIMES_TO_PAGINATE = 0;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"location search done" object:nil];
     if ([_location.searchResults count] == 0)
     {
+        //TODO: Add suggestions
         [self setAutoCompleteSearchData:[self createNoMatchesArray]];
     }
     else
@@ -278,52 +261,13 @@ const NSInteger TIMES_TO_PAGINATE = 0;
         [self zoomToNextPicture];
    
     }
-//    if ([_searchPicturesArray count] <= 3)
-//    {
-//        [self zoomToNextPicture];
-//        [self parseNextPicture];
-//    }
-//    else
-//    {
-//        [self zoomToNextPicture];
-//
-//    }
-    
-    
-//    if ([_searchResultsWithLocation count] < 5)
-//    {
-//        [self zoomToNextPicture];
-//        [self parseNumber:3 ofImagesInArray:_searchPicturesArray];
-//
-//    }
-//    else
-//    {
-//        [self zoomToNextPicture];
-//    }
-//    
-//    
+
     
  
     
  
 }
 
-//-(void)parseNumber:(NSInteger)count ofImagesInArray:(NSMutableOrderedSet *)annotationArray
-//{
-//    for (int i = 0; i < count; i++)
-//    {
-//        if ([annotationArray count] == 0)
-//        {
-//            break;
-//        }
-//        CustomAnnotation *annotation = [annotationArray objectAtIndex:0];
-//        [annotation createNewImage]; //TODO: Call this only when we need to preload
-//        [annotation parseStringOfLocation:annotation.coordinate];
-//        [annotationArray removeObjectAtIndex:0];
-//        
-//    }
-//
-//}
 
 -(void)zoomToNextPicture
 {
@@ -427,7 +371,6 @@ const NSInteger TIMES_TO_PAGINATE = 0;
 
 -(void)searchUsernameWithName:(NSString *)userID andMaxID:(NSString *)maxID
 {
-    countPaginations = 0;
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"users/%d/media/recent?max_id=%@", userID.intValue, maxID], @"method", nil];
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     [appDelegate.instagram requestWithParams:params delegate:self];
@@ -435,7 +378,6 @@ const NSInteger TIMES_TO_PAGINATE = 0;
 
 -(void)searchHashTagWithName:(NSString *)nameOfTag andMaxID:(NSString *)maxID
 {
-    countPaginations = 0;
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"tags/%@/media/recent?max_id=%@", nameOfTag, maxID], @"method", nil];
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     [appDelegate.instagram requestWithParams:params delegate:self];
@@ -449,18 +391,9 @@ const NSInteger TIMES_TO_PAGINATE = 0;
     {
         _searchResultsData = [[NSMutableSet alloc]init];
     }
-    [_searchResultsData addObjectsFromArray:[result objectForKey:@"data"]];
-
+//    [_searchResultsData addObjectsFromArray:[result objectForKey:@"data"]];
+    _searchResultsData = [result objectForKey:@"data"];
     
-//    if ([(NSMutableArray*)[result objectForKey:@"pagination"] count] > 1  && (countPaginations < TIMES_TO_PAGINATE))
-//    {
-//        countPaginations++;
-//        NSString* cursor = [result valueForKeyPath:@"pagination.next_max_tag_id"];
-//        mostRecentMaxTagID = cursor;
-//        AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
-//        NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"tags/%@/media/recent?max_id=%@", appDelegate.mapVC.searchField.text, cursor], @"method", nil];
-//        [appDelegate.instagram requestWithParams:params delegate:self];
-//    }
     if ([(NSMutableArray*)[result objectForKey:@"pagination"] count] > 1)
     {
         

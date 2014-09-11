@@ -24,7 +24,6 @@
 //Data loading methods
 -(void)findAllImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance)latitude andLongitude:(CLLocationDistance)longitude; //determine possible pictures in a region and put in an array
 -(void)findRecentImagesOnMapInRange:(NSInteger)rangeInMeters inLatitude:(CLLocationDistance) latitude andLongitude:(CLLocationDistance) longitude;
--(void)findPopularImages;
 
 
 //Map Centered At Coordinate
@@ -48,4 +47,4 @@
 @property (strong, nonatomic) NSMutableArray *actualPics __deprecated;
 
 @end
-
+//Handles All and Recent for scrolling around map

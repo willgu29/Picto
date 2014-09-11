@@ -23,19 +23,6 @@
     return self;
 }
 
-//
-//- (id)copyWithZone:(NSZone *)zone
-//{
-//    UserData *newUserData = [[[self class] allocWithZone:zone] init];
-//    if (newUserData)
-//    {
-//        newUserData->_name = [_name copyWithZone:zone];
-//        newUserData->_userID = [_userID copyWithZone:zone];
-//        newUserData->_profilePicURL = [_profilePicURL copyWithZone:zone];
-//    }
-//    
-//    return newUserData;
-//    
-//}
+
 
 @end

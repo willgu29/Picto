@@ -64,7 +64,10 @@
     }
     else
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"CanParseFollowing" object:self];
+        AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+        [delegate.mapVC performSelector:@selector(parseFollowing)];
+//        [delegate.mapVC performSelectorOnMainThread:@selector(parseFollowing) withObject:nil waitUntilDone:NO];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"CanParseFollowing" object:self];
     }
 }
 
