@@ -16,6 +16,7 @@
 
 #import "CustomCallout.h"
 #import "AppDelegate.h"
+#import "UserFeedViewController.h"
 
 @implementation CustomCallout
 
@@ -24,9 +25,12 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+
     }
     return self;
 }
+
+#pragma mark -Update buttons
 
 -(void)setUserHasLiked:(BOOL)userHasLiked
 {
@@ -43,28 +47,6 @@
     }
 }
 
--(void)makeLikeRequest
-{
-    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
-    NSString* methodName = [NSString stringWithFormat:@"media/%@/likes", _mediaID];
-    NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [appDelegate.instagram requestWithMethodName:methodName
-                                          params: params
-                                      httpMethod:@"POST"
-                                        delegate: self];
-}
-
--(void)makeUnlikeRequest
-{
-    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
-    NSString* methodName = [NSString stringWithFormat:@"media/%@/likes", _mediaID];
-    NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [appDelegate.instagram requestWithMethodName:methodName
-                                          params: params
-                                      httpMethod:@"DELETE"
-                                        delegate: self];
-}
-
 -(void)updateDisplayOfHeart
 {
     BOOL userLiked = _referencedAnnotation.userHasLiked;
@@ -79,140 +61,6 @@
         _likeButton.tintColor = [UIColor blackColor];
         [_likeButton setTitle:@"  Like" forState:UIControlStateNormal];
     }
-}
-
--(IBAction)like:(id)sender //Action read is Touch Drag Inside
-{
-    NSLog(@"like button pressed");
-    if(_referencedAnnotation.userHasLiked)
-    {
-        //MAKE DELETE REQUEST
-        [self makeUnlikeRequest];
-        [self setUserHasLiked: false];
-        int numLikes = _referencedAnnotation.numberOfLikes.intValue - 1;
-        _referencedAnnotation.numberOfLikes = [self numberToString: numLikes];
-        _likes.text = [NSString stringWithFormat:@"%d likes", numLikes];
-        [_likeButton setTitle:@"  Like" forState:UIControlStateNormal];
-    }
-    else
-    {
-        //MAKE POST REQUEST
-        [self makeLikeRequest];
-        [self setUserHasLiked: true];
-        int numLikes = _referencedAnnotation.numberOfLikes.intValue + 1;
-        _referencedAnnotation.numberOfLikes = [self numberToString: numLikes];
-        _likes.text = [NSString stringWithFormat:@"%d likes", numLikes];
-         [_likeButton setTitle:@"  Liked" forState:UIControlStateNormal];
-    }
-}
-
-
--(NSString*)numberToString:(NSInteger)number
-{
-	NSString *s = [NSString stringWithFormat:@"%ld", (long)number];
-	return s;
-}
-
--(NSString*)getTimeString:(float)postedTime
-{
-    
-    if( postedTime < 20 ) //just now
-        return @"now";
-    else if( postedTime < 60 ) //seconds
-        return [NSString stringWithFormat:@"%@s",[self numberToString:postedTime]];
-    else if( postedTime < 3600 ) //minutes
-        return [NSString stringWithFormat:@"%@m",[self numberToString:ceil(postedTime / 60)]];
-    else if( postedTime < 86400 ) //hours
-        return [NSString stringWithFormat:@"%@h",[self numberToString:ceil(postedTime / 3600)]];
-    else if (postedTime < 604800 )  //days
-        return [NSString stringWithFormat:@"%@d",[self numberToString:ceil(postedTime / 86400)]];
-    else if( postedTime >= 604800 ) //weeks
-        return [NSString stringWithFormat:@"%@w",[self numberToString:ceil(postedTime / 604800)]];
-    else
-    {
-        NSLog(@"SECONDS COULDNT BE COMPARED TO INT: %ld",(long)postedTime);
-        return nil;
-    }
-    
-    
-}
-
-
--(void)initCalloutWithAnnotation:(CustomAnnotation *)annotation andImage:(UIImage *)image
-{
-    _referencedAnnotation = annotation;
-    [_image setImage:image];
-    
-    _userHasLiked = annotation.userHasLiked;
-    _userHasFollowed = annotation.userHasFollowed;
-    _mediaID = annotation.mediaID;
-    _userID = annotation.userID;
-    _username = annotation.username;
-    
-    [self setUpTextLabels];
-    [self updateDisplayOfHeart];
-    [self updateFollowButton];
-    
-}
-
--(void)setUpTextLabels
-{
-    _infoText.text = [NSString stringWithFormat:@"%@'s Photo",_referencedAnnotation.ownerOfPhoto];
-    _likes.text = [NSString stringWithFormat:@"%@ likes",_referencedAnnotation.numberOfLikes];
-
-    time_t todayInUnix = (time_t) [[NSDate date] timeIntervalSince1970];
-    time_t timePassedInSeconds = todayInUnix - _referencedAnnotation.timeCreated.intValue;
-    _timeSincePost.text = [self getTimeString:timePassedInSeconds];
-    
-    [self setUpLocationLabel];
-}
-
--(void)setUpLocationLabel
-{
-    if (_referencedAnnotation.locationString == nil)
-    {
-        NSLog(@"FUCKED UP");
-        _locationString.text = @"Unknown";
-    }
-    else
-        _locationString.text = [NSString stringWithFormat:@"%@", _referencedAnnotation.locationString];
-}
-
--(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime andMediaID:(NSString *)mediaID andUserLiked:(BOOL)userHasLiked andAnnotation:(CustomAnnotation *)annotation
-{
-    _userHasLiked = userHasLiked;
-    _mediaID = mediaID;
-    _infoText.text = [NSString stringWithFormat:@"%@'s Photo",owner];
-    _likes.text = [NSString stringWithFormat:@"%@ likes",likes];
-    [_image setImage:image];
-    
-    time_t todayInUnix = (time_t) [[NSDate date] timeIntervalSince1970];
-    time_t timePassedInSeconds = todayInUnix - createTime.intValue;
-    //TODO: Convert seconds to min, hours, weeks and display proper letter after the rounded time.
-    
-    _timeSincePost.text = [self getTimeString:timePassedInSeconds];
-    //_timeSincePost.text = [NSString stringWithFormat:@"ToDO: %ld",timePassedInSeconds];
-    _referencedAnnotation = annotation;
-    //set liked button
-    [self updateDisplayOfHeart];
-    
-    
-}
-
-
--(IBAction)followUnFolow:(UIButton *)sender
-{
-    NSLog(@"Follow button pressed");
-    if (_userHasFollowed)
-    {
-        [self unfollow];
-    }
-    else
-    {
-        [self follow];
-    }
-        
-    
 }
 
 -(void)follow
@@ -250,9 +98,162 @@
     }
 }
 
+
+
+#pragma mark -Display data
+
+
+-(void)initCalloutWithAnnotation:(CustomAnnotation *)annotation andImage:(UIImage *)image
+{
+    _referencedAnnotation = annotation;
+    [_image setImage:image];
+    
+    _userHasLiked = annotation.userHasLiked;
+    _userHasFollowed = annotation.userHasFollowed;
+    _mediaID = annotation.mediaID;
+    _userID = annotation.userID;
+    _username = annotation.username;
+    
+    [self setUpTextLabels];
+    [self updateDisplayOfHeart];
+    [self updateFollowButton];
+    
+}
+
+-(void)setUpTextLabels
+{
+//    _infoText.text = [NSString stringWithFormat:@"%@'s Photo",_referencedAnnotation.ownerOfPhoto];
+    [_infoText setTitle:[NSString stringWithFormat:@"%@'s Photo", _referencedAnnotation.ownerOfPhoto] forState:UIControlStateNormal];
+    [_infoText.titleLabel setTextAlignment: NSTextAlignmentCenter];
+
+    _likes.text = [NSString stringWithFormat:@"%@ likes",_referencedAnnotation.numberOfLikes];
+    
+    time_t todayInUnix = (time_t) [[NSDate date] timeIntervalSince1970];
+    time_t timePassedInSeconds = todayInUnix - _referencedAnnotation.timeCreated.intValue;
+    _timeSincePost.text = [self getTimeString:timePassedInSeconds];
+    
+    [self setUpLocationLabel];
+}
+
+-(void)setUpLocationLabel
+{
+    if (_referencedAnnotation.locationString == nil)
+    {
+        NSLog(@"FUCKED UP");
+        _locationString.text = @"Unknown";
+    }
+    else
+        _locationString.text = [NSString stringWithFormat:@"%@", _referencedAnnotation.locationString];
+}
+
+
+
+-(NSString*)numberToString:(NSInteger)number
+{
+	NSString *s = [NSString stringWithFormat:@"%ld", (long)number];
+	return s;
+}
+
+-(NSString*)getTimeString:(float)postedTime
+{
+    
+    if( postedTime < 20 ) //just now
+        return @"now";
+    else if( postedTime < 60 ) //seconds
+        return [NSString stringWithFormat:@"%@s",[self numberToString:postedTime]];
+    else if( postedTime < 3600 ) //minutes
+        return [NSString stringWithFormat:@"%@m",[self numberToString:ceil(postedTime / 60)]];
+    else if( postedTime < 86400 ) //hours
+        return [NSString stringWithFormat:@"%@h",[self numberToString:ceil(postedTime / 3600)]];
+    else if (postedTime < 604800 )  //days
+        return [NSString stringWithFormat:@"%@d",[self numberToString:ceil(postedTime / 86400)]];
+    else if( postedTime >= 604800 ) //weeks
+        return [NSString stringWithFormat:@"%@w",[self numberToString:ceil(postedTime / 604800)]];
+    else
+    {
+        NSLog(@"SECONDS COULDNT BE COMPARED TO INT: %ld",(long)postedTime);
+        return nil;
+    }
+    
+    
+}
+
+#pragma mark -IBAction
+
+-(IBAction)like:(id)sender
+{
+    NSLog(@"like button pressed");
+    if(_referencedAnnotation.userHasLiked)
+    {
+        //MAKE DELETE REQUEST
+        [self makeUnlikeRequest];
+        [self setUserHasLiked: false];
+        int numLikes = _referencedAnnotation.numberOfLikes.intValue - 1;
+        _referencedAnnotation.numberOfLikes = [self numberToString: numLikes];
+        _likes.text = [NSString stringWithFormat:@"%d likes", numLikes];
+        [_likeButton setTitle:@"  Like" forState:UIControlStateNormal];
+    }
+    else
+    {
+        //MAKE POST REQUEST
+        [self makeLikeRequest];
+        [self setUserHasLiked: true];
+        int numLikes = _referencedAnnotation.numberOfLikes.intValue + 1;
+        _referencedAnnotation.numberOfLikes = [self numberToString: numLikes];
+        _likes.text = [NSString stringWithFormat:@"%d likes", numLikes];
+         [_likeButton setTitle:@"  Liked" forState:UIControlStateNormal];
+    }
+}
+
+
+-(IBAction)followUnFolow:(UIButton *)sender
+{
+    NSLog(@"Follow button pressed");
+    if (_userHasFollowed)
+    {
+        [self unfollow];
+    }
+    else
+    {
+        [self follow];
+    }
+        
+    
+}
+
+
+-(IBAction)userNameSelected:(UIButton *)sender
+{
+    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+
+    UserFeedViewController *userFeedVC = [[UserFeedViewController alloc] init];
+    
+    //TODO: add animations
+    [delegate.mapVC presentViewController:userFeedVC animated:NO completion:nil];
+    
+}
+
+
+/* NOT WORKING DO NOT USE
+- (IBAction)handleGesture:(UIGestureRecognizer *)gestureRecognizer
+{
+    NSLog(@"Long press on view check for button");
+    CGPoint locationOfTouch = [gestureRecognizer locationInView:self];
+    if (locationOfTouch.x >= 140 && locationOfTouch.x <= 180 && locationOfTouch.y >= 300 && locationOfTouch.y <= 340)
+    {
+        NSLog(@"I should like this picture!");
+        [self like:_likeButton];
+    }
+}
+*/
+ 
+
+
+#pragma mark -Make requests
+
 -(void)makeRequestToFollow
 {
-
+    
     AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
     NSString* methodName = [NSString stringWithFormat:@"users/%@/relationship", _userID];
     NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"follow", @"action", nil];
@@ -274,23 +275,27 @@
                                         delegate: self];
 }
 
-
-/* NOT WORKING DO NOT USE
-- (IBAction)handleGesture:(UIGestureRecognizer *)gestureRecognizer
+-(void)makeLikeRequest
 {
-    NSLog(@"Long press on view check for button");
-    CGPoint locationOfTouch = [gestureRecognizer locationInView:self];
-    if (locationOfTouch.x >= 140 && locationOfTouch.x <= 180 && locationOfTouch.y >= 300 && locationOfTouch.y <= 340)
-    {
-        NSLog(@"I should like this picture!");
-        [self like:_likeButton];
-    }
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    NSString* methodName = [NSString stringWithFormat:@"media/%@/likes", _mediaID];
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [appDelegate.instagram requestWithMethodName:methodName
+                                          params: params
+                                      httpMethod:@"POST"
+                                        delegate: self];
 }
-*/
- 
 
-
-
+-(void)makeUnlikeRequest
+{
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    NSString* methodName = [NSString stringWithFormat:@"media/%@/likes", _mediaID];
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [appDelegate.instagram requestWithMethodName:methodName
+                                          params: params
+                                      httpMethod:@"DELETE"
+                                        delegate: self];
+}
 
 -(void)request:(IGRequest *)request didLoad:(id)result
 {

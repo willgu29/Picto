@@ -23,7 +23,8 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *followUnfolowButton;
 @property (weak, nonatomic) IBOutlet UILabel *timeSincePost;
-@property (weak, nonatomic) IBOutlet UILabel *infoText;
+//@property (weak, nonatomic) IBOutlet UILabel *infoText;
+@property (weak, nonatomic) IBOutlet UIButton *infoText;
 @property (weak, nonatomic) IBOutlet UIImageView *image;
 @property (weak, nonatomic) IBOutlet UILabel *likes;
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
@@ -37,8 +38,6 @@
 
 -(void)initCalloutWithAnnotation:(CustomAnnotation *)annotation andImage:(UIImage *)image;
 
-
--(void)setUpAnnotationWith:(NSString *)owner andLikes:(NSString *)likes andImage:(UIImage *)image andTime:(NSString *)createTime andMediaID:(NSString *)mediaID andUserLiked:(BOOL)userHasLiked andAnnotation:(CustomAnnotation *)annotation;
 
 
 @end

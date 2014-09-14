@@ -53,6 +53,8 @@
 		84A281EE19C63CB1001AAC1F /* BUGSNSHIT.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 84A281ED19C63CB1001AAC1F /* BUGSNSHIT.rtf */; };
 		84A281F119C63CD1001AAC1F /* THSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A281F019C63CD1001AAC1F /* THSound.m */; };
 		84A281F319C63E18001AAC1F /* AirHorn-Reggae.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84A281F219C63E18001AAC1F /* AirHorn-Reggae.mp3 */; };
+		84A281F819C65219001AAC1F /* UserFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A281F619C65219001AAC1F /* UserFeedViewController.m */; };
+		84A281F919C65219001AAC1F /* UserFeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84A281F719C65219001AAC1F /* UserFeedViewController.xib */; };
 		84B15D2D19995F2100F94E9C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84B15D2C19995F2100F94E9C /* QuartzCore.framework */; };
 		84B15D2F19995FCB00F94E9C /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84B15D2E19995FCB00F94E9C /* CoreImage.framework */; };
 		84B15D39199ADDA500F94E9C /* lulsides.png in Resources */ = {isa = PBXBuildFile; fileRef = 84B15D38199ADDA500F94E9C /* lulsides.png */; };
@@ -197,6 +199,9 @@
 		84A281EF19C63CD1001AAC1F /* THSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THSound.h; sourceTree = "<group>"; };
 		84A281F019C63CD1001AAC1F /* THSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THSound.m; sourceTree = "<group>"; };
 		84A281F219C63E18001AAC1F /* AirHorn-Reggae.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "AirHorn-Reggae.mp3"; sourceTree = "<group>"; };
+		84A281F519C65219001AAC1F /* UserFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserFeedViewController.h; sourceTree = "<group>"; };
+		84A281F619C65219001AAC1F /* UserFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserFeedViewController.m; sourceTree = "<group>"; };
+		84A281F719C65219001AAC1F /* UserFeedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserFeedViewController.xib; sourceTree = "<group>"; };
 		84B15D2C19995F2100F94E9C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		84B15D2E19995FCB00F94E9C /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		84B15D38199ADDA500F94E9C /* lulsides.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lulsides.png; sourceTree = "<group>"; };
@@ -415,6 +420,16 @@
 			name = Sounds;
 			sourceTree = "<group>";
 		};
+		84A281F419C651CF001AAC1F /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				84A281F519C65219001AAC1F /* UserFeedViewController.h */,
+				84A281F619C65219001AAC1F /* UserFeedViewController.m */,
+				84A281F719C65219001AAC1F /* UserFeedViewController.xib */,
+			);
+			name = Feed;
+			sourceTree = "<group>";
+		};
 		84DA0D0F18F92C2B00DE364F = {
 			isa = PBXGroup;
 			children = (
@@ -455,6 +470,7 @@
 		84DA0D2318F92C2B00DE364F /* Twerk */ = {
 			isa = PBXGroup;
 			children = (
+				84A281F419C651CF001AAC1F /* Feed */,
 				84A281EC19C63CA7001AAC1F /* Sounds */,
 				84A281D219C24761001AAC1F /* UIKit+AFNetworking */,
 				84A281B519C24758001AAC1F /* AFNetworking */,
@@ -688,6 +704,7 @@
 				C7808E8B19B05FFA002E525E /* AppIcon76x76.png in Resources */,
 				C7808E8619B05FFA002E525E /* AppIcon57x57@2x.png in Resources */,
 				C7808E8219B05FFA002E525E /* AppIcon40x40@2x.png in Resources */,
+				84A281F919C65219001AAC1F /* UserFeedViewController.xib in Resources */,
 				84A2819D19C12825001AAC1F /* TVTableSettingsViewCell.xib in Resources */,
 				84B15D39199ADDA500F94E9C /* lulsides.png in Resources */,
 				84DA0D2818F92C2B00DE364F /* InfoPlist.strings in Resources */,
@@ -754,6 +771,7 @@
 				846F8A47196498AE000401E8 /* MapViewController.m in Sources */,
 				84A281CE19C24758001AAC1F /* AFURLConnectionOperation.m in Sources */,
 				8438BF1D19BE815C00E5B4FA /* LocationDisplay.m in Sources */,
+				84A281F819C65219001AAC1F /* UserFeedViewController.m in Sources */,
 				84F250001977630200013F47 /* IGRequest.m in Sources */,
 				84A281AD19C2403B001AAC1F /* BoxViewController.m in Sources */,
 				84F24FEF1975F17300013F47 /* WGMap.m in Sources */,
