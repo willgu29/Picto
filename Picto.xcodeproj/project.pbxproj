@@ -50,6 +50,9 @@
 		84A281E919C24761001AAC1F /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A281DF19C24761001AAC1F /* UIProgressView+AFNetworking.m */; };
 		84A281EA19C24761001AAC1F /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A281E119C24761001AAC1F /* UIRefreshControl+AFNetworking.m */; };
 		84A281EB19C24761001AAC1F /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A281E319C24761001AAC1F /* UIWebView+AFNetworking.m */; };
+		84A281EE19C63CB1001AAC1F /* BUGSNSHIT.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 84A281ED19C63CB1001AAC1F /* BUGSNSHIT.rtf */; };
+		84A281F119C63CD1001AAC1F /* THSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A281F019C63CD1001AAC1F /* THSound.m */; };
+		84A281F319C63E18001AAC1F /* AirHorn-Reggae.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84A281F219C63E18001AAC1F /* AirHorn-Reggae.mp3 */; };
 		84B15D2D19995F2100F94E9C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84B15D2C19995F2100F94E9C /* QuartzCore.framework */; };
 		84B15D2F19995FCB00F94E9C /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84B15D2E19995FCB00F94E9C /* CoreImage.framework */; };
 		84B15D39199ADDA500F94E9C /* lulsides.png in Resources */ = {isa = PBXBuildFile; fileRef = 84B15D38199ADDA500F94E9C /* lulsides.png */; };
@@ -190,6 +193,10 @@
 		84A281E119C24761001AAC1F /* UIRefreshControl+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIRefreshControl+AFNetworking.m"; sourceTree = "<group>"; };
 		84A281E219C24761001AAC1F /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+AFNetworking.h"; sourceTree = "<group>"; };
 		84A281E319C24761001AAC1F /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
+		84A281ED19C63CB1001AAC1F /* BUGSNSHIT.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = BUGSNSHIT.rtf; sourceTree = "<group>"; };
+		84A281EF19C63CD1001AAC1F /* THSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THSound.h; sourceTree = "<group>"; };
+		84A281F019C63CD1001AAC1F /* THSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THSound.m; sourceTree = "<group>"; };
+		84A281F219C63E18001AAC1F /* AirHorn-Reggae.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "AirHorn-Reggae.mp3"; sourceTree = "<group>"; };
 		84B15D2C19995F2100F94E9C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		84B15D2E19995FCB00F94E9C /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		84B15D38199ADDA500F94E9C /* lulsides.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lulsides.png; sourceTree = "<group>"; };
@@ -397,6 +404,17 @@
 			path = "UIKit+AFNetworking";
 			sourceTree = "<group>";
 		};
+		84A281EC19C63CA7001AAC1F /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				84A281F219C63E18001AAC1F /* AirHorn-Reggae.mp3 */,
+				84A281EF19C63CD1001AAC1F /* THSound.h */,
+				84A281F019C63CD1001AAC1F /* THSound.m */,
+				84A281ED19C63CB1001AAC1F /* BUGSNSHIT.rtf */,
+			);
+			name = Sounds;
+			sourceTree = "<group>";
+		};
 		84DA0D0F18F92C2B00DE364F = {
 			isa = PBXGroup;
 			children = (
@@ -437,6 +455,7 @@
 		84DA0D2318F92C2B00DE364F /* Twerk */ = {
 			isa = PBXGroup;
 			children = (
+				84A281EC19C63CA7001AAC1F /* Sounds */,
 				84A281D219C24761001AAC1F /* UIKit+AFNetworking */,
 				84A281B519C24758001AAC1F /* AFNetworking */,
 				8438BF1119BE7FF800E5B4FA /* TableData */,
@@ -626,6 +645,9 @@
 					84DA0D1718F92C2B00DE364F = {
 						DevelopmentTeam = X8C323275L;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.InterAppAudio = {
 								enabled = 0;
 							};
@@ -660,6 +682,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84068D9E196B250F0053355C /* SideMenuViewController.xib in Resources */,
+				84A281EE19C63CB1001AAC1F /* BUGSNSHIT.rtf in Resources */,
 				C7808E8019B05FFA002E525E /* AppIcon29x29@2x.png in Resources */,
 				8461E93F194ED24700E2D809 /* READ.rtf in Resources */,
 				C7808E8B19B05FFA002E525E /* AppIcon76x76.png in Resources */,
@@ -673,6 +696,7 @@
 				C7808E8D19B05FFA002E525E /* iTunesArtwork.png in Resources */,
 				8461E9501950188F00E2D809 /* ShareViewController.xib in Resources */,
 				C7808E8419B05FFA002E525E /* AppIcon50x50@2x.png in Resources */,
+				84A281F319C63E18001AAC1F /* AirHorn-Reggae.mp3 in Resources */,
 				84A281AE19C2403B001AAC1F /* BoxViewController.xib in Resources */,
 				8461E944194ED2C300E2D809 /* LoginViewController.xib in Resources */,
 				846F8A48196498AE000401E8 /* MapViewController.xib in Resources */,
@@ -739,6 +763,7 @@
 				84DEE2AF19BA5285004C58E4 /* SettingsTableViewController.m in Sources */,
 				84A281CA19C24758001AAC1F /* AFHTTPRequestOperationManager.m in Sources */,
 				84CC1D0E1985967B00AFECC4 /* CustomCallout.m in Sources */,
+				84A281F119C63CD1001AAC1F /* THSound.m in Sources */,
 				84A281A419C181DD001AAC1F /* BoxManager.m in Sources */,
 				84A281CB19C24758001AAC1F /* AFHTTPSessionManager.m in Sources */,
 				84DA0D2E18F92C2B00DE364F /* AppDelegate.m in Sources */,
@@ -873,7 +898,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: William Gu (U79VMUZNWP)";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -884,7 +909,7 @@
 				INFOPLIST_FILE = "Twerk/Picto-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = Picto;
-				PROVISIONING_PROFILE = "3bdf8d7d-8663-44d5-88fc-8a5ed5afd138";
+				PROVISIONING_PROFILE = "6afaecb4-1d65-489f-a0dc-dc3d336f0df6";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -894,7 +919,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: William Gu (U79VMUZNWP)";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -905,7 +930,7 @@
 				INFOPLIST_FILE = "Twerk/Picto-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = Picto;
-				PROVISIONING_PROFILE = "3bdf8d7d-8663-44d5-88fc-8a5ed5afd138";
+				PROVISIONING_PROFILE = "6afaecb4-1d65-489f-a0dc-dc3d336f0df6";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

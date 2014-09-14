@@ -102,7 +102,7 @@
     
     [view setImage:image];
     [_currentPage addSubview:view];
-    
+
     
 }
 
@@ -152,8 +152,8 @@
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]];
     
-
-
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -178,7 +178,11 @@
     //Make a mapVC
     appDelegate.mapVC = [[MapViewController alloc] init];
     //present it
-    [self presentViewController:appDelegate.mapVC animated:YES completion:nil];
+    [self presentViewController:appDelegate.mapVC animated:YES completion:^{
+        //Register push notifications
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    }];
 }
 
 -(void)igDidNotLogin:(BOOL)cancelled {

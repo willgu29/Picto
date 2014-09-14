@@ -25,13 +25,12 @@
  */
 -(AVAudioPlayer *)THreadySound:(NSString *)soundPath ofType:(NSString *)fileType
 {
-    NSLog([NSString stringWithFormat:@"sound path: %@", [[NSBundle mainBundle]
-                                                         pathForResource:soundPath
-                                                         ofType:fileType]]);
+    NSLog(@"Sound Path: %@" ,[[NSBundle mainBundle] pathForResource:soundPath ofType:fileType]);
+    
     NSURL *soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle]
                                               pathForResource:soundPath
                                               ofType:fileType]];
-    NSLog([NSString stringWithFormat:@"FILE PATH IS: %@", [soundURL debugDescription]]);
+    NSLog(@"FILE PATH IS: %@", [soundURL debugDescription]);
     AVAudioPlayer *dropSound = [[AVAudioPlayer alloc] initWithContentsOfURL: soundURL error:nil];
     return dropSound;
 }

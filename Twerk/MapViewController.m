@@ -20,6 +20,7 @@
 #import "UserDisplay.h"
 #import "LocationDisplay.h"
 #import "HashDisplay.h"
+#import "THSound.h"
 
 const NSInteger METERS_PER_MILE = 1609.344;
 const NSInteger MAX_ALLOWED_PICTURES = 100; //ON SCREEN
