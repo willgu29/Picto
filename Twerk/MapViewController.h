@@ -18,8 +18,11 @@
 #import "PictureArray.h"
 #import "SearchData.h"
 #import "CustomAnnotation.h"
+#import "THSound.h"
+
 @class User;
 @class SearchData;
+@class THSound;
 
 static const unsigned long long SECONDS_PER_PIC =  1.4;
 
@@ -74,6 +77,9 @@ typedef NSInteger AnnotationCheck;
 @property (strong, atomic) PictureArray *picturesArray;
 @property (strong, nonatomic) SearchData *searchData;
 
+//TH SOUND OBJECT
+@property (strong, nonatomic) THSound *THsound;
+@property (nonatomic, strong) AVAudioPlayer *onDropSound; //sound to play on drop
 
 @property (nonatomic, strong) NSMutableOrderedSet *picturesChosenByDrag; //of annotation views
 @property (nonatomic, strong) NSMutableOrderedSet *picturesPopular;

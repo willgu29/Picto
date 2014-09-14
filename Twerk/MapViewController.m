@@ -149,10 +149,17 @@ const double SCALE_FACTOR = 500.0;
     
     [self setUpSavedData];
     
-
-    
-    
+//tim's sound stuff
+    [self setUpTHSound];
+    _onDropSound = [_THsound THreadySound:@"AirHorn-Reggae" ofType:@"mp3"];
+    NSLog([NSString stringWithFormat:@"AV OBJECT LOOKS LIKE: %@", [_onDropSound debugDescription]]);
     [self updateViewConstraints]; // ???: Did I add this? (WG)
+}
+
+-(void)setUpTHSound
+{
+    if(_THsound == nil)
+        _THsound = [[THSound alloc] init];
 }
 
 -(void)setUpPicturesArray
@@ -1729,6 +1736,9 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
                 
             }completion:^(BOOL finished){
                 if (finished) {
+                    [_onDropSound setCurrentTime:0];
+                    [_onDropSound play];
+                    NSLog(@"SOUND SHOULD HAVE PLAYED");
                     [UIView animateWithDuration:0.1 animations:^{
                         aV.transform = CGAffineTransformIdentity;
                     }];

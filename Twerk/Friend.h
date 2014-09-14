@@ -19,9 +19,7 @@ __deprecated_msg("We can use this for moments feature later")
 
 @property (strong, nonatomic) NSMutableArray *topPictures;
 
-
 //-(void)loadTopPicturesToArray:(NSMutableArray *)topPictures; //get data from facebook
-
 
 @end
 //NOTE: friend is now referencing a person YOU are following
