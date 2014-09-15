@@ -153,7 +153,7 @@ const double SCALE_FACTOR = 500.0;
 //tim's sound stuff
     [self setUpTHSound];
     _onDropSound = [_THsound THreadySound:@"AirHorn-Reggae" ofType:@"mp3"];
-    NSLog([NSString stringWithFormat:@"AV OBJECT LOOKS LIKE: %@", [_onDropSound debugDescription]]);
+    NSLog(@"AV Object looks like: %@", [_onDropSound debugDescription]);
     [self updateViewConstraints]; // ???: Did I add this? (WG)
 }
 
