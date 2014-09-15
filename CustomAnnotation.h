@@ -45,7 +45,11 @@
 @property (nonatomic, readwrite) NSString *numberOfLikes;
 @property (nonatomic, readonly) NSString *timeCreated;
 @property (nonatomic, readwrite) NSString *locationString;
+@property (nonatomic, readwrite) NSString *numberOfComments;
 
+
+//Comment data (i.e. who's commented, the text, etc.)
+@property (nonatomic, readonly) NSSet *commentsData; //may be incorrect type... (NSDictionary? Array?)
 
 //MKAnnotation Protocol
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;

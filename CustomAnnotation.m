@@ -37,6 +37,8 @@
         _mediaID = [pictureURL valueForKeyPath:@"id"];
         NSString *userHasLiked = [pictureURL valueForKey:@"user_has_liked"];
         _userHasLiked = userHasLiked.boolValue;
+        _commentsData = [pictureURL valueForKeyPath:@"comments"];
+        _numberOfComments = [pictureURL valueForKeyPath:@"comments.count"];
     }
     return self;
 }
