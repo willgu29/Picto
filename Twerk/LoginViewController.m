@@ -150,7 +150,7 @@
     _loginButton.layer.borderWidth = 1;
     _loginButton.clipsToBounds = YES;
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg2.png"]];
     
     
     
