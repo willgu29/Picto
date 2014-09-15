@@ -693,8 +693,11 @@ const double SCALE_FACTOR = 500.0;
 -(void)displayCallout:(MKAnnotationView *)view
 {
     CustomCallout *calloutView = (CustomCallout *)[[[NSBundle mainBundle] loadNibNamed:@"calloutView" owner:self options:nil] objectAtIndex:0];
+//    CustomCallout *calloutView = (CustomCallout *)[[[NSBundle mainBundle] loadNibNamed:@"CustomCalloutView" owner:self options:nil] objectAtIndex:0];
+    
     CGRect calloutViewFrame  = calloutView.frame;
     calloutViewFrame.origin = CGPointMake(0,self.view.frame.size.height/6);//CGPointMake(-calloutViewFrame.size.width/2 + 15, -calloutViewFrame.size.height);
+//    calloutViewFrame.origin = CGPointMake(self.view.frame.size.width/30, self.view.frame.size.height/6);
     calloutView.frame = calloutViewFrame;
     
     
@@ -726,9 +729,13 @@ const double SCALE_FACTOR = 500.0;
             calloutView.layer.masksToBounds = YES;
             
             //Makes border
-            calloutView.layer.borderWidth = 3.0f;
-            calloutView.layer.borderColor = [UIColor purpleColor].CGColor;
+            calloutView.layer.borderWidth = 5.0f;
+//            calloutView.layer.borderColor = [UIColor purpleColor].CGColor;
+            calloutView.backgroundColor = [UIColor colorWithRed:.549 green:.713 blue:.901 alpha:1.0];
+            calloutView.layer.borderColor = [UIColor colorWithRed:.549 green:.713 blue:.901 alpha:1.0].CGColor;
+//             calloutView.layer.borderColor = [UIColor colorWithHue:0.588889 saturation:0.391304 brightness:0.901961 alpha:1].CGColor;
             [self animateFadeInAndAddCallOutView:calloutView];
+           
             arrayCounter++;
         });
         

@@ -55,6 +55,8 @@
 		84A281F319C63E18001AAC1F /* AirHorn-Reggae.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84A281F219C63E18001AAC1F /* AirHorn-Reggae.mp3 */; };
 		84A281F819C65219001AAC1F /* UserFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A281F619C65219001AAC1F /* UserFeedViewController.m */; };
 		84A281F919C65219001AAC1F /* UserFeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84A281F719C65219001AAC1F /* UserFeedViewController.xib */; };
+		84A281FC19C6ACE0001AAC1F /* CustomCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A281FB19C6ACE0001AAC1F /* CustomCallView.m */; };
+		84A281FE19C6AD05001AAC1F /* CustomCalloutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84A281FD19C6AD05001AAC1F /* CustomCalloutView.xib */; };
 		84B15D2D19995F2100F94E9C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84B15D2C19995F2100F94E9C /* QuartzCore.framework */; };
 		84B15D2F19995FCB00F94E9C /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84B15D2E19995FCB00F94E9C /* CoreImage.framework */; };
 		84B15D39199ADDA500F94E9C /* lulsides.png in Resources */ = {isa = PBXBuildFile; fileRef = 84B15D38199ADDA500F94E9C /* lulsides.png */; };
@@ -202,6 +204,9 @@
 		84A281F519C65219001AAC1F /* UserFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserFeedViewController.h; sourceTree = "<group>"; };
 		84A281F619C65219001AAC1F /* UserFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserFeedViewController.m; sourceTree = "<group>"; };
 		84A281F719C65219001AAC1F /* UserFeedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserFeedViewController.xib; sourceTree = "<group>"; };
+		84A281FA19C6ACE0001AAC1F /* CustomCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCallView.h; sourceTree = "<group>"; };
+		84A281FB19C6ACE0001AAC1F /* CustomCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCallView.m; sourceTree = "<group>"; };
+		84A281FD19C6AD05001AAC1F /* CustomCalloutView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCalloutView.xib; sourceTree = "<group>"; };
 		84B15D2C19995F2100F94E9C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		84B15D2E19995FCB00F94E9C /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		84B15D38199ADDA500F94E9C /* lulsides.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lulsides.png; sourceTree = "<group>"; };
@@ -500,6 +505,9 @@
 				84CC1D0C1985967B00AFECC4 /* CustomCallout.h */,
 				84CC1D0D1985967B00AFECC4 /* CustomCallout.m */,
 				84CC1D0F198599DF00AFECC4 /* calloutView.xib */,
+				84A281FA19C6ACE0001AAC1F /* CustomCallView.h */,
+				84A281FB19C6ACE0001AAC1F /* CustomCallView.m */,
+				84A281FD19C6AD05001AAC1F /* CustomCalloutView.xib */,
 			);
 			path = Twerk;
 			sourceTree = "<group>";
@@ -725,6 +733,7 @@
 				C7808E7F19B05FFA002E525E /* AppIcon29x29.png in Resources */,
 				C7808E8119B05FFA002E525E /* AppIcon40x40.png in Resources */,
 				C7808E8A19B05FFA002E525E /* AppIcon72x72@2x.png in Resources */,
+				84A281FE19C6AD05001AAC1F /* CustomCalloutView.xib in Resources */,
 				84B15D3D199AE15D00F94E9C /* wouldbang.png in Resources */,
 				84DEE2B019BA5285004C58E4 /* SettingsTableViewController.xib in Resources */,
 				C7808E8519B05FFA002E525E /* AppIcon57x57.png in Resources */,
@@ -771,6 +780,7 @@
 				846F8A47196498AE000401E8 /* MapViewController.m in Sources */,
 				84A281CE19C24758001AAC1F /* AFURLConnectionOperation.m in Sources */,
 				8438BF1D19BE815C00E5B4FA /* LocationDisplay.m in Sources */,
+				84A281FC19C6ACE0001AAC1F /* CustomCallView.m in Sources */,
 				84A281F819C65219001AAC1F /* UserFeedViewController.m in Sources */,
 				84F250001977630200013F47 /* IGRequest.m in Sources */,
 				84A281AD19C2403B001AAC1F /* BoxViewController.m in Sources */,
