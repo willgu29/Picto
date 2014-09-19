@@ -22,6 +22,7 @@
 //Image URLs
 @property (nonatomic, readonly) NSString *imageURL;
 @property (nonatomic, readonly) NSString *imageURLEnlarged;
+@property (nonatomic, readonly) NSString *profilePicURL;
 
 //Image
 @property (nonatomic, readonly) UIImage *image;

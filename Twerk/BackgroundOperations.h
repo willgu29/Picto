@@ -11,4 +11,7 @@
 
 @interface BackgroundOperations : NSObject <CLLocationManagerDelegate>
 
+
+
 @end
+    

@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "CustomAnnotation.h"
+#import "IGRequest.h"
 
-@interface CustomCallView : UIView
+@interface CustomCallView : UIView <IGRequestDelegate>
 
 @property (nonatomic, strong) CustomAnnotation *referencedAnnotation;
 
-
+-(void)initWithAnnotation:(CustomAnnotation *)annotation andImage:(UIImage *)image;
 
 @end

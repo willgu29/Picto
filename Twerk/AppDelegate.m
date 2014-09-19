@@ -10,6 +10,7 @@
 #import "CameraAppViewController.h"
 #import "LoginViewController.h"
 #import "MapViewController.h"
+#import <MapKit/MapKit.h>
 
 #define APP_ID @"3a32660f59734e20ac6c590aecaa1e99"
 
@@ -45,7 +46,11 @@
     
    
     application.applicationSupportsShakeToEdit = YES; //???: Shake to refresh map?
-    
+//    [CLLocationManager authorizationStatus];
+//    [CLLocationManager locationServicesEnabled];
+//    CLLocationManager *manager = [[CLLocationManager alloc] init];
+//    [manager requestAlwaysAuthorization];
+//
     
     [self.window makeKeyAndVisible];
     

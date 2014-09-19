@@ -21,6 +21,7 @@
 #import "LocationDisplay.h"
 #import "HashDisplay.h"
 #import "THSound.h"
+#import "CustomCallView.h"
 
 const NSInteger METERS_PER_MILE = 1609.344;
 const NSInteger MAX_ALLOWED_PICTURES = 100; //ON SCREEN
@@ -200,6 +201,7 @@ const double SCALE_FACTOR = 500.0;
     CLLocationDistance lng = 100;
     if (_someUser.currentLocation.coordinate.latitude == 0 && _someUser.currentLocation.coordinate.longitude == 0)
     {
+
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomStart) name:@"Zoom to map" object:nil];
         [_someUser performSelector:@selector(getCurrentLocationOnMap:) withObject:_mapView afterDelay:1];
         
@@ -592,7 +594,7 @@ const double SCALE_FACTOR = 500.0;
     [self tapOutOfSearchBar:touch];
     [super touchesBegan:touches withEvent:event];
     
-    if ([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[CustomCallout class]])
+    if ([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[CustomCallView class]])
     {
         [self stopAnnotationTimer];
         return;
@@ -656,7 +658,7 @@ const double SCALE_FACTOR = 500.0;
 
     NSLog(@"Touches ended!");
     UITouch *touch = [[event allTouches] anyObject];
-    if ([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[CustomCallout class]])
+    if ([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[CustomCallView class]])
     {
         [self startAnnotationTimer];
         return;
@@ -692,8 +694,8 @@ const double SCALE_FACTOR = 500.0;
 
 -(void)displayCallout:(MKAnnotationView *)view
 {
-    CustomCallout *calloutView = (CustomCallout *)[[[NSBundle mainBundle] loadNibNamed:@"calloutView" owner:self options:nil] objectAtIndex:0];
-//    CustomCallout *calloutView = (CustomCallout *)[[[NSBundle mainBundle] loadNibNamed:@"CustomCalloutView" owner:self options:nil] objectAtIndex:0];
+//    CustomCallout *calloutView = (CustomCallout *)[[[NSBundle mainBundle] loadNibNamed:@"calloutView" owner:self options:nil] objectAtIndex:0];
+    CustomCallView *calloutView = (CustomCallView *)[[[NSBundle mainBundle] loadNibNamed:@"CustomCalloutView" owner:self options:nil] objectAtIndex:0];
     
     CGRect calloutViewFrame  = calloutView.frame;
     calloutViewFrame.origin = CGPointMake(0,self.view.frame.size.height/6);//CGPointMake(-calloutViewFrame.size.width/2 + 15, -calloutViewFrame.size.height);
@@ -721,8 +723,8 @@ const double SCALE_FACTOR = 500.0;
         }
         NSLog(@"Image was preloaded :)");
         dispatch_async(dispatch_get_main_queue(), ^{
-            [calloutView initCalloutWithAnnotation:someAnnotation andImage:someAnnotation.imageEnlarged];
-            //[calloutView setUpAnnotationWith:someAnnotation.ownerOfPhoto andLikes:someAnnotation.numberOfLikes andImage:image1 andTime:someAnnotation.timeCreated andMediaID:someAnnotation.mediaID andUserLiked:someAnnotation.userHasLiked andAnnotation:someAnnotation];
+//            [calloutView initCalloutWithAnnotation:someAnnotation andImage:someAnnotation.imageEnlarged];
+            [calloutView initWithAnnotation:someAnnotation andImage:someAnnotation.imageEnlarged];
             
             //Makes pictures circular
             calloutView.layer.cornerRadius = calloutView.frame.size.height/30;
@@ -835,7 +837,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 {
     for (UIView *subView in self.view.subviews)
     {
-        if ([subView isKindOfClass:[CustomCallout class]])
+        if ([subView isKindOfClass:[CustomCallView class]])
             [subView removeFromSuperview];
     }
 }
@@ -847,7 +849,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     //return;
     for (UIView *subView in self.view.subviews)
     {
-        if ([subView isKindOfClass:[CustomCallout class]])
+        if ([subView isKindOfClass:[CustomCallView class]])
             [subView removeFromSuperview];
     }
 }
@@ -855,6 +857,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
     
     static NSString *identifier = @"CustomViewAnnotation";
+//    static NSString *identifier = @"CustomCallView";
     
     //MKUserLocation is considered an annotation and we don't want to change that so just return no view
     if ([annotation isKindOfClass:[MKUserLocation class]])
@@ -909,6 +912,8 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     {
         [self displayCallout:annotationView];
     }
+    
+
     
     return annotationView;
 }
@@ -1297,6 +1302,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 -(void)zoomToPopular //Called by selector in viewDidLoad
 {
+
     if ([_picturesArray.nextPicturesSet count] >= 1)
     {
         CustomAnnotation *myAnnotation = [_picturesArray.nextPicturesSet objectAtIndex:0];
@@ -1670,12 +1676,12 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 #pragma mark - Animations
 
--(void)animateFadeInAndAddCallOutView:(CustomCallout *)calloutView
+-(void)animateFadeInAndAddCallOutView:(UIView *)viewToAdd
 {
-    [calloutView setAlpha:0];
-    [self.view addSubview:calloutView];
+    [viewToAdd setAlpha:0];
+    [self.view addSubview:viewToAdd];
     [UIView beginAnimations:nil context:nil];
-    [calloutView setAlpha:1.0];
+    [viewToAdd setAlpha:1.0];
     [UIView commitAnimations];
 }
 
@@ -1744,9 +1750,9 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
                 
             }completion:^(BOOL finished){
                 if (finished) {
-                    [_onDropSound setCurrentTime:0];
-                    [_onDropSound play];
-                    NSLog(@"SOUND SHOULD HAVE PLAYED");
+//                    [_onDropSound setCurrentTime:0];
+//                    [_onDropSound play];
+//                    NSLog(@"SOUND SHOULD HAVE PLAYED");
                     [UIView animateWithDuration:0.1 animations:^{
                         aV.transform = CGAffineTransformIdentity;
                     }];

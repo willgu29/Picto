@@ -1,62 +1,71 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CustomCallout">
-            <rect key="frame" x="0.0" y="0.0" width="300" height="306"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CustomCallView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="343"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kvm-DD-1f0">
-                    <rect key="frame" x="-1" y="-2" width="301" height="265"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <rect key="frame" x="1" y="-2" width="319" height="271"/>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="LocationLocation" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QuT-Xf-fBL">
-                    <rect key="frame" x="172" y="274" width="120" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <rect key="frame" x="111" y="282" width="201" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <color key="textColor" red="0.99991267919540405" green="1" blue="0.99988144636154175" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cnX-qj-KmB">
-                    <rect key="frame" x="39" y="272" width="34" height="26"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <rect key="frame" x="54" y="277" width="43" height="32"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <inset key="contentEdgeInsets" minX="0.0" minY="-7" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="120" backgroundImage="commentBox">
                         <color key="titleColor" red="0.55741763114929199" green="0.70938962697982788" blue="0.91959434747695923" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="commentButton:" destination="iN0-l3-epB" eventType="touchDown" id="afT-uR-7Jt"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e18-SK-ykO">
+                    <rect key="frame" x="111" y="309" width="201" height="26"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <state key="normal" title="+@willgu29" backgroundImage="follow">
+                        <color key="titleColor" red="0.55741763114929199" green="0.70938962697982788" blue="0.91959434747695923" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="followButton:" destination="iN0-l3-epB" eventType="touchDown" id="HO0-sZ-1dk"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a10-2F-v2D">
-                    <rect key="frame" x="4" y="271" width="30" height="26"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <rect key="frame" x="6" y="273" width="40" height="36"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <inset key="contentEdgeInsets" minX="2" minY="-2" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="21" backgroundImage="correctButton">
                         <color key="titleColor" red="0.55741763114929199" green="0.70938962697982788" blue="0.91959434747695923" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e18-SK-ykO">
-                    <rect key="frame" x="78" y="271" width="80" height="26"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <state key="normal" title="+@willgu29" backgroundImage="follow">
-                        <color key="titleColor" red="0.55741763114929199" green="0.70938962697982788" blue="0.91959434747695923" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
+                    <connections>
+                        <action selector="likeButton:" destination="iN0-l3-epB" eventType="touchDown" id="Oat-Hc-hqw"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="0.55741763114929199" green="0.70938962697982788" blue="0.91959434747695923" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="image" destination="Kvm-DD-1f0" id="0UK-Fj-nxY"/>
-                <outlet property="locationString" destination="QuT-Xf-fBL" id="v7O-oG-PpO"/>
+                <outlet property="commentsButton" destination="cnX-qj-KmB" id="YLm-LF-BNB"/>
+                <outlet property="followButton" destination="e18-SK-ykO" id="rNc-4b-5SZ"/>
+                <outlet property="image" destination="Kvm-DD-1f0" id="s8B-l3-bnX"/>
+                <outlet property="likeButton" destination="a10-2F-v2D" id="vtr-G2-xxH"/>
+                <outlet property="locationText" destination="QuT-Xf-fBL" id="q3J-fk-JOt"/>
             </connections>
+            <point key="canvasLocation" x="141" y="172.5"/>
         </view>
     </objects>
     <resources>
@@ -64,4 +73,9 @@
         <image name="correctButton" width="36" height="31"/>
         <image name="follow" width="62" height="22"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

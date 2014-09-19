@@ -21,6 +21,7 @@
     {
         _imageURL = [pictureURL valueForKeyPath:@"images.thumbnail.url"];
         _imageURLEnlarged = [pictureURL valueForKeyPath:@"images.standard_resolution.url"];
+        
         NSString *lat1 = [pictureURL valueForKeyPath:@"location.latitude"];
         NSString *lng1 = [pictureURL valueForKeyPath:@"location.longitude"];
         //Convert to CLLocationDegrees (which is a double)
@@ -28,6 +29,7 @@
         CLLocationDegrees lng = [lng1 doubleValue];
         //CONVERT from CLLocationDegrees TO CLLocationCoordinate2D
         _coordinate = CLLocationCoordinate2DMake(lat, lng);
+        _profilePicURL = [pictureURL valueForKeyPath:@"user.profile_picture"];
         _ownerOfPhoto = [pictureURL valueForKeyPath:@"user.full_name"];
         _userID = [pictureURL valueForKeyPath:@"user.id"];
         _numberOfLikes = [pictureURL valueForKeyPath:@"likes.count"];
