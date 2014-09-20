@@ -10,17 +10,14 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="343"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kvm-DD-1f0">
-                    <rect key="frame" x="1" y="-2" width="319" height="271"/>
-                </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="LocationLocation" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QuT-Xf-fBL">
                     <rect key="frame" x="111" y="282" width="201" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <color key="textColor" red="0.99991267919540405" green="1" blue="0.99988144636154175" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cnX-qj-KmB">
-                    <rect key="frame" x="54" y="276" width="43" height="32"/>
+                    <rect key="frame" x="55" y="279" width="43" height="32"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <inset key="contentEdgeInsets" minX="0.0" minY="-7" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="120" backgroundImage="commentBox">
@@ -32,7 +29,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e18-SK-ykO">
-                    <rect key="frame" x="111" y="309" width="201" height="26"/>
+                    <rect key="frame" x="112" y="312" width="201" height="26"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <state key="normal" title="+@willgu29" backgroundImage="follow">
                         <color key="titleColor" red="0.55741763114929199" green="0.70938962697982788" blue="0.91959434747695923" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -43,7 +40,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a10-2F-v2D">
-                    <rect key="frame" x="6" y="272" width="40" height="36"/>
+                    <rect key="frame" x="7" y="275" width="40" height="36"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <inset key="contentEdgeInsets" minX="2" minY="-2" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="21" backgroundImage="correctButton">
@@ -55,7 +52,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vcr-te-kpw">
-                    <rect key="frame" x="18" y="311" width="62" height="22"/>
+                    <rect key="frame" x="18" y="314" width="62" height="22"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                     <inset key="contentEdgeInsets" minX="0.0" minY="1" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="share" backgroundImage="follow">
@@ -66,6 +63,9 @@
                         <action selector="shareButton:" destination="iN0-l3-epB" eventType="touchDown" id="OBc-k3-FLS"/>
                     </connections>
                 </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kvm-DD-1f0">
+                    <rect key="frame" x="7" y="1" width="306" height="271"/>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="0.55741763114929199" green="0.70938962697982788" blue="0.91959434747695923" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <nil key="simulatedStatusBarMetrics"/>

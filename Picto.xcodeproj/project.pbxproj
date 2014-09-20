@@ -17,6 +17,10 @@
 		8438BF1719BE803300E5B4FA /* UserDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 8438BF1619BE803300E5B4FA /* UserDisplay.m */; };
 		8438BF1A19BE810A00E5B4FA /* HashDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 8438BF1919BE810A00E5B4FA /* HashDisplay.m */; };
 		8438BF1D19BE815C00E5B4FA /* LocationDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 8438BF1C19BE815C00E5B4FA /* LocationDisplay.m */; };
+		843C98E119CD193E00F3D428 /* CommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 843C98DF19CD193E00F3D428 /* CommentTableViewCell.m */; };
+		843C98E219CD193E00F3D428 /* CommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 843C98E019CD193E00F3D428 /* CommentTableViewCell.xib */; };
+		843C98E619CD1C6900F3D428 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 843C98E419CD1C6900F3D428 /* CommentsViewController.m */; };
+		843C98E719CD1C6900F3D428 /* CommentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 843C98E519CD1C6900F3D428 /* CommentsViewController.xib */; };
 		8461E93F194ED24700E2D809 /* READ.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 8461E93E194ED24700E2D809 /* READ.rtf */; };
 		8461E943194ED2C300E2D809 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8461E941194ED2C300E2D809 /* LoginViewController.m */; };
 		8461E944194ED2C300E2D809 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8461E942194ED2C300E2D809 /* LoginViewController.xib */; };
@@ -138,6 +142,12 @@
 		8438BF1919BE810A00E5B4FA /* HashDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HashDisplay.m; sourceTree = "<group>"; };
 		8438BF1B19BE815C00E5B4FA /* LocationDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationDisplay.h; sourceTree = "<group>"; };
 		8438BF1C19BE815C00E5B4FA /* LocationDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationDisplay.m; sourceTree = "<group>"; };
+		843C98DE19CD193E00F3D428 /* CommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentTableViewCell.h; sourceTree = "<group>"; };
+		843C98DF19CD193E00F3D428 /* CommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentTableViewCell.m; sourceTree = "<group>"; };
+		843C98E019CD193E00F3D428 /* CommentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentTableViewCell.xib; sourceTree = "<group>"; };
+		843C98E319CD1C6900F3D428 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsViewController.h; sourceTree = "<group>"; };
+		843C98E419CD1C6900F3D428 /* CommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsViewController.m; sourceTree = "<group>"; };
+		843C98E519CD1C6900F3D428 /* CommentsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentsViewController.xib; sourceTree = "<group>"; };
 		8461E93E194ED24700E2D809 /* READ.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = READ.rtf; sourceTree = "<group>"; };
 		8461E940194ED2C300E2D809 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		8461E941194ED2C300E2D809 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
@@ -345,6 +355,19 @@
 			name = TableData;
 			sourceTree = "<group>";
 		};
+		843C98D819CD173700F3D428 /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				843C98DE19CD193E00F3D428 /* CommentTableViewCell.h */,
+				843C98DF19CD193E00F3D428 /* CommentTableViewCell.m */,
+				843C98E019CD193E00F3D428 /* CommentTableViewCell.xib */,
+				843C98E319CD1C6900F3D428 /* CommentsViewController.h */,
+				843C98E419CD1C6900F3D428 /* CommentsViewController.m */,
+				843C98E519CD1C6900F3D428 /* CommentsViewController.xib */,
+			);
+			name = Comments;
+			sourceTree = "<group>";
+		};
 		84A281A119C18191001AAC1F /* BoxMode */ = {
 			isa = PBXGroup;
 			children = (
@@ -487,6 +510,7 @@
 		84DA0D2318F92C2B00DE364F /* Twerk */ = {
 			isa = PBXGroup;
 			children = (
+				843C98D819CD173700F3D428 /* Comments */,
 				84A79CF319CA351C00D88456 /* Background */,
 				84A281F419C651CF001AAC1F /* Feed */,
 				84A281EC19C63CA7001AAC1F /* Sounds */,
@@ -730,7 +754,9 @@
 				84B15D39199ADDA500F94E9C /* lulsides.png in Resources */,
 				84DA0D2818F92C2B00DE364F /* InfoPlist.strings in Resources */,
 				C7808E8919B05FFA002E525E /* AppIcon72x72.png in Resources */,
+				843C98E219CD193E00F3D428 /* CommentTableViewCell.xib in Resources */,
 				84B15D3B199AE0B500F94E9C /* getfucked.png in Resources */,
+				843C98E719CD1C6900F3D428 /* CommentsViewController.xib in Resources */,
 				C7808E8D19B05FFA002E525E /* iTunesArtwork.png in Resources */,
 				8461E9501950188F00E2D809 /* ShareViewController.xib in Resources */,
 				C7808E8419B05FFA002E525E /* AppIcon50x50@2x.png in Resources */,
@@ -775,6 +801,7 @@
 				84F250071981BD9600013F47 /* CustomAnnotation.m in Sources */,
 				84ECA6B419BD0EE000757F87 /* HashTagSearch.m in Sources */,
 				84A281E719C24761001AAC1F /* UIButton+AFNetworking.m in Sources */,
+				843C98E119CD193E00F3D428 /* CommentTableViewCell.m in Sources */,
 				84F24FE41973970000013F47 /* User.m in Sources */,
 				84068D9D196B250F0053355C /* SideMenuViewController.m in Sources */,
 				84DA0D3118F92C2B00DE364F /* Twerk.xcdatamodeld in Sources */,
@@ -787,6 +814,7 @@
 				84A281D019C24758001AAC1F /* AFURLResponseSerialization.m in Sources */,
 				84A2819C19C12825001AAC1F /* TVTableSettingsViewCell.m in Sources */,
 				84068DA2196B4EFA0053355C /* Friend.m in Sources */,
+				843C98E619CD1C6900F3D428 /* CommentsViewController.m in Sources */,
 				84F250011977630200013F47 /* Instagram.m in Sources */,
 				84A281B219C2412C001AAC1F /* BoxFinder.m in Sources */,
 				84A281EB19C24761001AAC1F /* UIWebView+AFNetworking.m in Sources */,
