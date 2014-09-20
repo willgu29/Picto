@@ -7,6 +7,8 @@
 //
 
 #import "TVTableSettingsViewCell.h"
+#import "AppDelegate.h"
+#import "MapViewController.h"
 
 @implementation TVTableSettingsViewCell
 
@@ -24,7 +26,39 @@
 
 -(IBAction)onOffSwitch:(UISwitch *)sender
 {
-    //TODO: if on, go off, if off, go on (save setting)
+    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+    if (_workAroundIdentifier == 0) //Allrecent
+    {
+        if (sender.on)
+        {
+            [delegate.mapVC setGlobalType:ALL];
+            [[NSUserDefaults standardUserDefaults] setInteger:ALL forKey:@"WGglobalType"];
+        }
+        else
+        {
+            [delegate.mapVC setGlobalType:RECENT];
+            [[NSUserDefaults standardUserDefaults] setInteger:RECENT forKey:@"WGglobalType"];
+        }
+    }
+    else if (_workAroundIdentifier == 1) //friendsOnly
+    {
+        if (sender.on)
+        {
+            [delegate.mapVC setOnlyFriends:YES];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"WGonlyFriends"];
+        }
+        else
+        {
+            [delegate.mapVC setOnlyFriends:NO];
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WGonlyFriends"];
+        }
+    }
+    else
+    {
+        
+    }
+    
+ 
 }
 
 

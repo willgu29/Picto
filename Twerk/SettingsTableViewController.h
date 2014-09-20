@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "IGRequest.h"
+#import "IGConnect.h"
+
 
 //TODO: change to tableView with navigiation (Still using sidemenu for now)
-@interface SettingsTableViewController : UITableViewController <IGRequestDelegate>
+@interface SettingsTableViewController : UITableViewController <IGSessionDelegate>
+
+
 
 @end

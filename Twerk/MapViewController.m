@@ -21,6 +21,7 @@
 #import "LocationDisplay.h"
 #import "HashDisplay.h"
 #import "THSound.h"
+#import "SettingsTableViewController.h"
 #import "CustomCallView.h"
 
 const NSInteger METERS_PER_MILE = 1609.344;
@@ -1349,11 +1350,15 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 -(IBAction)friendsButton:(UIButton *)button
 {
-    SideMenuViewController *sideMenu = [[SideMenuViewController alloc] init];
+//    SideMenuViewController *sideMenu = [[SideMenuViewController alloc] init];
+//    
+//    //[self presentViewController:sideMenu animated:YES completion:nil];
+//    AppDelegate *app = [UIApplication sharedApplication].delegate;
+//    [app.mapVC presentViewController:sideMenu animated:YES completion:nil];
     
-    //[self presentViewController:sideMenu animated:YES completion:nil];
-    AppDelegate *app = [UIApplication sharedApplication].delegate;
-    [app.mapVC presentViewController:sideMenu animated:YES completion:nil];
+    SettingsTableViewController *settings = [[SettingsTableViewController alloc] init];
+    [self presentViewController:settings animated:YES completion:nil];
+    
 }
 
 

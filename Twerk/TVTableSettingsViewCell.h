@@ -12,7 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *mainTitle;
 @property (weak, nonatomic) IBOutlet UILabel *subText;
-@property (weak, nonatomic) IBOutlet UISwitch *onOffSwitch;
-
+@property (strong, nonatomic) IBOutlet UISwitch *onOffSwitch;
+@property (nonatomic) int workAroundIdentifier;
 
 @end
