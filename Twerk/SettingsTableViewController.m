@@ -10,6 +10,8 @@
 #import "TVSettingsObject.h"
 #import "TVTableSettingsViewCell.h"
 #import "MapViewController.h"
+#import "AppDelegate.h"
+#import "LoginViewController.h"
 
 @interface SettingsTableViewController ()
 
@@ -252,8 +254,20 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //TODO:
+    if (indexPath.row == ([_settingsArray count] + [_actionsArray count] - 1))
+    {
+        [self logout];
+    }
 }
 
+-(void)logout
+{
+    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    [appDelegate.instagram logout];
+    LoginViewController *loginVC = [[LoginViewController alloc]init];
+    [self presentViewController:loginVC animated:YES completion:nil];
+    //TODO: THIS IS INCORRECT (SHOULD DISMISS ALL VCs NOT PRESENT)
+}
 
 -(void)igDidLogout
 {
