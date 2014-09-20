@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		8402702A18F9C0CB00598EE2 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8402702918F9C0CB00598EE2 /* CoreMotion.framework */; };
 		8402703318F9E71800598EE2 /* butt.png in Resources */ = {isa = PBXBuildFile; fileRef = 8402703218F9E71800598EE2 /* butt.png */; };
-		84068D9D196B250F0053355C /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84068D9B196B250F0053355C /* SideMenuViewController.m */; };
-		84068D9E196B250F0053355C /* SideMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84068D9C196B250F0053355C /* SideMenuViewController.xib */; };
 		84068DA2196B4EFA0053355C /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 84068DA1196B4EFA0053355C /* Friend.m */; };
 		84068DA4196B8F750053355C /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84068DA3196B8F750053355C /* MobileCoreServices.framework */; };
 		8438BF1419BE801200E5B4FA /* BaseDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 8438BF1319BE801200E5B4FA /* BaseDisplay.m */; };
@@ -128,9 +126,6 @@
 /* Begin PBXFileReference section */
 		8402702918F9C0CB00598EE2 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		8402703218F9E71800598EE2 /* butt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = butt.png; sourceTree = SOURCE_ROOT; };
-		84068D9A196B250F0053355C /* SideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideMenuViewController.h; sourceTree = "<group>"; };
-		84068D9B196B250F0053355C /* SideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenuViewController.m; sourceTree = "<group>"; };
-		84068D9C196B250F0053355C /* SideMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideMenuViewController.xib; sourceTree = "<group>"; };
 		84068DA0196B4EFA0053355C /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Friend.h; sourceTree = "<group>"; };
 		84068DA1196B4EFA0053355C /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Friend.m; sourceTree = "<group>"; };
 		84068DA3196B8F750053355C /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -588,9 +583,6 @@
 				84A2819919C12825001AAC1F /* TVTableSettingsViewCell.h */,
 				84A2819A19C12825001AAC1F /* TVTableSettingsViewCell.m */,
 				84A2819B19C12825001AAC1F /* TVTableSettingsViewCell.xib */,
-				84068D9A196B250F0053355C /* SideMenuViewController.h */,
-				84068D9B196B250F0053355C /* SideMenuViewController.m */,
-				84068D9C196B250F0053355C /* SideMenuViewController.xib */,
 				84DEE2AC19BA5285004C58E4 /* SettingsTableViewController.h */,
 				84DEE2AD19BA5285004C58E4 /* SettingsTableViewController.m */,
 				84DEE2AE19BA5285004C58E4 /* SettingsTableViewController.xib */,
@@ -742,7 +734,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84068D9E196B250F0053355C /* SideMenuViewController.xib in Resources */,
 				84A281EE19C63CB1001AAC1F /* BUGSNSHIT.rtf in Resources */,
 				C7808E8019B05FFA002E525E /* AppIcon29x29@2x.png in Resources */,
 				8461E93F194ED24700E2D809 /* READ.rtf in Resources */,
@@ -803,7 +794,6 @@
 				84A281E719C24761001AAC1F /* UIButton+AFNetworking.m in Sources */,
 				843C98E119CD193E00F3D428 /* CommentTableViewCell.m in Sources */,
 				84F24FE41973970000013F47 /* User.m in Sources */,
-				84068D9D196B250F0053355C /* SideMenuViewController.m in Sources */,
 				84DA0D3118F92C2B00DE364F /* Twerk.xcdatamodeld in Sources */,
 				84ECA6B719BD24AC00757F87 /* LocationSearch.m in Sources */,
 				84A79CF619CA353E00D88456 /* BackgroundOperations.m in Sources */,

@@ -10,11 +10,12 @@
 
 @implementation BackgroundOperations
 
-//- (void)locationManager:(CLLocationManager *)manager
-//               didVisit:(CLVisit *)visit
-//{
-//    
-//}
+- (void)locationManager:(CLLocationManager *)manager
+               didVisit:(CLVisit *)visit
+{
+    //TODO: something
+    
+}
 
 
 @end
