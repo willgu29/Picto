@@ -15,6 +15,7 @@
 @property (nonatomic, weak) IBOutlet UIButton *likeButton;
 @property (nonatomic, weak) IBOutlet UIButton *commentsButton;
 @property (nonatomic, weak) IBOutlet UIButton *followButton;
+@property (nonatomic, weak) IBOutlet UIButton *shareButton;
 
 @property (nonatomic, weak) IBOutlet UIImageView *image;
 @property (nonatomic, weak) IBOutlet UILabel *locationText;
@@ -83,7 +84,7 @@
     {
         UIColor *colorText = [UIColor whiteColor];
         [_followButton setTitleColor:colorText forState:UIControlStateNormal];
-        [_followButton setTitle:[NSString stringWithFormat:@"√@%@",formatStringName] forState:UIControlStateNormal];
+        [_followButton setTitle:[NSString stringWithFormat:@"√ @%@",formatStringName] forState:UIControlStateNormal];
         [_followButton setBackgroundImage:[UIImage imageNamed:@"followGreen.png"] forState:UIControlStateNormal];
         
 
@@ -92,7 +93,7 @@
     {
         UIColor *colorText = [UIColor colorWithRed:0.557 green:0.709 blue:0.919 alpha:1];
         [_followButton setTitleColor:colorText forState:UIControlStateNormal];
-        [_followButton setTitle:[NSString stringWithFormat:@"+@%@",formatStringName] forState:UIControlStateNormal];
+        [_followButton setTitle:[NSString stringWithFormat:@"+ @%@",formatStringName] forState:UIControlStateNormal];
         [_followButton setBackgroundImage:[UIImage imageNamed:@"follow.png"] forState:UIControlStateNormal];
     }
 }
@@ -129,6 +130,11 @@
     {
         [self requestFollow];
     }
+}
+
+-(IBAction)shareButton:(UIButton *)sender
+{
+    //TODO: sharing feature
 }
 
 #pragma mark - Request Types
@@ -205,7 +211,7 @@
 }
 -(void)getComments
 {
-    
+    //TODO:
 }
 -(void)postComment
 {

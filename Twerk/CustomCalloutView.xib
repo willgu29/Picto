@@ -20,7 +20,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cnX-qj-KmB">
-                    <rect key="frame" x="54" y="277" width="43" height="32"/>
+                    <rect key="frame" x="54" y="276" width="43" height="32"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <inset key="contentEdgeInsets" minX="0.0" minY="-7" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="120" backgroundImage="commentBox">
@@ -43,7 +43,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a10-2F-v2D">
-                    <rect key="frame" x="6" y="273" width="40" height="36"/>
+                    <rect key="frame" x="6" y="272" width="40" height="36"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <inset key="contentEdgeInsets" minX="2" minY="-2" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="21" backgroundImage="correctButton">
@@ -52,6 +52,18 @@
                     </state>
                     <connections>
                         <action selector="likeButton:" destination="iN0-l3-epB" eventType="touchDown" id="Oat-Hc-hqw"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vcr-te-kpw">
+                    <rect key="frame" x="18" y="311" width="62" height="22"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                    <inset key="contentEdgeInsets" minX="0.0" minY="1" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="share" backgroundImage="follow">
+                        <color key="titleColor" red="0.55741763109999998" green="0.70938962699999997" blue="0.91959434750000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="shareButton:" destination="iN0-l3-epB" eventType="touchDown" id="OBc-k3-FLS"/>
                     </connections>
                 </button>
             </subviews>
@@ -64,6 +76,7 @@
                 <outlet property="image" destination="Kvm-DD-1f0" id="s8B-l3-bnX"/>
                 <outlet property="likeButton" destination="a10-2F-v2D" id="vtr-G2-xxH"/>
                 <outlet property="locationText" destination="QuT-Xf-fBL" id="q3J-fk-JOt"/>
+                <outlet property="shareButton" destination="Vcr-te-kpw" id="yY8-qa-Gqj"/>
             </connections>
             <point key="canvasLocation" x="141" y="172.5"/>
         </view>
