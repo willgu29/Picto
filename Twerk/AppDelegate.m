@@ -48,9 +48,9 @@
     application.applicationSupportsShakeToEdit = YES; //???: Shake to refresh map?
 //    [CLLocationManager authorizationStatus];
 //    [CLLocationManager locationServicesEnabled];
-//    CLLocationManager *manager = [[CLLocationManager alloc] init];
-//    [manager requestAlwaysAuthorization];
-//
+//    CLLocationManager *locationManager = [[CLLocationManager alloc] init];
+//    [locationManager requestAlwaysAuthorization];
+
     
     [self.window makeKeyAndVisible];
     

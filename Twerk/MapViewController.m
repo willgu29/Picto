@@ -122,6 +122,7 @@ const double SCALE_FACTOR = 500.0;
 {
     [super viewDidLoad];
     
+    
     _isInBoxMode = NO;
     _zoomToLocationOnLaunch = YES;
     // Do any additional setup after loading the view from its nib.
@@ -193,6 +194,8 @@ const double SCALE_FACTOR = 500.0;
 
 -(void)viewDidAppear:(BOOL)animated
 {
+
+    
     if (_zoomToLocationOnLaunch == NO)
         return;
     
@@ -212,6 +215,7 @@ const double SCALE_FACTOR = 500.0;
         [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:lat withLongitude:lng withMap:_mapView];
     }
 
+    
 }
 
 
@@ -1061,28 +1065,31 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     //tell the map to zoom to that location (no animation needed here..)
     [map setRegion:zoomLocation animated:NO];
     [self performSelector:@selector(mapLocationSettled)];
-    
+   
 }
 
 -(void)zoomStart
 {
     [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:100 withLongitude:100 withMap:_mapView];
     // [[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:@"Zoom to map"];
-    
+ 
+   
 }
 
 -(void)mapLocationSettled
 {
     [_mapView getCurrentLocationOfMap];
+    //TODO: find a home for this
+    [self performSelector:@selector(omg) withObject:nil afterDelay:1];
+
 }
 
-
-
-
-
-
-
-
+-(void)omg
+{
+    locationManager = [[CLLocationManager alloc] init];
+    [locationManager requestWhenInUseAuthorization];
+    [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:100 withLongitude:100 withMap:_mapView];
+}
 
 
 

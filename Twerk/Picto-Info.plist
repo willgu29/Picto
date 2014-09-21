@@ -6,8 +6,12 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>${PRODUCT_NAME}</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Picto would like to access your location when in usage</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Picto would like to access your location in order to present you with more relevant photos and notifications</string>
 	<key>CFBundleIdentifier</key>
 	<string>anythingbro.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>

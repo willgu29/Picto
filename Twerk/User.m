@@ -17,6 +17,7 @@
 //get user location and set it to currentLocation
 -(void)getCurrentLocationOnMap:(MKMapView *)map
 {
+    
     //map.userLocation is an annotation representing the user's location
     MKUserLocation *userLocation = map.userLocation;
     //set the location to our property in .h
@@ -36,6 +37,7 @@
 
 -(void)retrieveWhoUserIsFollowingFromIG
 {
+    
     //This line of code simply gets a pointer to our appDelegate
     AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
     //Based on the instagram iOS SDK, check the Instagram API console for how to format requests

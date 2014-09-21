@@ -156,6 +156,8 @@
     
 }
 
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -175,6 +177,7 @@
     //Make sure data saved properly
 	[[NSUserDefaults standardUserDefaults] synchronize];
     
+   
     //Make a mapVC
     appDelegate.mapVC = [[MapViewController alloc] init];
     //present it

@@ -16,6 +16,7 @@ static const int SECONDS_IN_A_DAY = 86400;
 
 -(void) getCurrentLocationOfMap
 {
+    
     //A CLLocationCoordinate2D is made of a latitude and longitude. Every map knows where its centerCoordinate is (where it's currently viewing)
     _currentLocation = self.centerCoordinate;
     

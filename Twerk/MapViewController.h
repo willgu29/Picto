@@ -10,7 +10,6 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "SideMenuViewController.h"
 #import "IGRequest.h"
 #import "IGConnect.h"
 #import "WGMap.h"
