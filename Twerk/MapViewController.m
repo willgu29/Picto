@@ -1080,7 +1080,15 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 {
     [_mapView getCurrentLocationOfMap];
     //TODO: find a home for this
-    [self performSelector:@selector(omg) withObject:nil afterDelay:1];
+    
+    if ([CLLocationManager authorizationStatus] >= 4)
+    {
+        
+    }
+    else
+    {
+        [self performSelector:@selector(omg) withObject:nil afterDelay:1];
+    }
 
 }
 

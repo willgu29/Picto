@@ -25,7 +25,9 @@
     //NSLog(@")
     if (!(userLocation == nil))
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"Zoom to map" object:nil];
+        AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+        [delegate.mapVC performSelectorOnMainThread:@selector(zoomStart) withObject:nil waitUntilDone:YES];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"Zoom to map" object:nil];
     }
     
     
