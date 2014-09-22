@@ -78,6 +78,11 @@ const double SCALE_FACTOR = 500.0;
 
 #pragma mark - Picto
 
+-(void)someRandomMethod
+{
+    //COOL
+}
+
 -(IBAction)swipeRightToBox:(id)sender
 {
     NSLog(@"Switch modes!");
