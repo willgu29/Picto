@@ -203,6 +203,8 @@ const double SCALE_FACTOR = 500.0;
     if (_zoomToLocationOnLaunch == NO)
         return;
     
+    _zoomToLocationOnLaunch = NO;
+    
     [_someUser getCurrentLocationOnMap:_mapView]; //get location of user
     //zoom to user location on map
     CLLocationDistance lat = 100;
