@@ -120,8 +120,10 @@
 {
     AppDelegate *delegate = [UIApplication sharedApplication].delegate;
     [self getComments];
-    CommentsViewController *commentVc = [[CommentsViewController alloc] init];
-    [delegate.mapVC presentViewController:commentVc animated:YES completion:nil];
+    CommentsViewController *commentVC = [[CommentsViewController alloc] init];
+    commentVC.commentsData = self.referencedAnnotation.commentsData;
+    commentVC.numberOfComments = self.referencedAnnotation.numberOfComments;
+    [delegate.mapVC presentViewController:commentVC animated:YES completion:nil];
     //TODO: display new view for comments
 }
 -(IBAction)followButton:(UIButton *)sender

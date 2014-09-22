@@ -10,4 +10,11 @@
 
 @interface CommentTableViewCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UIImageView *profilePic;
+@property (weak, nonatomic) IBOutlet UIButton *username;
+@property (weak, nonatomic) IBOutlet UILabel *comment;
+@property (weak, nonatomic) IBOutlet UILabel *timeSincePost;
+
+-(void)formatCell;
+
 @end

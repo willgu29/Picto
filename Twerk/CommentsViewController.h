@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CommentsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface CommentsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+
+@property (nonatomic, strong) NSSet *commentsData;
+@property (nonatomic, strong) NSString *numberOfComments;
 
 @end
