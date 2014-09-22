@@ -9,6 +9,7 @@
 #import "CustomCallView.h"
 #import "AppDelegate.h"
 #import "UserDisplay.h"
+#import "CommentsViewController.h"
 
 @interface CustomCallView()
 
@@ -117,7 +118,10 @@
 }
 -(IBAction)commentButton:(UIButton *)sender
 {
+    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
     [self getComments];
+    CommentsViewController *commentVc = [[CommentsViewController alloc] init];
+    [delegate.mapVC presentViewController:commentVc animated:YES completion:nil];
     //TODO: display new view for comments
 }
 -(IBAction)followButton:(UIButton *)sender

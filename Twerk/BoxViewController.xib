@@ -6,12 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BoxViewController">
             <connections>
-                <outlet property="autoCompleteTableView" destination="cMA-sx-qZG" id="a2O-A7-9uZ"/>
-                <outlet property="mapView" destination="E32-7T-efZ" id="YEa-Dl-dqV"/>
-                <outlet property="nextButton" destination="gB3-Nm-vZH" id="7EH-ra-B4N"/>
-                <outlet property="pictoOverlay" destination="8hV-nN-oig" id="g5c-Pp-ZXu"/>
-                <outlet property="searchField" destination="YHl-qj-E7S" id="pYi-pf-8ha"/>
-                <outlet property="type" destination="L7c-qv-Ckd" id="l8W-8l-Ux1"/>
+                <outlet property="boxMapView" destination="E32-7T-efZ" id="64B-Ng-AWn"/>
                 <outlet property="view" destination="yW3-9D-pyF" id="HkB-c0-aqQ"/>
             </connections>
         </placeholder>
@@ -20,91 +15,34 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" rotateEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E32-7T-efZ" customClass="WGMap">
+                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" rotateEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E32-7T-efZ" customClass="BoxMapView">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="GqK-X2-WUb"/>
+                    </connections>
                 </mapView>
-                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="Overlay 80" translatesAutoresizingMaskIntoConstraints="NO" id="8hV-nN-oig">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
-                    <gestureRecognizers/>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="JZ8-nY-FNa" appends="YES" id="oZ9-ZC-fTl"/>
-                    </connections>
-                </imageView>
-                <textField clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search" textAlignment="center" minimumFontSize="17" background="Overlay 80" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="YHl-qj-E7S">
-                    <rect key="frame" x="106" y="32" width="159" height="30"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
-                </textField>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o75-Nv-6Ax">
-                    <rect key="frame" x="267" y="22" width="42" height="49"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="49" id="H4E-9p-Pj1"/>
-                        <constraint firstAttribute="width" constant="42" id="bqu-4L-GmN"/>
-                    </constraints>
-                    <color key="tintColor" red="0.99991267920000004" green="1" blue="0.99988144639999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <state key="normal" image="more 2">
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5oW-N6-1Dg">
+                    <rect key="frame" x="145" y="422" width="30" height="30"/>
+                    <state key="normal" title="Test">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="friendsButton:" destination="-1" eventType="touchUpInside" id="QNc-31-RKC"/>
+                        <action selector="testButton:" destination="-1" eventType="touchUpInside" id="7z0-gJ-Zp5"/>
                     </connections>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="•ALL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7c-qv-Ckd">
-                    <rect key="frame" x="115" y="65" width="144" height="10"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="8"/>
-                    <color key="textColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gB3-Nm-vZH">
-                    <rect key="frame" x="239" y="517" width="70" height="31"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="31" id="4YT-7H-PiK"/>
-                        <constraint firstAttribute="width" constant="70" id="KDt-mc-2NP"/>
-                    </constraints>
-                    <state key="normal" title="Next">
-                        <color key="titleColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="osa-2t-aRf">
+                    <rect key="frame" x="8" y="8" width="35" height="30"/>
+                    <state key="normal" title="Back">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="nextButton:" destination="-1" eventType="touchUpInside" id="laP-GK-wfw"/>
-                    </connections>
-                </button>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="cMA-sx-qZG">
-                    <rect key="frame" x="0.0" y="79" width="320" height="274"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </tableView>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="twn-95-dGa">
-                    <rect key="frame" x="8" y="32" width="71" height="30"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                    <state key="normal" title="Picto">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="returnToHome:" destination="-1" eventType="touchDragInside" id="yA2-QN-GTP"/>
+                        <action selector="backButton:" destination="-1" eventType="touchUpInside" id="ZET-49-nKs"/>
                     </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <constraints>
-                <constraint firstItem="L7c-qv-Ckd" firstAttribute="leading" secondItem="yW3-9D-pyF" secondAttribute="leading" constant="115" id="1nU-AZ-QDV"/>
-                <constraint firstAttribute="bottom" secondItem="gB3-Nm-vZH" secondAttribute="bottom" constant="20" symbolic="YES" id="K54-hM-Sei"/>
-                <constraint firstItem="o75-Nv-6Ax" firstAttribute="leading" secondItem="L7c-qv-Ckd" secondAttribute="trailing" constant="8" id="QDi-dw-xaD"/>
-                <constraint firstAttribute="trailing" secondItem="gB3-Nm-vZH" secondAttribute="trailing" constant="20" symbolic="YES" id="Wih-7R-Xbh"/>
-                <constraint firstAttribute="trailing" secondItem="o75-Nv-6Ax" secondAttribute="trailing" constant="11" id="liU-Ca-yaz"/>
-                <constraint firstItem="o75-Nv-6Ax" firstAttribute="top" secondItem="yW3-9D-pyF" secondAttribute="top" constant="20" symbolic="YES" id="pdX-5n-Due"/>
-            </constraints>
         </view>
-        <swipeGestureRecognizer direction="right" id="JZ8-nY-FNa">
-            <connections>
-                <action selector="swipeRightToBox:" destination="-1" id="zok-oP-ApZ"/>
-            </connections>
-        </swipeGestureRecognizer>
     </objects>
-    <resources>
-        <image name="Overlay 80" width="320" height="81"/>
-        <image name="more 2" width="6" height="30"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -8,6 +8,6 @@
 
 #import "MapViewController.h"
 
-@interface BoxViewController : MapViewController
+@interface BoxViewController : UIViewController
 
 @end

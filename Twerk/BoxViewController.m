@@ -7,8 +7,13 @@
 //
 
 #import "BoxViewController.h"
+#import "BoxMapView.h"
+#import "BoxManager.h"
 
 @interface BoxViewController ()
+
+@property (nonatomic, strong) IBOutlet BoxMapView *boxMapView;
+@property (nonatomic, strong) BoxManager *boxManager;
 
 @end
 
@@ -34,5 +39,22 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - IBActions/Buttons
+
+-(IBAction)testButton:(id)sender
+{
+    //Test stuff
+    
+}
+
+-(IBAction)backButton:(id)sender
+{
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Load Pictures
+
+
 
 @end

@@ -23,6 +23,8 @@
 #import "THSound.h"
 #import "SettingsTableViewController.h"
 #import "CustomCallView.h"
+#import "BoxViewController.h"
+
 
 const NSInteger METERS_PER_MILE = 1609.344;
 const NSInteger MAX_ALLOWED_PICTURES = 100; //ON SCREEN
@@ -85,6 +87,7 @@ const double SCALE_FACTOR = 500.0;
         _isInBoxMode = NO;
         UIImage *image = [UIImage imageNamed:@"Overlay 80"];
         [_pictoOverlay setImage:image];
+//        [self dismissViewControllerAnimated:YES completion:nil];
 
     }
     else
@@ -92,7 +95,8 @@ const double SCALE_FACTOR = 500.0;
         _isInBoxMode = YES;
         UIImage *image1 = [UIImage imageNamed:@"Overlay 81"]; //Or 82
         [_pictoOverlay setImage:image1];
-        
+//        BoxViewController *box =  [[BoxViewController alloc] init];
+//        [self presentViewController:box animated:YES completion:nil];
         
     }
     
@@ -287,6 +291,9 @@ const double SCALE_FACTOR = 500.0;
 
 -(void)parseSelectorMethod
 {
+    //TODO:
+    //pause/stop operations if we need to (in case of presenting VCs or other actions)
+    
     if (!_lock)
     {
         [_mapView cleanupMap];
