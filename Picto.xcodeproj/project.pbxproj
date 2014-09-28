@@ -974,9 +974,8 @@
 				GCC_PREFIX_HEADER = "Twerk/Picto-Prefix.pch";
 				INFOPLIST_FILE = "Twerk/Picto-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Picto;
-				PROVISIONING_PROFILE = "d3393f51-dcab-4ed9-9374-7bf92bade26c";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -996,9 +995,8 @@
 				GCC_PREFIX_HEADER = "Twerk/Picto-Prefix.pch";
 				INFOPLIST_FILE = "Twerk/Picto-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Picto;
-				PROVISIONING_PROFILE = "d3393f51-dcab-4ed9-9374-7bf92bade26c";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

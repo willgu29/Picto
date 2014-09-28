@@ -200,10 +200,27 @@ const double SCALE_FACTOR = 500.0;
     
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    //if the location mananager is not authorized
+    //authorize it before doing anything else.
+    
+}
+
+
 
 -(void)viewDidAppear:(BOOL)animated
 {
 
+    if ([CLLocationManager authorizationStatus] >= 4)
+    {
+        //we good
+    }
+    else
+    {
+        [self authorizeLocationManager];
+        return;
+    }
     
     if (_zoomToLocationOnLaunch == NO)
         return;
@@ -227,6 +244,17 @@ const double SCALE_FACTOR = 500.0;
     }
 
     
+}
+
+-(void)authorizeLocationManager
+{
+    if (locationManager == nil)
+        
+    {
+        locationManager = [[CLLocationManager alloc] init];
+        [locationManager requestWhenInUseAuthorization];
+    }
+    [self performSelector:@selector(viewDidAppear:) withObject:nil afterDelay:0];
 }
 
 
@@ -1095,14 +1123,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     [_mapView getCurrentLocationOfMap];
     //TODO: find a home for this
     
-    if ([CLLocationManager authorizationStatus] >= 4)
-    {
-        
-    }
-    else
-    {
-        [self performSelector:@selector(omg) withObject:nil afterDelay:1];
-    }
 
 }
 
