@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BucketListViewController : UIViewController <UITextFieldDelegate>
+@interface BucketListViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @end

@@ -6,6 +6,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BucketListViewController">
             <connections>
+                <outlet property="completed" destination="usb-id-GGT" id="Xvr-yM-urS"/>
+                <outlet property="toDo" destination="pF0-xP-wuh" id="a1x-XA-04p"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -29,10 +31,18 @@
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="pF0-xP-wuh">
                     <rect key="frame" x="0.0" y="62" width="320" height="138"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="UVe-7P-AfC"/>
+                        <outlet property="delegate" destination="-1" id="u9S-6v-pSU"/>
+                    </connections>
                 </tableView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="usb-id-GGT">
                     <rect key="frame" x="0.0" y="249" width="320" height="138"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="2lB-qo-v3o"/>
+                        <outlet property="delegate" destination="-1" id="Iyq-ab-S5f"/>
+                    </connections>
                 </tableView>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add a bucket list item..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Beo-tG-cEf">
                     <rect key="frame" x="8" y="454" width="304" height="30"/>
