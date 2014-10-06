@@ -28,7 +28,7 @@
 
 
 const NSInteger METERS_PER_MILE = 1609.344;
-const NSInteger MAX_ALLOWED_PICTURES = 100; //ON SCREEN
+const NSInteger MAX_ALLOWED_PICTURES = 200; //ON SCREEN
 const NSInteger POPULAR_PICTURES_IN_ARRAY = 7;
 const NSInteger ANNOTATION_RADIUS = 25;
 
@@ -389,6 +389,8 @@ const double SCALE_FACTOR = 500.0;
             if (resultOfCheck == OVERLAP)
             {
                 continue;
+                //TODO: group this into 1 box...
+                
             }
             else if (resultOfCheck == DUPLICATE)
             {

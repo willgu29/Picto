@@ -138,9 +138,9 @@
     }
 }
 
--(IBAction)shareButton:(UIButton *)sender
+-(IBAction)bucketListButton:(UIButton *)sender
 {
-    //TODO: sharing feature
+    //present user's bucket list and associated pictures
 }
 
 #pragma mark - Request Types

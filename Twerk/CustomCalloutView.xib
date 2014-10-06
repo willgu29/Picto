@@ -52,15 +52,15 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vcr-te-kpw">
-                    <rect key="frame" x="18" y="314" width="62" height="22"/>
+                    <rect key="frame" x="8" y="314" width="90" height="22"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                     <inset key="contentEdgeInsets" minX="0.0" minY="1" maxX="0.0" maxY="0.0"/>
-                    <state key="normal" title="share" backgroundImage="follow">
+                    <state key="normal" title="bucket list" backgroundImage="follow">
                         <color key="titleColor" red="0.55741763109999998" green="0.70938962699999997" blue="0.91959434750000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="shareButton:" destination="iN0-l3-epB" eventType="touchDown" id="OBc-k3-FLS"/>
+                        <action selector="bucketListButton:" destination="iN0-l3-epB" eventType="touchDown" id="ncn-7f-B0I"/>
                     </connections>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kvm-DD-1f0">
