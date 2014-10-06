@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		8402702A18F9C0CB00598EE2 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8402702918F9C0CB00598EE2 /* CoreMotion.framework */; };
 		8402703318F9E71800598EE2 /* butt.png in Resources */ = {isa = PBXBuildFile; fileRef = 8402703218F9E71800598EE2 /* butt.png */; };
+		84033B4119E25DAF00B260FB /* IntroChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 84033B4019E25DAF00B260FB /* IntroChooser.m */; };
+		84033B4519E25E3800B260FB /* IntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84033B4319E25E3800B260FB /* IntroViewController.m */; };
+		84033B4619E25E3800B260FB /* IntroViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84033B4419E25E3800B260FB /* IntroViewController.xib */; };
+		84033B4A19E267CA00B260FB /* BucketListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84033B4819E267CA00B260FB /* BucketListViewController.m */; };
+		84033B4B19E267CA00B260FB /* BucketListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84033B4919E267CA00B260FB /* BucketListViewController.xib */; };
 		84068DA2196B4EFA0053355C /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 84068DA1196B4EFA0053355C /* Friend.m */; };
 		84068DA4196B8F750053355C /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84068DA3196B8F750053355C /* MobileCoreServices.framework */; };
 		8438BF1419BE801200E5B4FA /* BaseDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 8438BF1319BE801200E5B4FA /* BaseDisplay.m */; };
@@ -127,6 +132,14 @@
 /* Begin PBXFileReference section */
 		8402702918F9C0CB00598EE2 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		8402703218F9E71800598EE2 /* butt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = butt.png; sourceTree = SOURCE_ROOT; };
+		84033B3F19E25DAF00B260FB /* IntroChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroChooser.h; sourceTree = "<group>"; };
+		84033B4019E25DAF00B260FB /* IntroChooser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroChooser.m; sourceTree = "<group>"; };
+		84033B4219E25E3800B260FB /* IntroViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroViewController.h; sourceTree = "<group>"; };
+		84033B4319E25E3800B260FB /* IntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroViewController.m; sourceTree = "<group>"; };
+		84033B4419E25E3800B260FB /* IntroViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IntroViewController.xib; sourceTree = "<group>"; };
+		84033B4719E267CA00B260FB /* BucketListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BucketListViewController.h; sourceTree = "<group>"; };
+		84033B4819E267CA00B260FB /* BucketListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BucketListViewController.m; sourceTree = "<group>"; };
+		84033B4919E267CA00B260FB /* BucketListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BucketListViewController.xib; sourceTree = "<group>"; };
 		84068DA0196B4EFA0053355C /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Friend.h; sourceTree = "<group>"; };
 		84068DA1196B4EFA0053355C /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Friend.m; sourceTree = "<group>"; };
 		84068DA3196B8F750053355C /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -319,6 +332,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		84033B3D19E25BD800B260FB /* Bucket List */ = {
+			isa = PBXGroup;
+			children = (
+				84033B4719E267CA00B260FB /* BucketListViewController.h */,
+				84033B4819E267CA00B260FB /* BucketListViewController.m */,
+				84033B4919E267CA00B260FB /* BucketListViewController.xib */,
+			);
+			name = "Bucket List";
+			sourceTree = "<group>";
+		};
+		84033B3E19E25D9400B260FB /* Intro */ = {
+			isa = PBXGroup;
+			children = (
+				84033B3F19E25DAF00B260FB /* IntroChooser.h */,
+				84033B4019E25DAF00B260FB /* IntroChooser.m */,
+				84033B4219E25E3800B260FB /* IntroViewController.h */,
+				84033B4319E25E3800B260FB /* IntroViewController.m */,
+				84033B4419E25E3800B260FB /* IntroViewController.xib */,
+			);
+			name = Intro;
+			sourceTree = "<group>";
+		};
 		84068D9F196B4ED80053355C /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -510,6 +545,8 @@
 		84DA0D2318F92C2B00DE364F /* Twerk */ = {
 			isa = PBXGroup;
 			children = (
+				84033B3E19E25D9400B260FB /* Intro */,
+				84033B3D19E25BD800B260FB /* Bucket List */,
 				843C98D819CD173700F3D428 /* Comments */,
 				84A79CF319CA351C00D88456 /* Background */,
 				84A281F419C651CF001AAC1F /* Feed */,
@@ -746,6 +783,7 @@
 				C7808E8619B05FFA002E525E /* AppIcon57x57@2x.png in Resources */,
 				C7808E8219B05FFA002E525E /* AppIcon40x40@2x.png in Resources */,
 				84A281F919C65219001AAC1F /* UserFeedViewController.xib in Resources */,
+				84033B4619E25E3800B260FB /* IntroViewController.xib in Resources */,
 				84A2819D19C12825001AAC1F /* TVTableSettingsViewCell.xib in Resources */,
 				84B15D39199ADDA500F94E9C /* lulsides.png in Resources */,
 				84DA0D2818F92C2B00DE364F /* InfoPlist.strings in Resources */,
@@ -769,6 +807,7 @@
 				C7808E8119B05FFA002E525E /* AppIcon40x40.png in Resources */,
 				C7808E8A19B05FFA002E525E /* AppIcon72x72@2x.png in Resources */,
 				84A281FE19C6AD05001AAC1F /* CustomCalloutView.xib in Resources */,
+				84033B4B19E267CA00B260FB /* BucketListViewController.xib in Resources */,
 				84B15D3D199AE15D00F94E9C /* wouldbang.png in Resources */,
 				84DEE2B019BA5285004C58E4 /* SettingsTableViewController.xib in Resources */,
 				C7808E8519B05FFA002E525E /* AppIcon57x57.png in Resources */,
@@ -807,6 +846,7 @@
 				84A281E619C24761001AAC1F /* UIAlertView+AFNetworking.m in Sources */,
 				84DEE29C19B96B64004C58E4 /* PictureArray.m in Sources */,
 				8438BF1419BE801200E5B4FA /* BaseDisplay.m in Sources */,
+				84033B4519E25E3800B260FB /* IntroViewController.m in Sources */,
 				84A281D019C24758001AAC1F /* AFURLResponseSerialization.m in Sources */,
 				84A2819C19C12825001AAC1F /* TVTableSettingsViewCell.m in Sources */,
 				84068DA2196B4EFA0053355C /* Friend.m in Sources */,
@@ -824,6 +864,7 @@
 				84A281AD19C2403B001AAC1F /* BoxViewController.m in Sources */,
 				84F24FEF1975F17300013F47 /* WGMap.m in Sources */,
 				84A281E819C24761001AAC1F /* UIImageView+AFNetworking.m in Sources */,
+				84033B4119E25DAF00B260FB /* IntroChooser.m in Sources */,
 				84A281E919C24761001AAC1F /* UIProgressView+AFNetworking.m in Sources */,
 				84A281A019C12874001AAC1F /* TVSettingsObject.m in Sources */,
 				84DEE2AF19BA5285004C58E4 /* SettingsTableViewController.m in Sources */,
@@ -843,6 +884,7 @@
 				8438BF1A19BE810A00E5B4FA /* HashDisplay.m in Sources */,
 				84F24FF21976045200013F47 /* WGPhoto.m in Sources */,
 				84A281E419C24761001AAC1F /* AFNetworkActivityIndicatorManager.m in Sources */,
+				84033B4A19E267CA00B260FB /* BucketListViewController.m in Sources */,
 				8438BF1719BE803300E5B4FA /* UserDisplay.m in Sources */,
 				84A281CC19C24758001AAC1F /* AFNetworkReachabilityManager.m in Sources */,
 				8461E943194ED2C300E2D809 /* LoginViewController.m in Sources */,

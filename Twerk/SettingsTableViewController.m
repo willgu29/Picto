@@ -60,7 +60,7 @@
 {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 80)];
     
-    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 36, 30, 30)];
+    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 36, 40, 40)];
     backButton.titleLabel.text = @"Back";
     [backButton setImage:[UIImage imageNamed:@"Fill 128.png"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(backToMap) forControlEvents:UIControlEventTouchUpInside];

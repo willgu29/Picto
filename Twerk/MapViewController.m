@@ -24,6 +24,7 @@
 #import "SettingsTableViewController.h"
 #import "CustomCallView.h"
 #import "BoxViewController.h"
+#import "BucketListViewController.h"
 
 
 const NSInteger METERS_PER_MILE = 1609.344;
@@ -245,6 +246,7 @@ const double SCALE_FACTOR = 500.0;
 
     
 }
+
 
 -(void)authorizeLocationManager
 {
@@ -863,11 +865,41 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 #pragma mark - MKAnnotationView methods
 
+-(void)createBucketButton:(MKAnnotationView *)view
+{
+    UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 50)];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(30, 30, 50, 50)];
+    [button setImage:[UIImage imageNamed:@"featured.png"] forState:UIControlStateNormal];
+    [view1 addSubview:button];
+    [view addSubview:view1];
+}
+
+-(void)goToBucketList
+{
+    BucketListViewController *bucketVC = [[BucketListViewController alloc] init];
+    [self presentViewController:bucketVC animated:YES completion:nil];
+}
+
+-(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
+{
+    MKAnnotationView* annotationView = [mapView viewForAnnotation:userLocation];
+    annotationView.canShowCallout = NO;
+}
+
 -(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-    if ([view.annotation isKindOfClass:[MKUserLocation class]] || [view.annotation isKindOfClass:[MKPointAnnotation class]])
+    if ([view.annotation isKindOfClass:[MKUserLocation class]])
     {
-        //Don't add these types to our array;
+//        [self createBucketButton:view];
+        if ([_picturesChosenByDrag count] == 0)
+        {
+            view.canShowCallout = NO;
+            [self goToBucketList];
+        }
+        return;
+    }
+    if ([view.annotation isKindOfClass:[MKPointAnnotation class]])
+    {
         return;
     }
     if (_picturesChosenByDrag == nil)
@@ -906,9 +938,12 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     static NSString *identifier = @"CustomViewAnnotation";
 //    static NSString *identifier = @"CustomCallView";
     
-    //MKUserLocation is considered an annotation and we don't want to change that so just return no view
+    
+    //MKPinAnnotation is considered an annotation and we don't want to change that so just return no view
     if ([annotation isKindOfClass:[MKUserLocation class]])
+    {
         return nil;
+    }
     if ([annotation isKindOfClass:[MKPointAnnotation class]])
         return nil;
     
@@ -925,6 +960,8 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         //NSLog(@"I must have reused it!");
         annotationView.annotation  = annotation;
     }
+    
+    
     annotationView.image = [(CustomAnnotation *)annotation image];
     annotationView.enabled = YES;
     annotationView.canShowCallout = NO; //Revert to yes later?
