@@ -26,7 +26,7 @@
 -(void)createSettingsArray
 {
     //TODO: Load proper on from correct state
-    TVSettingsObject *row1 = [[TVSettingsObject alloc] initWithMainTitle:@"View Recent or All" andSubText:@"Switch between viewing pictures posted in the last 24 hours or all pictures"];
+    TVSettingsObject *row1 = [[TVSettingsObject alloc] initWithMainTitle:@"View Recent or All" andSubText:@"Switch between viewing pictures posted in the last 24 hours or all"];
     TVSettingsObject *row2 = [[TVSettingsObject alloc] initWithMainTitle:@"View Friends Only" andSubText:@"Picto will only display who you are following when browsing the map"];
     TVSettingsObject *row3 = [[TVSettingsObject alloc] initWithMainTitle:@"Filler Option" andSubText:@"Something that could possibly go here"];
     _settingsArray = [[NSArray alloc] initWithObjects:row1, row2, row3, nil];

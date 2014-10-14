@@ -30,7 +30,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
 @property (weak, nonatomic) IBOutlet UILabel *locationString;
 
-
 @property (nonatomic) BOOL userHasLiked;
 @property (nonatomic) BOOL userHasFollowed;
 

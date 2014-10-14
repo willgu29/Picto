@@ -16,10 +16,12 @@
 @property (nonatomic, weak) IBOutlet UIButton *likeButton;
 @property (nonatomic, weak) IBOutlet UIButton *commentsButton;
 @property (nonatomic, weak) IBOutlet UIButton *followButton;
-@property (nonatomic, weak) IBOutlet UIButton *shareButton;
+
+//@property (nonatomic, weak) IBOutlet UIButton *shareButton; i.e. bucketlist
 
 @property (nonatomic, weak) IBOutlet UIImageView *image;
 @property (nonatomic, weak) IBOutlet UILabel *locationText;
+@property (nonatomic, weak) IBOutlet UILabel *timeSincePost;
 
 @end
 
@@ -51,6 +53,7 @@
     [self setUpLocation];
     [self setUpFollow];
     [self setUpComments];
+    [self setUpTime];
 }
 
 -(void)setUpLikes
@@ -101,6 +104,43 @@
 -(void)setUpComments
 {
     [_commentsButton setTitle:[NSString stringWithFormat:@"%@",_referencedAnnotation.numberOfComments] forState:UIControlStateNormal];
+}
+
+-(void)setUpTime
+{
+    time_t todayInUnix = (time_t) [[NSDate date] timeIntervalSince1970];
+    time_t timePassedInSeconds = todayInUnix - _referencedAnnotation.timeCreated.intValue;
+    _timeSincePost.text = [self getTimeString:timePassedInSeconds];
+}
+
+-(NSString*)numberToString:(NSInteger)number
+{
+    NSString *s = [NSString stringWithFormat:@"%ld", (long)number];
+    return s;
+}
+
+-(NSString*)getTimeString:(float)postedTime
+{
+    
+    if( postedTime < 20 ) //just now
+        return @"now";
+    else if( postedTime < 60 ) //seconds
+        return [NSString stringWithFormat:@"%@s",[self numberToString:postedTime]];
+    else if( postedTime < 3600 ) //minutes
+        return [NSString stringWithFormat:@"%@m",[self numberToString:ceil(postedTime / 60)]];
+    else if( postedTime < 86400 ) //hours
+        return [NSString stringWithFormat:@"%@h",[self numberToString:ceil(postedTime / 3600)]];
+    else if (postedTime < 604800 )  //days
+        return [NSString stringWithFormat:@"%@d",[self numberToString:ceil(postedTime / 86400)]];
+    else if( postedTime >= 604800 ) //weeks
+        return [NSString stringWithFormat:@"%@w",[self numberToString:ceil(postedTime / 604800)]];
+    else
+    {
+        NSLog(@"SECONDS COULDNT BE COMPARED TO INT: %ld",(long)postedTime);
+        return nil;
+    }
+    
+    
 }
 
 #pragma mark - IBAction

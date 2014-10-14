@@ -51,21 +51,15 @@
                         <action selector="likeButton:" destination="iN0-l3-epB" eventType="touchDown" id="Oat-Hc-hqw"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vcr-te-kpw">
-                    <rect key="frame" x="8" y="314" width="90" height="22"/>
-                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                    <inset key="contentEdgeInsets" minX="0.0" minY="1" maxX="0.0" maxY="0.0"/>
-                    <state key="normal" title="bucket list" backgroundImage="follow">
-                        <color key="titleColor" red="0.55741763109999998" green="0.70938962699999997" blue="0.91959434750000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="bucketListButton:" destination="iN0-l3-epB" eventType="touchDown" id="ncn-7f-B0I"/>
-                    </connections>
-                </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kvm-DD-1f0">
                     <rect key="frame" x="7" y="1" width="306" height="271"/>
                 </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e0p-2f-aia">
+                    <rect key="frame" x="17" y="314" width="62" height="21"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.55741763114929199" green="0.70938962697982788" blue="0.91959434747695923" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <nil key="simulatedStatusBarMetrics"/>
@@ -76,7 +70,7 @@
                 <outlet property="image" destination="Kvm-DD-1f0" id="s8B-l3-bnX"/>
                 <outlet property="likeButton" destination="a10-2F-v2D" id="vtr-G2-xxH"/>
                 <outlet property="locationText" destination="QuT-Xf-fBL" id="q3J-fk-JOt"/>
-                <outlet property="shareButton" destination="Vcr-te-kpw" id="yY8-qa-Gqj"/>
+                <outlet property="timeSincePost" destination="e0p-2f-aia" id="dXy-Yn-y4V"/>
             </connections>
             <point key="canvasLocation" x="141" y="172.5"/>
         </view>
