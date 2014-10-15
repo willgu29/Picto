@@ -745,7 +745,6 @@ const double SCALE_FACTOR = 500.0;
 
 -(void)displayCallout:(MKAnnotationView *)view
 {
-//    CustomCallout *calloutView = (CustomCallout *)[[[NSBundle mainBundle] loadNibNamed:@"calloutView" owner:self options:nil] objectAtIndex:0];
     CustomCallView *calloutView = (CustomCallView *)[[[NSBundle mainBundle] loadNibNamed:@"CustomCalloutView" owner:self options:nil] objectAtIndex:0];
     
     CGRect calloutViewFrame  = calloutView.frame;
@@ -774,7 +773,6 @@ const double SCALE_FACTOR = 500.0;
         }
         NSLog(@"Image was preloaded :)");
         dispatch_async(dispatch_get_main_queue(), ^{
-//            [calloutView initCalloutWithAnnotation:someAnnotation andImage:someAnnotation.imageEnlarged];
             [calloutView initWithAnnotation:someAnnotation andImage:someAnnotation.imageEnlarged];
             
             //Makes pictures circular
@@ -783,10 +781,8 @@ const double SCALE_FACTOR = 500.0;
             
             //Makes border
             calloutView.layer.borderWidth = 5.0f;
-//            calloutView.layer.borderColor = [UIColor purpleColor].CGColor;
             calloutView.backgroundColor = [UIColor colorWithRed:.549 green:.713 blue:.901 alpha:1.0];
             calloutView.layer.borderColor = [UIColor colorWithRed:.549 green:.713 blue:.901 alpha:1.0].CGColor;
-//             calloutView.layer.borderColor = [UIColor colorWithHue:0.588889 saturation:0.391304 brightness:0.901961 alpha:1].CGColor;
             [self animateFadeInAndAddCallOutView:calloutView];
            
             arrayCounter++;
@@ -830,8 +826,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 - (void)timerFireMethod
 {
-    // NSDictionary *data = [_myTimer userInfo];
-    //NSMutableOrderedSet *myOrderedSet = [data objectForKey:@"WGannotationViewArray"];
     NSLog(@"timerFireMethod called!");
     
     
@@ -937,7 +931,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
     
     static NSString *identifier = @"CustomViewAnnotation";
-//    static NSString *identifier = @"CustomCallView";
     
     
     //MKPinAnnotation is considered an annotation and we don't want to change that so just return no view
