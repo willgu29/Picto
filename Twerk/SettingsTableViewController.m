@@ -258,12 +258,34 @@
     {
         [self logout];
     }
+    else if (indexPath.row == ([_settingsArray count] + [_actionsArray count] - 2))
+    {
+        [self rateApp];
+    }
+    else if (indexPath.row == ([_settingsArray count] + [_actionsArray count] - 3))
+    {
+        [self shareApp];
+    }
+}
+
+-(void)rateApp
+{
+    
+}
+
+-(void)shareApp
+{
+    
 }
 
 -(void)logout
 {
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     [appDelegate.instagram logout];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"accessToken"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     LoginViewController *loginVC = [[LoginViewController alloc]init];
     [self presentViewController:loginVC animated:YES completion:nil];
     //TODO: THIS IS INCORRECT (SHOULD DISMISS ALL VCs NOT PRESENT)
@@ -276,7 +298,6 @@
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"accessToken"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
-
 
 
 

@@ -892,12 +892,11 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 {
     if ([view.annotation isKindOfClass:[MKUserLocation class]])
     {
-//        [self createBucketButton:view];
-        if ([_picturesChosenByDrag count] == 0)
-        {
-            view.canShowCallout = NO;
-            [self goToBucketList];
-        }
+//        if ([_picturesChosenByDrag count] == 0)
+//        {
+//            view.canShowCallout = NO;
+//            [self goToBucketList];
+//        }
         return;
     }
     if ([view.annotation isKindOfClass:[MKPointAnnotation class]])
