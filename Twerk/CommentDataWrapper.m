@@ -19,8 +19,12 @@
         _profileURL = [commentData valueForKeyPath:@"from.profile_picture"];
         _username = [commentData valueForKeyPath:@"from.username"];
         _timeOfPost = [commentData valueForKeyPath:@"created_time"];
+//        _estimatedHeight = [self heightForTextLabel:_comment].height;
     }
     return self;
 }
+
+
+
 
 @end

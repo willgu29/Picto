@@ -46,6 +46,8 @@
 //}
 
 
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
@@ -113,6 +115,7 @@
     [(CommentTableViewCell *)cell loadProfilePic:data.profileURL];
     [(CommentTableViewCell *)cell formatCellWith:data.username andComment:data.comment andTime:data.timeOfPost.integerValue];
 
+//     data.estimatedHeight = [self heightForTextLabel:cell.comment].height;
 //    cell.profilePic =
 //    cell.username =
 //    cell.comment =
@@ -128,12 +131,28 @@
 //    find how much space the cell at indexPath.row needs
 //    return that height
   
-    
+//    CommentDataWrapper *object = [_dataArray objectAtIndex:indexPath.row];
+//    NSLog(@"ESTIMATED HEIGHT: %f", object.estimatedHeight);
+//    
+//    if (object.estimatedHeight < 64)
+//    {
+//        return 64;
+//    }
+//    return object.estimatedHeight;
     
     return 64;
 }
-
-
+//
+//-(CGSize)heightForTextLabel:(UILabel *)myLabel
+//{
+//    
+//    return [myLabel.text boundingRectWithSize:CGSizeMake(236, MAXFLOAT)
+//                                      options:NSStringDrawingUsesLineFragmentOrigin
+//                                   attributes:@{
+//                                                NSFontAttributeName : myLabel.font
+//                                                }
+//                                      context:nil].size;
+//}
 
 #pragma mark -Textfield Delegates
 

@@ -1214,6 +1214,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
         [self performSelector:@selector(enableSearchField:) withObject:_searchField afterDelay:.2];
     }
     _searchType = NONE;
+    [_nextButton setImage:[UIImage imageNamed:@"Next.png"] forState:UIControlStateNormal];
 
     return YES;
 }
@@ -1677,16 +1678,21 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     {
         UserDisplay *display = [_searchData.autoCompleteSearchData objectAtIndex:row];
         [_searchData searchUsernameWithName:display.userID];
+        [_nextButton setImage:[UIImage imageNamed:@"Next user.png"] forState:UIControlStateNormal];
     }
     else if (searchType == HASHTAG)
     {
         HashDisplay *display = [_searchData.autoCompleteSearchData objectAtIndex:row];
         [_searchData searchHashTagWithName:display.name];
+        [_nextButton setImage:[UIImage imageNamed:@"Next hashtag.png"] forState:UIControlStateNormal];
+
     }
     else if (searchType == LOCATION)
     {
         LocationDisplay *display = [_searchData.autoCompleteSearchData objectAtIndex:row];
         [_searchData searchLocationWithLocation:display.item];
+        [_nextButton setImage:[UIImage imageNamed:@"Next location.png"] forState:UIControlStateNormal];
+
         // ???: can later make it so next will take them to pictures within that area (currently just zooms there)
     }
 }

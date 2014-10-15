@@ -51,7 +51,9 @@
     
     
     NSString *myString =  [NSString stringWithFormat:@"%@: %@\n%@ ago",from, text, timeString];
-    [_comment setText:myString];
+//    [_comment setText:myString];
+    
+    [_commentView setText:myString];
 }
 
 -(NSString *)setUpTime:(NSInteger)createdTime
@@ -105,6 +107,8 @@
     
     
 }
+
+
 
 
 @end

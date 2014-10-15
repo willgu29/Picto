@@ -14,7 +14,9 @@
 @property (strong, nonatomic) NSString *timeOfPost;
 @property (strong, nonatomic) NSString *profileURL;
 @property (strong, nonatomic) NSString *username;
+@property (nonatomic) CGFloat estimatedHeight;
 
 -(instancetype)initWith:(id)commentData;
+//-(CGSize)heightForTextLabel:(NSString *)text;
 
 @end
