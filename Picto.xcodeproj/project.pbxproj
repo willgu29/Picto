@@ -93,6 +93,7 @@
 		84DEE2B019BA5285004C58E4 /* SettingsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84DEE2AE19BA5285004C58E4 /* SettingsTableViewController.xib */; };
 		84ECA6B419BD0EE000757F87 /* HashTagSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 84ECA6B319BD0EE000757F87 /* HashTagSearch.m */; };
 		84ECA6B719BD24AC00757F87 /* LocationSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 84ECA6B619BD24AC00757F87 /* LocationSearch.m */; };
+		84ECB48B19EEF26500D5F795 /* CommentDataWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 84ECB48A19EEF26500D5F795 /* CommentDataWrapper.m */; };
 		84F24FE41973970000013F47 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FE31973970000013F47 /* User.m */; };
 		84F24FEC1974EBB500013F47 /* SearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FEB1974EBB500013F47 /* SearchData.m */; };
 		84F24FEF1975F17300013F47 /* WGMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FEE1975F17300013F47 /* WGMap.m */; };
@@ -266,6 +267,8 @@
 		84ECA6B319BD0EE000757F87 /* HashTagSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HashTagSearch.m; sourceTree = "<group>"; };
 		84ECA6B519BD24AC00757F87 /* LocationSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationSearch.h; sourceTree = "<group>"; };
 		84ECA6B619BD24AC00757F87 /* LocationSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationSearch.m; sourceTree = "<group>"; };
+		84ECB48919EEF26500D5F795 /* CommentDataWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentDataWrapper.h; sourceTree = "<group>"; };
+		84ECB48A19EEF26500D5F795 /* CommentDataWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentDataWrapper.m; sourceTree = "<group>"; };
 		84F24FE21973970000013F47 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		84F24FE31973970000013F47 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		84F24FEA1974EBB500013F47 /* SearchData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchData.h; sourceTree = "<group>"; };
@@ -397,6 +400,8 @@
 				843C98E319CD1C6900F3D428 /* CommentsViewController.h */,
 				843C98E419CD1C6900F3D428 /* CommentsViewController.m */,
 				843C98E519CD1C6900F3D428 /* CommentsViewController.xib */,
+				84ECB48919EEF26500D5F795 /* CommentDataWrapper.h */,
+				84ECB48A19EEF26500D5F795 /* CommentDataWrapper.m */,
 			);
 			name = Comments;
 			sourceTree = "<group>";
@@ -862,6 +867,7 @@
 				84A281F819C65219001AAC1F /* UserFeedViewController.m in Sources */,
 				84F250001977630200013F47 /* IGRequest.m in Sources */,
 				84A281AD19C2403B001AAC1F /* BoxViewController.m in Sources */,
+				84ECB48B19EEF26500D5F795 /* CommentDataWrapper.m in Sources */,
 				84F24FEF1975F17300013F47 /* WGMap.m in Sources */,
 				84A281E819C24761001AAC1F /* UIImageView+AFNetworking.m in Sources */,
 				84033B4119E25DAF00B260FB /* IntroChooser.m in Sources */,

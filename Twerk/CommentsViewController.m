@@ -8,11 +8,14 @@
 
 #import "CommentsViewController.h"
 #import "CommentTableViewCell.h"
+#import "CommentDataWrapper.h"
 
 @interface CommentsViewController ()
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UITextField *textField;
+
+@property (strong, nonatomic) NSMutableArray *dataArray;
 
 @end
 
@@ -46,7 +49,24 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    NSLog(@"Comments Data: %@", _commentsData);
+    [self parseComments];
+    
 }
+
+-(void)parseComments
+{
+    _dataArray = [[NSMutableArray alloc] init];
+
+    for (id commentData in [_commentsData valueForKeyPath:@"data"])
+    {
+        CommentDataWrapper *wrapper = [[CommentDataWrapper alloc] initWith:commentData];
+        [_dataArray addObject:wrapper];
+    }
+}
+
+
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -86,7 +106,12 @@
     }
     
     //TODO: format cell with comments data
+    CommentDataWrapper *data = [_dataArray objectAtIndex:indexPath.row];
     
+    
+    [(CommentTableViewCell *)cell loadProfilePic:data.profileURL];
+    [(CommentTableViewCell *)cell formatCellWith:data.username andComment:data.comment andTime:data.timeOfPost.integerValue];
+
 //    cell.profilePic =
 //    cell.username =
 //    cell.comment =

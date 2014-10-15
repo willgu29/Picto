@@ -10,7 +10,7 @@
 
 @interface CommentsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
-@property (nonatomic, strong) NSSet *commentsData;
+@property (nonatomic, strong) NSDictionary *commentsData;
 @property (nonatomic, strong) NSString *numberOfComments;
 
 @end

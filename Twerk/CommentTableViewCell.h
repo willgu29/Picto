@@ -15,6 +15,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *comment;
 @property (weak, nonatomic) IBOutlet UILabel *timeSincePost;
 
--(void)formatCell;
+-(void)formatCellWith:(NSString *)from andComment:(NSString *)text andTime:(NSInteger)createdTime;
+-(instancetype)init;
+-(void)loadProfilePic:(NSString *)stringProfilePic;
+
 
 @end
