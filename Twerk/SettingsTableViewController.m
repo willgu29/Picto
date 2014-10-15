@@ -270,12 +270,12 @@
 
 -(void)rateApp
 {
-    
+    NSLog(@"Rate me!");
 }
 
 -(void)shareApp
 {
-    
+    NSLog(@"Share me!");
 }
 
 -(void)logout
