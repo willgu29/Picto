@@ -653,59 +653,59 @@ const double SCALE_FACTOR = 500.0;
     }
     [_picturesChosenByDrag removeAllObjects];
     arrayCounter = 0;
-    if([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[MKAnnotationView class]])
-    {
-        if (tempImageView == nil)
-        {
-            tempImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 568)];
-            [self.view.window addSubview:tempImageView];
-        }
-        beganInAnnotation = YES;
-        lastPoint = [touch locationInView:self.view.window];
-    }
+    
+//    if([[self.view.window hitTest:[touch locationInView:self.view.window] withEvent:event] isKindOfClass:[MKAnnotationView class]])
+//    {
+//        if (tempImageView == nil)
+//        {
+//            tempImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 568)];
+//            [self.view.window addSubview:tempImageView];
+//        }
+//        beganInAnnotation = YES;
+//        lastPoint = [touch locationInView:self.view.window];
+//    }
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     
-    if (beganInAnnotation)
-    {
-        UITouch *touch = [[event allTouches] anyObject];
-        [self drawLineWithTouch:touch];
-    }
-    
+//    if (beganInAnnotation)
+//    {
+//        UITouch *touch = [[event allTouches] anyObject];
+//        [self drawLineWithTouch:touch];
+//    }
+//    
     
 }
-
--(void)drawLineWithTouch:(UITouch *)touch
-{
-
-    CGPoint currentPoint = [touch locationInView:self.view.window];
-    
-    UIGraphicsBeginImageContext(self.view.window.frame.size);
-    [tempImageView.image drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
-    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
-    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
-    CGContextSetLineWidth(UIGraphicsGetCurrentContext(), 3.0 );
-    CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
-    
-    CGContextStrokePath(UIGraphicsGetCurrentContext());
-    tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
-    [tempImageView setAlpha:1];
-    UIGraphicsEndImageContext();
-    
-    lastPoint = currentPoint;
-}
+//
+//-(void)drawLineWithTouch:(UITouch *)touch
+//{
+//
+//    CGPoint currentPoint = [touch locationInView:self.view.window];
+//    
+//    UIGraphicsBeginImageContext(self.view.window.frame.size);
+//    [tempImageView.image drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+//    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
+//    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
+//    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
+//    CGContextSetLineWidth(UIGraphicsGetCurrentContext(), 3.0 );
+//    CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
+//    
+//    CGContextStrokePath(UIGraphicsGetCurrentContext());
+//    tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+//    [tempImageView setAlpha:1];
+//    UIGraphicsEndImageContext();
+//    
+//    lastPoint = currentPoint;
+//}
 
 
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    beganInAnnotation = NO;
-//    tempImageView.image = nil;
-    [tempImageView removeFromSuperview];
-    tempImageView = nil;
+//    beganInAnnotation = NO;
+//    [tempImageView removeFromSuperview];
+//    tempImageView = nil;
 
     NSLog(@"Touches ended!");
     UITouch *touch = [[event allTouches] anyObject];
