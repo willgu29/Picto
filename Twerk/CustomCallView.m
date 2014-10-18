@@ -103,8 +103,8 @@
 -(void)setUpFollow
 {
     NSString *formatStringName = _referencedAnnotation.username;
-    if ([formatStringName length] > 25)
-        formatStringName = [formatStringName substringToIndex:25];
+    if ([formatStringName length] > 22)
+        formatStringName = [formatStringName substringToIndex:22];
     
     if (_referencedAnnotation.userHasFollowed)
     {
