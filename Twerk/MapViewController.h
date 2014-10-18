@@ -23,7 +23,7 @@
 @class SearchData;
 @class THSound;
 
-static const unsigned long long SECONDS_PER_PIC =  1.4;
+static const unsigned long long SECONDS_PER_PIC =  1.6;
 
 enum {
     ALL = 1,

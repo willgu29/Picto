@@ -257,7 +257,7 @@ const double SCALE_FACTOR = 500.0;
         locationManager = [[CLLocationManager alloc] init];
         [locationManager requestWhenInUseAuthorization];
     }
-    [self performSelector:@selector(viewDidAppear:) withObject:nil afterDelay:0];
+    [self performSelector:@selector(viewDidAppear:) withObject:nil afterDelay:0.2];
 }
 
 
@@ -1691,7 +1691,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     {
         LocationDisplay *display = [_searchData.autoCompleteSearchData objectAtIndex:row];
         [_searchData searchLocationWithLocation:display.item];
-        [_nextButton setImage:[UIImage imageNamed:@"Next location.png"] forState:UIControlStateNormal];
+//        [_nextButton setImage:[UIImage imageNamed:@"Next location.png"] forState:UIControlStateNormal];
 
         // ???: can later make it so next will take them to pictures within that area (currently just zooms there)
     }

@@ -50,7 +50,8 @@
 
 
 //Comment data (i.e. who's commented, the text, etc.)
-@property (nonatomic, readonly) NSSet *commentsData; //may be incorrect type... (NSDictionary? Array?)
+@property (nonatomic, readonly) NSDictionary *commentsData; //may be incorrect type... (NSDictionary? Array?)
+@property (nonatomic, readonly) NSDictionary *captionData;
 
 //MKAnnotation Protocol
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;

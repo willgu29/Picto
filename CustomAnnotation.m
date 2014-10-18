@@ -41,6 +41,8 @@
         _userHasLiked = userHasLiked.boolValue;
         _commentsData = [pictureURL valueForKeyPath:@"comments"];
         _numberOfComments = [pictureURL valueForKeyPath:@"comments.count"];
+        _captionData = [pictureURL valueForKeyPath:@"caption"];
+    
     }
     return self;
 }

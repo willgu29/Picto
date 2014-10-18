@@ -24,6 +24,18 @@
     return self;
 }
 
+-(instancetype)initWithComment:(NSString *)string andTime:(NSString *)time andProfile:(NSString *)profile andUsername:(NSString *)user
+{
+    self = [super init];
+    if (self)
+    {
+        _comment = string;
+        _profileURL = profile;
+        _username = user;
+        _timeOfPost = time;
+    }
+    return self;
+}
 
 
 

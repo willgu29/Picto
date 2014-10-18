@@ -27,6 +27,13 @@
 @property (strong, nonatomic) MKUserLocation *currentLocation;
 
 
+//User Data
+@property (strong, nonatomic) NSDictionary *userData;
+
+//Parsed
+//@property (strong, nonatomic) NSString *profilePictureURL;
+//@property (strong, nonatomic) NSString *username;
+
 //Methods
 -(void)getCurrentLocationOnMap:(MKMapView *)map; //Get location of user
 -(void)retrieveWhoUserIsFollowingFromIG;

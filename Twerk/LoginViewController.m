@@ -115,7 +115,7 @@
     AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
     //tell instagram what information we need from the user and have them authorize it
     [appDelegate.instagram authorize:[NSArray arrayWithObjects:@"comments", @"likes", @"relationships", nil]];
-    //WE DON"T USE COMMENTS LUL
+    //WE DON"T USE COMMENTS LUL (jk we do now)
 }
 
 

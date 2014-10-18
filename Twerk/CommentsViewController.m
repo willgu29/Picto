@@ -9,13 +9,17 @@
 #import "CommentsViewController.h"
 #import "CommentTableViewCell.h"
 #import "CommentDataWrapper.h"
+#import "AppDelegate.h"
 
 @interface CommentsViewController ()
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UITextField *textField;
+@property (weak, nonatomic) IBOutlet UIButton *sendButton;
+
 
 @property (strong, nonatomic) NSMutableArray *dataArray;
+
 
 @end
 
@@ -25,28 +29,25 @@
 #pragma mark - Helper functions
 
 
-//THIS IS NOT MY CODE: USE IT TO RESIZE CELL HEIGHTS in heightForRowAtIndexPath
-//-(CGFloat)heightForTextViewRectWithWidth:(CGFloat)width andText:(NSString *)text
-//{
-//    UIFont * font = [UIFont systemFontOfSize:12.0f];
-//    
-//    // this returns us the size of the text for a rect but assumes 0, 0 origin
-//    CGSize size = [text sizeWithAttributes:@{NSFontAttributeName: font}];
-//    
-//    // so we calculate the area
-//    CGFloat area = size.height * size.width;
-//    
-//    CGFloat buffer = whateverExtraBufferYouNeed.0f;
-//    
-//    // and then return the new height which is the area divided by the width
-//    // Basically area = h * w
-//    // area / width = h
-//    // for w we use the width of the actual text view
-//    return floor(area/width) + buffer;
-//}
-
-
-
+- (void)tableTapped:(UITapGestureRecognizer *)tap
+{
+    CGPoint location = [tap locationInView:self.tableView];
+    NSIndexPath *path = [self.tableView indexPathForRowAtPoint:location];
+    
+    if(path)
+    {
+        // tap was on existing row, so pass it to the delegate method
+//        [self tableView:self.tableView didSelectRowAtIndexPath:path];
+    }
+    else
+    {
+        // handle tap on empty space below existing rows however you want
+        if ([_textField isFirstResponder])
+        {
+            [_textField resignFirstResponder];
+        }
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -55,12 +56,32 @@
     NSLog(@"Comments Data: %@", _commentsData);
     [self parseComments];
     
+    // in viewDidLoad or somewhere similar
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tableTapped:)];
+    [self.tableView addGestureRecognizer:tap];
+    //.........
+    
+    
+    //remove this when approval for comments is granted
+    [self disableComments];
+    
+}
+
+-(void)disableComments
+{
+    _textField.hidden = YES;
+    _sendButton.hidden = YES;
+    _textField.enabled = NO;
+    _sendButton.enabled = NO;
 }
 
 -(void)parseComments
 {
     _dataArray = [[NSMutableArray alloc] init];
 
+//    CommentDataWrapper *caption = [[CommentDataWrapper alloc] initWith:_captionData];
+//    [_dataArray addObject:caption];
+    
     for (id commentData in [_commentsData valueForKeyPath:@"data"])
     {
         CommentDataWrapper *wrapper = [[CommentDataWrapper alloc] initWith:commentData];
@@ -80,12 +101,27 @@
     // Dispose of any resources that can be recreated.
 }
 
+//-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+//{
+//    NSLog(@"touch detected");
+//    UITouch *touch = [[event allTouches] anyObject];
+//    [self tapOutOfSearchBar:touch];
+//}
+//
+//-(void)tapOutOfSearchBar:(UITouch *)touch
+//{
+//    if ([_textField isFirstResponder] && [touch view] != _textField) {
+//        [_textField resignFirstResponder];
+//    }
+//}
+
 #pragma mark -IBAction
 
 -(IBAction)backButton:(UIButton *)sender
 {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
+
 
 
 #pragma mark -TableView Data
@@ -158,21 +194,100 @@
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    
+    //move VC view
+    [self moveVC];
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    
+    //revert VC view
+    [self revertVC];
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [textField resignFirstResponder];
+    [self sendButton:_sendButton];
+    
     return YES;
 }
 
+-(IBAction)sendButton:(UIButton *)sender
+{
+    
+    if ([_textField.text isEqualToString:@""])
+    {
+        return;
+    }
+    
+    [_textField resignFirstResponder];
+    
+    NSLog(@"SEND BETTON: ");
+    //post
+    [self postComment];
+    [self addToTable];
+    //add to tableView
+    [_textField setText:@""];
+    [_textField setPlaceholder:@"Add a comment..."];
+    
+}
 
+-(void)moveVC
+{
+    [self.view setFrame:CGRectMake(0, -246, self.view.frame.size.width, self.view.frame.size.height)];
+}
 
+-(void)revertVC
+{
+    [self.view setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+
+}
+
+-(void)addToTable
+{
+    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+    id commentData = delegate.mapVC.someUser.userData;
+    time_t todayInUnix = (time_t) [[NSDate date] timeIntervalSince1970];
+    NSString *time = [NSString stringWithFormat:@"%ld",todayInUnix];
+    CommentDataWrapper *wrapper = [[CommentDataWrapper alloc] initWithComment:_textField.text andTime:time andProfile:[commentData valueForKeyPath:@"profile_picture"] andUsername:[commentData valueForKeyPath:@"username"]];
+    
+    [_dataArray addObject:wrapper];
+    [self.tableView reloadData];
+    
+}
+
+-(void)postComment
+{
+    //POSTING COMMENTS REQUIRES INSTAGRAMS APPROVAL (FILL OUT FORM) https://help.instagram.com/contact/185819881608116
+    
+    
+    
+    NSString *text = [NSString stringWithFormat:@"%@", _textField.text];
+    [self updateComments];
+    
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    NSString* methodName = [NSString stringWithFormat:@"media/%@/comments", _mediaID];
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:text, @"text", nil];
+    [appDelegate.instagram requestWithMethodName:methodName
+                                          params: params
+                                      httpMethod:@"POST"
+                                        delegate: self];
+}
+
+-(void)updateComments
+{
+    int commentCount = _referencedAnnotation.numberOfComments.integerValue;
+    commentCount++;
+    _referencedAnnotation.numberOfComments = [NSString stringWithFormat:@"%d",commentCount];
+}
+
+-(void)request:(IGRequest *)request didLoad:(id)result
+{
+    
+}
+
+-(void)request:(IGRequest *)request didFailWithError:(NSError *)error
+{
+    
+}
 
 @end

@@ -12,6 +12,9 @@
 #import "CommentsViewController.h"
 
 @interface CustomCallView()
+{
+    BOOL getPosterData;
+}
 
 @property (nonatomic, weak) IBOutlet UIButton *likeButton;
 @property (nonatomic, weak) IBOutlet UIButton *commentsButton;
@@ -22,6 +25,10 @@
 @property (nonatomic, weak) IBOutlet UIImageView *image;
 @property (nonatomic, weak) IBOutlet UILabel *locationText;
 @property (nonatomic, weak) IBOutlet UILabel *timeSincePost;
+
+//@property (nonatomic, weak) IBOutlet UILabel *captionText;
+@property (nonatomic, weak) IBOutlet UITextView *captionText;
+@property (nonatomic, weak) IBOutlet UIButton *infoButton;
 
 @end
 
@@ -54,6 +61,21 @@
     [self setUpFollow];
     [self setUpComments];
     [self setUpTime];
+    [self setUpCaption];
+}
+
+-(void)setUpCaption
+{
+    NSString *stringFormat = [NSString stringWithFormat:@"%@",[_referencedAnnotation.captionData valueForKeyPath:@"text"]];
+    [_captionText setText:stringFormat];
+    [_captionText setTextColor:[UIColor whiteColor]];
+    [_captionText setTextAlignment:NSTextAlignmentCenter];
+    _captionText.editable = YES;
+    [_captionText setFont:[UIFont fontWithName:@"Helvetica Neue-Italic" size:12]];
+    _captionText.editable = NO;
+    _captionText.backgroundColor = [UIColor colorWithRed:.549 green:.713 blue:.901 alpha:1.0];
+
+    
 }
 
 -(void)setUpLikes
@@ -145,6 +167,16 @@
 
 #pragma mark - IBAction
 
+-(IBAction)infoButton:(UIButton *)sender
+{
+    NSString *username = _referencedAnnotation.username;
+    NSString *userURL = [NSString stringWithFormat:@"instagram://user?username=%@",username];
+    NSURL *instagramURL = [NSURL URLWithString:userURL];
+    if ([[UIApplication sharedApplication] canOpenURL:instagramURL]) {
+        [[UIApplication sharedApplication] openURL:instagramURL];
+    }
+}
+
 -(IBAction)likeButton:(UIButton *)sender
 {
     if (_referencedAnnotation.userHasLiked)
@@ -159,13 +191,21 @@
 -(IBAction)commentButton:(UIButton *)sender
 {
     AppDelegate *delegate = [UIApplication sharedApplication].delegate;
-    [self getComments];
+    [self getUserData];
     CommentsViewController *commentVC = [[CommentsViewController alloc] init];
+    
     commentVC.commentsData = self.referencedAnnotation.commentsData;
     commentVC.numberOfComments = self.referencedAnnotation.numberOfComments;
+    commentVC.mediaID = self.referencedAnnotation.mediaID;
+//    commentVC.posterProfileURL = delegate.mapVC.someUser.profilePictureURL;
+//    commentVC.posterUsername = delegate.mapVC.someUser.username;
+    
     [delegate.mapVC presentViewController:commentVC animated:YES completion:nil];
     //TODO: display new view for comments
 }
+
+
+
 -(IBAction)followButton:(UIButton *)sender
 {
     if (_referencedAnnotation.userHasFollowed)
@@ -255,17 +295,18 @@
 
 
 }
--(void)getComments
+
+-(void)getUserData
 {
-    //TODO:
-}
--(void)postComment
-{
-    //TODO:
-}
--(void)deleteComment
-{
-    //TODO:
+    getPosterData = YES;
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"users/self", @"method", nil];
+    //just creates a pointer to our app delegate. Nothing else to understand in this code
+    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    //send the instagram property in our appdelehate.h this message "reqeustWithParams: delegate" (based on the instagram iOS SDK
+    [appDelegate.instagram requestWithParams:params
+                                    delegate:self];
+    
+    
 }
 
 
@@ -276,6 +317,13 @@
 -(void)request:(IGRequest *)request didLoad:(id)result
 {
     NSLog(@"CustomCallout - Instagram did load: %@", result);
+    if (getPosterData)
+    {
+        NSLog(@"got poster data");
+        AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+        delegate.mapVC.someUser.userData = (NSDictionary *)[result objectForKey:@"data"];
+
+    }
 }
 -(void)request:(IGRequest *)request didFailWithError:(NSError *)error
 {

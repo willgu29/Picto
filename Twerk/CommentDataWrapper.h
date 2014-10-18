@@ -17,6 +17,7 @@
 @property (nonatomic) CGFloat estimatedHeight;
 
 -(instancetype)initWith:(id)commentData;
+-(instancetype)initWithComment:(NSString *)string andTime:(NSString *)time andProfile:(NSString *)profile andUsername:(NSString *)user;
 //-(CGSize)heightForTextLabel:(NSString *)text;
 
 @end
