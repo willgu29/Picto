@@ -6,24 +6,18 @@
 //  Copyright (c) 2014 William Gu. All rights reserved.
 //
 #include <stdlib.h>
-#include <mach/mach.h>
-#include <mach/mach_time.h>
 #import "MapViewController.h"
 #import "CameraAppViewController.h"
 #import "WGMap.h"
-#import "WGPhoto.h"
 #import "CustomAnnotation.h"
-#import "CustomCallout.h"
 #import <QuartzCore/QuartzCore.h>
 #import <GLKit/GLKit.h>
 #import "BaseDisplay.h"
 #import "UserDisplay.h"
 #import "LocationDisplay.h"
 #import "HashDisplay.h"
-#import "THSound.h"
 #import "SettingsTableViewController.h"
 #import "CustomCallView.h"
-#import "BoxViewController.h"
 #import "BucketListViewController.h"
 
 

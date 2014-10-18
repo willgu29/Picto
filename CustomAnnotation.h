@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
-#import "WGPhoto.h"
 
 //This class manages the DATA pertaining to an annotation (CustomCallout and MKAnnotationView).
 
