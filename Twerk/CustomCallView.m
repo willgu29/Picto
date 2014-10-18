@@ -191,7 +191,7 @@
 -(IBAction)commentButton:(UIButton *)sender
 {
     AppDelegate *delegate = [UIApplication sharedApplication].delegate;
-    [self getUserData];
+//    [self getUserData]; uncomment when posting is available
     CommentsViewController *commentVC = [[CommentsViewController alloc] init];
     
     commentVC.commentsData = self.referencedAnnotation.commentsData;

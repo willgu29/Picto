@@ -14,6 +14,9 @@
 #import "LoginViewController.h"
 
 @interface SettingsTableViewController ()
+{
+    UIView *view;
+}
 
 @property (nonatomic, strong) NSArray *settingsArray;
 @property (nonatomic, strong) NSArray *actionsArray;
@@ -28,13 +31,13 @@
     //TODO: Load proper on from correct state
     TVSettingsObject *row1 = [[TVSettingsObject alloc] initWithMainTitle:@"View Recent or All" andSubText:@"Switch between viewing pictures posted in the last 24 hours or all"];
     TVSettingsObject *row2 = [[TVSettingsObject alloc] initWithMainTitle:@"View Friends Only" andSubText:@"Picto will only display who you are following when browsing the map"];
-    TVSettingsObject *row3 = [[TVSettingsObject alloc] initWithMainTitle:@"Filler Option" andSubText:@"Something that could possibly go here"];
-    _settingsArray = [[NSArray alloc] initWithObjects:row1, row2, row3, nil];
+//    TVSettingsObject *row3 = [[TVSettingsObject alloc] initWithMainTitle:@"Filler Option" andSubText:@"Something that could possibly go here"];
+    _settingsArray = [[NSArray alloc] initWithObjects:row1, row2, nil];
 }
 
 -(void)createActionsArray
 {
-    _actionsArray = @[@"Share this app", @"Rate this app", @"Logout"];
+    _actionsArray = @[@"About",@"Share this app", @"Rate this app", @"Logout"];
 }
 
 -(void)createArrayOfOptionsToDisplay
@@ -45,10 +48,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    
+    
+    [self.tableView setContentInset:UIEdgeInsetsMake(80,0,0,0)];
+    
     [self createSettingsArray];
     [self createActionsArray];
-    [self setUpHeader];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -58,22 +62,32 @@
 
 -(void)setUpHeader
 {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 80)];
+    view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 80)];
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 36, 40, 40)];
     backButton.titleLabel.text = @"Back";
     [backButton setImage:[UIImage imageNamed:@"Fill 128.png"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(backToMap) forControlEvents:UIControlEventTouchUpInside];
     
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(130, 30, 180, 40)];
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(130, 34, 180, 40)];
     headerLabel.text = @"Settings";
     UIFont *headline = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     [headerLabel setFont:headline];
     
+
     [view addSubview:backButton];
     [view addSubview:headerLabel];
     
-    [self.view addSubview:view];
+    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+
+    [view setAlpha:0];
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:1];
+    [view setAlpha:1.0];
+    [UIView commitAnimations];
+    
+    [delegate.window addSubview:view];
+    [delegate.window bringSubviewToFront:view];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -81,11 +95,16 @@
     [(MapViewController *)self.presentingViewController setZoomToLocationOnLaunch:NO];
     [self displayProperButtonHighlights];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSettings) name:@"Switch Pressed" object:nil];
+    
+    [self.tableView reloadData];
+
+    [self setUpHeader];
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    [self.tableView reloadData];
+
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -198,13 +217,26 @@
    
 }
 
+//-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    return 80;
+//    
+//
+//}
+
+//-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForHeaderInSection:(NSInteger)section
+//{
+//    
+//    return 80;
+//}
+
 //-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 //{
 //   
 //    
 //    
 //    //TODO: return a proper view
-//    return view;
+////    return [self setUpHeader];
 //}
 
 -(void)updateSettings
@@ -214,6 +246,8 @@
 
 -(void)backToMap
 {
+    NSLog(@"BACK TO MAP");
+    [view removeFromSuperview];
     //settings saved in TVTableViewCell... oops sorry
     [self removeAllPins];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -228,11 +262,6 @@
 
 
 
--(CGFloat)tableView:(UITableView *)tableView estimatedHeightForHeaderInSection:(NSInteger)section
-{
-    
-    return 80;
-}
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -266,6 +295,15 @@
     {
         [self shareApp];
     }
+    else if (indexPath.row == ([_settingsArray count] + [_actionsArray count] - 4))
+    {
+        [self tutorial];
+    }
+}
+
+-(void)tutorial
+{
+    
 }
 
 -(void)rateApp
@@ -282,7 +320,8 @@
 {
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     [appDelegate.instagram logout];
-    
+    [view removeFromSuperview];
+
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"accessToken"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
