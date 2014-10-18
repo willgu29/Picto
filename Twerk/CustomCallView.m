@@ -71,7 +71,7 @@
     [_captionText setTextColor:[UIColor whiteColor]];
     [_captionText setTextAlignment:NSTextAlignmentCenter];
     _captionText.editable = YES;
-    [_captionText setFont:[UIFont fontWithName:@"Helvetica Neue-Italic" size:12]];
+//    [_captionText setFont:[UIFont fontWithName:@"Helvetica Neue-Italic" size:12]];
     _captionText.editable = NO;
     _captionText.backgroundColor = [UIColor colorWithRed:.549 green:.713 blue:.901 alpha:1.0];
 

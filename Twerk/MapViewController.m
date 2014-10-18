@@ -1771,10 +1771,12 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 -(void)animateFadeInAndAddCallOutView:(UIView *)viewToAdd
 {
     [viewToAdd setAlpha:0];
-    [self.view addSubview:viewToAdd];
     [UIView beginAnimations:nil context:nil];
     [viewToAdd setAlpha:1.0];
     [UIView commitAnimations];
+    
+    [self.view addSubview:viewToAdd];
+
 }
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
