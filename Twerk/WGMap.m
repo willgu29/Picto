@@ -100,12 +100,12 @@ static const int SECONDS_IN_A_DAY = 86400;
 
 - (void)request:(IGRequest *)request didFailWithError:(NSError *)error {
     NSLog(@"Instagram did fail: %@", error);
-    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:[error localizedDescription]
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil];
-    [alertView show];
+//    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+//                                                        message:[error localizedDescription]
+//                                                       delegate:nil
+//                                              cancelButtonTitle:@"Ok"
+//                                              otherButtonTitles:nil];
+//    [alertView show];
 }
 
 // ???: This will remove MKUserLocation and MKPointAnnotations as well?

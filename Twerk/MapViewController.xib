@@ -21,13 +21,13 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" rotateEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pth-zs-LoA" customClass="WGMap">
+                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" rotateEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pth-zs-LoA" customClass="WGMap">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="HHh-2W-hDv"/>
                     </connections>
                 </mapView>
-                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="Overlay 80" translatesAutoresizingMaskIntoConstraints="NO" id="kvS-8o-GFg">
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" image="Overlay 80" translatesAutoresizingMaskIntoConstraints="NO" id="kvS-8o-GFg">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
                     <gestureRecognizers/>
                     <constraints>
@@ -64,7 +64,7 @@
                     <color key="textColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="fGV-4b-aA2">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="fGV-4b-aA2">
                     <rect key="frame" x="0.0" y="79" width="320" height="274"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>

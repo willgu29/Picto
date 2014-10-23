@@ -329,9 +329,20 @@
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"accessToken"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
+    
+    
     LoginViewController *loginVC = [[LoginViewController alloc]init];
     [self presentViewController:loginVC animated:YES completion:nil];
     //TODO: THIS IS INCORRECT (SHOULD DISMISS ALL VCs NOT PRESENT)
+    
+    [self deleteStuff];
+}
+
+-(void)deleteStuff
+{
+    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+    delegate.mapVC = nil;
+    
 }
 
 -(void)igDidLogout

@@ -23,13 +23,15 @@
     //set the location to our property in .h
     _currentLocation = userLocation;
     //NSLog(@")
-    if (!(userLocation == nil))
+//    if (!(userLocation == nil))
+    if (!(self.currentLocation.coordinate.latitude == 0 && self.currentLocation.coordinate.longitude == 0))
     {
         AppDelegate *delegate = [UIApplication sharedApplication].delegate;
         [delegate.mapVC performSelectorOnMainThread:@selector(zoomStart) withObject:nil waitUntilDone:YES];
 //        [[NSNotificationCenter defaultCenter] postNotificationName:@"Zoom to map" object:nil];
+        return;
     }
-    
+    [self performSelector:@selector(getCurrentLocationOnMap:) withObject:map afterDelay:1];
     
 }
 
@@ -78,12 +80,12 @@
 //If the request failed, we should tell the user.
 - (void)request:(IGRequest *)request didFailWithError:(NSError *)error {
     NSLog(@"Instagram did fail: %@", error);
-    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:[error localizedDescription]
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil];
-    [alertView show];
+//    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+//                                                        message:[error localizedDescription]
+//                                                       delegate:nil
+//                                              cancelButtonTitle:@"Ok"
+//                                              otherButtonTitles:nil];
+//    [alertView show];
 }
 
 

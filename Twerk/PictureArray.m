@@ -51,12 +51,12 @@
 
 - (void)request:(IGRequest *)request didFailWithError:(NSError *)error {
     NSLog(@"Instagram did fail: %@", error);
-    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:[error localizedDescription]
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil];
-    [alertView show];
+//    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+//                                                        message:[error localizedDescription]
+//                                                       delegate:nil
+//                                              cancelButtonTitle:@"Ok"
+//                                              otherButtonTitles:nil];
+//    [alertView show];
 }
 
 @end

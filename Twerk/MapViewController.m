@@ -19,7 +19,7 @@
 #import "SettingsTableViewController.h"
 #import "CustomCallView.h"
 #import "BucketListViewController.h"
-
+#import "LoginViewController.h"
 
 const NSInteger METERS_PER_MILE = 1609.344;
 const NSInteger MAX_ALLOWED_PICTURES = 50; //ON SCREEN
@@ -176,20 +176,22 @@ const double SCALE_FACTOR = 500.0;
     
     _zoomToLocationOnLaunch = NO;
     
-    [_someUser getCurrentLocationOnMap:_mapView]; //get location of user
+//    [_someUser getCurrentLocationOnMap:_mapView]; //get location of user
     //zoom to user location on map
     CLLocationDistance lat = 100;
     CLLocationDistance lng = 100;
     if (_someUser.currentLocation.coordinate.latitude == 0 && _someUser.currentLocation.coordinate.longitude == 0)
     {
 
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomStart) name:@"Zoom to map" object:nil];
-        [_someUser performSelector:@selector(getCurrentLocationOnMap:) withObject:_mapView afterDelay:1];
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomStart) name:@"Zoom to map" object:nil];
+        [_someUser getCurrentLocationOnMap:_mapView];
+//        [_someUser performSelector:@selector(getCurrentLocationOnMap:) withObject:_mapView afterDelay:1];
         
     }
     else
     {
-        [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:lat withLongitude:lng withMap:_mapView];
+//        [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:lat withLongitude:lng withMap:_mapView];
+        [self zoomStart];
     }
 
     
@@ -1085,6 +1087,8 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     MKCoordinateRegion zoomLocation = MKCoordinateRegionMakeWithDistance(coordinate, latitude, longitude);
     //tell the map to zoom to that location (no animation needed here..)
     [map setRegion:zoomLocation animated:NO];
+    
+    
     [self performSelector:@selector(mapLocationSettled)];
    
 }
@@ -1093,7 +1097,8 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 {
     [self zoomToRegion:_someUser.currentLocation.coordinate withLatitude:100 withLongitude:100 withMap:_mapView];
     // [[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:@"Zoom to map"];
- 
+    
+    
    
 }
 
@@ -1101,8 +1106,23 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 {
     [_mapView getCurrentLocationOfMap];
     //TODO: find a home for this
-    
+    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+    if ([delegate.window.rootViewController isKindOfClass:[LoginViewController class]])
+    {
+        [self performSelector:@selector(displayAlert) withObject:nil afterDelay:1];
+    }
 
+
+}
+
+-(void)displayAlert
+{
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Welcome to Picto"
+                                                        message:@"Tap Picto at anytime to return to your current location!"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Got it!"
+                                              otherButtonTitles:nil];
+    [alertView show];
 }
 
 -(void)omg
