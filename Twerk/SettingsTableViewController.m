@@ -37,7 +37,8 @@
 
 -(void)createActionsArray
 {
-    _actionsArray = @[@"About",@"Share this app", @"Rate this app", @"Logout"];
+//    _actionsArray = @[@"About",@"Tutorial", @"Logout"];
+    _actionsArray = @[@"Logout"];
 }
 
 -(void)createArrayOfOptionsToDisplay
@@ -287,24 +288,27 @@
     {
         [self logout];
     }
-    else if (indexPath.row == ([_settingsArray count] + [_actionsArray count] - 2))
-    {
-        [self rateApp];
-    }
-    else if (indexPath.row == ([_settingsArray count] + [_actionsArray count] - 3))
-    {
-        [self shareApp];
-    }
-    else if (indexPath.row == ([_settingsArray count] + [_actionsArray count] - 4))
-    {
-        [self tutorial];
-    }
+//    else if (indexPath.row == ([_settingsArray count] + [_actionsArray count] - 2))
+//    {
+//        [self tutorial];
+//    }
+//    else if (indexPath.row == ([_settingsArray count] + [_actionsArray count] - 2))
+//    {
+//        [self aboutMe];
+//    }
+}
+
+-(void)aboutMe
+{
+    NSLog(@"about me");
 }
 
 -(void)tutorial
 {
-    
+    NSLog(@"tutorial");
 }
+          
+
 
 -(void)rateApp
 {

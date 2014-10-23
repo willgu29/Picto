@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
-#import <CoreMotion/CoreMotion.h>
-#import "IGConnect.h"
+ #import "IGConnect.h"
 #import "IGRequest.h"
 #import "MapViewController.h"
 
@@ -19,13 +18,6 @@
 @property (strong, nonatomic) Instagram *instagram;
 @property (strong, nonatomic) MapViewController *mapVC;
 
-
-@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-@property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
-@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-
-- (void)saveContext;
-- (NSURL *)applicationDocumentsDirectory;
 
 
 @end

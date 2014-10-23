@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CommentsViewController">
@@ -17,7 +18,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="64" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ncX-I3-v7T">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="64" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ncX-I3-v7T">
                     <rect key="frame" x="0.0" y="44" width="320" height="475"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
@@ -25,10 +26,13 @@
                         <outlet property="delegate" destination="-1" id="E6W-u3-83A"/>
                     </connections>
                 </tableView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hs7-tz-BTz">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hs7-tz-BTz">
                     <rect key="frame" x="0.0" y="517" width="320" height="51"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="51" id="BCB-xl-RtM"/>
+                    </constraints>
                 </imageView>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add a comment..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1GR-7C-i9p">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add a comment..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1GR-7C-i9p">
                     <rect key="frame" x="8" y="530" width="222" height="30"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
@@ -36,8 +40,11 @@
                         <outlet property="delegate" destination="-1" id="SD0-SZ-Wgu"/>
                     </connections>
                 </textField>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e0S-8V-cYo">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e0S-8V-cYo">
                     <rect key="frame" x="238" y="534" width="74" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="74" id="4kv-6g-5jj"/>
+                    </constraints>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                     <state key="normal" title="Send" backgroundImage="followGreen">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -46,8 +53,12 @@
                         <action selector="sendButton:" destination="-1" eventType="touchUpInside" id="8q9-mn-skS"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xdk-AR-xWb">
-                    <rect key="frame" x="8" y="14" width="35" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xdk-AR-xWb">
+                    <rect key="frame" x="8" y="13" width="55" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="3ia-Zc-qbe"/>
+                        <constraint firstAttribute="width" constant="55" id="nnz-Ru-LQC"/>
+                    </constraints>
                     <state key="normal" title="Back">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -57,6 +68,22 @@
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="hs7-tz-BTz" firstAttribute="trailing" secondItem="ncX-I3-v7T" secondAttribute="trailing" id="9Rn-Fn-OQH"/>
+                <constraint firstItem="1GR-7C-i9p" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leadingMargin" id="B5r-nb-iHR"/>
+                <constraint firstAttribute="bottom" secondItem="hs7-tz-BTz" secondAttribute="bottom" id="J10-wg-BVM"/>
+                <constraint firstItem="ncX-I3-v7T" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="44" id="VCE-uy-hoh"/>
+                <constraint firstItem="e0S-8V-cYo" firstAttribute="leading" secondItem="1GR-7C-i9p" secondAttribute="trailing" constant="8" symbolic="YES" id="VMa-Ba-G5U"/>
+                <constraint firstItem="xdk-AR-xWb" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="13" id="Xc3-jK-FMp"/>
+                <constraint firstItem="hs7-tz-BTz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="dM3-xX-9k4"/>
+                <constraint firstItem="e0S-8V-cYo" firstAttribute="centerY" secondItem="1GR-7C-i9p" secondAttribute="centerY" id="deO-MH-2fg"/>
+                <constraint firstItem="ncX-I3-v7T" firstAttribute="leading" secondItem="hs7-tz-BTz" secondAttribute="leading" id="gje-ex-IU7"/>
+                <constraint firstItem="1GR-7C-i9p" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottomMargin" id="mcC-qL-tO1"/>
+                <constraint firstAttribute="trailing" secondItem="ncX-I3-v7T" secondAttribute="trailing" id="wpX-Cm-PSh"/>
+                <constraint firstItem="1GR-7C-i9p" firstAttribute="top" secondItem="ncX-I3-v7T" secondAttribute="bottom" constant="11" id="wqE-MV-Tho"/>
+                <constraint firstItem="e0S-8V-cYo" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailingMargin" id="xiX-6R-lLK"/>
+                <constraint firstItem="xdk-AR-xWb" firstAttribute="leading" secondItem="1GR-7C-i9p" secondAttribute="leading" id="zws-7N-cgF"/>
+            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>

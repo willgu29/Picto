@@ -18,6 +18,8 @@
 @property (nonatomic, weak) IBOutlet UILabel *text;
 @property (nonatomic, weak) IBOutlet UIButton *loginButton;
 
+@property (nonatomic, weak) IBOutlet UIImageView *fingerImage;
+
 
 @end
 
@@ -29,7 +31,7 @@
 
 -(IBAction)tap:(id)sender
 {
-    if (_pageControl.currentPage == 2)
+    if (_pageControl.currentPage == 3)
     {
         //do nothing... no pages left
     }
@@ -56,7 +58,7 @@
 
 -(IBAction)swipeLeft:(id)sender
 {
-    if (_pageControl.currentPage == 2)
+    if (_pageControl.currentPage == 3)
     {
         //do nothing... no pages left
     }
@@ -80,18 +82,30 @@
     UIImage *image = [[UIImage alloc] init];
     if (pageNumber == 0)
     {
-        image = [UIImage imageNamed:@"lulsides.png"];
-        self.text.text = @"LOL SIDES";
+        image = [UIImage imageNamed:@"1.png"];
+        self.text.text = @"Re-discover Instagram";
+        _fingerImage.hidden = YES;
     }
     else if (pageNumber == 1)
     {
-        image = [UIImage imageNamed:@"getfucked.png"];
-        self.text.text = @"GET FUCKED";
+        image = [UIImage imageNamed:@"2.png"];
+        self.text.text = @"Swipe and drag";
+        _fingerImage.hidden = NO;
+        [UIView animateWithDuration:2.0f animations:^{
+            _fingerImage.frame = CGRectMake(135.0f, 330.0f, _fingerImage.frame.size.width, _fingerImage.frame.size.height);
+        }];
     }
     else if (pageNumber == 2)
     {
-        image = [UIImage imageNamed:@"wouldbang.png"];
-        self.text.text = @"WOULD BANG";
+        image = [UIImage imageNamed:@"3.png"];
+        self.text.text = @"Hold to pause";
+        _fingerImage.hidden = NO;
+    }
+    else if (pageNumber == 3)
+    {
+        image = [UIImage imageNamed:@"4.png"];
+        self.text.text = @"And find new photos";
+        _fingerImage.hidden = YES;
     }
     else
     {
@@ -143,7 +157,7 @@
     //Our page controller
     _pageControl.currentPage = 0;
     [self animateToPage:0];
-    _pageControl.numberOfPages = 3;
+    _pageControl.numberOfPages = 4;
 
     
     _loginButton.layer.cornerRadius = 15.0;
@@ -151,7 +165,7 @@
     _loginButton.clipsToBounds = YES;
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg2.png"]];
-    
+    _fingerImage.hidden = YES;
     
     
 }
@@ -181,11 +195,11 @@
     //Make a mapVC
     appDelegate.mapVC = [[MapViewController alloc] init];
     //present it
-    [self presentViewController:appDelegate.mapVC animated:YES completion:^{
-        //Register push notifications
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
-    }];
+    [self presentViewController:appDelegate.mapVC animated:YES completion:NO];
+//        //Register push notifications
+//        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+//         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+//    }];
 }
 
 -(void)igDidNotLogin:(BOOL)cancelled {

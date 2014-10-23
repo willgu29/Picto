@@ -22,7 +22,7 @@
 
 
 const NSInteger METERS_PER_MILE = 1609.344;
-const NSInteger MAX_ALLOWED_PICTURES = 200; //ON SCREEN
+const NSInteger MAX_ALLOWED_PICTURES = 50; //ON SCREEN
 const NSInteger POPULAR_PICTURES_IN_ARRAY = 7;
 const NSInteger ANNOTATION_RADIUS = 25;
 
@@ -73,35 +73,6 @@ const double SCALE_FACTOR = 500.0;
 
 #pragma mark - Picto
 
--(void)someRandomMethod
-{
-    //COOL
-}
-
--(IBAction)swipeRightToBox:(id)sender
-{
-    NSLog(@"Switch modes!");
-
-    if (_isInBoxMode)
-    {
-        _isInBoxMode = NO;
-        UIImage *image = [UIImage imageNamed:@"Overlay 80"];
-        [_pictoOverlay setImage:image];
-//        [self dismissViewControllerAnimated:YES completion:nil];
-
-    }
-    else
-    {
-        _isInBoxMode = YES;
-        UIImage *image1 = [UIImage imageNamed:@"Overlay 81"]; //Or 82
-        [_pictoOverlay setImage:image1];
-//        BoxViewController *box =  [[BoxViewController alloc] init];
-//        [self presentViewController:box animated:YES completion:nil];
-        
-    }
-    
-    
-}
 
 -(IBAction)returnToHome:(UIButton *)sender
 {
@@ -127,15 +98,10 @@ const double SCALE_FACTOR = 500.0;
     [super viewDidLoad];
     
     
-    _isInBoxMode = NO;
     _zoomToLocationOnLaunch = YES;
     // Do any additional setup after loading the view from its nib.
-    _searchField.delegate = self;
-    _mapView.delegate = self;
-    //there is a hidden TableView in our window for the search later
+    
     _autoCompleteTableView.hidden = YES;
-    _autoCompleteTableView.delegate = self;
-    _autoCompleteTableView.dataSource = self;
     _autoCompleteTableView.scrollEnabled = YES;
     
     //1.
@@ -149,27 +115,15 @@ const double SCALE_FACTOR = 500.0;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectMethodForTypeWorkAround) name:@"We should load data" object:nil];
     //3. Allows us to parse data now
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseSelectorMethod) name:@"Images Loaded" object:nil];
-    //4.After Popular Photos are loaded and parsed
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(zoomToPopular) name:@"Can Zoom to Popular" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseNextSelectorMethod) name:@"Next Array Data Loaded" object:nil];
     
     
     [self setUpSavedData];
     
-//tim's sound stuff
-//    [self setUpTHSound];
-//    _onDropSound = [_THsound THreadySound:@"AirHorn-Reggae" ofType:@"mp3"];
-//    NSLog(@"AV Object looks like: %@", [_onDropSound debugDescription]);
-    
     [self updateViewConstraints];
 }
 
-//-(void)setUpTHSound
-//{
-//    if(_THsound == nil)
-//        _THsound = [[THSound alloc] init];
-//}
 
 -(void)setUpPicturesArray
 {
@@ -190,8 +144,8 @@ const double SCALE_FACTOR = 500.0;
     
     if (_globalType == 0)
     {
-        [[NSUserDefaults standardUserDefaults] setInteger:ALL forKey:@"WGglobalType"];
-        [self setGlobalType:ALL];
+        [[NSUserDefaults standardUserDefaults] setInteger:RECENT forKey:@"WGglobalType"];
+        [self setGlobalType:RECENT];
     }
     
 }
@@ -202,7 +156,6 @@ const double SCALE_FACTOR = 500.0;
     //authorize it before doing anything else.
     
 }
-
 
 
 -(void)viewDidAppear:(BOOL)animated
@@ -251,7 +204,7 @@ const double SCALE_FACTOR = 500.0;
         locationManager = [[CLLocationManager alloc] init];
         [locationManager requestWhenInUseAuthorization];
     }
-    [self performSelector:@selector(viewDidAppear:) withObject:nil afterDelay:0.2];
+    [self performSelector:@selector(viewDidAppear:) withObject:nil afterDelay:1.0]; //was 0
 }
 
 
@@ -259,16 +212,12 @@ const double SCALE_FACTOR = 500.0;
 {
     //TODO: Set to nil what is needed and remove other observers
     //remove the observers if we leave this view
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"We should load data" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"Load Geo" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"Can Zoom to Popular" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"Can Find Location" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"Images Loaded" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"CanParseFollowing" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     // Clean the map one last time
     [_mapView cleanupMap];
     // Stop the clean timer
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -587,15 +536,18 @@ const double SCALE_FACTOR = 500.0;
         return FLOOD;
     }
  
+    
     // !!!: NSSetM addobject object can't be nil uncaught exception (on nextButton spam) (on just scrolling...) (on clean up map) (out of bounds as well) (on next Button non spam)
-    for (int i = 0; i < [_mapView.annotations count]; i++)
+    NSArray *arrayOfAnnotations = _mapView.annotations;
+    
+    for (int i = 0; i < [arrayOfAnnotations count]; i++)
     {
-        if (i >= [_mapView.annotations count])
+        if (i >= [arrayOfAnnotations count])
         {
             NSLog(@"ERROR");
             break;
         }
-        CustomAnnotation *arrayAnnotation = [_mapView.annotations objectAtIndex:i];
+        CustomAnnotation *arrayAnnotation = [arrayOfAnnotations objectAtIndex:i];
         
         if ([arrayAnnotation isKindOfClass:[MKPointAnnotation class]])
         {
@@ -605,16 +557,17 @@ const double SCALE_FACTOR = 500.0;
         {
             continue;
         }
-        if ([self annotation:annotation tooCloseTo:arrayAnnotation]) //Change annotation radius for configuring
-        {
-            return OVERLAP;
-        }
         //TODO: Fix Duplicate (cleanUpMap might be cleaning it before we have a chance to detect)
         if ([arrayAnnotation isEqualToAnnotation:annotation])
         {
             NSLog(@"Detecting duplicate");
             return DUPLICATE;
         }
+        if ([self annotation:annotation tooCloseTo:arrayAnnotation]) //Change annotation radius for configuring
+        {
+            return OVERLAP;
+        }
+        
     }
     
     return SUCCESS;

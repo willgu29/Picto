@@ -218,10 +218,6 @@
     }
 }
 
--(IBAction)bucketListButton:(UIButton *)sender
-{
-    //present user's bucket list and associated pictures
-}
 
 #pragma mark - Request Types
 

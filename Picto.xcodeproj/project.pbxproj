@@ -61,6 +61,10 @@
 		84ECA6B419BD0EE000757F87 /* HashTagSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 84ECA6B319BD0EE000757F87 /* HashTagSearch.m */; };
 		84ECA6B719BD24AC00757F87 /* LocationSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 84ECA6B619BD24AC00757F87 /* LocationSearch.m */; };
 		84ECB48B19EEF26500D5F795 /* CommentDataWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 84ECB48A19EEF26500D5F795 /* CommentDataWrapper.m */; };
+		84ECB49019F33EF200D5F795 /* AboutMeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84ECB48E19F33EF200D5F795 /* AboutMeViewController.m */; };
+		84ECB49119F33EF200D5F795 /* AboutMeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84ECB48F19F33EF200D5F795 /* AboutMeViewController.xib */; };
+		84ECB49519F33F0300D5F795 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84ECB49319F33F0300D5F795 /* TutorialViewController.m */; };
+		84ECB49619F33F0300D5F795 /* TutorialViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84ECB49419F33F0300D5F795 /* TutorialViewController.xib */; };
 		84F24FE41973970000013F47 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FE31973970000013F47 /* User.m */; };
 		84F24FEC1974EBB500013F47 /* SearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FEB1974EBB500013F47 /* SearchData.m */; };
 		84F24FEF1975F17300013F47 /* WGMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F24FEE1975F17300013F47 /* WGMap.m */; };
@@ -173,6 +177,12 @@
 		84ECA6B619BD24AC00757F87 /* LocationSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationSearch.m; sourceTree = "<group>"; };
 		84ECB48919EEF26500D5F795 /* CommentDataWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentDataWrapper.h; sourceTree = "<group>"; };
 		84ECB48A19EEF26500D5F795 /* CommentDataWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentDataWrapper.m; sourceTree = "<group>"; };
+		84ECB48D19F33EF200D5F795 /* AboutMeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutMeViewController.h; sourceTree = "<group>"; };
+		84ECB48E19F33EF200D5F795 /* AboutMeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutMeViewController.m; sourceTree = "<group>"; };
+		84ECB48F19F33EF200D5F795 /* AboutMeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutMeViewController.xib; sourceTree = "<group>"; };
+		84ECB49219F33F0300D5F795 /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
+		84ECB49319F33F0300D5F795 /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
+		84ECB49419F33F0300D5F795 /* TutorialViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TutorialViewController.xib; sourceTree = "<group>"; };
 		84F24FE21973970000013F47 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		84F24FE31973970000013F47 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		84F24FEA1974EBB500013F47 /* SearchData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchData.h; sourceTree = "<group>"; };
@@ -417,6 +427,7 @@
 		84DEE29919B8E955004C58E4 /* Settings VC */ = {
 			isa = PBXGroup;
 			children = (
+				84ECB48C19F33ECB00D5F795 /* Additional-Info */,
 				84A2819919C12825001AAC1F /* TVTableSettingsViewCell.h */,
 				84A2819A19C12825001AAC1F /* TVTableSettingsViewCell.m */,
 				84A2819B19C12825001AAC1F /* TVTableSettingsViewCell.xib */,
@@ -440,6 +451,19 @@
 				84ECA6B619BD24AC00757F87 /* LocationSearch.m */,
 			);
 			name = Search;
+			sourceTree = "<group>";
+		};
+		84ECB48C19F33ECB00D5F795 /* Additional-Info */ = {
+			isa = PBXGroup;
+			children = (
+				84ECB48D19F33EF200D5F795 /* AboutMeViewController.h */,
+				84ECB48E19F33EF200D5F795 /* AboutMeViewController.m */,
+				84ECB48F19F33EF200D5F795 /* AboutMeViewController.xib */,
+				84ECB49219F33F0300D5F795 /* TutorialViewController.h */,
+				84ECB49319F33F0300D5F795 /* TutorialViewController.m */,
+				84ECB49419F33F0300D5F795 /* TutorialViewController.xib */,
+			);
+			name = "Additional-Info";
 			sourceTree = "<group>";
 		};
 		84F24FFA1977630200013F47 /* instagram-ios-sdk */ = {
@@ -601,6 +625,8 @@
 				84DEE2B019BA5285004C58E4 /* SettingsTableViewController.xib in Resources */,
 				C7808E8519B05FFA002E525E /* AppIcon57x57.png in Resources */,
 				84DEE24519B56883004C58E4 /* Image.xcassets in Resources */,
+				84ECB49119F33EF200D5F795 /* AboutMeViewController.xib in Resources */,
+				84ECB49619F33F0300D5F795 /* TutorialViewController.xib in Resources */,
 				84F24FF919764A5A00013F47 /* TODO.rtf in Resources */,
 				C7808E8319B05FFA002E525E /* AppIcon50x50.png in Resources */,
 				C7808E8719B05FFA002E525E /* AppIcon60x60.png in Resources */,
@@ -636,6 +662,7 @@
 				84F250011977630200013F47 /* Instagram.m in Sources */,
 				846F8A47196498AE000401E8 /* MapViewController.m in Sources */,
 				8438BF1D19BE815C00E5B4FA /* LocationDisplay.m in Sources */,
+				84ECB49519F33F0300D5F795 /* TutorialViewController.m in Sources */,
 				84A281FC19C6ACE0001AAC1F /* CustomCallView.m in Sources */,
 				84A281F819C65219001AAC1F /* UserFeedViewController.m in Sources */,
 				84F250001977630200013F47 /* IGRequest.m in Sources */,
@@ -643,6 +670,7 @@
 				84F24FEF1975F17300013F47 /* WGMap.m in Sources */,
 				84A281A019C12874001AAC1F /* TVSettingsObject.m in Sources */,
 				84DEE2AF19BA5285004C58E4 /* SettingsTableViewController.m in Sources */,
+				84ECB49019F33EF200D5F795 /* AboutMeViewController.m in Sources */,
 				84DA0D2E18F92C2B00DE364F /* AppDelegate.m in Sources */,
 				84F24FEC1974EBB500013F47 /* SearchData.m in Sources */,
 				84DA0D2A18F92C2B00DE364F /* main.m in Sources */,
@@ -747,7 +775,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: William Gu (X8C323275L)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -779,7 +807,7 @@
 				INFOPLIST_FILE = "Twerk/Picto-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = Picto;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "0c2c860a-024d-46cd-adf5-f6c8586d096b";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -789,8 +817,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: William Gu (X8C323275L)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: William Gu (X8C323275L)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -800,7 +828,7 @@
 				INFOPLIST_FILE = "Twerk/Picto-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = Picto;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "0c2c860a-024d-46cd-adf5-f6c8586d096b";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
