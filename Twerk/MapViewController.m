@@ -560,16 +560,15 @@ const double SCALE_FACTOR = 500.0;
             continue;
         }
         //TODO: Fix Duplicate (cleanUpMap might be cleaning it before we have a chance to detect)
+        if ([self annotation:annotation tooCloseTo:arrayAnnotation]) //Change annotation radius for configuring
+        {
+            return OVERLAP;
+        }
         if ([arrayAnnotation isEqualToAnnotation:annotation])
         {
             NSLog(@"Detecting duplicate");
             return DUPLICATE;
         }
-        if ([self annotation:annotation tooCloseTo:arrayAnnotation]) //Change annotation radius for configuring
-        {
-            return OVERLAP;
-        }
-        
     }
     
     return SUCCESS;
@@ -1117,8 +1116,8 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 -(void)displayAlert
 {
-    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Welcome to Picto"
-                                                        message:@"Tap Picto at anytime to return to your current location!"
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Welcome to Pikto"
+                                                        message:@"Tap Pikto to return to your current location!"
                                                        delegate:nil
                                               cancelButtonTitle:@"Got it!"
                                               otherButtonTitles:nil];
@@ -1739,6 +1738,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 {
     [viewToAdd setAlpha:0];
     [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.5];
     [viewToAdd setAlpha:1.0];
     [UIView commitAnimations];
     

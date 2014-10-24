@@ -89,7 +89,7 @@
     else if (pageNumber == 1)
     {
         image = [UIImage imageNamed:@"2.png"];
-        self.text.text = @"Swipe and drag";
+        self.text.text = @"Hold then drag";
         _fingerImage.hidden = NO;
         [UIView animateWithDuration:2.0f animations:^{
             _fingerImage.frame = CGRectMake(135.0f, 330.0f, _fingerImage.frame.size.width, _fingerImage.frame.size.height);
