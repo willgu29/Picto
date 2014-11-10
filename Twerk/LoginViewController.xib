@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController">
@@ -28,14 +28,6 @@
                         <action selector="loginToInsta:" destination="-1" eventType="touchUpInside" id="eDb-sU-TM3"/>
                     </connections>
                 </button>
-                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="iPhone" translatesAutoresizingMaskIntoConstraints="NO" id="n8i-k6-YIP">
-                    <rect key="frame" x="79" y="91" width="162" height="337"/>
-                </imageView>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UUb-DQ-bOu">
-                    <rect key="frame" x="94" y="142" width="133" height="236"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    <gestureRecognizers/>
-                </view>
                 <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="RAE-Fb-cWP">
                     <rect key="frame" x="131" y="470" width="59" height="37"/>
                     <constraints>
@@ -72,6 +64,14 @@
                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="Finger" translatesAutoresizingMaskIntoConstraints="NO" id="1me-5P-g7a">
                     <rect key="frame" x="154" y="278" width="156" height="196"/>
                 </imageView>
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="iPhone" translatesAutoresizingMaskIntoConstraints="NO" id="n8i-k6-YIP">
+                    <rect key="frame" x="79" y="91" width="162" height="337"/>
+                </imageView>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UUb-DQ-bOu">
+                    <rect key="frame" x="94" y="142" width="133" height="236"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <gestureRecognizers/>
+                </view>
             </subviews>
             <constraints>
                 <constraint firstItem="Se2-YZ-ipg" firstAttribute="centerX" secondItem="n8i-k6-YIP" secondAttribute="centerX" constant="1" id="13l-ZE-jMT"/>

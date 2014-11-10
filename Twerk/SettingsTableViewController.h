@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "IGRequest.h"
 #import "IGConnect.h"
+#import <MessageUI/MessageUI.h>
 
 
 //TODO: change to tableView with navigiation (Still using sidemenu for now)
-@interface SettingsTableViewController : UITableViewController <IGSessionDelegate>
+@interface SettingsTableViewController : UITableViewController <IGSessionDelegate, MFMailComposeViewControllerDelegate>
 
 
 

@@ -57,6 +57,7 @@ const double SCALE_FACTOR = 500.0;
     CGPoint lastPoint;
     BOOL beganInAnnotation;
     UIImageView *tempImageView;
+    BOOL displayAlert;
 }
 
 @property (nonatomic, strong) NSMutableArray *paths;
@@ -97,7 +98,7 @@ const double SCALE_FACTOR = 500.0;
 {
     [super viewDidLoad];
     
-    
+    displayAlert = YES;
     _zoomToLocationOnLaunch = YES;
     // Do any additional setup after loading the view from its nib.
     
@@ -1106,9 +1107,10 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
     [_mapView getCurrentLocationOfMap];
     //TODO: find a home for this
     AppDelegate *delegate = [UIApplication sharedApplication].delegate;
-    if ([delegate.window.rootViewController isKindOfClass:[LoginViewController class]])
+    if ([delegate.window.rootViewController isKindOfClass:[LoginViewController class]] && displayAlert)
     {
         [self performSelector:@selector(displayAlert) withObject:nil afterDelay:1];
+        displayAlert = NO;
     }
 
 
@@ -1116,8 +1118,8 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 
 -(void)displayAlert
 {
-    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Welcome to Pikto"
-                                                        message:@"Tap Pikto to return to your current location!"
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Welcome to Picto"
+                                                        message:@"Tap Picto to return to your current location!"
                                                        delegate:nil
                                               cancelButtonTitle:@"Got it!"
                                               otherButtonTitles:nil];

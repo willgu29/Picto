@@ -66,7 +66,12 @@
 
 -(void)setUpCaption
 {
+    
     NSString *stringFormat = [NSString stringWithFormat:@"%@",[_referencedAnnotation.captionData valueForKeyPath:@"text"]];
+    if ([_referencedAnnotation.captionData valueForKeyPath:@"text"] == (id)[NSNull null])
+    {
+        stringFormat = @"";
+    }
     [_captionText setText:stringFormat];
     [_captionText setTextColor:[UIColor whiteColor]];
     [_captionText setTextAlignment:NSTextAlignmentCenter];

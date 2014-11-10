@@ -38,7 +38,7 @@
 -(void)createActionsArray
 {
 //    _actionsArray = @[@"About",@"Tutorial", @"Logout"];
-    _actionsArray = @[@"Logout"];
+    _actionsArray = @[@"Report a bug", @"Logout"];
 }
 
 -(void)createArrayOfOptionsToDisplay
@@ -288,14 +288,68 @@
     {
         [self logout];
     }
-//    else if (indexPath.row == ([_settingsArray count] + [_actionsArray count] - 2))
-//    {
-//        [self tutorial];
-//    }
+    else if (indexPath.row == ([_settingsArray count] + [_actionsArray count] - 2))
+    {
+        [self reportBug];
+    }
 //    else if (indexPath.row == ([_settingsArray count] + [_actionsArray count] - 2))
 //    {
 //        [self aboutMe];
 //    }
+}
+
+-(void)reportBug
+{
+    if ([MFMailComposeViewController canSendMail])
+    {
+        NSString *emailTitle = @"Bugs,Suggestions,Comments";
+        // Email Content
+        NSString *messageBody = @"Support: ";
+        // To address
+        NSArray *toRecipents = [NSArray arrayWithObject:@"pictoapp@gustudios.com"];
+        MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
+        mc.mailComposeDelegate = self;
+        [mc setSubject:emailTitle];
+        [mc setMessageBody:messageBody isHTML:NO];
+        [mc setToRecipients:toRecipents];
+        
+        // Present mail view controller on screen
+        [self presentViewController:mc animated:YES completion:NULL];
+    }
+    else
+    {
+        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Mail is not configured on this account. Please email pictoapp@gustudios.com to report a bug"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    }
+    
+}
+
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            NSLog(@"Mail cancelled");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved");
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent");
+            break;
+        case MFMailComposeResultFailed:
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    
+    // Close the Mail Interface
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 -(void)aboutMe
